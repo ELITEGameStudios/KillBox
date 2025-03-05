@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Enemy
+  - A9SMBullet
+  - Bullet
+  - ArBlet
+  - 1Tap
+  - ShotgunShot
+  - EnemyBullet
+  - SMGBullet
+  - Grenade
+  - Explosion
+  - ArBlet2
+  - ArBlet3
+  - WorldCanvas
+  - DroppedToken
+  - ShotgunShot2
+  - ShotgunShot3
+  - SMGBullet2
+  - SMGBullet3
+  - 1Tap2
+  - 1Tap3
+  - Destructive
+  - Teleporter
+  - DroppedTutorialToken
+  - Gun
+  - hotshot
+  - Portal
+  - Ally
+  - slow_field
+  - EnemySlow
+  - fortress_rune_ui
+  - fortress_rune
+  - rune_fortress_field
+  - particle
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - Bullet
+  - Obstacles
+  - Enemy
+  - Camera
+  - Grenade
+  - Explosion
+  - EnemyOnlyWall
+  - Player
+  - OnlyCollideWithPlayer
+  - Helper
+  - EnemyOnly
+  - NoBullet
+  - NoPlayer-Bullet
+  - Non-Map-Collision
+  - DodgePostProcessing
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Walls
+    uniqueID: 1933118289
+    locked: 0
+  - name: Floor
+    uniqueID: 4234375095
+    locked: 0
+  - name: Player
+    uniqueID: 1934316087
+    locked: 0
+  - name: EnemyOnlyWallRender
+    uniqueID: 537046429
+    locked: 0
+  - name: Enemy
+    uniqueID: 2736217661
+    locked: 0
+  - name: DOORS
+    uniqueID: 129913639
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0

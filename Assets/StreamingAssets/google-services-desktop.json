@@ -1,0 +1,36 @@
+{
+  "client": [
+    {
+      "services": {
+        "appinvite_service": {
+          "status": 1
+        }, 
+        "analytics_service": {
+          "status": 0
+        }
+      }, 
+      "oauth_client": [
+        {
+          "client_id": "950111186689-fj97i0mjs2fgoop10n67knrrjr6h5pka.apps.googleusercontent.com"
+        }
+      ], 
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwCpswSI9fKWm3J-NO8Zp2YDw1qfvNwrk"
+        }
+      ], 
+      "client_info": {
+        "mobilesdk_app_id": "1:950111186689:ios:0700edc733d5d906bbf500", 
+        "android_client_info": {
+          "package_name": "com.ELITE.Killbox"
+        }
+      }
+    }
+  ], 
+  "configuration_version": "1", 
+  "project_info": {
+    "storage_bucket": "rogue-b3d48.appspot.com", 
+    "project_id": "rogue-b3d48", 
+    "project_number": "950111186689"
+  }
+}

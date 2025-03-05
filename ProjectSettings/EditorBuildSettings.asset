@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/LoadingScreen.unity
+    guid: 30f8b6aa4f354694980500dbf37ddf91
+  - enabled: 1
+    path: Assets/Scenes/Menus.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 0
+    path: Assets/Scenes/EscapeRoon.unity
+    guid: d9dcd066c90965e49aa88d299d69ddb1
+  m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 37aafbc04cb4e4ac3ba5688262c15c35, type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 8e80baf2eb34a4c8f8bf4b4abf196d33, type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 3d4ee9c02233d4712bd6498d72c0073d, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: 5fe2a98b97db0884d9fe5adc388a467d, type: 2}
