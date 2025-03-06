@@ -52,5 +52,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "killbox.sln"
+    "dotnet.defaultSolution": "killbox.sln",
+    "dotnet.preferCSharpExtension": true
 }

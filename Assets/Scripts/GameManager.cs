@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 {
     [SerializeField]
     private int _level;
-    public int ScoreCount, Dualindex, Gun, PBInt, player_kills, ultra_kills, tokens_used, guns_equipped, lvl_4_guns_retrieved, equipment_index;
+    public int ScoreCount, Dualindex, player_kills, ultra_kills, equipment_index;
     public int[] personalBests {get; private set;}
     public float time_played {get; private set;}
     [SerializeField]
@@ -55,14 +55,13 @@ public class GameManager : MonoBehaviour, ISelfResListener
     public ShopScript shopScript;
     public Animator FadeAnimator;
     public GameObject[] OffList, OnList, ultramode_unlocked_objects, grenade_launcher_objects;
-    public GameObject FadeObj, player_spawn_FX, Player, ExtraLifeUI, l_joy_small, l_joy_big, r_joy_small, r_joy_big, left_joystick, right_joystick;
-    public Vector3 min_size, max_size;
+    public GameObject Player;
+    //public Vector3 min_size, max_size; // for joystick ui
 
     public Spawn GetSpawn;
-    public EscapeRoomSpawnSystem escapeRoomSpawnSystem;
+    // public EscapeRoomSpawnSystem escapeRoomSpawnSystem;
     public UnityEvent onPlayerDeath;
     public PauseHandler pauseHandler;
-    // public InterstitialAd interstitialAd;
     public SceneManagerScript sceneManager;
 
     public Slider equipment_slider, joystick_size;
@@ -154,125 +153,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
         }
 
         return availableIndexes;
-    }
-
-
-    public void LoadPlayer()
-    {
-        int playerXp = 0;
-
-        if(SaveSystem.LoadPlayer() != null){
-            PlayerData playerData = SaveSystem.LoadPlayer();
-            PBInt = playerData.bestLevel;
-
-            personalBests[0] = playerData.bestEasyLevel;
-            personalBests[1] = playerData.bestStandardLevel;
-            personalBests[2] = playerData.bestExtremeLevel;
-
-            SetlegacyPB(playerData);
-
-            pb_run_id = playerData.best_run_id;
-            online_username = playerData.Name;
-            playedTutorial = playerData.hasPlayedTutorial;
-            
-
-            //xp = playerData.player_xp;
-            player_kills = playerData.player_kills;
-            tokens_used = playerData.tokens_used;
-            //guns_equipped = playerData.guns_equipped;
-            //lvl_4_guns_retrieved = playerData.lvl_4_guns_retrieved;
-            equipment_index = playerData.equipment_index;
-
-            //Temporary
-            if(equipment_index == -1){
-                equipment_index = 1;
-            }
-            equipment_slider = equipment_slider_list[equipment_index];
-            use_equipment_button = use_equipment_button_list[equipment_index];
-            equipment_list[equipment_index].SetActive(true);
-            equippedEquipmentDisplay[equipment_index].SetActive(true);
-
-            theme_index = playerData.theme_index;
-
-            player_render.color = color_themes[theme_index];
-            gun_renderer.color = color_themes[theme_index];
-
-            //map_colors.Theme = theme_index;
-
-            
-            //map_colors.ChangeColor(true);
-
-            completed_challenges = new bool[17];
-            completed_challenges = playerData.completed_challenges;
-
-
-            if(completed_challenges[16]){
-                for(int i = 0; i < ultramode_unlocked_objects.Length; i++){
-                    ultramode_unlocked_objects[i].SetActive(false);
-                }
-            }
-            else{
-                for(int i = 0; i < ultramode_unlocked_objects.Length; i++){
-                    ultramode_unlocked_objects[i].SetActive(true);
-                }
-            }
-
-            if(completed_challenges[15]){
-                for(int i = 0; i < grenade_launcher_objects.Length; i++){
-                    grenade_launcher_objects[i].SetActive(true);
-                }
-            }
-            else{
-                for(int i = 0; i < grenade_launcher_objects.Length; i++){
-                    grenade_launcher_objects[i].SetActive(false);
-                }
-            }
-
-            // playerXp = playerData.playerXP;
-
-
-        }
-        else{
-            completed_challenges = new bool[17];
-            equipment_index = -1;
-            SavePlayer();
-
-        }
-        
-        // ProgressionSystem.main.InitializeXP(playerXp, this);
-
-        if(1 == 0){//(ChallengeSaveSystem.LoadChallenges() != null){
-            ChallengeFields.load(ChallengeSaveSystem.LoadChallenges());
-        }
-        else{
-            ChallengeFields.firstSavePrep();
-            ChallengeSaveSystem.SaveChallenges();
-            ChallengeFields.load(ChallengeSaveSystem.LoadChallenges());
-            // Debug.Log("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-        }
-
-
-
-        if(
-            PBInt != personalBests[0] &&
-            PBInt != personalBests[1] &&
-            PBInt != personalBests[2])
-            {
-                legacyPB = PBInt;
-
-                int greatestIndex = 0;
-                for(int i = 0; i < personalBests.Length; i++ ){
-                    if(personalBests[i] > personalBests[greatestIndex]){
-                        greatestIndex = i;
-                    }
-                }
-                PBInt = personalBests[greatestIndex];
-
-                SavePlayer();
-            }
-
-        for (int i = 0; i < PBTxt.Length; i++)
-            PBTxt[i].text = PBInt.ToString();
     }
 
     public void SetlegacyPB(PlayerData data){

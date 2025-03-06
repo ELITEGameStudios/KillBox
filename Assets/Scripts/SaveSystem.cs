@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class SaveSystem
 {
 
-    public static void SavePlayer (GameManager gameData){
+    public static void SavePlayer (KillBox gameData){
 
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/progress.bruh";
