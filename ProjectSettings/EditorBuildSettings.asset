@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/LoadingScreen.unity
+    path: Assets/Scenes/MainScenes/StartLoadingScreen.unity
     guid: 30f8b6aa4f354694980500dbf37ddf91
   - enabled: 1
-    path: Assets/Scenes/MainScene/MainScene.unity
+    path: Assets/Scenes/MainScenes/MainScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 0
     path: Assets/Scenes/EscapeRoon.unity
