@@ -7,7 +7,7 @@ public class KillBox : MonoBehaviour
     // The universal game manager across separate games
     // Should never be destroyed
 
-    public int[] personalBests { get; private set; }
+    public static int[] personalBests { get; private set; }
 
     public int bestLevel, player_kills, tokens_used, guns_equipped, lvl_4_guns_retrieved, player_xp, equipment_index, theme_index, legacyPBInt, PBInt;
     public int bestEasyLevel {get; private set;}
@@ -18,11 +18,13 @@ public class KillBox : MonoBehaviour
     public int selfReviveTokens {get; private set;}
     public float time_played;
     public string Name, best_run_id;
-    public bool hasPlayedTutorial;
+    public static bool hasPlayedTutorial;
     public bool[] completed_challenges;
 
     public static KillBox main {get; private set;}
-
+    public static Game currentGame {get; private set;}
+    public static bool inGame {get {return currentGame != null;}}
+    public string online_username, pb_run_id;
 
     void Awake(){
         if(main == null){main = this;}
@@ -30,9 +32,9 @@ public class KillBox : MonoBehaviour
         personalBests = new int[3];
     }
     
-    public void SavePlayer()
+    public static void Save()
     {
-        SaveSystem.SavePlayer(this);
+        SaveSystem.SavePlayer(main);
         ChallengeSaveSystem.SaveChallenges();
     }
 
@@ -48,11 +50,9 @@ public class KillBox : MonoBehaviour
             personalBests[1] = playerData.bestStandardLevel;
             personalBests[2] = playerData.bestExtremeLevel;
 
-            SetlegacyPB(playerData);
-
             pb_run_id = playerData.best_run_id;
             online_username = playerData.Name;
-            playedTutorial = playerData.hasPlayedTutorial;
+            hasPlayedTutorial = playerData.hasPlayedTutorial;
             
             player_kills = playerData.player_kills;
             tokens_used = playerData.tokens_used;
@@ -61,48 +61,18 @@ public class KillBox : MonoBehaviour
 
             //Temporary
             if(equipment_index == -1){ equipment_index = 1; }
-            equipment_slider = equipment_slider_list[equipment_index];
-            use_equipment_button = use_equipment_button_list[equipment_index];
-            equipment_list[equipment_index].SetActive(true);
-            equippedEquipmentDisplay[equipment_index].SetActive(true);
 
-            theme_index = playerData.theme_index;
-
-            player_render.color = color_themes[theme_index];
-            gun_renderer.color = color_themes[theme_index];
+            // theme_index = playerData.theme_index;
+            // player_render.color = color_themes[theme_index];
+            // gun_renderer.color = color_themes[theme_index];
 
             completed_challenges = new bool[17];
             completed_challenges = playerData.completed_challenges;
-
-
-            if(completed_challenges[16]){
-                for(int i = 0; i < ultramode_unlocked_objects.Length; i++){
-                    ultramode_unlocked_objects[i].SetActive(false);
-                }
-            }
-            else{
-                for(int i = 0; i < ultramode_unlocked_objects.Length; i++){
-                    ultramode_unlocked_objects[i].SetActive(true);
-                }
-            }
-
-            if(completed_challenges[15]){
-                for(int i = 0; i < grenade_launcher_objects.Length; i++){
-                    grenade_launcher_objects[i].SetActive(true);
-                }
-            }
-            else{
-                for(int i = 0; i < grenade_launcher_objects.Length; i++){
-                    grenade_launcher_objects[i].SetActive(false);
-                }
-            }
-
-
         }
         else{
             completed_challenges = new bool[17];
             equipment_index = -1;
-            SavePlayer();
+            Save();
 
         }
         
@@ -119,24 +89,39 @@ public class KillBox : MonoBehaviour
         }
 
 
+        // Not sure what this was for but could be important?...
+        // if(
+        //     PBInt != personalBests[0] &&
+        //     PBInt != personalBests[1] &&
+        //     PBInt != personalBests[2])
+        // {
 
-        if(
-            PBInt != personalBests[0] &&
-            PBInt != personalBests[1] &&
-            PBInt != personalBests[2])
-        {
-            legacyPB = PBInt;
+        //     int greatestIndex = 0;
+        //     for(int i = 0; i < personalBests.Length; i++ ){
+        //         if(personalBests[i] > personalBests[greatestIndex]){
+        //             greatestIndex = i;
+        //         }
+        //     }
+        //     PBInt = personalBests[greatestIndex];
 
-            int greatestIndex = 0;
-            for(int i = 0; i < personalBests.Length; i++ ){
-                if(personalBests[i] > personalBests[greatestIndex]){
-                    greatestIndex = i;
-                }
-            }
-            PBInt = personalBests[greatestIndex];
+        //     Save();
+        // }
 
-            SavePlayer();
-        }
+    }
 
+    public static void StartNewGame(int difficulty){
+        currentGame = new Game(difficulty);
+    }
+
+    public static void EndCurrentGame(){
+        
+        // Store game statistics and and save here before setting it to null
+        
+        currentGame = null;
+    }
+
+    public void OnPlayedTutorial(){
+        hasPlayedTutorial = true;
+        Save();
     }
 }

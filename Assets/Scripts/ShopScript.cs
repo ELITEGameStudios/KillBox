@@ -424,52 +424,6 @@ public class ShopScript : MonoBehaviour
     //    }
     //}
 
-    public void HPBuy()
-    {
-        if (manager.ScoreCount >= 2 && playerHealth.GetMaxHealth() < 2499)
-        {
-            manager.ScoreCount -= 2;
-            manager.tokens_used += 2;
-            playerHealth.SetMaxHealth(playerHealth.GetMaxHealth() + 50, "JWBVIHEWBCV*&T^&237236fg3gv38fvr3v3v6)*&", false);
-            playerHealth.regen = true;
-
-            if (playerHealth.GetMaxHealth() >= 2500)
-            {
-                OnHpMax.Invoke();
-            }
-        }
-        else
-        {
-            if (playerHealth.GetMaxHealth() >= 2500)
-            {
-                OnHpMax.Invoke();
-            }
-            else
-            {
-                StartCoroutine(Error());
-            }
-        }
-    }
-
-    public void SpeedBuy()
-    {
-        if (manager.ScoreCount >= 3 && PlayerController.speed < 8)
-        {
-            manager.ScoreCount -= 3;
-            manager.tokens_used += 3;
-            PlayerController.speed += 0.5f;
-
-            if(PlayerController.speed >= 8)
-            {
-                OnSpeedMax.Invoke();
-            }
-        }
-        else
-        {
-            StartCoroutine(Error());
-        }
-    }
-
 
     IEnumerator Error()
     {

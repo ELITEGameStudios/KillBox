@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerData
 {
-    public int bestLevel, player_kills, tokens_used, guns_equipped, lvl_4_guns_retrieved, player_xp, equipment_index, theme_index, legacyPBInt;
+    public int bestLevel, player_kills, tokens_used, guns_equipped, lvl_4_guns_retrieved, player_xp, equipment_index;
     public int bestEasyLevel {get; private set;}
     public int bestStandardLevel {get; private set;}
     public int bestExtremeLevel {get; private set;}
@@ -17,11 +17,11 @@ public class PlayerData
     public bool hasPlayedTutorial;
     public bool[] completed_challenges;
 
-    public PlayerData (GameManager data){
+    public PlayerData (KillBox data){
         bestLevel = data.PBInt;
         Name = data.online_username;
         best_run_id = data.pb_run_id;
-        hasPlayedTutorial = data.playedTutorial;
+        hasPlayedTutorial = KillBox.hasPlayedTutorial;
 
         player_kills = data.player_kills;
         tokens_used = data.tokens_used;
@@ -31,16 +31,16 @@ public class PlayerData
         completed_challenges = new bool[17];
         completed_challenges = data.completed_challenges;
         equipment_index = data.equipment_index;
-        theme_index = data.Theme;
+        // theme_index = data.Theme;
 
-        bestEasyLevel = data.personalBests[0];
-        bestStandardLevel = data.personalBests[1];
-        bestExtremeLevel = data.personalBests[2];
+        bestEasyLevel = KillBox.personalBests[0];
+        bestStandardLevel = KillBox.personalBests[1];
+        bestExtremeLevel = KillBox.personalBests[2];
 
         selfReviveTokens = SelfReviveTokenManager.selfResTokens;
         playerXP = ProgressionSystem.playerXp;
         
-        legacyPBInt = data.GetlegacyPB(this);
+        // legacyPBInt = data.GetlegacyPB(this);
         
     }
 }

@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
 
     public string online_username, pb_run_id;
-    public bool playedTutorial, player_is_ultra, player_is_overdrive, player_has_hotshot, player_has_ally, started_game;
+    public bool player_is_ultra, player_is_overdrive, player_has_hotshot, player_has_ally, started_game;
     [SerializeField] private Transform head_start_transform, camera_tf;
 
     [SerializeField] private bool has_key, head_start, can_continue_game, _is_fire_round;
@@ -155,22 +155,13 @@ public class GameManager : MonoBehaviour, ISelfResListener
         return availableIndexes;
     }
 
-    public void SetlegacyPB(PlayerData data){
-        if(data.legacyPBInt != 0 || data.legacyPBInt != -1){
-            legacyPB = data.legacyPBInt;
-        }
-    }
-    public int GetlegacyPB(PlayerData data){
-        return legacyPB;
-    }
-
     void Start()
     {
         _level = 1;
         ScoreCount = 0;
         //HealthCount = 150;
         Dualindex = 0;
-        Gun = 0;
+        // Gun = 0;
         difficulty = 50;
 
         player_render = Player.transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
@@ -191,95 +182,103 @@ public class GameManager : MonoBehaviour, ISelfResListener
             }
         }
         
-        LoadPlayer();
+        // LoadPlayer();
 
-        if(!playedTutorial){
+        if(!KillBox.hasPlayedTutorial){
             tutorial_panel.SetActive(true);
         }
     }
 
     void Update()
     {
-        if (personalBests[DifficultyManager.main.index] <= LvlCount && !freeplay)
-        {
-            personalBests[DifficultyManager.main.index] = LvlCount;
-            if(PBInt <= personalBests[DifficultyManager.main.index])
-            { PBInt = personalBests[DifficultyManager.main.index]; }
-        }
+        // This code was meant to set new personal best variables, but this may be replaced due to the new Game and KillBox class system
+        // if (KillBox.personalBests[KillBox.currentGame.difficultyIndex] <= LvlCount && !freeplay) {
 
-        if(LvlTxt != null) {LvlTxt.text = LvlCount.ToString();}
-        if(LvlText2 != null) {LvlText2.text = LvlCount.ToString();}
-        if(ScoreTxt != null) {ScoreTxt.text = ScoreCount.ToString();}
-        if(ScoreTxt2 != null) {ScoreTxt2.text = ScoreCount.ToString();}
+        //     KillBox.personalBests[KillBox.currentGame.difficultyIndex] = LvlCount;
+        //     if(PBInt <= personalBests[KillBox.currentGame.difficultyIndex])
+        //     { PBInt = personalBests[KillBox.currentGame.difficultyIndex]; }
+        
+        // }
 
-        for(int i = 0; i < ScoreTxtArray.Length; i++){
-            ScoreTxtArray[i].text = ScoreCount.ToString();
-        }
+        // if(LvlTxt != null) {LvlTxt.text = LvlCount.ToString();}
+        // if(LvlText2 != null) {LvlText2.text = LvlCount.ToString();}
+        // if(ScoreTxt != null) {ScoreTxt.text = ScoreCount.ToString();}
+        // if(ScoreTxt2 != null) {ScoreTxt2.text = ScoreCount.ToString();}
 
-        for(int i = 0; i < joystick_sliders.Length; i++)
-        {
-            for (int l = 0; l < joystick_sliders.Length; l++)
+        // for(int i = 0; i < ScoreTxtArray.Length; i++){
+        //     ScoreTxtArray[i].text = ScoreCount.ToString();
+        // }
+
+        /* 
+        
+        ---
+        This specifically might be important to keep for reference once I reimplement joystick controls
+        ---
+            for(int i = 0; i < joystick_sliders.Length; i++)
             {
-                if(joystick_sliders[l] != null) joystick_sliders[l].value = joystick_size.value;
-            }
-
-            if (joystick_sliders[i].gameObject.activeInHierarchy)
-            {
-                joystick_size = joystick_sliders[i];
-                break;
-            }
-
-        }
-
-        //set_joystick_size
-        Vector2 new_size = Vector2.Lerp(min_size, max_size, 0.6f);//joystick_size.value);
-        right_joystick.GetComponent<RectTransform>().sizeDelta = new_size;
-        left_joystick.GetComponent<RectTransform>().sizeDelta = new_size;
-
-        right_joystick.transform.GetChild(1).gameObject.GetComponent<RectTransform>().sizeDelta = new_size * 0.9f;
-
-        left_joystick.transform.GetChild(1).gameObject.GetComponent<RectTransform>().sizeDelta = new_size * 0.9f;
-
-        left_joystick.transform.position = Vector3.Lerp(l_joy_small.transform.position, l_joy_big.transform.position, 0.6f);//joystick_size.value);
-        right_joystick.transform.position = Vector3.Lerp(r_joy_small.transform.position, r_joy_big.transform.position, 0.6f);//joystick_size.value);
-
-        PlayerPrefs.SetFloat("joystick_size", 0.6f);//joystick_size.value);
-
-
-
-        if (!player_is_ultra && !player_is_overdrive && !player_has_hotshot && !player_has_ally)
-        {
-
-            equipment_slider.maxValue = req_equipment_kills;
-
-            if (ultra_kills >= req_equipment_kills)
-            {
-                equipment_slider.value = equipment_slider.maxValue;
-                if (!use_equipment_button.activeInHierarchy)
+                for (int l = 0; l < joystick_sliders.Length; l++)
                 {
-                    use_equipment_button.SetActive(true);
-                    use_equipment_button.transform.GetChild(1).GetComponent<Button>().interactable = true;
-                    use_equipment_button.GetComponent<Animator>().Play("equipment_button_startup");
+                    if(joystick_sliders[l] != null) joystick_sliders[l].value = joystick_size.value;
                 }
-            }
-            else
-            {
-                equipment_slider.value = ultra_kills;
-            }
-        }
 
-        if (buffsManager.buff_strength[3] > 0)
-        {
-            if (ultra_recharge_tick_timer <= 0)
-            {
-                ultra_kills++;
-                ultra_recharge_tick_timer = 6 - buffsManager.buff_strength[3];
+                if (joystick_sliders[i].gameObject.activeInHierarchy)
+                {
+                    joystick_size = joystick_sliders[i];
+                    break;
+                }
+
             }
-            else
-            {
-                ultra_recharge_tick_timer -= Time.deltaTime;
-            }
-        }
+
+            //set_joystick_size
+            Vector2 new_size = Vector2.Lerp(min_size, max_size, 0.6f);//joystick_size.value);
+            right_joystick.GetComponent<RectTransform>().sizeDelta = new_size;
+            left_joystick.GetComponent<RectTransform>().sizeDelta = new_size;
+
+            right_joystick.transform.GetChild(1).gameObject.GetComponent<RectTransform>().sizeDelta = new_size * 0.9f;
+
+            left_joystick.transform.GetChild(1).gameObject.GetComponent<RectTransform>().sizeDelta = new_size * 0.9f;
+
+            left_joystick.transform.position = Vector3.Lerp(l_joy_small.transform.position, l_joy_big.transform.position, 0.6f);//joystick_size.value);
+            right_joystick.transform.position = Vector3.Lerp(r_joy_small.transform.position, r_joy_big.transform.position, 0.6f);//joystick_size.value);
+
+            PlayerPrefs.SetFloat("joystick_size", 0.6f);//joystick_size.value);
+        */
+
+        // ----- ULTRA HANDLING ----- 
+
+        // if (!player_is_ultra && !player_is_overdrive && !player_has_hotshot && !player_has_ally)
+        // {
+
+        //     equipment_slider.maxValue = req_equipment_kills;
+
+        //     if (ultra_kills >= req_equipment_kills)
+        //     {
+        //         equipment_slider.value = equipment_slider.maxValue;
+        //         if (!use_equipment_button.activeInHierarchy)
+        //         {
+        //             use_equipment_button.SetActive(true);
+        //             use_equipment_button.transform.GetChild(1).GetComponent<Button>().interactable = true;
+        //             use_equipment_button.GetComponent<Animator>().Play("equipment_button_startup");
+        //         }
+        //     }
+        //     else
+        //     {
+        //         equipment_slider.value = ultra_kills;
+        //     }
+        // }
+
+        // if (buffsManager.buff_strength[3] > 0)
+        // {
+        //     if (ultra_recharge_tick_timer <= 0)
+        //     {
+        //         ultra_kills++;
+        //         ultra_recharge_tick_timer = 6 - buffsManager.buff_strength[3];
+        //     }
+        //     else
+        //     {
+        //         ultra_recharge_tick_timer -= Time.deltaTime;
+        //     }
+        // }
 
         time_played += Time.deltaTime;
     }
@@ -314,8 +313,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
     }
 
     public void RestartGame(){
-        FadeObj.SetActive(true);
-        FadeAnimator.Play("FadeAnim");
+        // FadeObj.SetActive(true);
+        // FadeAnimator.Play("FadeAnim");
         _level = 1;    
         ScoreCount = 0;
         ultra_kills = 0;
@@ -394,7 +393,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         GameObject[] Enemies = GameObject.FindGameObjectsWithTag("Enemy");
         // EnemyCounter.main.DestroyAllEnemies(false);
         
-        ExtraLifeUI.SetActive(false);
+        // ExtraLifeUI.SetActive(false);
         Player.SetActive(true);
 
         for (int i = 0; i < shopScript.Guns.Length; i++)
@@ -409,21 +408,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
     }
 
 
-    public void SubmitScoreInvoke()
-    {
-        onPlayerDeath.Invoke();
-    }
 
-    public void OnPlayedTutorial(){
-        playedTutorial = true;
-        SavePlayer();
-    }
-
-    public void SavePlayer()
-    {
-        SaveSystem.SavePlayer(this);
-        ChallengeSaveSystem.SaveChallenges();
-    }
+    public void SavePlayer() { KillBox.Save(); }
 
     public void DeleteSystem(){
         SaveSystem.DeletePlayer();
@@ -446,7 +432,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         SavePlayer();
     }
 
-
+    
     public void UpdateReqEquipmentKills(){
 
         if(req_equipment_kills < 300){
@@ -656,7 +642,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
             yield return null;
         }
 
-        FadeObj.SetActive(false);
+        // FadeObj.SetActive(false);
 
         timer = 1;
         while (timer > 0)
@@ -678,8 +664,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
         camera_tf.localEulerAngles = new Vector3(0, 0, 0);
 
         Player.SetActive(true);
-        GameObject effect = Instantiate(player_spawn_FX, Player.transform);
-        effect.transform.SetParent(null);
+        // GameObject effect = Instantiate(player_spawn_FX, Player.transform);
+        // effect.transform.SetParent(null);
         
         timer = 1;
         float pads = 200;
@@ -704,11 +690,11 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
         
 
-        if(escapeRoom){
-            escapeRoomSpawnSystem.StartSpawnSequence();
-            GunHandler.Instance.EquipWeapon();
-            StopCoroutine(StartNumerator());
-        }
+        // if(escapeRoom){
+        //     // escapeRoomSpawnSystem.StartSpawnSequence();
+        //     GunHandler.Instance.EquipWeapon();
+        //     StopCoroutine(StartNumerator());
+        // }
 
         if (!head_start)
         {
