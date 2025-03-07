@@ -100,15 +100,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
     void Awake(){
 
-        if(main == null){
-            main = this;
-        }
-        else if(main != this){
-            Destroy(this);
-        }
-
-        Application.runInBackground = false;
-        personalBests = new int[3];
+        if(main == null){ main = this; }
+        else if(main != this){ Destroy(this); }
     }
 
     public void AddMap(MapData map){
@@ -159,54 +152,38 @@ public class GameManager : MonoBehaviour, ISelfResListener
     {
         _level = 1;
         ScoreCount = 0;
-        //HealthCount = 150;
         Dualindex = 0;
-        // Gun = 0;
         difficulty = 50;
 
         player_render = Player.transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
 
         
         UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false;
+
         // map_colors.ChangeColor(default_map_color, default_map_color, false);
         map_colors.ChangeWall(Color.white);
 
-        joystick_size.value = PlayerPrefs.GetFloat("joystick_size", 0.2f);
 
-        for (int i = 0; i < joystick_sliders.Length; i++)
-        {
-            if (joystick_sliders[i].gameObject.activeInHierarchy)
-            {
-                joystick_size = joystick_sliders[i];
-                break;
-            }
-        }
+        // joystick_size.value = PlayerPrefs.GetFloat("joystick_size", 0.2f);
+
+        // for (int i = 0; i < joystick_sliders.Length; i++)
+        // {
+        //     if (joystick_sliders[i].gameObject.activeInHierarchy)
+        //     {
+        //         joystick_size = joystick_sliders[i];
+        //         break;
+        //     }
+        // }
         
-        // LoadPlayer();
-
-        if(!KillBox.hasPlayedTutorial){
-            tutorial_panel.SetActive(true);
-        }
     }
 
     void Update()
     {
         // This code was meant to set new personal best variables, but this may be replaced due to the new Game and KillBox class system
         // if (KillBox.personalBests[KillBox.currentGame.difficultyIndex] <= LvlCount && !freeplay) {
-
         //     KillBox.personalBests[KillBox.currentGame.difficultyIndex] = LvlCount;
         //     if(PBInt <= personalBests[KillBox.currentGame.difficultyIndex])
         //     { PBInt = personalBests[KillBox.currentGame.difficultyIndex]; }
-        
-        // }
-
-        // if(LvlTxt != null) {LvlTxt.text = LvlCount.ToString();}
-        // if(LvlText2 != null) {LvlText2.text = LvlCount.ToString();}
-        // if(ScoreTxt != null) {ScoreTxt.text = ScoreCount.ToString();}
-        // if(ScoreTxt2 != null) {ScoreTxt2.text = ScoreCount.ToString();}
-
-        // for(int i = 0; i < ScoreTxtArray.Length; i++){
-        //     ScoreTxtArray[i].text = ScoreCount.ToString();
         // }
 
         /* 
@@ -246,39 +223,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
         // ----- ULTRA HANDLING ----- 
 
-        // if (!player_is_ultra && !player_is_overdrive && !player_has_hotshot && !player_has_ally)
-        // {
 
-        //     equipment_slider.maxValue = req_equipment_kills;
-
-        //     if (ultra_kills >= req_equipment_kills)
-        //     {
-        //         equipment_slider.value = equipment_slider.maxValue;
-        //         if (!use_equipment_button.activeInHierarchy)
-        //         {
-        //             use_equipment_button.SetActive(true);
-        //             use_equipment_button.transform.GetChild(1).GetComponent<Button>().interactable = true;
-        //             use_equipment_button.GetComponent<Animator>().Play("equipment_button_startup");
-        //         }
-        //     }
-        //     else
-        //     {
-        //         equipment_slider.value = ultra_kills;
-        //     }
-        // }
-
-        // if (buffsManager.buff_strength[3] > 0)
-        // {
-        //     if (ultra_recharge_tick_timer <= 0)
-        //     {
-        //         ultra_kills++;
-        //         ultra_recharge_tick_timer = 6 - buffsManager.buff_strength[3];
-        //     }
-        //     else
-        //     {
-        //         ultra_recharge_tick_timer -= Time.deltaTime;
-        //     }
-        // }
 
         time_played += Time.deltaTime;
     }
@@ -433,53 +378,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
     }
 
     
-    public void UpdateReqEquipmentKills(){
 
-        if(req_equipment_kills < 300){
-            req_equipment_kills *= 2;
-        }
-        if(req_equipment_kills > 300){
-            req_equipment_kills = 300;
-        }
-
-        ultra_kills = 0;
-
-        if (equipment_index == 1)
-        {
-            player_is_ultra = true;
-            equipment_slider.maxValue = 8;
-            equipment_slider.value = 8;
-        }
-        else if (equipment_index == 0)
-        {
-            player_is_overdrive = true;
-            equipment_slider.maxValue = 12;
-            equipment_slider.value = 12;
-        }
-        else if (equipment_index == 2)
-        {
-            player_has_hotshot = true;
-            equipment_slider.maxValue = 10;
-            equipment_slider.value = 10;
-        }
-        
-        else if (equipment_index == 3){
-        
-            player_has_ally = true;
-            equipment_slider.maxValue = 20;
-            equipment_slider.value = 20;
-        
-        }
-        
-        if(freeplay){
-            req_equipment_kills = 0;
-        }
-
-    }
-
-    public void ResetUltraKills(int kills){
-        ultra_kills = kills;
-    }
 
     public void UpdateDifficulty()
     {

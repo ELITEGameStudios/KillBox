@@ -821,6 +821,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322050a1a791ac341a8700f920446a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bestLevel: 0
+  player_kills: 0
+  tokens_used: 0
+  guns_equipped: 0
+  lvl_4_guns_retrieved: 0
+  player_xp: 0
+  equipment_index: 0
+  theme_index: 0
+  legacyPBInt: 0
+  PBInt: 0
+  time_played: 0
+  Name: 
+  best_run_id: 
+  completed_challenges: 
+  online_username: 
+  pb_run_id: 
 --- !u!1 &775521763
 GameObject:
   m_ObjectHideFlags: 0
@@ -1372,6 +1388,7 @@ GameObject:
   - component: {fileID: 1353628779}
   - component: {fileID: 1353628781}
   - component: {fileID: 1353628782}
+  - component: {fileID: 1353628783}
   m_Layer: 0
   m_Name: AudioMaster
   m_TagString: Untagged
@@ -1462,6 +1479,35 @@ MonoBehaviour:
   silence: {fileID: -6711464616754445357, guid: 621d9c7daba6d4cee9a421c7dcf64e62, type: 2}
   transition_length: 0
   ambient_transition_length: 3
+--- !u!114 &1353628783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353628776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5501425ab0e1842539858ed68e22ab77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VolumeSlider: {fileID: 0}
+  SFXSlider: {fileID: 0}
+  music_value: 0
+  sfx_value: 0
+  p_health: {fileID: 0}
+  gameManager: {fileID: 1360062129}
+  snapshots:
+  - {fileID: 24500006, guid: 621d9c7daba6d4cee9a421c7dcf64e62, type: 2}
+  - {fileID: -68018440576190133, guid: 621d9c7daba6d4cee9a421c7dcf64e62, type: 2}
+  - {fileID: 4425716304795265205, guid: 621d9c7daba6d4cee9a421c7dcf64e62, type: 2}
+  m_mixer: {fileID: 24100000, guid: 621d9c7daba6d4cee9a421c7dcf64e62, type: 2}
+  active_snapshot: 0
+  time: 0.5
+  threshold: 0.35
+  normalized_health: 0
+  c_health: 0
+  m_health: 0
 --- !u!1 &1360062123
 GameObject:
   m_ObjectHideFlags: 0
@@ -1480,9 +1526,6 @@ GameObject:
   - component: {fileID: 1360062131}
   - component: {fileID: 1360062132}
   - component: {fileID: 1360062133}
-  - component: {fileID: 1360062134}
-  - component: {fileID: 1360062135}
-  - component: {fileID: 1360062136}
   - component: {fileID: 1360062137}
   - component: {fileID: 1360062138}
   - component: {fileID: 1360062139}
@@ -1494,8 +1537,6 @@ GameObject:
   - component: {fileID: 1360062147}
   - component: {fileID: 1360062148}
   - component: {fileID: 1360062149}
-  - component: {fileID: 1360062150}
-  - component: {fileID: 1360062151}
   - component: {fileID: 1360062152}
   - component: {fileID: 1360062153}
   - component: {fileID: 1360062154}
@@ -1643,7 +1684,7 @@ MonoBehaviour:
   Portal: {fileID: 0}
   tag: Enemy
   portalScript: {fileID: 0}
-  starter: {fileID: 1360062136}
+  starter: {fileID: 0}
 --- !u!114 &1360062129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1659,21 +1700,15 @@ MonoBehaviour:
   _level: 1
   ScoreCount: 0
   Dualindex: 0
-  Gun: 0
-  PBInt: 0
   player_kills: 0
   ultra_kills: 0
-  tokens_used: 0
-  guns_equipped: 0
-  lvl_4_guns_retrieved: 0
   equipment_index: 3
   escapeRoom: 0
-  hotkeyManager: {fileID: 1360062150}
+  hotkeyManager: {fileID: 0}
   enemyList: {fileID: 1360062148}
   boss_round_start: 0
   online_username: 
   pb_run_id: 
-  playedTutorial: 0
   player_is_ultra: 0
   player_is_overdrive: 0
   player_has_hotshot: 0
@@ -1736,20 +1771,8 @@ MonoBehaviour:
   grenade_launcher_objects:
   - {fileID: 0}
   - {fileID: 0}
-  FadeObj: {fileID: 0}
-  player_spawn_FX: {fileID: 7001564005411131881, guid: 122a58cf6e0515449a530eeca1ec61e6, type: 3}
   Player: {fileID: 0}
-  ExtraLifeUI: {fileID: 0}
-  l_joy_small: {fileID: 0}
-  l_joy_big: {fileID: 0}
-  r_joy_small: {fileID: 0}
-  r_joy_big: {fileID: 0}
-  left_joystick: {fileID: 0}
-  right_joystick: {fileID: 0}
-  min_size: {x: 100, y: 100, z: 0}
-  max_size: {x: 250, y: 250, z: 0}
   GetSpawn: {fileID: 1360062126}
-  escapeRoomSpawnSystem: {fileID: 0}
   onPlayerDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -2801,108 +2824,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefResetter: {fileID: 1360062130}
---- !u!114 &1360062134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360062123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5501425ab0e1842539858ed68e22ab77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  VolumeSlider: {fileID: 0}
-  SFXSlider: {fileID: 0}
-  music_value: 0
-  sfx_value: 0
-  p_health: {fileID: 0}
-  gameManager: {fileID: 1360062129}
-  snapshots:
-  - {fileID: 24500006, guid: 621d9c7daba6d4cee9a421c7dcf64e62, type: 2}
-  - {fileID: -68018440576190133, guid: 621d9c7daba6d4cee9a421c7dcf64e62, type: 2}
-  - {fileID: 4425716304795265205, guid: 621d9c7daba6d4cee9a421c7dcf64e62, type: 2}
-  m_mixer: {fileID: 24100000, guid: 621d9c7daba6d4cee9a421c7dcf64e62, type: 2}
-  active_snapshot: 0
-  time: 0.5
-  threshold: 0.35
-  normalized_health: 0
-  c_health: 0
-  m_health: 0
---- !u!114 &1360062135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360062123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3c3a7cf64a034d04bec3e2a173ded54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PPR:
-  - {fileID: 0}
-  - {fileID: 0}
-  Shadow:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  LowVolume: {fileID: 0}
-  shadowToggle: {fileID: 0}
-  hqVolumeToggle: {fileID: 0}
-  dmgVolumeToggle: {fileID: 0}
-  csVolumeToggle: {fileID: 0}
-  bossShaderVolume: {fileID: 0}
-  particleSlider: {fileID: 0}
---- !u!114 &1360062136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360062123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be65ed80c9dc1414c9cfb23cbcbbdbcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OffList:
-  - {fileID: 0}
-  OnList: []
-  Teleporters: []
-  weapons: {fileID: 0}
-  upgrades: {fileID: 0}
-  starterObject: {fileID: 0}
-  targetWeaponsPos: {x: 0, y: 0}
-  targetUpgradesPos: {x: 0, y: 0}
-  playerPos: {x: 0, y: 0}
-  targetStarterPos: {x: 0, y: 0}
-  GetSpawn: {fileID: 1360062126}
-  timer: 0
-  animationTime: 2
-  animationFinished: 0
-  text: {fileID: 0}
-  TpScripts:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  ui_tabs: {fileID: 0}
 --- !u!114 &1360062137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3718,47 +3639,6 @@ MonoBehaviour:
   - {fileID: 859927845, guid: 48f3d1c2a78352c4ab27a0f7514d3812, type: 3}
   - {fileID: 859927845, guid: 48f3d1c2a78352c4ab27a0f7514d3812, type: 3}
   - {fileID: 859927845, guid: 48f3d1c2a78352c4ab27a0f7514d3812, type: 3}
---- !u!114 &1360062150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360062123}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5988c7591de74544e99b4895e35a92ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseHandler: {fileID: 1360062124}
-  manager: {fileID: 1360062129}
-  equipment: {fileID: 0}
-  p_control: {fileID: 0}
-  mobile: 0
-  inv_bg: {fileID: 0}
-  upgrades_bg: {fileID: 0}
-  inv_bt: {fileID: 0}
-  upgrades_bt: {fileID: 0}
-  pause_bg: {fileID: 0}
-  pause_bt: {fileID: 0}
---- !u!114 &1360062151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360062123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1e47f6dc69b6214fac7bb00fbba3f94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boss_bar: {fileID: 0}
-  name_txt: {fileID: 0}
-  health_txt: {fileID: 0}
-  slider: {fileID: 0}
-  boss_volume: {fileID: 0}
-  volume_weight: 0
 --- !u!114 &1360062152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4295,7 +4175,7 @@ MonoBehaviour:
   pause_txt: {fileID: 0}
   interact_txt: {fileID: 0}
   switch_txt: {fileID: 0}
-  hotkeyManager: {fileID: 1360062150}
+  hotkeyManager: {fileID: 0}
 --- !u!4 &1530302380
 Transform:
   m_ObjectHideFlags: 0

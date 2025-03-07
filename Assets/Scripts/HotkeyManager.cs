@@ -6,10 +6,8 @@ using UnityEngine.InputSystem;
 public class HotkeyManager : MonoBehaviour
 {
     public PauseHandler pauseHandler;
-
     public GameManager manager;
-
-    public EquipmentGeneralManager equipment;
+    
 
     [SerializeField] private TwoDPlayerController p_control;
     [SerializeField] private bool mobile;
@@ -135,7 +133,7 @@ public class HotkeyManager : MonoBehaviour
 
             if(Input.GetKeyDown(CustomKeybinds.main.Ultramode) || equipment_pressed){
                 if(manager.ultra_kills >= manager.ReqUltraKills){
-                    equipment.GamemodeStart();
+                    EquipmentManager.instance.ActivateEquipment();
                 }
             }   
 

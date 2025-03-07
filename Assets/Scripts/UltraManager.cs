@@ -17,18 +17,8 @@ public class UltraManager : MonoBehaviour
     private GameManager manager;
     [SerializeField] private Text buttonText;
     
-    // Start is called before the first frame update
-    void Start()
-    {
-        IsUltra = false;
-        CamEffectObj.SetActive(false);
-    }
 
     void Update(){
-
-        if(DetectInputDevice.main.isController){ buttonText.text = "PRESS X TO USE EQUIPMENT"; }
-        else if(DetectInputDevice.main.isKBM){ buttonText.text = "PRESS "+CustomKeybinds.main.Ultramode.ToString()+" TO USE EQUIPMENT"; }
-        
         //startAnim
         if(startEffect){
             start_effect_clock = 0f;
@@ -62,44 +52,11 @@ public class UltraManager : MonoBehaviour
                 CamEffectObj.GetComponent<Volume>().weight = end_effect_clock;
             }
         }
-
-        if(IsUltra){
-            manager.equipment_slider.value -= Time.deltaTime;
-        }
     }
 
     public void GamemodeStart()
     {
-        IsUltra = true;
         CamEffectObj.SetActive(true);
-        startEffect = true;
-        StartCoroutine(Lifespan());
-        activate_button.GetComponent<Animator>().Play("equipment_button_exit");
-        StartCoroutine(ButtonDeactivate());
-        manager.UpdateReqEquipmentKills();
     }
 
-    IEnumerator Lifespan()
-    {
-        yield return new WaitForSeconds(UltraTime);
-        endEffect = true;
-        IsUltra = false;
-        manager.player_is_ultra = false;
-        manager.ResetUltraKills(0);
-        yield return new WaitForSeconds(1);
-        CamEffectObj.SetActive(false);
-    }
-    public void DeactivateButton(){
-        activate_button.SetActive(false);
-        if(IsUltra){ 
-            endEffect = true; 
-            startEffect = false;
-            IsUltra = false;
-        }
-    }
-    IEnumerator ButtonDeactivate(){
-        activate_button.transform.GetChild(1).GetComponent<Button>().interactable = false;
-        yield return new WaitForSecondsRealtime(0.5f);
-        activate_button.SetActive(false);
-    }
 }

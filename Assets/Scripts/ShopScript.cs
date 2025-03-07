@@ -39,30 +39,21 @@ public class ShopScript : MonoBehaviour
     void Awake(){
         OwnedGuns = new int[Guns.Length];
     }
-    void Update()
-    {
-        //if(!DualEnabled)
-        //{
-        //    for (int i = 0; i < SecondGun.Length; i++)
-        //    {
-        //        SecondGun[i].SetActive(false);
-        //    }
-        //}
-    }
+    // void Update() { }
 
     public void PurchaseGun(string key)
     {
-
         PurchaseRequest result = PurchaseRequest.BuyWeapon(key, manager.ScoreCount);
-
+        
         if (result != null && result.purchased)
         {
             manager.SetLowerScore(result.money);
-
             GunHandler.Instance.NewItem(WeaponItemList.Instance.GetItem(key));
             KillboxEventSystem.TriggerPurchaseWeaponEvent( WeaponItemList.Instance.GetItem(key), WeaponItemList.Instance.GetItem(key).price);
         }
     }
+
+
     public int PurchaseUpgrade(Upgrade upgrade, int level)
     {
 
@@ -75,11 +66,10 @@ public class ShopScript : MonoBehaviour
             KillboxEventSystem.TriggerPurchaseUpgradeEvent( upgrade, upgrade.costs[level], level);
             return 1;
         }
-        else{
-            return -1;
-        }
+        else{ return -1; }
     }
 
+    // I hope this isnt actually used because i dont know what this does...
     public void ToggleAfterBuy(int ToggleIndex)
     {
         for (int i = 0; i < weapon_class.Length; i++)
@@ -143,112 +133,6 @@ public class ShopScript : MonoBehaviour
             GunHandler.Instance.PurchaseDual();
         }
     }
-    
-    //    if (manager.ScoreCount >= Costs[0])
-    //    {
-    //        manager.ScoreCount -= Costs[0];
-    //        DualEnabled = true;
-//
-    //        manager.tokens_used += Costs[0];
-//
-    //        for (int i = 0; i < SecondGun.Length; i++)
-    //        {
-    //            SecondGun[i].SetActive(false);
-    //        }
-//
-    //        SecondGun[CurrentGunIndex].SetActive(true);
-//
-    //        DWButton.SetActive(false);
-//
-    //        if(Guns[0].activeInHierarchy != true){
-    //            SecondGun[0].SetActive(false);
-    //        }
-//
-    //        //classifying class
-    //        for (int i = 0; i < weapon_class2.Length; i++)
-    //        {
-    //            weapon_class2[i] = false;
-    //        }
-//
-    //        for (int i = 0; i < ar_id.Length; i++)
-    //        {
-    //            if (CurrentGunIndex == ar_id[i])
-    //            {
-    //                weapon_class2[0] = true;
-    //            }
-    //        }
-//
-    //        for (int i = 0; i < smg_id.Length; i++)
-    //        {
-    //            if (CurrentGunIndex == smg_id[i])
-    //            {
-    //                weapon_class2[1] = true;
-    //            }
-    //        }
-//
-    //        for (int i = 0; i < shotgun_id.Length; i++)
-    //        {
-    //            if (CurrentGunIndex == shotgun_id[i])
-    //            {
-    //                weapon_class2[2] = true;
-    //            }
-    //        }
-//
-    //        for (int i = 0; i < marksman_id.Length; i++)
-    //        {
-    //            if (CurrentGunIndex == marksman_id[i])
-    //            {
-    //                weapon_class2[3] = true;
-    //            }
-    //        }
-//
-    //        for (int i = 0; i < launcher_id.Length; i++)
-    //        {
-    //            if (CurrentGunIndex == launcher_id[i])
-    //            {
-    //                weapon_class2[4] = true;
-    //            }
-    //        }
-//
-    //        second_gun_index = CurrentGunIndex;
-//
-    //        for (int i = 0; i < WeaponGraphicSprites.Length; i++)
-    //        {
-    //            UIWeaponGraphicHandler graphics = WeaponGraphicSprites[i].GetComponent<UIWeaponGraphicHandler>();
-    //            graphics.CheckDualFunction();
-    //        }
-
-            //for (int i = 0; i < WeaponGraphicSprites.Length; i++){
-            //    UIWeaponGraphicHandler graphics = WeaponGraphicSprites[i].GetComponent<UIWeaponGraphicHandler>();
-            //    if(graphics.Dual){
-            //        if(graphics.WeaponID1 == CurrentGunIndex){
-            //            WeaponGraphicSprites[i].GetComponent<Image>().color = lvl1Color;
-            //        }
-            //        else{
-            //            if (graphics.WeaponID2 == CurrentGunIndex)
-            //                WeaponGraphicSprites[i].GetComponent<Image>().color = lvl2Color;
-            //            else{
-            //                if (graphics.WeaponID3 == CurrentGunIndex)
-            //                    WeaponGraphicSprites[i].GetComponent<Image>().color = lvl3Color;
-            //                else
-            //                {
-            //                    if (graphics.WeaponID4 == CurrentGunIndex)
-            //                        WeaponGraphicSprites[i].GetComponent<Image>().color = lvl4Color;
-            //                    else
-            //                    {
-            //                        WeaponGraphicSprites[i].GetComponent<Image>().color = Color.clear;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-        //}
-        //else
-        //{
-        //    StartCoroutine(Error());
-        //}
-    //}
 
     public void EquipGun(int GunIndex)
     {
@@ -339,28 +223,6 @@ public class ShopScript : MonoBehaviour
             graphics.CheckFunction();
         }
 
-        //for (int i = 0; i < WeaponGraphicSprites.Length; i++){
-        //    UIWeaponGraphicHandler graphics = WeaponGraphicSprites[i].GetComponent<UIWeaponGraphicHandler>();
-        //    if(!graphics.Dual){
-        //        if(graphics.WeaponID1 == GunIndex){
-        //            WeaponGraphicSprites[i].GetComponent<Image>().color = lvl1Color;
-        //        }
-        //        else{
-        //            if (graphics.WeaponID2 == GunIndex)
-        //                WeaponGraphicSprites[i].GetComponent<Image>().color = lvl2Color;
-        //            else{
-        //                if (graphics.WeaponID3 == GunIndex)
-        //                    WeaponGraphicSprites[i].GetComponent<Image>().color = lvl3Color;
-        //                else
-        //                {
-        //                    WeaponGraphicSprites[i].GetComponent<Image>().color = Color.white;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-
         DWButton.SetActive(true);
 
         for (int i = 0; i < WeaponGraphicSprites.Length; i++)
@@ -368,61 +230,7 @@ public class ShopScript : MonoBehaviour
             UIWeaponGraphicHandler graphics = WeaponGraphicSprites[i].GetComponent<UIWeaponGraphicHandler>();
             graphics.CheckFunction();
         }
-
-        //for (int i = 0; i < graphicsListUI.Length; i++){
-        //    if(graphicsListUI[i].Dual == false){
-        //        graphicsListUI[i].Dissapear();
-        //        graphicsListUI[i].CheckFunction();
-        //    }
-        //}
     }
-
-    //public void FreeGun(Lvl4PickupScript caller){
-    //    GunHandler.Instance.NewItem(caller.target_item);
-    //}
-    //    for(int i = 0; i < Guns.Length; i++)
-    //    {
-    //        Guns[i].SetActive(false);
-    //    }
-//
-    //    Guns[GunIndex].SetActive(true);
-    //    CurrentGunIndex = GunIndex;
-    //    ToggleAfterBuy(GunIndex);
-    //    DWButton.SetActive(true);
-//
-//
-    //    for (int i = 0; i < OwnedGuns.Length; i++)
-    //    {
-    //        if(OwnedGuns[i] == 0){
-    //            OwnedGuns[i] = GunIndex;
-    //            break;
-    //        }
-    //    }
-//
-    //    for (int ii = 0; ii < OwnedGuns.Length; ii++)
-    //    {
-    //        if (OwnedGuns[ii] != 0 && EquipButtons[OwnedGuns[ii]] != EquipButtons[GunIndex] && EquipButtons[GunIndex] != null)
-    //        {
-    //            if (EquipButtons[OwnedGuns[ii]] != null)
-    //            {
-//
-    //                EquipButtons[OwnedGuns[ii]].SetActive(true);
-    //                weapon_buttons[OwnedGuns[ii]].SetActive(false);
-    //            }
-    //        }
-    //        else
-    //        {
-    //            if (ii > 0)
-    //            {
-    //                if (EquipButtons[OwnedGuns[ii]] != null)
-    //                {
-    //                    weapon_buttons[OwnedGuns[ii]].SetActive(true);
-    //                    EquipButtons[OwnedGuns[ii]].SetActive(false);
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 
 
     IEnumerator Error()

@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class Game : MonoBehaviour
+
+[System.Serializable]
+public class Game
 {
     // Will store the initial settings and setup for the game being played and track player performance throughout
 
@@ -14,6 +13,7 @@ public class Game : MonoBehaviour
     public static readonly float[] difficultyCoefficients = new float[]{0.65f, 1.0f, 2.0f};
     
     
+    public bool freeplay;
     public int difficultyIndex;
     public string difficulty;
     public float difficultyCoefficient;

@@ -29,6 +29,8 @@ public class KillBox : MonoBehaviour
     void Awake(){
         if(main == null){main = this;}
         else if(main != this){Destroy(this);}
+        
+        Application.runInBackground = false;
         personalBests = new int[3];
     }
     
