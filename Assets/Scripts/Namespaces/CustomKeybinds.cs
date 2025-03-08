@@ -203,38 +203,38 @@ public class CustomKeybinds : MonoBehaviour
             gamepadBackPressedLastFrame = false;
         }
 
-        shoot_txt.text = Shoot.ToString();
-        shoot2_txt.text = Shoot2.ToString();
-        ultramode_txt.text = Ultramode.ToString();
-        interact_txt.text = Interact.ToString();
-        switch_txt.text = SwitchWeapon.ToString();
-        pause_txt.text = Pause.ToString();
+        // shoot_txt.text = Shoot.ToString();
+        // shoot2_txt.text = Shoot2.ToString();
+        // ultramode_txt.text = Ultramode.ToString();
+        // interact_txt.text = Interact.ToString();
+        // switch_txt.text = SwitchWeapon.ToString();
+        // pause_txt.text = Pause.ToString();
         
-        if(editing_key){
+        // if(editing_key){
 
-            switch(key_to_edit){
-                case "_shoot":
-                    shoot_txt.text = "[Click any key]";
-                    break;
-                case "_shoot2":
-                    shoot2_txt.text = "[Click any key]";
-                    break;
-                case "_ultra":
-                    ultramode_txt.text= "[Click any key]";
-                    break;
-                case "_interact":
-                    interact_txt.text = "[Click any key]";
-                    break;
-                case "_switch":
-                    switch_txt.text = "[Click any key]";
-                    break;
-                case "_pause":
-                    pause_txt.text = "[Click any key]";
-                    break;
-            }
-            if(GetInput() != KeyCode.None){
-                FinalSetKey(GetInput());
-            }
-        }
+        //     switch(key_to_edit){
+        //         case "_shoot":
+        //             shoot_txt.text = "[Click any key]";
+        //             break;
+        //         case "_shoot2":
+        //             shoot2_txt.text = "[Click any key]";
+        //             break;
+        //         case "_ultra":
+        //             ultramode_txt.text= "[Click any key]";
+        //             break;
+        //         case "_interact":
+        //             interact_txt.text = "[Click any key]";
+        //             break;
+        //         case "_switch":
+        //             switch_txt.text = "[Click any key]";
+        //             break;
+        //         case "_pause":
+        //             pause_txt.text = "[Click any key]";
+        //             break;
+        //     }
+        //     if(GetInput() != KeyCode.None){
+        //         FinalSetKey(GetInput());
+        //     }
+        // }
     }
 }

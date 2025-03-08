@@ -11,6 +11,7 @@ public class GameLoader : MonoBehaviour
     private Slider slider;
     private float timer = 5.5f, elapsed = 0, progress, time_value, init_time, post_load_time = 0.75f;
     private bool loading = false, fading_out = false;
+    [SerializeField] private string sceneName;
 
     [SerializeField]
     private Animator anim;
@@ -77,7 +78,7 @@ public class GameLoader : MonoBehaviour
         // a sceneBuildIndex of 1 as shown in Build Settings.
 
         // AsyncOperation loader = SceneManager.LoadSceneAsync("Menus");
-        AsyncOperation loader = SceneManager.LoadSceneAsync("Menus");
+        AsyncOperation loader = SceneManager.LoadSceneAsync(sceneName);
         loader.allowSceneActivation = false;
 
         // Wait until the asynchronous scene fully loads

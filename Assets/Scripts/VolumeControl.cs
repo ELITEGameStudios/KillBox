@@ -35,7 +35,7 @@ public class VolumeControl : MonoBehaviour
         if(main == null){
             main = this;
         }
-        else{
+        else if(main != this){
             Destroy(this);
         }
     }
@@ -44,9 +44,9 @@ public class VolumeControl : MonoBehaviour
     {
         music_value = PlayerPrefs.GetInt("Volume", 100);
         sfx_value = PlayerPrefs.GetInt("SFXVolume", 100);
-        VolumeSlider.value = music_value;
-        SFXSlider.value = sfx_value;
-        p_health = GameObject.FindWithTag("Player").GetComponent<PlayerHealth>();
+        // VolumeSlider.value = music_value;
+        // SFXSlider.value = sfx_value;
+        // p_health = GameObject.FindWithTag("Player").GetComponent<PlayerHealth>();
 
         m_mixer.TransitionToSnapshots(snapshots, new float[]{1f, 0f, 0f}, time);
         active_snapshot = 0;
@@ -56,11 +56,12 @@ public class VolumeControl : MonoBehaviour
     void Update()
     {
         //gameManager.audio.volume = (float)VolumeSlider.value / 100;
-        PlayerPrefs.SetInt("Volume", (int)VolumeSlider.value);
-        PlayerPrefs.SetInt("SFXVolume", (int)SFXSlider.value);
 
-        music_value = VolumeSlider.value;
-        sfx_value = SFXSlider.value;
+        // PlayerPrefs.SetInt("Volume", (int)VolumeSlider.value);
+        // PlayerPrefs.SetInt("SFXVolume", (int)SFXSlider.value);
+
+        // music_value = VolumeSlider.value;
+        // sfx_value = SFXSlider.value;
 
         if(p_health != null && active_snapshot != 2){
 

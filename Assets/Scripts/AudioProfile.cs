@@ -20,10 +20,14 @@ public class AudioProfile : MonoBehaviour
             source = gameObject.GetComponent<AudioSource>();
         }
         
-        manager = GameObject.Find("Manager").GetComponent<VolumeControl>();
         if(coefficient == 0){
             coefficient = 1;
         }
+    }
+
+    void Start(){
+        if(MainAudioSystem.main == null) {enabled = false;}
+        manager = MainAudioSystem.main.GetVolumeControl();
     }
 
     // Update is called once per frame
@@ -32,13 +36,13 @@ public class AudioProfile : MonoBehaviour
 
         if (SFX && !in_transition)
         {
-            source.volume = manager.SFXSlider.value * coefficient / 100;
-            volume = manager.SFXSlider.value * coefficient / 100;
+            // source.volume = manager.SFXSlider.value * coefficient / 100;
+            // volume = manager.SFXSlider.value * coefficient / 100;
         }
         else if(!in_transition)
         {
-            source.volume = manager.VolumeSlider.value * coefficient / 100;
-            volume = manager.VolumeSlider.value * coefficient / 100;
+            // source.volume = manager.VolumeSlider.value * coefficient / 100;
+            // volume = manager.VolumeSlider.value * coefficient / 100;
         }
     }
 }

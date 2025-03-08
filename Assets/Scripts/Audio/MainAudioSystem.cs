@@ -28,6 +28,9 @@ public class MainAudioSystem : MonoBehaviour
     public AudioClip current_song {get; private set;}
     public bool looping {get; private set;}
     public bool exterior_track {get; private set;}
+    
+    [SerializeField] private VolumeControl volumeControl;
+    public VolumeControl GetVolumeControl() {return volumeControl;}
 
     void Awake(){
         if (MainAudioSystem.main == null){

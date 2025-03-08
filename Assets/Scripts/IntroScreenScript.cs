@@ -23,9 +23,10 @@ public class IntroScreenScript : MonoBehaviour
     void Update()
     {
         if(Input.anyKey){
-            menus.SetActive(true);
+            MainMenuManager.instance.OpenMenuViaState(MainMenuManager.MenuState.MAIN);
+            // menus.SetActive(true);
             fps.SetActive(true);
-            gameObject.SetActive(false);
+            // gameObject.SetActive(false);
         }
         else{
             if(state == 0){

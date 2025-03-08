@@ -12,6 +12,6 @@ public class GetBestText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text.text = GameManager.main.personalBests[DifficultyManager.main.index].ToString();
+        // text.text = KillBox.personalBests[MainMenuManager.instance.selectedDifficulty].ToString();
     }
 }

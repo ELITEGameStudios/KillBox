@@ -30,6 +30,7 @@ public class KillBox : MonoBehaviour
         if(main == null){main = this;}
         else if(main != this){Destroy(this);}
         
+        DontDestroyOnLoad(gameObject);
         Application.runInBackground = false;
         personalBests = new int[3];
     }
