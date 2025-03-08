@@ -41,6 +41,10 @@ public class KillBox : MonoBehaviour
         ChallengeSaveSystem.SaveChallenges();
     }
 
+    public void DeleteSystem(){
+        SaveSystem.DeletePlayer();
+    }
+
     public void LoadPlayer()
     {
         int playerXp = 0;
@@ -114,6 +118,7 @@ public class KillBox : MonoBehaviour
 
     public static void StartNewGame(int difficulty){
         currentGame = new Game(difficulty);
+        SceneSystem.Instance.LoadGameScenes();
     }
 
     public static void EndCurrentGame(){

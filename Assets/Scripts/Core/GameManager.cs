@@ -91,17 +91,21 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
     [SerializeField]
     private Color[] color_themes;
-
-    public static GameManager main {get; private set;}
-
     public int maxTokensPerRound {get; private set;}
     public int tokensThisRound {get; private set;}
+
+
+    public static GameManager main {get; private set;}
+    [SerializeField] private Game game;
 
 
     void Awake(){
 
         if(main == null){ main = this; }
         else if(main != this){ Destroy(this); }
+        game = KillBox.currentGame;
+        difficulty_coefficient = game.difficultyCoefficient;
+
     }
 
     public void AddMap(MapData map){
@@ -162,6 +166,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
         // map_colors.ChangeColor(default_map_color, default_map_color, false);
         map_colors.ChangeWall(Color.white);
+
+        StartGame();
 
 
         // joystick_size.value = PlayerPrefs.GetFloat("joystick_size", 0.2f);
@@ -254,7 +260,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
             
         }
         StartCoroutine(StartNumerator());
-
     }
 
     public void RestartGame(){
@@ -337,7 +342,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
     {
         GameObject[] Enemies = GameObject.FindGameObjectsWithTag("Enemy");
         // EnemyCounter.main.DestroyAllEnemies(false);
-        
         // ExtraLifeUI.SetActive(false);
         Player.SetActive(true);
 
@@ -352,38 +356,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         pauseHandler.PausePlay(0);
     }
 
-
-
-    public void SavePlayer() { KillBox.Save(); }
-
-    public void DeleteSystem(){
-        SaveSystem.DeletePlayer();
-    }
-
-    public void SetEquipmentIndex(int index)
-    {
-        equipment_index = index;
-
-        for (int i = 0; i < equipment_list.Length; i++)
-        {
-            equipment_list[i].SetActive(false);
-            equippedEquipmentDisplay[i].SetActive(false);
-        }
-
-        equipment_slider = equipment_slider_list[equipment_index];
-        use_equipment_button = use_equipment_button_list[equipment_index];
-        equipment_list[equipment_index].SetActive(true);
-        equippedEquipmentDisplay[equipment_index].SetActive(true);
-        SavePlayer();
-    }
-
-    
-
-
-    public void UpdateDifficulty()
-    {
-        difficulty = constant + 100f * (float)Mathf.Pow(LvlCount, 2f) / 30 * difficulty_coefficient; //+ 25f * ((playerHealth.GetMaxHealth() / 50) - 3);
-    }
+    public void UpdateDifficulty() { difficulty = constant + 100f * (float)Mathf.Pow(LvlCount, 2f) / 30 * difficulty_coefficient; /*+ 25f * ((playerHealth.GetMaxHealth() / 50) - 3); */ }
 
     public void AddRound(int value = 1){ //for freeplay
         if(freeplay){
@@ -487,7 +460,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
     public bool EscapeRoom(){
         return escapeRoom;
     }
-
 
     IEnumerator StartNumerator()
     {

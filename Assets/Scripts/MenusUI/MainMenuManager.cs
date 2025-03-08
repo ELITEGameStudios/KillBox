@@ -83,6 +83,9 @@ public class MainMenuManager : MonoBehaviour
     public void OpenMyStuff(){ OpenMenuViaState(MenuState.MYSTUFF); }
     public void Return(){ OpenMenuViaState(lastState); }
     public void Resume(){ OpenMenuViaState(MenuState.NONE); }
+
+    public void TriggerGameStart(){ KillBox.StartNewGame(selectedDifficulty); }
+    
     
     public void OpenMenuViaState(MenuState newState, bool doCoroutine = true, bool crossFade = false, float customFadeOut = -1){
         if(switchingMenus) {return;}

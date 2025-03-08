@@ -83,8 +83,19 @@ public class EquipmentManager : MonoBehaviour
 
     public void SetEquipmentType(EquipmentType type){
         equipmentType = type;
-    }
 
+        for (int i = 0; i < equipment_list.Length; i++)
+        {
+            equipment_list[i].SetActive(false);
+            equippedEquipmentDisplay[i].SetActive(false);
+        }
+
+        equipment_slider = equipment_slider_list[equipment_index];
+        use_equipment_button = use_equipment_button_list[equipment_index];
+        equipment_list[equipment_index].SetActive(true);
+        equippedEquipmentDisplay[equipment_index].SetActive(true);
+        KillBox.Save();
+    }
     public void ActivateEquipment(){
         equipmentScripts[(int)equipmentType].GamemodeStart();
         
