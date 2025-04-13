@@ -20,6 +20,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private List<Scene> scenes;
     [SerializeField] private Scene activeScene; 
 
+    [SerializeField] private GameObject menusComponents; 
+    [SerializeField] private GameObject[] menuCameras; 
     [SerializeField] private MenuState state, lastState; 
     private bool InMenu {get { return state != MenuState.NONE ;} }
 
@@ -85,6 +87,12 @@ public class MainMenuManager : MonoBehaviour
     public void Resume(){ OpenMenuViaState(MenuState.NONE); }
 
     public void TriggerGameStart(){ KillBox.StartNewGame(selectedDifficulty); }
+    public void OnGameSceneLoad(){ 
+        OpenMenuViaState(MenuState.NONE, false); 
+        InstantSwitch();
+        menusComponents.SetActive(false);
+        foreach(GameObject cam in menuCameras){cam.SetActive(false);}
+    }
     
     
     public void OpenMenuViaState(MenuState newState, bool doCoroutine = true, bool crossFade = false, float customFadeOut = -1){
@@ -103,6 +111,27 @@ public class MainMenuManager : MonoBehaviour
         //     Debug.Log("No longer in a menu");
         // }
         
+    }
+
+    void InstantSwitch(){
+
+        MenuUI newMenu = null;
+        MenuUI oldMenu = null;
+
+        for (int i = 0; i < menuList.Count; i++){
+            if(i == (int)state){ newMenu = menuList[i]; }
+            else if(i == (int)lastState){ oldMenu = menuList[i]; }
+        }  
+
+        if(oldMenu != null){
+            oldMenu.SwitchActive(false, 0);
+            oldMenu.gameObject.SetActive(false);
+        }
+        if(newMenu != null){
+            newMenu.SwitchActive(true, 0);
+            newMenu.gameObject.SetActive(true);
+        }
+        switchingMenus = false;
     }
 
     IEnumerator SwitchMenuCoroutine(bool crossFade, float customFadeOut = -1){

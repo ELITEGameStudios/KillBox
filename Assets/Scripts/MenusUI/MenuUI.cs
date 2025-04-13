@@ -43,7 +43,13 @@ public class MenuUI : MonoBehaviour
     public void SwitchActive(bool target, float customFadeOut = -1){
         if(customFadeOut >= 0){liveFade = customFadeOut;}
         targetActive = target;
-        menuState = MenuState.SWITCHING;
+        if(customFadeOut == 0){
+            for (int i = 0; i < graphics.Length; i++) { graphics[i].color = Color.Lerp(Color.clear, graphicColors[i], targetActive? 1 : -1); }
+            activeFloat = targetActive ? 1 : 0;
+        }
+        else{
+            menuState = MenuState.SWITCHING;
+        }
     }
 
     void Update()

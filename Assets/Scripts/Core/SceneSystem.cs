@@ -8,7 +8,7 @@ public class SceneSystem : MonoBehaviour
     [SerializeField] private List<Scene> scenes;
     [SerializeField] private Scene activeScene; 
     [SerializeField] private string flexibleLoadingSceneName, gameSceneName, gameUIName, menusSceneName; 
-    [SerializeField] private int flexibleTransitionTime = 2; 
+    [SerializeField] private float flexibleTransitionTime = 1.5f; 
     [SerializeField] private string[] mapSceneNames; 
     [SerializeField] private Scene loadingScene;
     [SerializeField] private Scene menusScene;
@@ -91,11 +91,15 @@ public class SceneSystem : MonoBehaviour
         // yield return StartCoroutine(LoadAdditiveCoroutine(flexibleLoadingSceneName));
         // loadingScene = SceneManager.GetSceneByName(flexibleLoadingSceneName);
         DetectMenusScene();
+        FadeManager.instance.SetTarget(true, flexibleTransitionTime);
         yield return new WaitForSecondsRealtime(flexibleTransitionTime);
         
         yield return StartCoroutine(LoadAdditiveCoroutine(gameSceneName)); 
         yield return StartCoroutine(LoadAdditiveCoroutine(gameUIName)); 
-        yield return StartCoroutine(LoadAdditiveCoroutine(mapSceneNames[0])); 
+        yield return StartCoroutine(LoadAdditiveCoroutine(mapSceneNames[0]));
+        
+        MainMenuManager.instance.OnGameSceneLoad(); 
+        FadeManager.instance.SetTarget(false, flexibleTransitionTime);
 
         currentMapScene = SceneManager.GetSceneByName(mapSceneNames[0]);
         gameScene = SceneManager.GetSceneByName(gameSceneName);
