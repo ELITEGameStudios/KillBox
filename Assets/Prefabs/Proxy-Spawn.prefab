@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &54124625098125872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 54124625098125875}
+  - component: {fileID: 54124625098125874}
+  - component: {fileID: 8420839915264837240}
+  m_Layer: 0
+  m_Name: Proxy-Spawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &54124625098125875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54124625098125872}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &54124625098125874
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54124625098125872}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 293f3289ce3294c4d8040f76d08d73f1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8420839915264837240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54124625098125872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4af0586a15e94f05a0205acf3f4f2f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Players: []
+  Entries:
+  - {fileID: 172803866762992229, guid: 8e960ebb75dc3483780a6ac738efd267, type: 3}
+  - {fileID: 172803866762992229, guid: 8e960ebb75dc3483780a6ac738efd267, type: 3}
+  - {fileID: 172803866762992229, guid: 8e960ebb75dc3483780a6ac738efd267, type: 3}
+  - {fileID: 172803866762992229, guid: 8e960ebb75dc3483780a6ac738efd267, type: 3}
+  - {fileID: 172803866762992229, guid: 8e960ebb75dc3483780a6ac738efd267, type: 3}
+  - {fileID: 172803866762992229, guid: 8e960ebb75dc3483780a6ac738efd267, type: 3}
+  - {fileID: 172803866762992229, guid: 8e960ebb75dc3483780a6ac738efd267, type: 3}
+  - {fileID: 172803866762992229, guid: 8e960ebb75dc3483780a6ac738efd267, type: 3}
+  - {fileID: 172803866762992229, guid: 8e960ebb75dc3483780a6ac738efd267, type: 3}
+  - {fileID: 172803866762992229, guid: 8e960ebb75dc3483780a6ac738efd267, type: 3}
+  Player: {fileID: 0}
+  boss_entry: {fileID: 2657705075633942504, guid: ce7977914164f47a5906b76af50356fa, type: 3}
+  EntryManager: 0000000000000000
+  EntryManager2: 0000000000000000
+  switch_entries_int: 050000000a0000000f00000014000000190000001e00000023000000280000002d00000032000000370000003c00000041000000460000004b00000050000000
+  EnemyIndex: 0
+  Round: 0
+  Offset: 5
+  Iterations: 0
+  TargetLvl: 0
+  unlock_on_level: 0
+  DistanceFromPlayer: 0
+  gameManager: {fileID: 0}
+  enemyList: {fileID: 0}
+  spawn_master: {fileID: 0}
+  ActiveSpawn: 1
+  proximitySpawning: 0
+  CanProxySpawn: 0

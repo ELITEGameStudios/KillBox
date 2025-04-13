@@ -72,12 +72,6 @@ public class GameLoader : MonoBehaviour
 
     IEnumerator LoadYourAsyncScene()
     {
-        // The Application loads the Scene in the background as the current Scene runs.
-        // This is particularly good for creating loading screens.
-        // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
-        // a sceneBuildIndex of 1 as shown in Build Settings.
-
-        // AsyncOperation loader = SceneManager.LoadSceneAsync("Menus");
         AsyncOperation loader = SceneManager.LoadSceneAsync(sceneName);
         loader.allowSceneActivation = false;
 
@@ -96,6 +90,7 @@ public class GameLoader : MonoBehaviour
                 post_load_time -= Time.deltaTime;
 
                 if(post_load_time <= 0){
+                    SceneSystem.Instance.UpdateSceneData();
                     loader.allowSceneActivation = true;
                 }
             }

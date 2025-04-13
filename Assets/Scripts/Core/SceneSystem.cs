@@ -9,13 +9,15 @@ public class SceneSystem : MonoBehaviour
     [SerializeField] private Scene activeScene; 
     [SerializeField] private string flexibleLoadingSceneName, gameSceneName, gameUIName, menusSceneName; 
     [SerializeField] private int flexibleTransitionTime = 2; 
-    public static SceneSystem Instance { get; private set; }
     [SerializeField] private string[] mapSceneNames; 
     [SerializeField] private Scene loadingScene;
     [SerializeField] private Scene menusScene;
     [SerializeField] private Scene gameScene;
     [SerializeField] private Scene gameUI;
     [SerializeField] private Scene currentMapScene;
+
+    public static SceneSystem Instance { get; private set; }
+    
     void Awake(){
         if(Instance == null) {Instance = this;}
         else if(Instance != this) {Destroy(this);}
@@ -23,11 +25,13 @@ public class SceneSystem : MonoBehaviour
         DontDestroyOnLoad(gameObject);       
     }
 
-    void UpdateSceneData(){
-
+    public void UpdateSceneData(){
+        
+        scenes.Clear();
         activeScene = SceneManager.GetActiveScene();
         for (int i = 0; i < SceneManager.sceneCount; i++) { scenes.Add(SceneManager.GetSceneAt(i)); }
-
+        
+        DetectMenusScene();
     }
 
     public void LoadAndUnloadOperation(string loadSceneName, string unloadSceneName){
@@ -61,6 +65,10 @@ public class SceneSystem : MonoBehaviour
         StartCoroutine(GameInitializationCoroutine());
     }
 
+    public void DetectMenusScene(){
+        menusScene = SceneManager.GetSceneByName(menusSceneName);
+    }
+
     IEnumerator LoadAdditiveCoroutine(string sceneName){
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         while (!operation.isDone){
@@ -80,10 +88,9 @@ public class SceneSystem : MonoBehaviour
     }
 
     IEnumerator GameInitializationCoroutine(){
-        yield return StartCoroutine(LoadAdditiveCoroutine(flexibleLoadingSceneName));
-        loadingScene = SceneManager.GetSceneByName(flexibleLoadingSceneName);
-        menusScene = SceneManager.GetSceneByName(menusSceneName);
-
+        // yield return StartCoroutine(LoadAdditiveCoroutine(flexibleLoadingSceneName));
+        // loadingScene = SceneManager.GetSceneByName(flexibleLoadingSceneName);
+        DetectMenusScene();
         yield return new WaitForSecondsRealtime(flexibleTransitionTime);
         
         yield return StartCoroutine(LoadAdditiveCoroutine(gameSceneName)); 

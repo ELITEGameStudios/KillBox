@@ -49,7 +49,8 @@ public class PalatteElement : MonoBehaviour
 
     void Update(){
         if(!followsGameModeColor){ return; }
-        Color color = MainPalatte.main.GetColorByMode();
+        Color color = Color.white;
+        // Color color = MainPalatte.main.GetColorByMode(); Uncomment this once main palatte details are fixed
         if(!isText){ 
             if(img.color != color){
                 img.color = color;
