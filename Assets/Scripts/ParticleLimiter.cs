@@ -13,7 +13,7 @@ public class ParticleLimiter : MonoBehaviour
     [SerializeField] private GameObject[] particleList;
     [SerializeField] private Slider slider;
     [SerializeField] private Gradient sliderGradient;
-    [SerializeField] private Image[] sliderGraphics;
+    [SerializeField] private Graphic[] sliderGraphics;
     [SerializeField] private Text sliderText;
 
     // Start is called before the first frame update
@@ -40,10 +40,9 @@ public class ParticleLimiter : MonoBehaviour
         // Debug.Log(ratio);
         // Debug.Log("max count: " + maxParticleCount);
 
-        foreach(Image image in sliderGraphics){
+        foreach(Graphic image in sliderGraphics){
             image.color = sliderGradient.Evaluate(ratio);
         }
-        sliderText.color = sliderGradient.Evaluate(ratio);
         sliderText.text = maxParticleCount.ToString();
 
         

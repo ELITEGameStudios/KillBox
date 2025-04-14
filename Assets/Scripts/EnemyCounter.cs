@@ -6,7 +6,6 @@ public class EnemyCounter : MonoBehaviour
 {
     public bool PortalCondition1, PortalCondition2, AnimAccept;
     public bool end_of_main_round {get; private set;}
-    public Text EnemyCounterTxt;
     public int enemiesInScene;
     public Spawn GetSpawn;
     public GameObject Portal;
@@ -82,7 +81,7 @@ public class EnemyCounter : MonoBehaviour
         
         enemies = GameObject.FindGameObjectsWithTag(tag);
         enemiesInScene = enemyProfiles.Count;
-        EnemyCounterTxt.text = enemiesInScene.ToString();
+        
         if(PortalCondition2){ Debug.Log("Portal condition 2 is met."); }
 
         if(enemies.Length == 0 && PortalCondition2)

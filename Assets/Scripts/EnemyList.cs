@@ -99,7 +99,7 @@ public class EnemyList : MonoBehaviour
         boss_round_counter = 11;
         int starting_boss_round = 12;
         
-        if(DifficultyManager.main.index == 0) {
+        if(KillBox.currentGame.difficultyIndex == 0) {
             starting_boss_round = 14;
             bossRounds.Add(starting_boss_round);
             bossRounds.Add(21);
@@ -110,7 +110,7 @@ public class EnemyList : MonoBehaviour
             }    
         }
 
-        else if(DifficultyManager.main.index == 1) {
+        else if(KillBox.currentGame.difficultyIndex == 1) {
             starting_boss_round = 12;
             bossRounds.Add(starting_boss_round);
             bossRounds.Add(19);
@@ -150,7 +150,7 @@ public class EnemyList : MonoBehaviour
         return bossRounds.Contains(round);
     }
 
-    [SerializeField]
+
     public List<GameObject> UpdatedList
     {
         get

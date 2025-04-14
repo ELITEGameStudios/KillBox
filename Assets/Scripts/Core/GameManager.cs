@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-// using LootLocker.Requests;
 using UnityEngine.Events;
 
+[DefaultExecutionOrder(-1001)]
 public class GameManager : MonoBehaviour, ISelfResListener
 {
     [SerializeField]
@@ -245,7 +245,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
     public void StartGame()
     {
-        FadeAnimator.Play("FadeAnim");
+        // FadeAnimator.Play("FadeAnim");
 
         SetMaxTokenCount();
 

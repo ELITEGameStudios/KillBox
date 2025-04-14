@@ -11,7 +11,6 @@ public class VolumeControl : MonoBehaviour
 
     [SerializeField]
     private PlayerHealth p_health;
-    public GameManager gameManager;
 
     [SerializeField]
     private AudioMixerSnapshot[] snapshots;
@@ -44,8 +43,8 @@ public class VolumeControl : MonoBehaviour
     {
         music_value = PlayerPrefs.GetInt("Volume", 100);
         sfx_value = PlayerPrefs.GetInt("SFXVolume", 100);
-        // VolumeSlider.value = music_value;
-        // SFXSlider.value = sfx_value;
+        VolumeSlider.value = music_value;
+        SFXSlider.value = sfx_value;
         // p_health = GameObject.FindWithTag("Player").GetComponent<PlayerHealth>();
 
         m_mixer.TransitionToSnapshots(snapshots, new float[]{1f, 0f, 0f}, time);
@@ -55,13 +54,13 @@ public class VolumeControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //gameManager.audio.volume = (float)VolumeSlider.value / 100;
+        // gameManager.audio.volume = (float)VolumeSlider.value / 100;
 
-        // PlayerPrefs.SetInt("Volume", (int)VolumeSlider.value);
-        // PlayerPrefs.SetInt("SFXVolume", (int)SFXSlider.value);
+        PlayerPrefs.SetInt("Volume", (int)VolumeSlider.value);
+        PlayerPrefs.SetInt("SFXVolume", (int)SFXSlider.value);
 
-        // music_value = VolumeSlider.value;
-        // sfx_value = SFXSlider.value;
+        music_value = VolumeSlider.value;
+        sfx_value = SFXSlider.value;
 
         if(p_health != null && active_snapshot != 2){
 

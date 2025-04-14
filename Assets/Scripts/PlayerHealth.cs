@@ -111,7 +111,6 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
 
         normalized_weight_inv = (float)(MaxHealth - CurrentHealth)/ (float)MaxHealth;
         //MaxHealth = manager.HealthCount;
-        HealthText.text = CurrentHealth.ToString();
 
         if (IsPlayer)
         {

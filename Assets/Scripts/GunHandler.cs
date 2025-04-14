@@ -35,6 +35,30 @@ public class GunHandler : MonoBehaviour
     [SerializeField] private AudioSource equippedAudio;
     public static GunHandler Instance { get; private set; }
 
+    private void Awake()
+    {
+        if(Instance == null){ Instance = this; }
+        else if(Instance != this){ Destroy(this); }
+
+    }
+
+    void Start(){
+
+        primary_button = GameplayUI.instance.GetPrimaryWeaponButton();
+        secondary_button = GameplayUI.instance.GetBackupWeaponButton();
+        
+        Instance.NewItem(WeaponItemList.Instance.GetItem("Pistol"));
+        // Instance.EquipWeapon("Pistol");
+        if(GameManager.main.EscapeRoom()){
+            Instance.NewItem(WeaponItemList.Instance.GetItem("Revolver"));
+        }
+        
+        Instance.special_guns.Add("_kunai", kunai_obj);
+
+    }
+
+
+
     public void NewItem(WeaponItem item, bool auto_equip = false)
     {
         // Adds item to owned list
@@ -107,21 +131,9 @@ public class GunHandler : MonoBehaviour
     {
 
         WeaponItem item = WeaponItemList.Instance.GetItem(key);
-        // if(item == null){return;}
+
         if(backup_weapon == null && backup && item == null){ return; }
-        // if(backup_weapon == null){
 
-        //     Debug.Log("srgr  b null");
-        // }
-        // if(primary_weapon == null){
-
-        //     Debug.Log("srgr p null");
-        // }
-        // if(item == null){
-
-        //     Debug.Log("srgr i null ");
-        // }
-        
 
         if( (!backup && primary_weapon.special_key != "") || (backup && backup_weapon.special_key != "")){
             Debug.Log("Entered Special Block");
@@ -317,25 +329,6 @@ public class GunHandler : MonoBehaviour
             InventoryUIManager.Instance.main_buttons[i].EquipDisplay();
         }
     }
-    private void Awake()
-    {
-        if(Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-
-        Instance.NewItem(WeaponItemList.Instance.GetItem("Pistol"));
-        // Instance.EquipWeapon("Pistol");
-        if(GameManager.main.EscapeRoom()){
-            Instance.NewItem(WeaponItemList.Instance.GetItem("Revolver"));
-        }
-        
-        Instance.special_guns.Add("_kunai", kunai_obj);
-    }
 
     public void OnShoot(){
         if(current_is_primary){
@@ -351,19 +344,13 @@ public class GunHandler : MonoBehaviour
     }
     
     void Update(){
-        if(cooldown.cooling_down){
-            coolingDownObject.SetActive(true);
-        }
-        else{
-            coolingDownObject.SetActive(false);
+        if(cooldown != null){
+            if(cooldown.cooling_down){
+                coolingDownObject.SetActive(true);
+            }
+            else{
+                coolingDownObject.SetActive(false);
+            }
         }
     }
-    //void Start(){
-    //    StartCoroutine(LateStart());
-    //}
-//
-    //IEnumerator LateStart(){
-    //    yield return null;
-    //    Instance.cooldown = primary_cooldown;
-    //}
 }

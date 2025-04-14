@@ -94,10 +94,10 @@ public class SceneSystem : MonoBehaviour
         FadeManager.instance.SetTarget(true, flexibleTransitionTime);
         yield return new WaitForSecondsRealtime(flexibleTransitionTime);
         
+        yield return StartCoroutine(LoadAdditiveCoroutine(mapSceneNames[0]));
         yield return StartCoroutine(LoadAdditiveCoroutine(gameSceneName)); 
         yield return StartCoroutine(LoadAdditiveCoroutine(gameUIName)); 
-        yield return StartCoroutine(LoadAdditiveCoroutine(mapSceneNames[0]));
-        
+
         MainMenuManager.instance.OnGameSceneLoad(); 
         FadeManager.instance.SetTarget(false, flexibleTransitionTime);
 

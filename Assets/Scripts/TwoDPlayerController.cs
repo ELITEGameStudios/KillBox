@@ -22,16 +22,13 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
 
     [SerializeField] private TriggerColliderTracker colliders;
     [SerializeField] private AudioSource audio;
-
-    [SerializeField] private Image dashIndicator;
-    [SerializeField] private Color canDashColor, cannotDashColor;
-    [SerializeField] private Text dashTimerText;
     [SerializeField] private Vector3 test;
     private bool rotating = false;
 
     InputManager controls;
 
     Vector3 particleAngleVector;
+    public float GetDashCooldownTimer(){return dashCooldownTimer;}
 
     void Awake()
     {
@@ -62,14 +59,6 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
 
         // rotation_value.Normalize();
         // movement.Normalize();
-
-        if(canDash){
-            dashIndicator.color = canDashColor;
-            dashTimerText.text = "";
-        }
-        else{
-            dashIndicator.color = cannotDashColor;
-        }
 
         if(mobile)
         {
@@ -118,11 +107,9 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
 
         if(dashCooldownTimer > 0){
             dashCooldownTimer -= Time.fixedDeltaTime;
-            dashTimerText.text = ((int)(dashCooldownTimer+1)).ToString();
         }
         else if(dashCooldownTimer <= 0 && !canDash){
             canDash = true;
-            dashTimerText.text = "";
         }
     }
 

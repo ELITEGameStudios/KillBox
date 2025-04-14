@@ -40,16 +40,11 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
 
     void Awake(){
 
-        if(Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
+        if(Instance == null) { Instance = this; }
+        else if(Instance != this) { Destroy(this); }
         
         max_levels = UpgradesList.max_levels;
+        manager = GameManager.main;
 
         for(int i = 0; i < Instance.level_displays.Length; i++){
             Instance.level_displays[i].text = Instance.current_levels[i] + "/" + Instance.max_levels[i]; 
@@ -113,7 +108,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
 
         }
         // Check for if the upgrade is purchasable 
-        Instance.can_purchase = Instance.target_upgrade.Compare(manager.ScoreCount, Instance.current_levels[Instance.target_key]);
+        can_purchase = Instance.target_upgrade.Compare(manager.ScoreCount, Instance.current_levels[Instance.target_key]);
         // Set the description text of the ui
 
         // If the selected upgrade can be purchased

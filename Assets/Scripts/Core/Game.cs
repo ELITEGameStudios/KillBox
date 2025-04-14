@@ -22,7 +22,14 @@ public class Game
     public int tokensCollectedOverall;
     public int tokensUsed;
     public int tokens;
-
+    public Lifetime lifetime;
+    public bool started {get {return lifetime == Lifetime.STARTED || lifetime == Lifetime.FINISHED;}}
+    
+    public enum Lifetime{
+        INITIALIZED,
+        STARTED,
+        FINISHED
+    }
 
     public Game(int difficultyIndex){
         this.difficultyIndex = difficultyIndex;
@@ -33,6 +40,7 @@ public class Game
         upgradesPurchased = new int[5];
         tokens = 0;
         tokensCollectedOverall = 0;
+        lifetime = Lifetime.INITIALIZED;
     }
 
     public void AdvanceLevel(){
