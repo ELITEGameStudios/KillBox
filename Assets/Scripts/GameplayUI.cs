@@ -8,27 +8,38 @@ public class GameplayUI : MonoBehaviour
     [Header("Common texts")]
     [SerializeField] private Text[] scorekeepers;
     [SerializeField] private Text[] roundKeepers, pbKeepers;
-    [SerializeField] private Text healthText, enemiesLeftText;
+    [SerializeField] private Text enemiesLeftText;
+    public Text GetEnemiesLeftText(){return enemiesLeftText;}
 
-    [Header("Sliders")]
+    [Header("Health")]
+    [SerializeField] private Text healthText;
     [SerializeField] private Slider healthSlider;
+    
+    
+    [Header("Cooldown graphics")]
+    [SerializeField] private Image mainBarSliderImage;
+    [SerializeField] private Image secondaryBarSliderImage;
     [SerializeField] private Slider cooldownSlider, primaryCooldownSlider, secondaryCooldownSlider;
+
+    public Slider GetCooldownSlider(){return cooldownSlider;}
+    public Slider GetPrimaryCooldownSlider(){return primaryCooldownSlider;}
+    public Slider GetSecondaryCooldownSlider(){return secondaryCooldownSlider;}
+    public Image GetPrimaryCooldownSliderImage(){return mainBarSliderImage;}
+    public Image GetSecondaryCooldownSliderImage(){return secondaryBarSliderImage;}
     
     [Header("Weapon buttons")]
     [SerializeField] private Button primaryWeaponButton;
     [SerializeField] private Button backupWeaponButton;
+    [SerializeField] private GameObject[] weapon_ui_overlays;
+
+    public Button GetPrimaryWeaponButton(){return primaryWeaponButton;}
+    public Button GetBackupWeaponButton(){return backupWeaponButton;}
     
     [Header("Dash indicator")]
     [SerializeField] private Text dashTimerText;
     [SerializeField] private Image dashIndicator;
     [SerializeField] private Color canDashColor, cannotDashColor;
 
-    public Slider GetCooldownSlider(){return cooldownSlider;}
-    public Slider GetPrimaryCooldownSlider(){return primaryCooldownSlider;}
-    public Slider GetSecondaryCooldownSlider(){return secondaryCooldownSlider;}
-    public Button GetPrimaryWeaponButton(){return primaryWeaponButton;}
-    public Button GetBackupWeaponButton(){return backupWeaponButton;}
-    public Text GetEnemiesLeftText(){return enemiesLeftText;}
 
     public static GameplayUI instance {get; private set;}
 
@@ -43,24 +54,54 @@ public class GameplayUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(KillBox.currentGame.started){
-            SetAllText(roundKeepers, KillBox.currentGame.round.ToString());
-            SetAllText(scorekeepers, GameManager.main.ScoreCount.ToString());
-            SetAllText(pbKeepers, KillBox.main.PBInt.ToString());
-            
-            healthSlider.value = Player.main.health.CurrentHealth;
-            healthText.text = Player.main.health.CurrentHealth.ToString();
-            enemiesLeftText.text = EnemyCounter.main.enemiesInScene.ToString();
+        if(GameManager.main != null){
 
-            if(Player.main.movement.canDash){
-                dashIndicator.color = canDashColor;
-                dashTimerText.text = "";
+            if(KillBox.currentGame.started){
+                SetAllText(roundKeepers, KillBox.currentGame.round.ToString());
+                SetAllText(scorekeepers, GameManager.main.ScoreCount.ToString());
+                SetAllText(pbKeepers, KillBox.main.PBInt.ToString());
+                
+                healthSlider.value = Player.main.health.CurrentHealth;
+                healthText.text = Player.main.health.CurrentHealth.ToString();
+                enemiesLeftText.text = EnemyCounter.main.enemiesInScene.ToString();
+
+                if(Player.main.movement.canDash){
+                    dashIndicator.color = canDashColor;
+                    dashTimerText.text = "";
+                }
+                else{
+                    dashIndicator.color = cannotDashColor;
+                    dashTimerText.text = ((int)(Player.main.movement.GetDashCooldownTimer()+1)).ToString();
+                }
             }
-            else{
-                dashIndicator.color = cannotDashColor;
-                dashTimerText.text = ((int)(Player.main.movement.GetDashCooldownTimer()+1)).ToString();
-            }
+            
         }
+    }
+
+    public void WeaponsUIRefresh(GunHandler handler){
+        if(handler.current_is_primary){
+            weapon_ui_overlays[0].SetActive(false);
+            weapon_ui_overlays[1].SetActive(true);
+        }
+
+        else{
+            weapon_ui_overlays[0].SetActive(true);
+            weapon_ui_overlays[1].SetActive(false);
+        }
+
+        if(handler.owns_dual){
+            weapon_ui_overlays[2].SetActive(false);
+        }
+
+        for(int i = 0; i < InventoryUIManager.Instance.main_buttons.Count; i++){
+            InventoryUIManager.Instance.main_buttons[i].EquipDisplay();
+        }
+    }
+
+    public void Initialize(){
+        InventoryUIManager.Instance.InitializeUI();
+        // if(QualityControl.main.ShadowIndex == 0) {QualityControl.main.ShadowToggle.isOn = false;}
+        // else {QualityControl.main.ShadowToggle.isOn = true;}
     }
 
     void SetAllText(Text[] texts, string message){

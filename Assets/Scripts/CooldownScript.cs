@@ -8,8 +8,6 @@ public class CooldownScript : MonoBehaviour, IRestartListener
     public float count {get; private set;}
 
     [SerializeField]
-    private Image mainBarSliderImage, secondaryBarSliderImage;
-    [SerializeField]
     private float passive_cooldown, time_since_last_shot;
     
     [SerializeField]
@@ -102,12 +100,12 @@ public class CooldownScript : MonoBehaviour, IRestartListener
                     
                     GameplayUI.instance.GetCooldownSlider().maxValue = cooldown_time;
                     GameplayUI.instance.GetCooldownSlider().value = timer;
-                    mainBarSliderImage.color = cooldownGradient.Evaluate((float)timer/cooldown_time);
+                    GameplayUI.instance.GetPrimaryCooldownSliderImage().color = cooldownGradient.Evaluate((float)timer/cooldown_time);
                 }
 
                 (primaryGun ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = cooldown_time;
                 (primaryGun ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).value = timer;
-                secondaryBarSliderImage.color = cooldownGradient.Evaluate((float)timer/cooldown_time);
+                GameplayUI.instance.GetSecondaryCooldownSliderImage().color = cooldownGradient.Evaluate((float)timer/cooldown_time);
             }
         }
         else{
@@ -124,7 +122,7 @@ public class CooldownScript : MonoBehaviour, IRestartListener
                 GameplayUI.instance.GetCooldownSlider().maxValue = count_max;
                 GameplayUI.instance.GetCooldownSlider().value = count;
 
-                mainBarSliderImage.color = shootingGradient.Evaluate((float)count/count_max);
+                GameplayUI.instance.GetPrimaryCooldownSliderImage().color = shootingGradient.Evaluate((float)count/count_max);
             }
             if(id == 0){ 
                 coolingDownText.text = "PRIMARY"; 
@@ -140,7 +138,7 @@ public class CooldownScript : MonoBehaviour, IRestartListener
                 }
             }
 
-            secondaryBarSliderImage.color = shootingGradient.Evaluate((float)count/count_max);
+            GameplayUI.instance.GetSecondaryCooldownSliderImage().color = shootingGradient.Evaluate((float)count/count_max);
             (primaryGun ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = count_max;
             (primaryGun ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).value = count;
 

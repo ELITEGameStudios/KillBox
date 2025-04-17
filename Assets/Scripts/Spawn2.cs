@@ -36,11 +36,11 @@ public class Spawn2 : MonoBehaviour
             Debug.Log("Caught");
         } 
         
-        if(spawn_master != null){
-            spawn_master.AddSpawn(this);
-            AutomationManager();
-            Debug.Log("A");
-        }
+        // if(spawn_master != null){
+        //     spawn_master.AddSpawn(this);
+        //     AutomationManager();
+        //     Debug.Log("A");
+        // }
     }
 
     void Start()

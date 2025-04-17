@@ -55,7 +55,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
     public ShopScript shopScript;
     public Animator FadeAnimator;
     public GameObject[] OffList, OnList, ultramode_unlocked_objects, grenade_launcher_objects;
-    public GameObject Player;
     //public Vector3 min_size, max_size; // for joystick ui
 
     public Spawn GetSpawn;
@@ -157,17 +156,17 @@ public class GameManager : MonoBehaviour, ISelfResListener
         _level = 1;
         ScoreCount = 0;
         Dualindex = 0;
-        difficulty = 50;
+        difficulty = 50 * KillBox.currentGame.difficultyCoefficient;
 
-        player_render = Player.transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
+        player_render = Player.main.tf.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
 
         
-        UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false;
+        
 
         // map_colors.ChangeColor(default_map_color, default_map_color, false);
         map_colors.ChangeWall(Color.white);
 
-        StartGame();
+        
 
 
         // joystick_size.value = PlayerPrefs.GetFloat("joystick_size", 0.2f);
@@ -299,7 +298,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         { Maps[i].Root.SetActive(false); }
         GetMapByID(0).Root.SetActive(true);
 
-        Player.transform.position = GetMapByID(0).Player.position;
+        Player.main.tf.position = GetMapByID(0).Player.position;
         PortalScript.main.transform.position = GetMapByID(0).Portal.position;
         PortalScript.main.ManageSpawns(0);
         
@@ -343,7 +342,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         GameObject[] Enemies = GameObject.FindGameObjectsWithTag("Enemy");
         // EnemyCounter.main.DestroyAllEnemies(false);
         // ExtraLifeUI.SetActive(false);
-        Player.SetActive(true);
+        Player.main.obj.SetActive(true);
 
         for (int i = 0; i < shopScript.Guns.Length; i++)
         {
@@ -465,9 +464,9 @@ public class GameManager : MonoBehaviour, ISelfResListener
     {
         float timer = 0;
         float Modifier = 2;
-        RectMask2D mask = gameplayHUD.GetComponent<RectMask2D>();
+        RectMask2D mask = GameplayUI.instance.GetComponent<RectMask2D>();
 
-        Player.SetActive(false);
+        Player.main.obj.SetActive(false);
 
         camera_tf.localEulerAngles = new Vector3(0, 0, 135);
         float camera_size = camera.orthographicSize;
@@ -476,7 +475,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
         if (head_start)
         {
-            Player.transform.position = head_start_transform.position;
+            Player.main.tf.position = head_start_transform.position;
             _level = 9;
             ScoreCount = 9;
         }
@@ -528,20 +527,20 @@ public class GameManager : MonoBehaviour, ISelfResListener
             yield return null;
         }
 
-        gameplayHUD.SetActive(true);
+        GameplayUI.instance.gameObject.SetActive(true);
 
         EnemyCounter.main.DestroyAllEnemies();
 
         camera_tf.localEulerAngles = new Vector3(0, 0, 0);
 
-        Player.SetActive(true);
+        Player.main.obj.SetActive(true);
         // GameObject effect = Instantiate(player_spawn_FX, Player.transform);
         // effect.transform.SetParent(null);
         
         timer = 1;
         float pads = 200;
 
-        Player.GetComponent<TwoDPlayerController>().SetCanMove(true);
+        Player.main.obj.GetComponent<TwoDPlayerController>().SetCanMove(true);
         
         while (timer > 0)
         {

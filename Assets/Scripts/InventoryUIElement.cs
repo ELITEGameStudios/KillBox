@@ -49,6 +49,9 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
     void Start()
     {
         InventoryUIManager.Instance.AddMainButton(this);
+    }
+
+    public void InitializeUIElement(){
         item = WeaponItemList.Instance.GetItem(weapon_key);
         if(item != null){
             tier = item.tier;
@@ -87,12 +90,6 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
                 InventoryUIManager.Instance.dual_element = this;
             }
         }
-
-
-
-
-
-
     }
 
     // Start is called before the first frame update

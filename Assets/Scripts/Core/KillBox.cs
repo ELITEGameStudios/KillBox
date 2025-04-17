@@ -31,7 +31,10 @@ public class KillBox : MonoBehaviour
         else if(main != this){Destroy(this);}
         
         DontDestroyOnLoad(gameObject);
+
         Application.runInBackground = false;
+        UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false;
+        
         personalBests = new int[3];
     }
     

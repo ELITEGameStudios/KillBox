@@ -16,7 +16,7 @@ public class DifficultyColor : MonoBehaviour
     void Update()
     {
         if(!getBest){
-            graphic.color = colors[DifficultyManager.main.index];        
+            graphic.color = colors[KillBox.currentGame.difficultyIndex];        
         }
         else{
             graphic.color = colors[MainMenuManager.instance.selectedDifficulty];    

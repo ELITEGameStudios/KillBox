@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,8 @@ public class SceneSystem : MonoBehaviour
     [SerializeField] private Scene gameScene;
     [SerializeField] private Scene gameUI;
     [SerializeField] private Scene currentMapScene;
-
+    
+    [SerializeField] private AsyncOperation sceneLoadOperation;
     public static SceneSystem Instance { get; private set; }
     
     void Awake(){
@@ -62,7 +64,8 @@ public class SceneSystem : MonoBehaviour
     }
 
     public void LoadGameScenes(){
-        StartCoroutine(GameInitializationCoroutine());
+        // StartCoroutine(GameInitializationCoroutine());
+        GameInitializationFunction();
     }
 
     public void DetectMenusScene(){
@@ -71,7 +74,15 @@ public class SceneSystem : MonoBehaviour
 
     IEnumerator LoadAdditiveCoroutine(string sceneName){
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        float timer = 0;
+        float time = Time.realtimeSinceStartup;
         while (!operation.isDone){
+            timer = time - Time.realtimeSinceStartup;
+            if(timer >= 5){
+                Debug.Log("This code is ass. Session Terminated.");
+                SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+                yield break;
+            }
             yield return null;
         }
         
@@ -94,15 +105,62 @@ public class SceneSystem : MonoBehaviour
         FadeManager.instance.SetTarget(true, flexibleTransitionTime);
         yield return new WaitForSecondsRealtime(flexibleTransitionTime);
         
-        yield return StartCoroutine(LoadAdditiveCoroutine(mapSceneNames[0]));
-        yield return StartCoroutine(LoadAdditiveCoroutine(gameSceneName)); 
         yield return StartCoroutine(LoadAdditiveCoroutine(gameUIName)); 
+        yield return StartCoroutine(LoadAdditiveCoroutine(gameSceneName)); 
+        
+        yield return null;
+        GameplayUI.instance.Initialize();
+        // yield return StartCoroutine(LoadAdditiveCoroutine(mapSceneNames[0]));
 
         MainMenuManager.instance.OnGameSceneLoad(); 
         FadeManager.instance.SetTarget(false, flexibleTransitionTime);
 
-        currentMapScene = SceneManager.GetSceneByName(mapSceneNames[0]);
+        // currentMapScene = SceneManager.GetSceneByName(mapSceneNames[0]);
         gameScene = SceneManager.GetSceneByName(gameSceneName);
         gameUI = SceneManager.GetSceneByName(gameUIName);
+    }
+    void FadeOut(){
+        DetectMenusScene();
+        FadeManager.instance.SetTarget(true, flexibleTransitionTime);
+
+    }
+
+    void StartGame(){
+
+        GameplayUI.instance.Initialize();
+        // yield return StartCoroutine(LoadAdditiveCoroutine(mapSceneNames[0]));
+
+        MainMenuManager.instance.OnGameSceneLoad(); 
+        FadeManager.instance.SetTarget(false, flexibleTransitionTime);
+        GameManager.main.StartGame();
+
+        // currentMapScene = SceneManager.GetSceneByName(mapSceneNames[0]);
+        gameScene = SceneManager.GetSceneByName(gameSceneName);
+        gameUI = SceneManager.GetSceneByName(gameUIName);
+    }
+    
+    void InitializeScenes(){
+
+        sceneLoadOperation = SceneManager.LoadSceneAsync(gameUIName, LoadSceneMode.Additive);
+        sceneLoadOperation.completed += (operation) => {
+            sceneLoadOperation = SceneManager.LoadSceneAsync(gameSceneName, LoadSceneMode.Additive); 
+            sceneLoadOperation.completed += (operation) => {
+                Invoke(nameof(StartGame), 0.2f);
+                // yield return null;
+
+            };
+            // new Action<AsyncOperation>() 
+        };
+        
+        
+    }
+
+
+    
+    void GameInitializationFunction(){
+
+        FadeOut();
+        Invoke(nameof(InitializeScenes),  flexibleTransitionTime);
+        
     }
 }

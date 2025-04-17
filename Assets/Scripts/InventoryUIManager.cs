@@ -67,6 +67,13 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         Instance.main_buttons.Add(target);
     }
 
+    public void InitializeUI(){
+        foreach (InventoryUIElement item in main_buttons)
+        {
+            item.InitializeUIElement();
+        }
+    }
+
     public void UpdateUI(){
         OwnedCheck();
         TargetCheck();

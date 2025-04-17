@@ -22,8 +22,6 @@ public class GunHandler : MonoBehaviour
 
     public bool has_dual {get; private set;}
 
-    [SerializeField] private GameObject[] ui_overlays;
-
     [SerializeField] private GameObject dual_gameObject, main_object;
 
     [SerializeField] private Button primary_button, secondary_button;
@@ -311,23 +309,7 @@ public class GunHandler : MonoBehaviour
     }
 
     private void UIRefresh(){
-        if(Instance.current_is_primary){
-            Instance.ui_overlays[0].SetActive(false);
-            Instance.ui_overlays[1].SetActive(true);
-        }
-
-        else{
-            Instance.ui_overlays[0].SetActive(true);
-            Instance.ui_overlays[1].SetActive(false);
-        }
-
-        if(Instance.owns_dual){
-            Instance.ui_overlays[2].SetActive(false);
-        }
-
-        for(int i = 0; i < InventoryUIManager.Instance.main_buttons.Count; i++){
-            InventoryUIManager.Instance.main_buttons[i].EquipDisplay();
-        }
+        GameplayUI.instance.WeaponsUIRefresh(this);
     }
 
     public void OnShoot(){
