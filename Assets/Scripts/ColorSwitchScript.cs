@@ -46,7 +46,7 @@ public class ColorSwitchScript : MonoBehaviour
                 guns[i].GetComponent<shooterScript2D>().particle_color = output_particle_color;
             }
 
-            player.transform.position = GameManager.main.GetMapByID(portal_script.CurrentMap).Player.position;
+            player.transform.position = GameManager.main.GetMapByID(portal_script.currentMapIndex).Player.position;
         }
     }
 }

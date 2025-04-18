@@ -15,7 +15,7 @@ public class PlayerOutOfMapGlitch : MonoBehaviour
     {
         if(col.gameObject.tag == "Destructive")
         {
-            transform.position = GameManager.main.GetMapByID(portal.CurrentMap).Player.position;
+            transform.position = GameManager.main.GetMapByID(portal.currentMapIndex).Player.position;
             StartCoroutine("Event");
         }
     }

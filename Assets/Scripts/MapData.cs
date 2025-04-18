@@ -16,11 +16,12 @@ public class MapData : MonoBehaviour
     [SerializeField]
     private Transform player_start, portal_start, weapons_start, upgrades_start, starter_start;
 
+    [SerializeField]
+    private Spawn2[] spawners;
 
 
     // Start is called before the first frame update
-    void Awake()
-    {
+    void Awake(){
         root = gameObject;
 
         //GameObject.Find("Manager").GetComponent<GameManager>().AddMap(this);
@@ -45,4 +46,14 @@ public class MapData : MonoBehaviour
     public int Index {get {return index;}}
     public int DebutRound {get {return debutRound;}}
     public int RetireRound {get {return retireRound;}}
+    public Spawn2[] GetSpawners(){return spawners;}
+    public Spawn2[] GetSpawners(int round){
+        List<Spawn2> spawnlist = new();
+        foreach (Spawn2 spawner in spawners){
+            if(spawner.unlock_on_level <= round){
+                spawnlist.Add(spawner);
+            }
+        }
+        return spawnlist.ToArray();
+    }
 }

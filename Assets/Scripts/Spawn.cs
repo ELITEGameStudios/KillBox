@@ -25,7 +25,7 @@ public class Spawn : MonoBehaviour
 
     void Start(){
         GenerateNewEnemyPool();
-        ResetVars();
+        UpdateRoundBasedVars();
     }
 
     //int GetFireInstances(){
@@ -40,7 +40,7 @@ public class Spawn : MonoBehaviour
     public void init()
     {
         GenerateNewEnemyPool();
-        ResetVars();
+        UpdateRoundBasedVars();
         // SetVars = true;
         // StartCoroutine(SVarTimer());
     }
@@ -60,21 +60,24 @@ public class Spawn : MonoBehaviour
         // }
     }
 
-    public void ResetVars()
+    public void UpdateRoundBasedVars()
     {
-        
         
         if( gameManager.LvlCount != 1){ instances = (int)((2.5 * Mathf.Sqrt(gameManager.Difficulty)) - 16f); }
         spawnTime = (float) (1/gameManager.difficulty_coefficient)*Mathf.Pow(1.3f, (-gameManager.LvlCount / 1.5f) + 4) + spawnTimeConstant;
         ended = false;
 
-        active_spawns.Clear();
 
-        for (int i = 0; i < spawns.Count; i++) {
-            // if (spawns[i].ActiveSpawn)
-            if (spawns[i].ActiveSpawn && spawns[i].gameObject.activeInHierarchy)
-            { active_spawns.Add(spawns[i]); }
-        }
+        if(BossRoundManager.main.isBossRound){RoundCompositionManager.main.AvoidComposition();}
+        else{RoundCompositionManager.main.ChangeComposition();}
+
+        // active_spawns.Clear();
+
+        // for (int i = 0; i < spawns.Count; i++) {
+        //     // if (spawns[i].ActiveSpawn)
+        //     if (spawns[i].ActiveSpawn && spawns[i].gameObject.activeInHierarchy)
+        //     { active_spawns.Add(spawns[i]); }
+        // }
     }
 
     public void GenerateNewEnemyPool()
@@ -97,7 +100,7 @@ public class Spawn : MonoBehaviour
         }
 
         foreach (Spawn2 spawn in spawns){
-            spawn.AutomationManager();
+            spawn.RefreshEntries();
         }
     }
 
@@ -109,7 +112,7 @@ public class Spawn : MonoBehaviour
     {
         // active_spawns = new List<Spawn2>();
 
-        ResetVars();
+        UpdateRoundBasedVars();
         allow = true;
         
         // if(boss_round){
@@ -119,9 +122,9 @@ public class Spawn : MonoBehaviour
         StartCoroutine(spawning());
         if (instant)
         {
-            for (int i = 0; i < active_spawns.Count; i++){
-                if(active_spawns[i].proximitySpawning != true){
-                    active_spawns[i].InstantSpawn();
+            for (int i = 0; i < spawns.Count; i++){
+                if(spawns[i].proximitySpawning != true){
+                    spawns[i].InstantSpawn();
                     instances--;
                 }
             }
@@ -131,6 +134,13 @@ public class Spawn : MonoBehaviour
 
     public void AddSpawn(Spawn2 _object){
         spawns.Add(_object);
+    }
+
+    public void SetSpawns(Spawn2[] spawns){
+        this.spawns = spawns.ToList();
+        foreach (Spawn2 spawner in this.spawns){
+            spawner.RefreshEntries();
+        }
     }
 
     public void CancelAllSpawns(){
@@ -180,7 +190,7 @@ public class Spawn : MonoBehaviour
             if(enemyCounter.enemiesInScene < 35 && allow)
             {
 
-                for (int ii = 0; ii < active_spawns.Count; ii++)
+                for (int ii = 0; ii < spawns.Count; ii++)
                 {
                     yield return new WaitForSeconds(spawnTime);
 
@@ -195,7 +205,7 @@ public class Spawn : MonoBehaviour
                     //     continue;
                     // }
 
-                    if (active_spawns[ii].proximitySpawning != true)
+                    if (spawns[ii].proximitySpawning != true)
                     {
                         // int chance = Random.Range(0, boss_chance);
 
@@ -205,7 +215,7 @@ public class Spawn : MonoBehaviour
                         // }
                         // else{
                         // }
-                        active_spawns[ii].InstantSpawn();
+                        spawns[ii].InstantSpawn();
 
                         instances--;
                     }

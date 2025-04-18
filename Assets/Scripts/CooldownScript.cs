@@ -30,7 +30,6 @@ public class CooldownScript : MonoBehaviour, IRestartListener
     [SerializeField] private Animator animator;
     [SerializeField] private Gradient cooldownGradient, shootingGradient;
 
-    [SerializeField] private Text coolingDownText;
 
     void Start(){
         count_max = 100;
@@ -95,8 +94,8 @@ public class CooldownScript : MonoBehaviour, IRestartListener
                 timer -= Time.deltaTime;
                 if(GunHandler.Instance.cooldown.self_key == self_key){
 
-                    coolingDownText.text = "COOLING DOWN";
-                    coolingDownText.color = cooldownGradient.Evaluate((float)timer/cooldown_time);
+                    GameplayUI.instance.GetCooldownText().text = "COOLING DOWN";
+                    GameplayUI.instance.GetCooldownText().color = cooldownGradient.Evaluate((float)timer/cooldown_time);
                     
                     GameplayUI.instance.GetCooldownSlider().maxValue = cooldown_time;
                     GameplayUI.instance.GetCooldownSlider().value = timer;
@@ -125,16 +124,16 @@ public class CooldownScript : MonoBehaviour, IRestartListener
                 GameplayUI.instance.GetPrimaryCooldownSliderImage().color = shootingGradient.Evaluate((float)count/count_max);
             }
             if(id == 0){ 
-                coolingDownText.text = "PRIMARY"; 
-                coolingDownText.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.primary_weapon.tier];
+                GameplayUI.instance.GetCooldownText().text = "PRIMARY"; 
+                GameplayUI.instance.GetCooldownText().color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.primary_weapon.tier];
             }
             else if(id == 1){ 
-                coolingDownText.text = "SECONDARY"; 
+                GameplayUI.instance.GetCooldownText().text = "SECONDARY"; 
                 if(GunHandler.Instance.backup_weapon != null){
-                    coolingDownText.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.backup_weapon.tier];
+                    GameplayUI.instance.GetCooldownText().color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.backup_weapon.tier];
                 }
                 else{
-                    coolingDownText.color = Color.white;
+                    GameplayUI.instance.GetCooldownText().color = Color.white;
                 }
             }
 
@@ -233,7 +232,7 @@ public class CooldownScript : MonoBehaviour, IRestartListener
 
     public void OnRestartGame()
     {
-        if(id == 1) {coolingDownText.color = Color.white;}
+        if(id == 1) {GameplayUI.instance.GetCooldownText().color = Color.white;}
     }
 
 }

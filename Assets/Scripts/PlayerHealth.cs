@@ -17,12 +17,10 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
 
     public GameManager manager;
     public GameObject Player, camera_parent, camera_obj;
-    public Slider HealthBarSlider;
     public bool IsPlayer, regen, Revived = false, immune = false, tutorialPlayer, hit_volume_on = false;
     public float RegenTime, immunityTime, camera_magnitude, camera_shake_duration;
     private float currentRegenTime, currentImmunityTime;
     private bool regenToggle = false, camera_is_shaking = false, health_has_changed = false, triggerDamageVolume, triggerCameraShake;
-    public Text HealthText;
     public UnityEvent OnDie, AdRequestPopup, OnRestart;
 
     [SerializeField]
@@ -114,8 +112,8 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
 
         if (IsPlayer)
         {
-            HealthBarSlider.maxValue = MaxHealth;
-            HealthBarSlider.value = CurrentHealth;
+            GameplayUI.instance.GetHealthSlider().maxValue = MaxHealth;
+            GameplayUI.instance.GetHealthSlider().value = CurrentHealth;
         }
 
         if (CurrentHealth >= MaxHealth)

@@ -85,6 +85,27 @@ public class GameManager : MonoBehaviour, ISelfResListener
     [SerializeField]
     private List<MapData> Maps;
     public List<MapData> GetMaps {get {return Maps;}} 
+    [SerializeField] private MapData currentMap;
+
+    public MapData GetCurrentMap(){ return currentMap; }
+    public void SetNewMap(MapData map){
+        if(map == null) return;
+        
+        if(currentMap != null) currentMap.Root.SetActive(false);
+        currentMap = map;
+        currentMap.Root.SetActive(true);
+        
+        GetSpawn.UpdateRoundBasedVars();
+        GetSpawn.GenerateNewEnemyPool();
+        GetSpawn.SetSpawns(currentMap.GetSpawners(KillBox.currentGame.round));
+        
+        AstarPath.active.UpdateGraphs(currentMap.Obstacles.bounds);
+
+        // for (int i = 0; i < Maps.Count; i++)
+        // { Maps[i].Root.SetActive(false); }
+    }
+    
+    public MapData GetMap(){return currentMap;}
 
     // public Color default_map_color;
 
@@ -144,7 +165,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
                 map.DebutRound <= _level &&
                 (map.RetireRound > _level || map.RetireRound == 0) 
                 && map.DebutRound != -1
-                && map.Index != PortalScript.main.CurrentMap) 
+                && map.Index != PortalScript.main.currentMapIndex) 
             {availableIndexes.Add(map.Index);} 
         }
 
@@ -255,8 +276,9 @@ public class GameManager : MonoBehaviour, ISelfResListener
         enemyList.OnStart();
         if(escapeRoom){ AstarPath.active.UpdateGraphs(GetMapByID(20).Obstacles.bounds); }
         else{ 
-            AstarPath.active.UpdateGraphs(GetMapByID(0).Obstacles.bounds); 
-            
+            SetNewMap(GetMapByID(0));
+            // SetNewMap(Maps[0]);
+            // AstarPath.active.UpdateGraphs(GetMapByID(0).Obstacles.bounds); 
         }
         StartCoroutine(StartNumerator());
     }
@@ -568,6 +590,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
         if (!head_start)
         {
+            // Debug.Log("ASDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             GetSpawn.StartSpawnSequence();
             LvlStarter.main.ManualStartLvl();
         }
