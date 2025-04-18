@@ -34,6 +34,7 @@ public class CooldownScript : MonoBehaviour, IRestartListener
     void Start(){
         count_max = 100;
         GameplayUI.instance.GetCooldownSlider().maxValue = count_max;
+        animator = GameplayUI.instance.GetCooldownSlider().GetComponent<Animator>();
         shot = false;
 
         if(id == 0 && GunHandler.Instance.primary_cooldown != null){
@@ -124,16 +125,17 @@ public class CooldownScript : MonoBehaviour, IRestartListener
                 GameplayUI.instance.GetPrimaryCooldownSliderImage().color = shootingGradient.Evaluate((float)count/count_max);
             }
             if(id == 0){ 
-                GameplayUI.instance.GetCooldownText().text = "PRIMARY"; 
+                GameplayUI.instance.GetCooldownText().text = GunHandler.Instance.primary_weapon.name.ToUpper(); 
                 GameplayUI.instance.GetCooldownText().color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.primary_weapon.tier];
             }
             else if(id == 1){ 
-                GameplayUI.instance.GetCooldownText().text = "SECONDARY"; 
                 if(GunHandler.Instance.backup_weapon != null){
+                    GameplayUI.instance.GetCooldownText().text = GunHandler.Instance.backup_weapon.name.ToUpper(); 
                     GameplayUI.instance.GetCooldownText().color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.backup_weapon.tier];
                 }
                 else{
                     GameplayUI.instance.GetCooldownText().color = Color.white;
+                    GameplayUI.instance.GetCooldownText().text = "SECONDARY"; 
                 }
             }
 

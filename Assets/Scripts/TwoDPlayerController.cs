@@ -177,6 +177,8 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
             angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             rb.rotation = angle - 90;
             // rb.rotation = angle;
+
+            // gunTransform.localPosition = new Vector2(gunTransform.position.x, Mathf.Lerp(0.3f, 0.613f, direction.magnitude / pointBlankRange));
             
             if(direction.magnitude <= pointBlankRange){
                 gunDirection = direction.normalized * pointBlankRange + (Vector2)transform.position - (Vector2)gunTransform.position;
