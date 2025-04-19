@@ -68,21 +68,21 @@ public class TipsManager : MonoBehaviour, IWeaponEventListenter, IEquipmentEvent
 
     public void OnRoundStart()
     {
-        ToggleTip(1, false);
-        ToggleTip(2, false);
-        ToggleTip(5, false);
+        // ToggleTip(1, false);
+        // ToggleTip(2, false);
+        // ToggleTip(5, false);
     }
 
 
     public void OnSwitchWeapon(WeaponEventData data)
     {
-        ToggleTip(0, false);
+        // ToggleTip(0, false);
     }
 
     public void OnTriggerEquipment()
     {
 
-        ToggleTip(4, false);
+        // ToggleTip(4, false);
     }
 
     public void OnCloseShop()
@@ -91,12 +91,12 @@ public class TipsManager : MonoBehaviour, IWeaponEventListenter, IEquipmentEvent
     }
     public void OnOpenShop(int shopId)
     {
-        ToggleTip(1, false);
+        // ToggleTip(1, false);
     }
 
     public void OnSetNewWeapon(WeaponItem weaponItem, int slot)
     {
-        ToggleTip(5, false);
+        // ToggleTip(5, false);
     }
 
     // Start is called before the first frame update
@@ -106,6 +106,7 @@ public class TipsManager : MonoBehaviour, IWeaponEventListenter, IEquipmentEvent
     }
 
     void ToggleTip(int index, bool state){
+        if(index >= tip.Length){return;}
         if(state){
             if(!tip[index].activeInHierarchy && !tipInitiated[index] && tooltipsEnabled){
                 tip[index].SetActive(true);

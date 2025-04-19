@@ -110,7 +110,7 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
         }
         else{
 
-                if(!item.Compare(InventoryUIManager.Instance.manager.ScoreCount)){
+                if(!item.Compare(GameManager.main.ScoreCount)){
                     overlay.color = InventoryUIManager.Instance.dim_shade;
                     
                 }
@@ -247,7 +247,7 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
                             overlay.color = Color.clear;
                         }
                         else{
-                            if(!item.Compare(InventoryUIManager.Instance.manager.ScoreCount)){
+                            if(!item.Compare(GameManager.main.ScoreCount)){
                                 overlay.color = InventoryUIManager.Instance.dim_shade;
                                 
                             }

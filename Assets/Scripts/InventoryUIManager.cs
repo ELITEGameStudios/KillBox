@@ -25,8 +25,6 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
 
     public List<InventoryUIElement> main_buttons {get; private set;}
 
-    public GameManager manager;
-
     public bool isOwned {get; private set;}
     public bool is_purchasable {get; private set;}
     [SerializeField] private bool activeMenu;
@@ -75,6 +73,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     }
 
     public void UpdateUI(){
+        if(target_item == null) return;
         OwnedCheck();
         TargetCheck();
     }
@@ -84,7 +83,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
 
         isOwned = false;
 
-        bool is_purchasable = target_item.Compare(manager.ScoreCount);
+        bool is_purchasable = target_item.Compare(GameManager.main.ScoreCount);
 
         for(int i = 0; i < owned_guns.Count; i++){
             if(owned_guns[i].name == target_key){
@@ -112,7 +111,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         equippedSecondary.SetActive(false);
         equippedDual.SetActive(false);
 
-        is_purchasable = target_item.Compare(manager.ScoreCount);
+        is_purchasable = target_item.Compare(GameManager.main.ScoreCount);
 
         if(target_item != null && !isOwned){
 

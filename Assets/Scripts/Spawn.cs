@@ -63,8 +63,8 @@ public class Spawn : MonoBehaviour
     public void UpdateRoundBasedVars()
     {
         
-        if( gameManager.LvlCount != 1){ instances = (int)((2.5 * Mathf.Sqrt(gameManager.Difficulty)) - 16f); }
-        spawnTime = (float) (1/gameManager.difficulty_coefficient)*Mathf.Pow(1.3f, (-gameManager.LvlCount / 1.5f) + 4) + spawnTimeConstant;
+        if( gameManager.LvlCount != 1){ instances = (int)((2.5 * Mathf.Sqrt(GameManager.main.Difficulty)) - 16f); }
+        spawnTime = (float) (1/KillBox.currentGame.difficultyCoefficient)*Mathf.Pow(1.3f, (-KillBox.currentGame.round / 1.5f) + 4) + spawnTimeConstant;
         ended = false;
 
 

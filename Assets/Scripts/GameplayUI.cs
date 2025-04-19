@@ -44,6 +44,9 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private Image dashIndicator;
     [SerializeField] private Color canDashColor, cannotDashColor;
 
+    [Header("Weapon and Stat Upgrade Tabs")]
+    [SerializeField] private TabSystemMaster upgradeTabs;
+    public TabSystemMaster GetUpgradeTabMaster(){return upgradeTabs;}
 
     public static GameplayUI instance {get; private set;}
 

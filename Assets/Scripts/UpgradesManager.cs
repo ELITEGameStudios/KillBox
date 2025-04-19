@@ -21,7 +21,6 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
     [SerializeField] private PlayerHealth health_script;
 
     [SerializeField] private TwoDPlayerController movement_script;
-    public GameManager manager;
 
     public int target_key {get; private set;}
 
@@ -32,7 +31,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
     // public bool purchasable {get; private set;}
 
     private Upgrade target_upgrade;
-
+    
     public static UpgradesManager Instance;
     
     [SerializeField] private UnityEvent onPurchaseAttempt, onBackButton;
@@ -44,7 +43,6 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
         else if(Instance != this) { Destroy(this); }
         
         max_levels = UpgradesList.max_levels;
-        manager = GameManager.main;
 
         for(int i = 0; i < Instance.level_displays.Length; i++){
             Instance.level_displays[i].text = Instance.current_levels[i] + "/" + Instance.max_levels[i]; 
@@ -60,7 +58,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
 
     public void CheckUpgrade(int target, Text text, Button button, Image graphic, Color text_color){
         Upgrade upgrade =  UpgradesList.GetUpgrade(target, Instance);
-        bool purchasable = upgrade.max_level > Instance.current_levels[target] ? upgrade.Compare(manager.ScoreCount, Instance.current_levels[target]) : false;
+        bool purchasable = upgrade.max_level > Instance.current_levels[target] ? upgrade.Compare(GameManager.main.ScoreCount, Instance.current_levels[target]) : false;
 
         // If the selected upgrade is maxed out
         if(Instance.current_levels[target] >= upgrade.max_level){
@@ -107,21 +105,30 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
             return;
 
         }
-        // Check for if the upgrade is purchasable 
-        can_purchase = Instance.target_upgrade.Compare(manager.ScoreCount, Instance.current_levels[Instance.target_key]);
-        // Set the description text of the ui
 
-        // If the selected upgrade can be purchased
-        if(Instance.can_purchase){
-            purchase_button.interactable = true;
-            purchase_button_graphic.color = Instance.purchasable;
-            purchase_display.text = "Purchase "+ Instance.target_upgrade.name + " " + (Instance.current_levels[target_key]+1).ToString();
+        if(GameManager.main != null){
+            // Check for if the upgrade is purchasable 
+            can_purchase = target_upgrade.Compare(GameManager.main.ScoreCount, Instance.current_levels[Instance.target_key]);
+            // Set the description text of the ui
+
+            // If the selected upgrade can be purchased
+            if(Instance.can_purchase){
+                purchase_button.interactable = true;
+                purchase_button_graphic.color = Instance.purchasable;
+                purchase_display.text = "Purchase "+ Instance.target_upgrade.name + " " + (Instance.current_levels[target_key]+1).ToString();
+            }
+            else{
+                purchase_button.interactable = false;
+                purchase_button_graphic.color = Instance.error;
+                purchase_display.text = "You Need "+ Instance.target_upgrade.CostDifference(GameManager.main.ScoreCount, Instance.current_levels[Instance.target_key]).ToString() + 
+                    (target_upgrade.CostDifference(GameManager.main.ScoreCount, Instance.current_levels[Instance.target_key]) > 1 ? " More Tokens" : " More Token");
+            }
         }
         else{
-            purchase_button.interactable = false;
-            purchase_button_graphic.color = Instance.error;
-            purchase_display.text = "You Need "+ Instance.target_upgrade.CostDifference(manager.ScoreCount, Instance.current_levels[Instance.target_key]).ToString() + 
-                (target_upgrade.CostDifference(manager.ScoreCount, Instance.current_levels[Instance.target_key]) > 1 ? " More Tokens" : " More Token");
+                purchase_button.interactable = false;
+                purchase_button_graphic.color = error;
+                purchase_display.text = "Choose an upgrade to PURCHASE";
+
         }
 
         for(int i = 0; i < costDisplays.Length; i++){

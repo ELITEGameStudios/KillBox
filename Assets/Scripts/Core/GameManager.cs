@@ -174,10 +174,24 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
     void Start()
     {
-        _level = 1;
+        _level = KillBox.currentGame.round;
         ScoreCount = 0;
         Dualindex = 0;
         difficulty = 50 * KillBox.currentGame.difficultyCoefficient;
+        switch(KillBox.currentGame.difficultyIndex){
+            case (0):
+                constant = 51;
+                break; 
+            case (1):
+                constant = 51;
+                break; 
+            case (2):
+                constant = 150;
+                break; 
+            default:
+                constant = 51;
+                break; 
+        }
 
         player_render = Player.main.tf.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
 
@@ -213,7 +227,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
         // }
 
         /* 
-        
         ---
         This specifically might be important to keep for reference once I reimplement joystick controls
         ---
@@ -246,11 +259,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
             PlayerPrefs.SetFloat("joystick_size", 0.6f);//joystick_size.value);
         */
-
-        // ----- ULTRA HANDLING ----- 
-
-
-
         time_played += Time.deltaTime;
     }
 
@@ -307,7 +315,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         ObjectPool.ResetAllPools();
         ToggleChannelManager.main.ResetChannels(true);
         SetMaxTokenCount();
-        DifficultyManager.main.SetDifficulty(DifficultyManager.main.index);
+        DifficultyManager.main.SetDifficulty(KillBox.currentGame.difficultyIndex);
         UpdateDifficulty();
         UpgradesManager.Instance.ResetUpgrades();
         GunHandler.Instance.ResetWeapons();
@@ -335,12 +343,13 @@ public class GameManager : MonoBehaviour, ISelfResListener
     }
 
     public void InitNextRound(){
-        _level++;
+        KillBox.currentGame.AdvanceLevel();
+        _level = KillBox.currentGame.round;
         SetMaxTokenCount();
         UpdateDifficulty();
 
-        LvlTxt.text = _level.ToString();
-        ScoreTxt.text = ScoreCount.ToString();
+        // LvlTxt.text = _level.ToString();
+        // ScoreTxt.text = ScoreCount.ToString();
 
     }
 

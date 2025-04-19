@@ -18,9 +18,6 @@ public class LvlStarter : MonoBehaviour
     public Text text;
     public TpScript[] TpScripts;
 
-    [SerializeField]
-    private TabSystemMaster ui_tabs;
-
     public static LvlStarter main {get; private set;}
 
     private IEnumerator lvlStartRefreshable;
@@ -28,7 +25,7 @@ public class LvlStarter : MonoBehaviour
     void Awake()
     {
         if(main == null){ main = this; }
-        else{ Destroy(this); }    
+        else{ Destroy(this); } 
     }
 
     public void ManualStartLvl(){
@@ -91,8 +88,8 @@ public class LvlStarter : MonoBehaviour
             KillboxEventSystem.TriggerBossRoundStartEvent();
         }
 
-
-        ui_tabs.CloseTabs();
+        
+        // GameplayUI.instance.GetUpgradeTabMaster().CloseTabs();
         GunHandler.Instance.SetUIStatus(false);
 
         for(int i = 0; i < OffList.Length; i++)
