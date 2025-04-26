@@ -15,7 +15,7 @@ public class GunHandler : MonoBehaviour
     public WeaponItem equipped_weapon {get; private set;}
     public WeaponItem backup_weapon {get; private set;}
     public WeaponItem dual_weapon {get; private set;}
-    public List<WeaponItem> owned_weapons = new List<WeaponItem>();
+    public List<WeaponItem> owned_weapons;
     public bool current_is_primary {get; private set;}
     public bool owns_dual {get; private set;}
     public bool in_ui {get; private set;}
@@ -37,7 +37,7 @@ public class GunHandler : MonoBehaviour
     {
         if(Instance == null){ Instance = this; }
         else if(Instance != this){ Destroy(this); }
-
+        owned_weapons = new List<WeaponItem>();
     }
 
     void Start(){

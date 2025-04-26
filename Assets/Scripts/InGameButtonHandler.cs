@@ -32,6 +32,9 @@ public class InGameButtonHandler : MonoBehaviour, IShopButtonStateListener, IMai
         childButtonObj.GetComponent<InGamePreGameButtonEventHelper>().SetHandler(this);
         // childButtonObj.transform.GetChild(0).gameObject.GetComponent<Text>().text = "Open Chest\n-" + cost.ToString() + " tokens";
     }
+    void Start(){   
+        GameManager.main.AddInGameButtonHandler(this);
+    }
 
     public void Activate(){active = true; onActivate.Invoke();}
     public void Deactivate(){active = false; onDeactivate.Invoke();}
@@ -81,6 +84,14 @@ public class InGameButtonHandler : MonoBehaviour, IShopButtonStateListener, IMai
 
     void OnDisable(){
         childButtonObj.SetActive(false);
+    }
+
+    public void OpenWeaponsMenu(){
+        InventoryUIManager.Instance.GetBackground().gameObject.SetActive(true);
+    }
+
+    public void OpenUpgradesMenu(){
+        UpgradesManager.Instance.GetBackground().gameObject.SetActive(true);
     }
 
     public void OnAnimationFinished()

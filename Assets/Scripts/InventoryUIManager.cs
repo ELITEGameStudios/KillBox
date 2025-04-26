@@ -30,7 +30,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     [SerializeField] private bool activeMenu;
 
     [SerializeField]
-    private ShopScript shop;
+    private ShopScript shop {get {return GameManager.main.shopScript;}}
 
     private WeaponItem target_item;
 
@@ -39,9 +39,10 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     public InventoryUIElement primary_element, secondary_element, dual_element;
     
     [SerializeField] private UnityEvent onPurchaseAttempt, onBackButton;
-    [SerializeField] private bool firstFrame;
+    [SerializeField] private bool firstFrame, uiInitialized;
 
     public string target_key;
+    public Image GetBackground() {return background;}
 
     private void Awake()
     {
@@ -57,7 +58,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         main_buttons = new List<InventoryUIElement>();
         activeMenu = false;
     }
-    void Start(){
+    public void Initialize(){
         OnSetTargetKey("Pistol");
     }
 
@@ -74,6 +75,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
 
     public void UpdateUI(){
         if(target_item == null) return;
+        if(!uiInitialized){InitializeUI(); uiInitialized = true;}
         OwnedCheck();
         TargetCheck();
     }
@@ -227,9 +229,8 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     public void OnSetTargetKey(string key)
     {
 
-        Instance.target_key = key;
-
-        Instance.target_item = WeaponItemList.Instance.GetItem(target_key);
+        target_key = key;
+        target_item = WeaponItemList.Instance.GetItem(target_key);
 
         KillboxEventSystem.TriggerWeaponButtonSelectEvent(target_item);
         
@@ -384,6 +385,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     {
         if(pressedThisFrame && background.gameObject.activeInHierarchy){
             onBackButton.Invoke();
+            GameManager.main.SetInGameButtonHandlers(true);
             KillboxEventSystem.TriggeCloseShopEvent();
             activeMenu = false;
         }

@@ -80,10 +80,17 @@ public class WeaponItemList : MonoBehaviour
             Instance = this;
         }
 
+        
         for(int i = 0; i < textures.Count; i++)
         {
             Instance.weapon_items[i].SetGraphic(textures[i]);
         }
+
+
+    }
+
+    void Start(){
+        InventoryUIManager.Instance.Initialize();
     }
 
     public WeaponItem GetItem(string key)

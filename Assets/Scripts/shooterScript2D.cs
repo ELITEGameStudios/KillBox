@@ -278,7 +278,6 @@ public class shooterScript2D : MonoBehaviour
             clone.AddForce(Spawn.up * Velocity);
             Spawn.localEulerAngles = SpawnRot;
             audio.pitch = Random.Range(0.9f, 1.1f) + GunHandler.Instance.cooldown.CurrentChargeNormalized;
-            Debug.Log(audio.pitch);
             audio.Play();
 
             GunHandler.Instance.cooldown.AddCount(this, cooldown_units);

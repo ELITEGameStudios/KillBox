@@ -106,7 +106,7 @@ public class GameplayUI : MonoBehaviour
     }
 
     public void Initialize(){
-        InventoryUIManager.Instance.InitializeUI();
+        // InventoryUIManager.Instance.InitializeUI();
         // if(QualityControl.main.ShadowIndex == 0) {QualityControl.main.ShadowToggle.isOn = false;}
         // else {QualityControl.main.ShadowToggle.isOn = true;}
     }

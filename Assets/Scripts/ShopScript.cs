@@ -62,7 +62,7 @@ public class ShopScript : MonoBehaviour
         if (result != -1)
         {
             manager.ScoreCount = result;
-            ChallengeFields.UpdateUpgrades(this, upgrade, level);
+            // ChallengeFields.UpdateUpgrades(this, upgrade, level);
             KillboxEventSystem.TriggerPurchaseUpgradeEvent( upgrade, upgrade.costs[level], level);
             return 1;
         }

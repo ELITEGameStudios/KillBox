@@ -12,12 +12,21 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
     private string weapon_key;
 
     [SerializeField]
-    private WeaponItem item;
+    private WeaponItem item {
+        get {
+            try {
+                return WeaponItemList.Instance.GetItem(weapon_key);
+            }
+            catch{
+                return null;
+            }
+        }
+    }
 
     [SerializeField]
     private Image overlay, main_img, gun_img;
 
-    [SerializeField] private bool assigned, is_main, selected;
+    [SerializeField] private bool assigned, is_main, selected, initialized;
 
     [SerializeField]
     private int tier, type;
@@ -48,12 +57,13 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
     }
     void Start()
     {
+        if(!initialized){InitializeUIElement();}
         InventoryUIManager.Instance.AddMainButton(this);
     }
 
     public void InitializeUIElement(){
-        item = WeaponItemList.Instance.GetItem(weapon_key);
-        if(item != null){
+        // item = WeaponItemList.Instance.GetItem(weapon_key);
+        if(item != null && !initialized){
             tier = item.tier;
 
             //Sprite new_sprite = Sprite.Create(item.graphic, new Vector2(0.5f, 0.5f));
@@ -69,6 +79,9 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
                 mainButton.colors = colourBlock;
                 main_img.color = InventoryUIManager.Instance.tier_colors[tier]; 
             }
+
+            initialized = true;
+            Debug.Log("Hehehehaw");
         }
 
         if(is_main){

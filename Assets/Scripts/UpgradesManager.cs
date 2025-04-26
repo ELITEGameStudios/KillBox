@@ -9,7 +9,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
 {
     public int[] current_levels {get; private set;} = new int[] {0, 0, 0, 0, 0};
 
-    [SerializeField] private ShopScript shop;
+    [SerializeField] private ShopScript shop {get {return GameManager.main.shopScript;}}
 
     public Color purchasable, error, purchasable_text_color;
     [SerializeField] private Color[] desc_panel_colors;
@@ -181,12 +181,12 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
         }
 
         if(reset){
-            Instance.movement_script.speed = 5;
+            Player.main.movement.speed = 5;
         }
         else if(Instance.current_levels[0] > 0){
-            Instance.movement_script.speed = UpgradesList.speed.values[Instance.current_levels[0] - 1];
+            Player.main.movement.speed = UpgradesList.speed.values[Instance.current_levels[0] - 1];
         }
-        Instance.health_script.MaxHealthCheck();
+        Player.main.health.MaxHealthCheck();
         GunHandler.Instance.primary_cooldown.CheckUpgrades(reset);
         GunHandler.Instance.secondary_cooldown.CheckUpgrades(reset);
 
@@ -206,6 +206,8 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
         UpdateStats(true);
         SetKey(0);
     }
+
+    public Image GetBackground(){return backgroundImage;}
 
     void Update(){
         if(can_purchase && backgroundImage.gameObject.activeInHierarchy){
@@ -235,6 +237,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
     public void OnBackButton(bool pressedThisFrame)
     {
         if(pressedThisFrame && backgroundImage.gameObject.activeInHierarchy){
+            GameManager.main.SetInGameButtonHandlers(true);
             onBackButton.Invoke();
             KillboxEventSystem.TriggeCloseShopEvent();
         }

@@ -135,7 +135,7 @@ public class ChallengeFields {
 
     public static void load(ChallengeData data){
 
-        firstSavePrep();
+        // firstSavePrep();
         //player_xp = data.player_xp;
         //HUNTER_COMPLETED = data.hunter_challenge_status;
         //HUNTER_CLAIMED = data.hunter_challenge_claimed;
@@ -162,10 +162,11 @@ public class ChallengeFields {
         //wielded_specialists = data.wielded_specialists;
         //guns_purchased = data.guns_purchased;
         
-        AssignData();
+        // AssignData();
     }
 
     public static void AssignData(){
+        return;
         for (int a = 0; a < ChallengeLib.HUNTER.Length; a++) { 
             for (int i = 0; i < ChallengeLib.HUNTER[a].Length; i++) { ChallengeLib.HUNTER[a][i].InitData(a, i); };
         }
@@ -188,6 +189,8 @@ public class ChallengeFields {
     }
 
     public static void CompleteChallenge(Challenge challenge){
+        return;
+
         Debug.Log(challenge);
         switch (challenge.type){
             case "HUNTER":
@@ -268,6 +271,7 @@ public class ChallengeFields {
 
     public static void UpdateUpgrades(ShopScript shopScript, Upgrade upgrade, int level)
     {
+        return;
         level +=1 ;
         switch (upgrade.name){
             case "HEALTH":
@@ -321,6 +325,8 @@ public class ChallengeFields {
 
     public static void UpdateRound(GameManager gameManager, bool fire_round)
     {
+        return;
+
         if(fire_round){
             fire_rounds_survived++;
         }
@@ -435,6 +441,7 @@ public class ChallengeLib{
     };
 
     public static void UpdateChallengeValues(string type, string req_type, int value){
+        return;
         List<Challenge> target_lists = GetTypes(type, req_type);
 
         for(int i = 0; i < target_lists.Count; i++){
@@ -449,12 +456,14 @@ public class ChallengeLib{
         }
     }
     public static void UpdateChallenge(Challenge challenge, int value){
+        return;
         if(challenge.TestRequirement(value) == true)
         {
             ChallengeFields.CompleteChallenge(challenge);
         }
     }
     public static List<Challenge> GetTypes(string type, string req_type){
+        return null;
         List<Challenge> return_list = new List<Challenge>();
 
         switch (type){

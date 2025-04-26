@@ -86,8 +86,10 @@ public class GameManager : MonoBehaviour, ISelfResListener
     private List<MapData> Maps;
     public List<MapData> GetMaps {get {return Maps;}} 
     [SerializeField] private MapData currentMap;
-
     public MapData GetCurrentMap(){ return currentMap; }
+
+    [SerializeField] private List<InGameButtonHandler> inGameButtonHandlers;
+
     public void SetNewMap(MapData map){
         if(map == null) return;
         
@@ -125,6 +127,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         else if(main != this){ Destroy(this); }
         game = KillBox.currentGame;
         difficulty_coefficient = game.difficultyCoefficient;
+        inGameButtonHandlers = new();
 
     }
 
@@ -172,6 +175,15 @@ public class GameManager : MonoBehaviour, ISelfResListener
         return availableIndexes;
     }
 
+    public void AddInGameButtonHandler(InGameButtonHandler handler){
+        inGameButtonHandlers.Add(handler);
+    }
+    public void SetInGameButtonHandlers(bool active){
+        foreach (InGameButtonHandler item in inGameButtonHandlers){
+            if(active){item.Activate();}
+            else{item.Deactivate();}
+        }
+    }
     void Start()
     {
         _level = KillBox.currentGame.round;
