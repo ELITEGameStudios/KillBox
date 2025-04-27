@@ -41,6 +41,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     [SerializeField]
     private Toggle dmgVolumeToggle;
     private Toggle cameraShakeToggle;
+    public int[] defaultHealth;
 
     void Start(){
         dmgVolumeToggle = QualityControl.main.DmgVolumeToggle;
@@ -263,10 +264,12 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
             CurrentHealth = MaxHealth;
         }
         else{
-            if (SelfReviveTokenManager.main.CanSelfRes()){
-                Debug.Log("promped");
-                KillboxEventSystem.TriggerSelfResPromptEvent();
-            }
+            if(SelfReviveTokenManager.main != null){
+                if (SelfReviveTokenManager.main.CanSelfRes()){
+                    Debug.Log("promped");
+                    KillboxEventSystem.TriggerSelfResPromptEvent();
+                }
+            }  
             Die();
         }
     }
@@ -316,7 +319,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     public void MaxHealthCheck(){
         if(UpgradesManager.Instance.current_levels[1] > 0){
             float value = UpgradesList.health.values[UpgradesManager.Instance.current_levels[1] - 1];
-            MaxHealth = DifficultyManager.main.defaultHealth + ((int)value - 250);
+            MaxHealth = defaultHealth[KillBox.currentGame.difficultyIndex] + ((int)value - 250);
             regen = true;
             regenToggle = false;
         }

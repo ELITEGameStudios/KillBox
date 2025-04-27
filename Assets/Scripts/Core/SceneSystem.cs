@@ -132,7 +132,7 @@ public class SceneSystem : MonoBehaviour
 
         MainMenuManager.instance.OnGameSceneLoad(); 
         FadeManager.instance.SetTarget(false, flexibleTransitionTime);
-        GameManager.main.StartGame();
+        KillBox.currentGame.StartGame();
 
         // currentMapScene = SceneManager.GetSceneByName(mapSceneNames[0]);
         gameScene = SceneManager.GetSceneByName(gameSceneName);

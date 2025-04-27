@@ -48,9 +48,12 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private TabSystemMaster upgradeTabs;
     public TabSystemMaster GetUpgradeTabMaster(){return upgradeTabs;}
 
+
+    [Header("Death UI")]
+    [SerializeField] private GameObject selfResButton;
+    public GameObject GetSelfResButton(){return selfResButton;}
+
     public static GameplayUI instance {get; private set;}
-
-
 
     // Start is called before the first frame update
     void Awake(){
@@ -68,8 +71,11 @@ public class GameplayUI : MonoBehaviour
                 SetAllText(scorekeepers, GameManager.main.ScoreCount.ToString());
                 SetAllText(pbKeepers, KillBox.main.PBInt.ToString());
                 
-                healthSlider.value = Player.main.health.CurrentHealth;
-                healthText.text = Player.main.health.CurrentHealth.ToString();
+                if(Player.main.health != null){
+                    healthSlider.value = Player.main.health.CurrentHealth;
+                    healthText.text = Player.main.health.CurrentHealth.ToString();
+                }
+                
                 enemiesLeftText.text = EnemyCounter.main.enemiesInScene.ToString();
 
                 if(Player.main.movement.canDash){

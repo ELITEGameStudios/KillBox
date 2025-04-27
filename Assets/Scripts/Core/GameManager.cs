@@ -303,6 +303,10 @@ public class GameManager : MonoBehaviour, ISelfResListener
         StartCoroutine(StartNumerator());
     }
 
+    public void EndGame(){
+        
+    }
+
     public void RestartGame(){
         // FadeObj.SetActive(true);
         // FadeAnimator.Play("FadeAnim");

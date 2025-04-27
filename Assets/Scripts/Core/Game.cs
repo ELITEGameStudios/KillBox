@@ -52,6 +52,13 @@ public class Game
         tokensCollectedOverall++;
     }
 
+    public void StartGame(){
+
+        lifetime = Lifetime.STARTED;
+        GameManager.main.StartGame();
+    
+    }
+
     public void LogUsedTokens(int tokensUsed){
         this.tokensUsed += tokensUsed;
         // tokens--;
