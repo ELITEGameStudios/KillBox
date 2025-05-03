@@ -141,6 +141,11 @@ public class KillboxEventSystem : MonoBehaviour
         { listener.OnRestartGame(); }
     } 
 
+    public static void TriggerReturnToMenuEvent(){
+        foreach (IRestartListener listener in FindObjectsOfType<MonoBehaviour>().OfType<IRestartListener>())
+        { listener.OnReturnToMenu(); }
+    } 
+
     public static void TriggerDashEvent(){
         foreach (IPlayerEventListener listener in FindObjectsOfType<MonoBehaviour>().OfType<IPlayerEventListener>())
         { listener.OnDash(); }
@@ -255,6 +260,7 @@ public interface ISelfResListener{
 
 public interface IRestartListener{
     public void OnRestartGame();
+    public virtual void OnReturnToMenu(){}
 }
 
 public interface IBackButtonListener{

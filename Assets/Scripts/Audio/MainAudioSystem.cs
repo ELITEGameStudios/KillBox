@@ -37,7 +37,7 @@ public class MainAudioSystem : MonoBehaviour
             main = this;
         }
         else if(main != this){
-            Destroy(this);
+            Destroy(gameObject);
         }
 
         DontDestroyOnLoad(gameObject);

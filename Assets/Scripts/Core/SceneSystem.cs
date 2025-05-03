@@ -52,6 +52,11 @@ public class SceneSystem : MonoBehaviour
         StartCoroutine(LoadAdditiveCoroutine(sceneName));
     }
 
+    public void LoadMainMenu(){
+        SceneManager.LoadScene(2);
+        UpdateSceneData();
+    }
+
     public void UnloadScene(string sceneName){
         
         for (int i = 0; i < scenes.Count; i++)

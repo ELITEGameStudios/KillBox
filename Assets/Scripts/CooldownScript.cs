@@ -236,5 +236,7 @@ public class CooldownScript : MonoBehaviour, IRestartListener
     {
         if(id == 1) {GameplayUI.instance.GetCooldownText().color = Color.white;}
     }
+    public void OnReturnToMenu()
+    {}
 
 }

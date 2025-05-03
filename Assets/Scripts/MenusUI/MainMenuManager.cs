@@ -93,6 +93,11 @@ public class MainMenuManager : MonoBehaviour
         menusComponents.SetActive(false);
         foreach(GameObject cam in menuCameras){cam.SetActive(false);}
     }
+
+    public void End(){
+        instance = null;
+        Destroy(gameObject);
+    }
     
     
     public void OpenMenuViaState(MenuState newState, bool doCoroutine = true, bool crossFade = false, float customFadeOut = -1){

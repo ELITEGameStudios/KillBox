@@ -304,7 +304,10 @@ public class GameManager : MonoBehaviour, ISelfResListener
     }
 
     public void EndGame(){
-        
+        main = null;
+        MainMenuManager.instance.End();
+        KillboxEventSystem.TriggerReturnToMenuEvent();
+        SceneSystem.Instance.LoadMainMenu();
     }
 
     public void RestartGame(){
