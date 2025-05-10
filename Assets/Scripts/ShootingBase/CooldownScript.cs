@@ -78,7 +78,7 @@ public class CooldownScript : MonoBehaviour, IRestartListener
 
                 else if(id == 1){InventoryUIManager.Instance.secondary_element.Flip();}
                 if(id == 0){InventoryUIManager.Instance.primary_element.Flip();}
-                (primaryGun ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = count_max;
+                (id == 0 ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = count_max;
 
                 cooling_down = false;
                 animator.CrossFade("Normal", 0.75f);
@@ -103,8 +103,8 @@ public class CooldownScript : MonoBehaviour, IRestartListener
                     GameplayUI.instance.GetPrimaryCooldownSliderImage().color = cooldownGradient.Evaluate((float)timer/cooldown_time);
                 }
 
-                (primaryGun ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = cooldown_time;
-                (primaryGun ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).value = timer;
+                (id == 0 ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = cooldown_time;
+                (id == 0 ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).value = timer;
                 GameplayUI.instance.GetSecondaryCooldownSliderImage().color = cooldownGradient.Evaluate((float)timer/cooldown_time);
             }
         }
@@ -140,8 +140,8 @@ public class CooldownScript : MonoBehaviour, IRestartListener
             }
 
             GameplayUI.instance.GetSecondaryCooldownSliderImage().color = shootingGradient.Evaluate((float)count/count_max);
-            (primaryGun ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = count_max;
-            (primaryGun ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).value = count;
+            (id == 0 ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = count_max;
+            (id == 0 ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).value = count;
 
             
         }
@@ -157,8 +157,8 @@ public class CooldownScript : MonoBehaviour, IRestartListener
         GameplayUI.instance.GetCooldownSlider().maxValue = set_time;
         GameplayUI.instance.GetCooldownSlider().value = set_time;
 
-        (primaryGun ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = set_time;
-        (primaryGun ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).value = set_time;
+        (id == 0 ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = set_time;
+        (id == 0 ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).value = set_time;
         
         timer = set_time;
         cooling_down = true;
