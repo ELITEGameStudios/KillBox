@@ -54,8 +54,8 @@ namespace KillboxWeaponClasses
         public static readonly Weapon lightAR = new Weapon(0.15f, 5, 120, 10, 1, 45);
         public static readonly Weapon tacticalAR = new Weapon(0.1f, 3.13f, 150, 15, 1, 80);
         public static readonly Weapon heavyAR = new Weapon(0.1f, 5f, 175, 4, 1, 140, penetration_input: 1);
-        public static readonly Weapon combatAR = new Weapon(0.08f, 3.13f, 200, 15, 1, 145);
-        public static readonly Weapon goldenAR = new Weapon(0.1f, 2f, 250, 10, 1, 200, penetration_input: 1);
+        public static readonly Weapon combatAR = new Weapon(0.15f, 3.13f, 200, 15, 1, 160, penetration_input: 1);
+        public static readonly Weapon goldenAR = new Weapon(0.1f, 2f, 250, 10, 1, 200, penetration_input: 2);
 
         public static readonly Weapon lightBurstRifle = new Weapon(0.12f, 6, 150, 15, 1, 55, burst_input: true);
         public static readonly Weapon speedyBurstRifle = new Weapon(0.05f, 4, 150, 20, 1, 60, burst_input: true, burst_interval_input: 0.25f);
@@ -64,7 +64,7 @@ namespace KillboxWeaponClasses
         public static readonly Weapon goldenBurstRifle = new Weapon(0.01f, 2, 220, 10, 1, 200, burst_input: true, burst_quantity_input: 5, burst_interval_input: 0.2f);
 
         public static readonly Weapon lightSmg = new Weapon(0.1f, 3, 120, 20, 0.5f, 20);
-        public static readonly Weapon tacticalSmg = new Weapon(0.07f, 3, 120, 20, 0.5f, 30);
+        public static readonly Weapon tacticalSmg = new Weapon(0.07f, 3, 120, 20, 0.5f, 35);
         public static readonly Weapon beamSmg = new Weapon(0.01f, 0.75f, 125, 0, 0.5f, 20);
         public static readonly Weapon combatSmg = new Weapon(0.04f, 1.5f, 135, 25, 0.30f, 70);
         public static readonly Weapon goldenSmg = new Weapon(0.05f, 1.5f, 200, 35, 0.8f, 100);
@@ -77,12 +77,12 @@ namespace KillboxWeaponClasses
         public static readonly Weapon goldenShotgun = new Weapon(0.4f, 0.5f, 150, 30, 0.9f, 75, bps: 15, penetration_input: 1);
 
         public static readonly Weapon lightMarksman = new Weapon(0.5f, 10f, 170, 0, 2, 100);
-        public static readonly Weapon musket = new Weapon(0.5f, 10f, 155, 0, 3, 75, bps: 1, penetration_input: 5);
+        public static readonly Weapon musket = new Weapon(0.5f, 10f, 230, 0, 3, 100, bps: 1, penetration_input: 5);
         public static readonly Weapon heavyRifle = new Weapon(0.4f, 7.5f, 170, 0, 2, 300, penetration_input: 2);
-        public static readonly Weapon combatRifle = new Weapon(0.3f, 6.5f, 170, 0, 2, 200, penetration_input: 1);
-        public static readonly Weapon goldenRifle = new Weapon(0.5f, 5.5f, 170, 0, 2, 600, penetration_input: 4);
+        public static readonly Weapon combatRifle = new Weapon(0.25f, 6f, 230, 0, 2, 200, penetration_input: 1);
+        public static readonly Weapon goldenRifle = new Weapon(0.5f, 5.5f, 300, 0, 2, 600, penetration_input: 4);
 
-        public static readonly Weapon lightGrenadeLauncher = new Weapon(0.75f, 25f, 120, 10, 5f, 100, pool_input: 10);
+        public static readonly Weapon lightGrenadeLauncher = new Weapon(0.75f, 25f, 120, 10, 5f, 150, pool_input: 10);
         public static readonly Weapon doubleLauncher = new Weapon(0.75f, 20f, 140, 10, 5f, 300, bps: 2, pool_input:10);
         public static readonly Weapon tripwireLauncher = new Weapon(0.2f, 2f, 3, 50, 15f, 75, bps: 6, pool_input: 10);
         public static readonly Weapon burstLauncher = new Weapon(0.1f, 10f, 150, 20, 10f, 350, burst_input: true, burst_quantity_input: 3, burst_interval_input: 0.5f, pool_input: 10);
