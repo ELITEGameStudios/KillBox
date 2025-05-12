@@ -21,9 +21,6 @@ public class PortalScript : MonoBehaviour
 
     [SerializeField]
     private Animator overlay_anim;
-    
-    [SerializeField]
-    private PlayerHealth player_hp;
 
     [SerializeField]
     private ShopScript shop;
@@ -140,8 +137,8 @@ public class PortalScript : MonoBehaviour
 
         ChallengeFields.UpdateRound(gameManagerVar, gameManagerVar.isFireRound);
         // Damageless Code:
-        if(player_hp.isDamageless){gameManagerVar.OnPickupToken(1, false);}
-        player_hp.isDamageless = true;
+        if(Player.main.health.isDamageless){gameManagerVar.OnPickupToken(1, false);}
+        Player.main.health.isDamageless = true;
         if(BossRoundManager.main.isBossRound){gameManagerVar.OnPickupToken(7, false);}
         else{gameManagerVar.OnPickupToken(1, false);}
         gameManagerVar.InitNextRound();
