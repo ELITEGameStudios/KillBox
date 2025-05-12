@@ -225,6 +225,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
             // CurrentHealth -= (int)(Dmg * (1 - (0.05f * buffsManager.buff_strength[0])));
             CurrentHealth -= (Dmg);
             immune = true;
+            isDamageless = false;
 
             if (immunity_time == 0)
             {
