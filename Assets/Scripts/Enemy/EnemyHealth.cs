@@ -77,7 +77,7 @@ public class EnemyHealth : MonoBehaviour
         profile.Retire();
         if(triggerDeathEvent){onDie.Invoke();}
         
-        a = Random.Range(1, 6);
+        a = Random.Range(1, 9);
         if (a == 1 && !no_drops && !BossRoundManager.main.isBossRound && to_player)
         {
             //DpdItemClone = Instantiate(DroppedItem, transform);
