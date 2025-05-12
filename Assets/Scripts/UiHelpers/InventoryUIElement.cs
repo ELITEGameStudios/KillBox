@@ -118,35 +118,6 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
         }
     }
 
-    // Start is called before the first frame update
-    public void OnOwnedCheck(){
-
-        if(type != 0){
-            return;
-        }
-
-        // main_img.color = InventoryUIManager.Instance.tier_colors[tier];
-        // main_img.color = Color.clear;
-        // gun_img.color = InventoryUIManager.Instance.tier_colors[tier];
-        
-
-        // if(item.owned){
-        //     overlay.color = Color.clear;
-        //     //main_img.color = InventoryUIManager.Instance.tier_colors[tier];
-        //     //gun_img.color = InventoryUIManager.Instance.tier_colors[tier];
-        // }
-        // else{
-
-        //         if(!item.Compare(GameManager.main.ScoreCount)){
-        //             overlay.color = InventoryUIManager.Instance.dim_shade;
-                    
-        //         }
-        //         else{
-        //             overlay.color = InventoryUIManager.Instance.purchasable_shade;
-        //         }
-        // }
-    }
-
     public void OnTargetCheck(){
 
         if(type != 0){
@@ -154,14 +125,9 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
         }
         
         if(InventoryUIManager.Instance.target_key == weapon_key){
-
             main_img.color = Color.white;
             gun_img.color = Color.white;
-            // overlay.color = Color.clear;
         }
-        //else{
-        //    overlay.color = InventoryUIManager.Instance.dim_shade;
-        //}
     }
 
     public void EquipDisplay(){
@@ -247,47 +213,57 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
     }
 
     void Update(){
+        
+        // Dim level variable handling
+        if(tier > 1){ 
+            if(tier < 4){ // High tier weapons
+                if(KillBox.currentGame.hasUpgradedArsenal){dimLevel = 1;}
+                else{dimLevel = 0.15f;}
+            }
+            else{ // Gold weapons
+                if(KillBox.currentGame.specialUpgrade == 2){dimLevel = 1;}
+                else{dimLevel = 0.15f;}
+            }
+        }
+
+        // This button is selected
         if(InventoryUIManager.Instance.target_key == weapon_key && type == 0){ // Should be selected here??
             Debug.Log("Hi! I should be selected...");
             bool purchasable = item.Compare(GameManager.main.ScoreCount);
-            gun_img.transform.localScale = Vector3.Lerp(initScale, initScale + new Vector3(0.2f, 0.2f, 0.2f),CommonFunctions.SineEase(timer/ (purchasable ? 0.5f : 1)));
-            timer += Time.deltaTime;
 
-            // maybe delete
+            gun_img.transform.localScale = Vector3.Lerp(initScale, initScale + new Vector3(0.2f, 0.2f, 0.2f),CommonFunctions.SineEase(timer/ (purchasable ? 0.5f : 1)));
             main_img.color = Color.white;
             gun_img.color = Color.white;
-            // overlay.color = Color.clear;
+            
+            timer += Time.deltaTime;
         }
+
+        // This button is not selected
         else{
             gun_img.transform.localScale = initScale;
 
             if(type == 0){
-            // overlay.color = Color.clear;
+                main_img.color = Color.clear;
+                if(item != null){
 
-                // if(selected){
-                //     main_img.color = Color.white;
-                //     gun_img.color = Color.white;
-                // }
-                // else{
-                    main_img.color = Color.clear;
+                    // This weapon is owned
+                    if(item.owned){ // The player owns this weapon
+                        gun_img.color = InventoryUIManager.Instance.tier_colors[tier];
+                        overlay.color = Color.Lerp( Color.clear, InventoryUIManager.Instance.tier_colors[tier], 0.5f);
+                        // overlay.color = Color.clear;
+                    }
 
-                    if(item != null){
+                    // This weapon is not owned
+                    else{
 
-                        if(item.owned){ // The player owns this weapon
-                            gun_img.color = InventoryUIManager.Instance.tier_colors[tier];
-                            overlay.color = Color.Lerp( Color.clear, InventoryUIManager.Instance.tier_colors[tier], 0.5f);
-                            // overlay.color = Color.clear;
-                        }
-                        else{
-                            gun_img.color = Color.Lerp(Color.black, InventoryUIManager.Instance.tier_colors[tier], dimLevel);
-                                
-                            if(item.Compare(GameManager.main.ScoreCount)){
-                                // The player can buy this weapon
-                                main_img.color = Color.Lerp(Color.clear, InventoryUIManager.Instance.purchasable_shade, CommonFunctions.SineNormalize(Time.timeSinceLevelLoad, 2));
-                            }
+                        gun_img.color = Color.Lerp(Color.black, InventoryUIManager.Instance.tier_colors[tier], dimLevel);
+                            
+                        if(item.Compare(GameManager.main.ScoreCount)){
+                            // The player can buy this weapon
+                            main_img.color = Color.Lerp(Color.clear, InventoryUIManager.Instance.purchasable_shade, CommonFunctions.SineNormalize(Time.timeSinceLevelLoad, 2));
                         }
                     }
-                // }
+                }
             }
         }
 

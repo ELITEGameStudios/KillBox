@@ -28,15 +28,13 @@ public class EnemyList : MonoBehaviour
 
     [SerializeField]
     private int boss_round_counter = 11;
+    public static EnemyList instance { get; private set; }
 
     void Awake(){
-        //has_appeared_prior = new bool[5]{
-        //    false,
-        //    false,
-        //    false,
-        //    false,
-        //    false
-        //};
+
+        if(instance == null){instance = this;}
+        else if(instance != this){Destroy(this);}
+        
         map_compatible = new bool[5]{
             false,
             false,
@@ -45,13 +43,6 @@ public class EnemyList : MonoBehaviour
             false
         };
 
-        //boss_spawn_cooldown = new int[5]{
-        //    0,
-        //    0,
-        //    0,
-        //    0,
-        //    0
-        //};
 
         has_appeared_this_round = new bool[5]{
             false,
