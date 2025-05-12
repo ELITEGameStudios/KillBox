@@ -5,12 +5,6 @@ using UnityEngine.InputSystem;
 
 public class HotkeyManager : MonoBehaviour
 {
-    public PauseHandler pauseHandler;
-    public GameManager manager;
-    
-
-    [SerializeField] private TwoDPlayerController p_control;
-    [SerializeField] private bool mobile;
 
     public GameObject inv_bg, upgrades_bg, inv_bt, upgrades_bt, pause_bg, pause_bt; 
     private bool equipment_pressed, switch_weapon_pressed, upgrades_pressed, weapons_pressed, pause_pressed; 
@@ -18,8 +12,12 @@ public class HotkeyManager : MonoBehaviour
     private float equipment_float, switch_weapon_float, upgrades_float, weapons_float, pause_float; 
     InputManager hotkeys; 
 
+    public static HotkeyManager instance {get; private set;}
+
     void Awake()
     {
+        if(instance == null){instance = this;}
+        else if(instance != this){Destroy(this);}
         
         hotkeys = new InputManager();
 
@@ -87,14 +85,14 @@ public class HotkeyManager : MonoBehaviour
                         pause_bt.SetActive(true);
                         GunHandler.Instance.SetUIStatus(false);
 
-                        pauseHandler.PausePlay(1);
+                        PauseHandler.main.PausePlay(1);
                     }
                     else{
                         pause_bg.SetActive(true);
                         pause_bt.SetActive(false);
 
                         GunHandler.Instance.SetUIStatus(true);
-                        pauseHandler.PausePlay(0);
+                        PauseHandler.main.PausePlay(0);
                     }
                 }
                 
@@ -131,11 +129,6 @@ public class HotkeyManager : MonoBehaviour
                 }
             }   
 
-            if(Input.GetKeyDown(CustomKeybinds.main.Ultramode) || equipment_pressed){
-                if(manager.ultra_kills >= manager.ReqUltraKills){
-                    EquipmentManager.instance.ActivateEquipment();
-                }
-            }   
 
             // if(Input.GetKeyDown("p")){
             //     p_control.controller = !p_control.controller;
@@ -143,25 +136,34 @@ public class HotkeyManager : MonoBehaviour
             // }   
 
             // FOR FREEPLAY MODE ONLY
-            if(GameManager.main.freeplay){
+            if(GameManager.main != null){
+                
+                if(Input.GetKeyDown(CustomKeybinds.main.Ultramode) || equipment_pressed){
 
-                if(Input.GetKeyDown(CustomKeybinds.main.AddRound)){
-                    GameManager.main.AddRound(1);
-                }   
-                if(Input.GetKeyDown(CustomKeybinds.main.DecreaseRound)){
-
-                    if(GameManager.main.LvlCount > 1) GameManager.main.AddRound(-1);
-                }   
-
-
-
-                if(Input.GetKeyDown(CustomKeybinds.main.AddScore)){
-                    GameManager.main.AddScore(1);
-                }   
-                if(Input.GetKeyDown(CustomKeybinds.main.DecreaseScore)){
-                    if(GameManager.main.ScoreCount > 0) GameManager.main.AddScore(-1);
+                    if(GameManager.main.ultra_kills >= GameManager.main.ReqUltraKills){
+                        EquipmentManager.instance.ActivateEquipment();
+                    }
                 }   
 
+                if(GameManager.main.freeplay){
+
+                    if(Input.GetKeyDown(CustomKeybinds.main.AddRound)){
+                        GameManager.main.AddRound(1);
+                    }   
+                    if(Input.GetKeyDown(CustomKeybinds.main.DecreaseRound)){
+
+                        if(GameManager.main.LvlCount > 1) GameManager.main.AddRound(-1);
+                    }   
+
+
+
+                    if(Input.GetKeyDown(CustomKeybinds.main.AddScore)){
+                        GameManager.main.AddScore(1);
+                    }   
+                    if(Input.GetKeyDown(CustomKeybinds.main.DecreaseScore)){
+                        if(GameManager.main.ScoreCount > 0) GameManager.main.AddScore(-1);
+                    }   
+                }
             }
         }
         //if(Input.GetKeyDown("i")){

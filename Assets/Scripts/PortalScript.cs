@@ -62,6 +62,7 @@ public class PortalScript : MonoBehaviour
         if (Mode == 3){
             BossRoundCounterUI.main.UpdateDisplay(true);
         }
+        
     }
 
     void Awake(){
@@ -73,10 +74,6 @@ public class PortalScript : MonoBehaviour
         }
     }
 
-    //async Task LoadPathfindingTask(){
-    //    AstarPath.active.UpdateGraphs(Maps[CurrentMap].Obstacles.bounds);
-    //    Task.Yield();
-    //}
     async void LoadPathfinding(){
         await Task.Run(() =>
         {
