@@ -218,44 +218,6 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
         }
     }
 
-    public void TakeImmediateDmg(int Dmg, float immunity_time)
-    {
-        if (ultraManager.IsUltra == false)
-        {
-            // CurrentHealth -= (int)(Dmg * (1 - (0.05f * buffsManager.buff_strength[0])));
-            CurrentHealth -= (Dmg);
-            immune = true;
-            isDamageless = false;
-
-            if (immunity_time == 0)
-            {
-                currentImmunityTime = immunityTime;
-            }
-            else
-            {
-                currentImmunityTime = immunity_time;
-            }
-
-            currentRegenTime = RegenTime;
-            regen = false;
-            hit_volume.weight = (float)((MaxHealth - CurrentHealth) / (float)MaxHealth) * hitVolumeCoefficient;
-            hit_volume_on = true;
-
-            //audio.clip = clips[0];
-            //audio.pitch = Random.Range(0.9f, 1.2f);
-            //audio.Play();
-
-            //if(!camera_is_shaking){
-            if (CurrentHealth <= 0)
-            {
-                AttemptExtraLife();
-            }
-
-            StartCoroutine(CameraShake(camera_shake_duration, camera_magnitude));
-            //}
-        }
-    }
-
     public void AttemptExtraLife(){
 
         //audio.clip = clips[1];

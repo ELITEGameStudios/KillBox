@@ -24,7 +24,7 @@ public class PlayerFireDamage : MonoBehaviour
     {
         if(_timer >= 0 && _on_fire){
             _timer -= Time.fixedDeltaTime;
-            _hp_script.TakeImmediateDmg(Mathf.RoundToInt(_intensity * Time.fixedDeltaTime), 0.5f);
+            _hp_script.TakeDmg(Mathf.RoundToInt(_intensity * Time.fixedDeltaTime), 0.5f);
         }   
         else if(_on_fire && _timer <= 0){
             _on_fire = false;

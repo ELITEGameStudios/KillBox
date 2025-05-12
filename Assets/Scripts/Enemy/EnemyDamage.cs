@@ -60,8 +60,7 @@ public class EnemyDamage : MonoBehaviour
     }
     void doDamage(bool immediate){
         
-        if(immediate) { playerHealthScript.TakeImmediateDmg(damage, immunity_time); }
-        else{ playerHealthScript.TakeDmg(damage, immunity_time); }
+        playerHealthScript.TakeDmg(damage, immunity_time);
 
         if(_ignites){
             playerHealthScript.gameObject.GetComponent<PlayerFireDamage>().Ignite(_ignite_time, _ignite_intensity);
