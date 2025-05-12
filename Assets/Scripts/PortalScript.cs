@@ -137,8 +137,14 @@ public class PortalScript : MonoBehaviour
 
         ChallengeFields.UpdateRound(gameManagerVar, gameManagerVar.isFireRound);
         // Damageless Code:
-        if(Player.main.health.isDamageless){gameManagerVar.OnPickupToken(1, false);}
+        if(Player.main.health.isDamageless){
+            // Damageless Bonus is increased the further you get in the game.
+            if(KillBox.currentGame.round >= 3){gameManagerVar.OnPickupToken(1, false);}
+            if(KillBox.currentGame.round >= 11){gameManagerVar.OnPickupToken(2, false);}
+            if(KillBox.currentGame.round >= 18){gameManagerVar.OnPickupToken(3, false);}
+            }
         Player.main.health.isDamageless = true;
+
         if(BossRoundManager.main.isBossRound){gameManagerVar.OnPickupToken(7, false);}
         else{gameManagerVar.OnPickupToken(1, false);}
         gameManagerVar.InitNextRound();
