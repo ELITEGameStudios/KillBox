@@ -17,7 +17,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
 
     public GameManager manager;
     public GameObject Player, camera_parent, camera_obj;
-    public bool IsPlayer, regen, Revived = false, immune = false, tutorialPlayer, hit_volume_on = false;
+    public bool IsPlayer, regen, Revived = false, immune = false, tutorialPlayer, hit_volume_on = false, isDamageless = false;
     public float RegenTime, immunityTime, camera_magnitude, camera_shake_duration;
     private float currentRegenTime, currentImmunityTime;
     private bool regenToggle = false, camera_is_shaking = false, health_has_changed = false, triggerDamageVolume, triggerCameraShake;
@@ -181,6 +181,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
         {
             CurrentHealth -= (int)(Dmg * (1 - ( 0.05f * buffsManager.buff_strength[0])));
             immune = true;
+            isDamageless = false;
 
             if(immunity_time == 0)
             {

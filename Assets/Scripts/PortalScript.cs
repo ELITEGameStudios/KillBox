@@ -139,6 +139,9 @@ public class PortalScript : MonoBehaviour
     void SetRound(){
 
         ChallengeFields.UpdateRound(gameManagerVar, gameManagerVar.isFireRound);
+        // Damageless Code:
+        if(player_hp.isDamageless){gameManagerVar.OnPickupToken(1, false);}
+        player_hp.isDamageless = true;
         if(BossRoundManager.main.isBossRound){gameManagerVar.OnPickupToken(7, false);}
         else{gameManagerVar.OnPickupToken(1, false);}
         gameManagerVar.InitNextRound();
