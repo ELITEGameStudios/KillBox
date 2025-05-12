@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class EnemyCounter : MonoBehaviour
 {
-    public bool PortalCondition1, PortalCondition2, AnimAccept;
+    public bool noEnemiesOrSpawns, noLongerSpawning, AnimAccept;
     public bool end_of_main_round {get; private set;}
     public int enemiesInScene;
     public Spawn GetSpawn;
@@ -36,16 +36,16 @@ public class EnemyCounter : MonoBehaviour
 
     void Start()
     {
-        PortalCondition1 = false;
-        PortalCondition2 = false;
+        noEnemiesOrSpawns = false;
+        noLongerSpawning = false;
         Portal.SetActive(false);
         AnimAccept = true;
     }
 
     public void Reset()
     {
-        PortalCondition1 = false;
-        PortalCondition2 = false;
+        noEnemiesOrSpawns = false;
+        noLongerSpawning = false;
         Portal.SetActive(false);
         AnimAccept = true;
         end_of_main_round = false;
@@ -76,27 +76,31 @@ public class EnemyCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Constantly cleans the list of enemies in the scene
         enemyProfiles.RemoveAll(item => item == null);
         bossProfiles.RemoveAll(item => item == null);
         
+        // Gets current enemy count
         enemies = GameObject.FindGameObjectsWithTag(tag);
         enemiesInScene = enemyProfiles.Count;
         
-        if(PortalCondition2){ Debug.Log("Portal condition 2 is met."); }
-
-        if(enemies.Length == 0 && PortalCondition2)
-        {
-            PortalCondition1 = true;
+        // Main condition for ending the round
+        if(enemies.Length == 0 && noLongerSpawning){
+            noEnemiesOrSpawns = true;
             //AudioSystemMaster.main.PlayPreRound();
         }
 
+        // Detects if there are any spawns still to be executed
         if (GetSpawn.instances == 0 && GetSpawn.ended && starter.HasStarted ||
             BossRoundManager.main.isBossRound && BossRoundManager.main.finishedBossRoundMainPhase && starter.HasStarted)
-            {PortalCondition2 = true;}
+            {noLongerSpawning = true;}
 
-        if (PortalCondition1 && PortalCondition2 && !GameManager.main.EscapeRoom() && !Portal.activeInHierarchy)
+        // End round event
+        if (noEnemiesOrSpawns && noLongerSpawning && !GameManager.main.EscapeRoom() && !Portal.activeInHierarchy)
         {
             Portal.SetActive(true);
+            LvlStarter.main.InitiatePostRound(PortalScript.main.currentMapIndex);
+            GridAnimationManager.instance.DoEndRoundAnimation();
             KillboxEventSystem.TriggerRoundEndEvent();
             
             // Audio
@@ -131,10 +135,10 @@ public class EnemyCounter : MonoBehaviour
 
         if (enemies.Length > 0 && !GameManager.main.EscapeRoom())
         {
-            PortalCondition1 = false;
+            noEnemiesOrSpawns = false;
             Portal.SetActive(false);
 
-            if(!PortalCondition2){ return; }
+            if(!noLongerSpawning){ return; }
             
             float counter = 0;
             foreach(GameObject enemy in enemies) {

@@ -20,9 +20,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
     public bool freeplay {get; private set;} = false;
 
     [SerializeField]
-    private HotkeyManager hotkeyManager;
-
-    [SerializeField]
     private EnemyList enemyList;
     
     // [SerializeField]
@@ -93,14 +90,23 @@ public class GameManager : MonoBehaviour, ISelfResListener
     public void SetNewMap(MapData map){
         if(map == null) return;
         
+        // Updates map
         if(currentMap != null) currentMap.Root.SetActive(false);
         currentMap = map;
         currentMap.Root.SetActive(true);
         
+        // Updates spawn system
         GetSpawn.UpdateRoundBasedVars();
         GetSpawn.GenerateNewEnemyPool();
         GetSpawn.SetSpawns(currentMap.GetSpawners(KillBox.currentGame.round));
+
+        // Deletes uncollected tokens
+        GameObject[] tokens = GameObject.FindGameObjectsWithTag("DroppedToken");
+        for( int i = tokens.Length-1; i >= 0; i--){
+            Destroy(tokens[i]);
+        }
         
+        // Updates Pathfinding
         AstarPath.active.UpdateGraphs(currentMap.Obstacles.bounds);
 
         // for (int i = 0; i < Maps.Count; i++)
@@ -128,7 +134,49 @@ public class GameManager : MonoBehaviour, ISelfResListener
         game = KillBox.currentGame;
         difficulty_coefficient = game.difficultyCoefficient;
         inGameButtonHandlers = new();
+        freeplay = game.freeplay;
+    }
+    void Start()
+    {
+        _level = KillBox.currentGame.round;
+        ScoreCount = 0;
+        Dualindex = 0;
+        difficulty = 50 * KillBox.currentGame.difficultyCoefficient;
+        switch(KillBox.currentGame.difficultyIndex){
+            case (0):
+                constant = 51;
+                break; 
+            case (1):
+                constant = 51;
+                break; 
+            case (2):
+                constant = 150;
+                break; 
+            default:
+                constant = 51;
+                break; 
+        }
 
+        player_render = Player.main.tf.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
+        
+        foreach (MapData map in Maps){
+            map.SetTileData();
+        }
+
+        // map_colors.ChangeColor(default_map_color, default_map_color, false);
+        map_colors.ChangeWall(Color.white);
+
+        // joystick_size.value = PlayerPrefs.GetFloat("joystick_size", 0.2f);
+
+        // for (int i = 0; i < joystick_sliders.Length; i++)
+        // {
+        //     if (joystick_sliders[i].gameObject.activeInHierarchy)
+        //     {
+        //         joystick_size = joystick_sliders[i];
+        //         break;
+        //     }
+        // }
+        
     }
 
     public void AddMap(MapData map){
@@ -184,50 +232,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
             else{item.Deactivate();}
         }
     }
-    void Start()
-    {
-        _level = KillBox.currentGame.round;
-        ScoreCount = 0;
-        Dualindex = 0;
-        difficulty = 50 * KillBox.currentGame.difficultyCoefficient;
-        switch(KillBox.currentGame.difficultyIndex){
-            case (0):
-                constant = 51;
-                break; 
-            case (1):
-                constant = 51;
-                break; 
-            case (2):
-                constant = 150;
-                break; 
-            default:
-                constant = 51;
-                break; 
-        }
 
-        player_render = Player.main.tf.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
-
-        
-        
-
-        // map_colors.ChangeColor(default_map_color, default_map_color, false);
-        map_colors.ChangeWall(Color.white);
-
-        
-
-
-        // joystick_size.value = PlayerPrefs.GetFloat("joystick_size", 0.2f);
-
-        // for (int i = 0; i < joystick_sliders.Length; i++)
-        // {
-        //     if (joystick_sliders[i].gameObject.activeInHierarchy)
-        //     {
-        //         joystick_size = joystick_sliders[i];
-        //         break;
-        //     }
-        // }
-        
-    }
 
     void Update()
     {
@@ -326,7 +331,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         use_equipment_button.transform.GetChild(1).GetComponent<Button>().interactable = true;
         
         started_game = false;
-        hotkeyManager.enabled = false;
+        HotkeyManager.instance.enabled = false;
         
         EnemyCounter.main.DestroyAllEnemies();
         EnemyCounter.main.Reset();
@@ -604,7 +609,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         }
 
         started_game = true;
-        hotkeyManager.enabled = true;
+        HotkeyManager.instance.enabled = true;
 
         BossRoundManager.main.UpdateCounters(); 
 

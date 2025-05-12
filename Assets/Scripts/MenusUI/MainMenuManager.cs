@@ -86,7 +86,7 @@ public class MainMenuManager : MonoBehaviour
     public void Return(){ OpenMenuViaState(lastState); }
     public void Resume(){ OpenMenuViaState(MenuState.NONE); }
 
-    public void TriggerGameStart(){ KillBox.StartNewGame(selectedDifficulty); }
+    public void TriggerGameStart(bool freeplay = false){ KillBox.StartNewGame(selectedDifficulty, freeplay); }
     public void OnGameSceneLoad(){ 
         OpenMenuViaState(MenuState.NONE, false); 
         InstantSwitch();
@@ -191,6 +191,10 @@ public class MainMenuManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(fadeIn);
         }
         switchingMenus = false;
+    }
+
+    public void SelectDifficulty(int difficulty){
+        selectedDifficulty = difficulty;
     }
 
     // IEnumerator SwitchToMainScene(){

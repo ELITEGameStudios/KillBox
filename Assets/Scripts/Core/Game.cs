@@ -31,7 +31,7 @@ public class Game
         FINISHED
     }
 
-    public Game(int difficultyIndex){
+    public Game(int difficultyIndex, bool isFreeplay){
         this.difficultyIndex = difficultyIndex;
         difficulty = difficultyNames[difficultyIndex];
         difficultyCoefficient = difficultyCoefficients[difficultyIndex];
@@ -40,6 +40,7 @@ public class Game
         upgradesPurchased = new int[5];
         tokens = 0;
         tokensCollectedOverall = 0;
+        freeplay = isFreeplay;
         lifetime = Lifetime.INITIALIZED;
     }
 
