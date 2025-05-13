@@ -25,6 +25,9 @@ public class Game
     public Lifetime lifetime;
     public bool started {get {return lifetime == Lifetime.STARTED || lifetime == Lifetime.FINISHED;}}
     
+    public bool hasUpgradedArsenal {get {return round > EnemyList.instance.bossRounds[0];}}
+    public int specialUpgrade; // Representation of what special the player has. -1 is nothing, 0 = dual wield, 1 = gold weapons, 2 = necromancy, 3 = upgrades mastery
+    
     public enum Lifetime{
         INITIALIZED,
         STARTED,
@@ -40,6 +43,7 @@ public class Game
         upgradesPurchased = new int[5];
         tokens = 0;
         tokensCollectedOverall = 0;
+        specialUpgrade = -1;
         freeplay = isFreeplay;
         lifetime = Lifetime.INITIALIZED;
     }
