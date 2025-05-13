@@ -92,19 +92,6 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
                 isOwned = true;
             }
         }
-
-        for(int i = 0; i < main_buttons.Count; i++){
-            if(isOwned){
-                main_buttons[i].OnOwnedCheck();
-            }
-            else{
-
-                //if(is_purchasable)
-                main_buttons[i].OnOwnedCheck();//, purchasable: true);
-                //else
-                //    main_buttons[i].OnOwnedCheck(false);
-            }
-        }
     }
 
     void TargetCheck()
@@ -116,6 +103,22 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         is_purchasable = target_item.Compare(GameManager.main.ScoreCount);
 
         if(target_item != null && !isOwned){
+
+            if( !KillBox.currentGame.hasUpgradedArsenal && target_item.tier > 1 && target_item.tier < 4 ){ // Locked high tier weapons before SHARD
+                purchase_button.interactable = false;
+                purchase_display.text = "Defeat SHARD to purchase this weapon...";
+                costsText.text = "?";
+                costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
+                return;
+            }
+
+            if( KillBox.currentGame.specialUpgrade != 1 && target_item.tier == 4 ){ // Locked gold weapon without midas special
+                purchase_display.text = KillBox.currentGame.specialUpgrade == 0 ? "Defeat MIDAS to purchase this weapon..." : "You chose your path...";
+                purchase_button.interactable = false;
+                costsText.text = "?";
+                costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
+                return;
+            }
 
             if(is_purchasable){
                 purchase_button.interactable = true;

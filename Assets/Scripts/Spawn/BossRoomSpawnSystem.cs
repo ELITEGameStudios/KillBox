@@ -69,6 +69,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
             // Each case sets the corresponding enemy table depending on the difficulty
             // To the current enemy table
             // Also sets the unique spawnrate and enemy cap for each difficulty
+            
             case 0:
                 // Shard boss
                 currentEnemyTable = shardEnemyTable;

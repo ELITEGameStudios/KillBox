@@ -30,7 +30,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScenes/ExperimentalGameplayUI.unity
     guid: aa4b8a953e21b0a498492f1c2ae68ebf
   - enabled: 1
-    path: Assets/Scenes/MainScenes/ExperimentalGameplayUI 2.unity
+    path: Assets/Scenes/MainScenes/NewGameplayUI.unity
     guid: ff933104baf4c224c8347126f0a6e3a7
   - enabled: 1
     path: Assets/Scenes/MainScenes/GameScene COPY.unity

@@ -20,6 +20,12 @@ public class CommonFunctions
     {
         return 0.5f * Mathf.Sin(Mathf.PI* (x / peak  - startOffset)) + 0.5f;
     }
+
+    public static float SineNormalize(float x, float period = 1)
+    {
+        return 0.5f * Mathf.Sin(2*Mathf.PI * ((x / period) - 0.25f)) + 0.5f;
+    }
+
     public static float CosineEase(float x, float peak = 1, float startOffset = 0.5f)
     {
         return 0.5f * Mathf.Cos(Mathf.PI* (x / peak  - startOffset)) + 0.5f;
