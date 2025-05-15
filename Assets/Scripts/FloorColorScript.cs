@@ -47,25 +47,22 @@ public class FloorColorScript : MonoBehaviour
         return valid;
     }
 
-    public void ChangeColor(Color floor, Color wall, bool change_wall = false)
+    public void ChangeColor(Color floor, Color wallCol, bool change_wall = false)
     {
         floor_tile.color = base_color;
 
         current_color = floor;
 
-        for (int i = 0; i < floor_tilemaps.Length; i++)
-        {
-            floor_tilemaps[i].color = current_color;
-            floor_tilemaps[i].RefreshAllTiles();
+        MapData map = GameManager.main.GetCurrentMap();
+
+        foreach (Vector3Int point in map.wallPositions){
+            map.floorTiles.SetColor(point, floor);
         }
 
         if (change_wall)
         {
-
-            for (int i = 0; i < wall_tilemaps.Length; i++)
-            {
-                wall_tilemaps[i].color = current_color;
-                wall_tilemaps[i].RefreshAllTiles();
+            foreach (Vector3Int point in map.wallPositions){
+                map.wallTiles.SetColor(point, wallCol);
             }
         }
 
@@ -77,34 +74,48 @@ public class FloorColorScript : MonoBehaviour
     }
 
     // Main default function to keep set the maps color corresponding to the level
-    public void SetColorFromGradient(float round)
+    public void SetColorFromGradient(float round, bool resetTilemaps = true)
     {
         float loops = round / 40;
         round -= 40 * (int)loops;
+        MapData map = GameManager.main.GetCurrentMap();
         Debug.Log(loops.ToString() + "sdgdsLOOOOOOOOOOOOOOOOOOOOOOOOOOPS");
-
-        floor_tile.color = base_color;
-
+        
+        if(resetTilemaps){
+            map.wallTiles.color = Color.white;
+            floor_tile.color = Color.white;
+        }
+        
+        foreach (Vector3Int point in map.wallPositions){
+            map.floorTiles.SetColor(point, base_color);
+        }
         current_color = master_gradient.Evaluate(round / 40);
 
-        for (int i = 0; i < floor_tilemaps.Length; i++)
-        {
-            floor_tilemaps[i].color = current_color;
-            floor_tilemaps[i].RefreshAllTiles();
+        foreach (Vector3Int point in map.floorPositions){
+            map.floorTiles.SetColor(point, current_color);
         }
     }
+    
+    public Color GetColorFromGradient(float round)
+    {
+
+        float loops = round / 40;
+        round -= 40 * (int)loops;
+        return master_gradient.Evaluate(round / 40);
+
+    }
+
     public void ChangeActiveColor(Color floor, Color wall, bool change_wall = false)
     {
+        MapData map = GameManager.main.GetCurrentMap();
         floor_tile.color = base_color;
 
         current_color = floor;
 
         List<Tilemap> active_floor_tiles = GetActiveTiles(floor_tilemaps);
 
-        for (int i = 0; i < active_floor_tiles.Count; i++)
-        {
-            active_floor_tiles[i].color = current_color;
-            active_floor_tiles[i].RefreshAllTiles();
+        foreach (Vector3Int point in map.floorPositions){
+            map.floorTiles.SetColor(point, current_color);
         }
 
         if (change_wall)
@@ -112,10 +123,8 @@ public class FloorColorScript : MonoBehaviour
             
             List<Tilemap> active_wall_tiles = GetActiveTiles(wall_tilemaps);
 
-            for (int i = 0; i < active_wall_tiles.Count; i++)
-            {
-                active_wall_tiles[i].color = current_color;
-                active_wall_tiles[i].RefreshAllTiles();
+            foreach (Vector3Int point in map.wallPositions){
+                map.wallTiles.SetColor(point, current_color);
             }
         }
 
@@ -129,12 +138,11 @@ public class FloorColorScript : MonoBehaviour
     public void ChangeWall(Color wall)
     {
 
+        MapData map = GameManager.main.GetCurrentMap();
         List<Tilemap> active_wall_tiles = GetActiveTiles(wall_tilemaps);
 
-        for (int i = 0; i < active_wall_tiles.Count; i++)
-        {
-            active_wall_tiles[i].color = wall;
-            active_wall_tiles[i].RefreshAllTiles();
+        foreach (Vector3Int point in map.wallPositions){
+            map.wallTiles.SetColor(point, wall);
         }
     }
 
