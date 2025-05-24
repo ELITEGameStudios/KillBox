@@ -14,7 +14,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
     public Color purchasable, error, purchasable_text_color;
     [SerializeField] private Color[] desc_panel_colors;
     [SerializeField] private Image purchase_button_graphic, description_panel, backgroundImage;
-    [SerializeField] private Text description_display, purchase_display, costsText, oldStat, newStat;
+    [SerializeField] private Text description_display, purchase_display, costsText, oldStat;
     [SerializeField] private Text[] level_displays, costDisplays, levelDisplays2, costDisplays2;
     [SerializeField] private Slider[] slider_displays;
     [SerializeField] private Button purchase_button;
@@ -146,11 +146,8 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
         try{oldStat.text = target_key == 1? (DifficultyManager.main.defaultHealth + ((int) target_upgrade.values[current_levels[target_key]-1] - 250)).ToString() : target_upgrade.values[current_levels[target_key]-1].ToString(); }
         catch{oldStat.text = ""; }
 
-        try{newStat.text = target_key == 1? (DifficultyManager.main.defaultHealth + ((int) target_upgrade.values[current_levels[target_key]] - 250)).ToString() : target_upgrade.values[current_levels[target_key]].ToString(); }
-        catch{newStat.text = ""; }
-
         if( target_upgrade.costs.Length > current_levels[target_key]){
-            costsText.text = target_upgrade.costs[current_levels[target_key]].ToString();
+            // costsText.text = target_upgrade.costs[current_levels[target_key]].ToString();
         }
     }
 
