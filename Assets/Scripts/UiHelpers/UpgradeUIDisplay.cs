@@ -28,26 +28,28 @@ public class UpgradeUIDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         // if ((UpgradesManager.Instance.target_key != target) == particles.isPlaying){
         if (!particles.isPlaying)
         {
-            if (UpgradesManager.Instance.target_key == target)
+            if (UpgradesManager.Instance.target_key != target)
             {
                 particles.Play();
             }
         }
-        else if (UpgradesManager.Instance.target_key != target){
+        else if (UpgradesManager.Instance.target_key == target)
+        {
             particles.Stop();
         }
 
         // // if the target upgrade is purchasable
-        // if (UpgradesList.GetUpgrade(target).Compare(GameManager.main.ScoreCount, UpgradesManager.Instance.current_levels[target]))
         // { particles.startColor = main_color;}
         // else
         // { particles.startColor = shaded_color; }
 
-        main_graphic.enabled = UpgradesManager.Instance.target_key == target;
-        mainButton.interactable = UpgradesManager.Instance.target_key == target;
+        main_graphic.enabled = UpgradesManager.Instance.target_key != target;
+        // mainButton.interactable = UpgradesManager.Instance.isPurchasable[target];
+        Debug.Log("Purchasable: " + target + " | " + UpgradesManager.Instance.isPurchasable[target]);
 
         if (UpgradesManager.Instance.target_key != target)
         {

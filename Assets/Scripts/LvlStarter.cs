@@ -118,7 +118,7 @@ public class LvlStarter : MonoBehaviour
 
     public void InitiatePostRound(int mapId)
     {
-        if(KillBox.currentGame.round < 3){return;}
+        // if(KillBox.currentGame.round < 3){return;}
         timer = 0;
 
         targetWeaponsPos = GameManager.main.GetMapByID(mapId).Weapons.position;

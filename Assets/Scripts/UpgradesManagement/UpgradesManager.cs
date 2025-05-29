@@ -27,6 +27,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
     public int[] max_levels {get; private set;}
     
     private bool can_purchase = false;
+    public bool[] isPurchasable;
 
     // public bool purchasable {get; private set;}
 
@@ -41,7 +42,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
 
         if(Instance == null) { Instance = this; }
         else if(Instance != this) { Destroy(this); }
-        
+        isPurchasable = new bool[5];
         max_levels = UpgradesList.max_levels;
 
         for(int i = 0; i < Instance.level_displays.Length; i++){
@@ -65,25 +66,30 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
             button.interactable = false;
             //graphic.color = Instance.error;
             text.text = "This Is MAXED!";
-            text.color = text_color;
+            // text.color = text_color;
+            isPurchasable[target] = false;
 
             return;
         }
+
+        isPurchasable[target] = purchasable;
         
         // If the selected upgrade can be purchased
-        if(purchasable){
+        if (purchasable)
+        {
             button.interactable = true;
             //graphic.color = Instance.purchasable;
-            text.color = Instance.purchasable_text_color;
+            // text.color = Instance.purchasable_text_color;
             //Instance.purchase_display.text = "Costs "+ Instance.target_upgrade.costs[Instance.current_levels[Instance.target_key]].ToString() +" Tokens";
         }
-        else{
+        else
+        {
             button.interactable = false;
             //graphic.color = Instance.error;
             text.color = text_color;
         }
 
-        text.text = "Costs "+ upgrade.costs[Instance.current_levels[target]].ToString() + (upgrade.costs[Instance.current_levels[target]] > 1 ? "Tokens" : "Token");
+        // text.text = "Costs "+ upgrade.costs[Instance.current_levels[target]].ToString() + (upgrade.costs[Instance.current_levels[target]] > 1 ? "Tokens" : "Token");
         
     }
 
