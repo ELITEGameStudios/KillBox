@@ -14,7 +14,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
     public Color purchasable, error, purchasable_text_color;
     [SerializeField] private Color[] desc_panel_colors;
     [SerializeField] private Image purchase_button_graphic, description_panel, backgroundImage;
-    [SerializeField] private Text description_display, purchase_display, costsText, oldStat, newStat;
+    [SerializeField] private Text description_display, purchase_display, costsText, oldStat;
     [SerializeField] private Text[] level_displays, costDisplays, levelDisplays2, costDisplays2;
     [SerializeField] private Slider[] slider_displays;
     [SerializeField] private Button purchase_button;
@@ -27,6 +27,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
     public int[] max_levels {get; private set;}
     
     private bool can_purchase = false;
+    public bool[] isPurchasable;
 
     // public bool purchasable {get; private set;}
 
@@ -41,7 +42,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
 
         if(Instance == null) { Instance = this; }
         else if(Instance != this) { Destroy(this); }
-        
+        isPurchasable = new bool[5];
         max_levels = UpgradesList.max_levels;
 
         for(int i = 0; i < Instance.level_displays.Length; i++){
@@ -65,25 +66,30 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
             button.interactable = false;
             //graphic.color = Instance.error;
             text.text = "This Is MAXED!";
-            text.color = text_color;
+            // text.color = text_color;
+            isPurchasable[target] = false;
 
             return;
         }
+
+        isPurchasable[target] = purchasable;
         
         // If the selected upgrade can be purchased
-        if(purchasable){
+        if (purchasable)
+        {
             button.interactable = true;
             //graphic.color = Instance.purchasable;
-            text.color = Instance.purchasable_text_color;
+            // text.color = Instance.purchasable_text_color;
             //Instance.purchase_display.text = "Costs "+ Instance.target_upgrade.costs[Instance.current_levels[Instance.target_key]].ToString() +" Tokens";
         }
-        else{
+        else
+        {
             button.interactable = false;
             //graphic.color = Instance.error;
             text.color = text_color;
         }
 
-        text.text = "Costs "+ upgrade.costs[Instance.current_levels[target]].ToString() + (upgrade.costs[Instance.current_levels[target]] > 1 ? "Tokens" : "Token");
+        // text.text = "Costs "+ upgrade.costs[Instance.current_levels[target]].ToString() + (upgrade.costs[Instance.current_levels[target]] > 1 ? "Tokens" : "Token");
         
     }
 
@@ -146,11 +152,8 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
         try{oldStat.text = target_key == 1? (DifficultyManager.main.defaultHealth + ((int) target_upgrade.values[current_levels[target_key]-1] - 250)).ToString() : target_upgrade.values[current_levels[target_key]-1].ToString(); }
         catch{oldStat.text = ""; }
 
-        try{newStat.text = target_key == 1? (DifficultyManager.main.defaultHealth + ((int) target_upgrade.values[current_levels[target_key]] - 250)).ToString() : target_upgrade.values[current_levels[target_key]].ToString(); }
-        catch{newStat.text = ""; }
-
         if( target_upgrade.costs.Length > current_levels[target_key]){
-            costsText.text = target_upgrade.costs[current_levels[target_key]].ToString();
+            // costsText.text = target_upgrade.costs[current_levels[target_key]].ToString();
         }
     }
 
@@ -172,6 +175,16 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
             return;
         }
     }
+    
+    public void FreeUpgrade(int id)
+    {
+        if(Instance.current_levels[id] == max_levels[id]){ Debug.LogAssertion("Player has already maxed this stat"); return; }
+        Instance.current_levels[id]++;
+        SetKey(id);
+        UpdateStats();
+        ChooseUpgrade();
+    }
+
 
     void UpdateStats(bool reset = false){
         for(int i = 0; i < Instance.level_displays.Length; i++){

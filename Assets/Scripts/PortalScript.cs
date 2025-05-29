@@ -105,7 +105,7 @@ public class PortalScript : MonoBehaviour
     void NextLvl()
     {
 
-        portalAnimator.Play(AnimName);
+        // portalAnimator.Play(AnimName);
 //        loadingScene = true;
         StartCoroutine(LoadNextScene());
 
@@ -238,6 +238,7 @@ public class PortalScript : MonoBehaviour
     }
 
     void StartRoundCountdown(){
+        GridAnimationManager.instance.DoIntroRoundAnimation();
         lvlStarter.InitiatePreround(currentMapIndex, GameManager.main.GetMapByID(currentMapIndex).Player.position);
         enemyCounter.Reset();
     }
@@ -269,9 +270,8 @@ public class PortalScript : MonoBehaviour
             MainAudioSystem.main.Rest();
             GunHandler.Instance.SetUIStatus(true);
             
+            
             // foreach (Door door in Door.doors){ door.NextRound(); } 
-            floor_color.SetColorFromGradient(gameManagerVar.LvlCount);
-
             StartRoundCountdown();
         }
         else{ 
@@ -310,7 +310,6 @@ public class PortalScript : MonoBehaviour
                 
                 // foreach (Door door in Door.doors){ door.NextRound(); } 
                 floor_color.ChangeColor(Color.black, Color.white);
-
                 StartRoundCountdown();
                 // KillboxEventSystem.TriggerBossRoundStartEvent();
             }
@@ -325,7 +324,22 @@ public class PortalScript : MonoBehaviour
     {
         loadingScene = true;
         ChallengeLib.UpdateChallengeValues("HUNTER", "KILLS", ChallengeFields.kills);
-        yield return new WaitForSeconds(Delay);
+        
+        float time = Delay;
+        MapData map = GameManager.main.GetCurrentMap();
+        CameraBgManager.instance.SetBackground(Color.black, Delay/2);
+
+        Color wallCol = map.wallTiles.color;
+        Color floorCol = map.floorTiles.color;
+        
+        while (time > 0){
+            map.wallTiles.color = Color.Lerp(Color.clear, wallCol, time / Delay);
+            map.floorTiles.color = Color.Lerp(Color.clear, floorCol, time / Delay);
+
+            time -= Time.deltaTime;
+            yield return null;
+        }
+        // yield return new WaitForSeconds(Delay);
 
         InitNewRound();
         loadingScene = false;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RuneClass : MonoBehaviour
 {
@@ -11,8 +12,12 @@ public class RuneClass : MonoBehaviour
     private Transform _portal;
     private float _distance;
 
-    [SerializeField]
-    private int mode;
+    [SerializeField] private bool isUpgradeRune;
+    [SerializeField] private int mode, upgradeInt;
+
+
+    [SerializeField] private GameObject claimParticleObject, idleParticleObject, glowGraphicObject;
+    [SerializeField] private SpriteRenderer runeGraphicObject;
 
     // Start is called before the first frame update
     void Awake()
@@ -35,7 +40,7 @@ public class RuneClass : MonoBehaviour
 
         _distance = Vector3.Distance(transform.position, _portal.position);
 
-        if(_distance <= 2){
+        if(_distance <= 2 && !isUpgradeRune){
             states.SwitchState(_portal_int);
         } 
         
@@ -47,9 +52,22 @@ public class RuneClass : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void ClaimUpgradeRune(){
+
+        UpgradesManager.Instance.FreeUpgrade(upgradeInt);
+
+        runeGraphicObject.enabled = false;
+        glowGraphicObject.SetActive(false);
+        idleParticleObject.SetActive(false);
+        claimParticleObject.SetActive(true);
+
+        Destroy(gameObject, 1f);
+    }
+
     void OnTriggerEnter2D(Collider2D collider){
-        if(collider.tag == "Player"){
-            states.SwitchState(_follow);
+        if (collider.tag == "Player"){
+            if (isUpgradeRune) { ClaimUpgradeRune(); }
+            else { states.SwitchState(_follow); }
         }
     }
 
