@@ -46,9 +46,19 @@ namespace KillboxWeaponClasses
         public static readonly Weapon pistol = new Weapon(0.2f, 10, 150, 15, 1, 25);
         public static readonly Weapon combatPistol = new Weapon(0.08f, 10, 120, 10, 1, 20);
         public static readonly Weapon revolver = new Weapon(0.3f, 20, 160, 5, 0.7f, 50);
+        //Double Tap is a blue pistol that has a burst of 2.
+        //public static readonly Weapon doubleTap = new Weapon(0.12f, 8, 150, 7, 1, 35, burst_input: true, burst_quantity_input: 2);
+        //Flintlock Pistol is a pink pistol that has good damage, but very short range.
+        //public static readonly Weapon flintlockPistol = new Weapon(0.15f, 6, 120, 10, 0.3f, 125);
         public static readonly Weapon speedRevolver = new Weapon(0.1f, 18, 170, 20, 0.7f, 150, penetration_input: 1);
         // public static readonly Weapon goldenPistol = new Weapon(0.17f, 7, 180, 15, 1.5f, 160);
+        //High Capacity is a red high capacity pistol that deals ok damage.
+        //public static readonly Weapon highCapacity = new Weapon(0.2f, 1, 150, 10, 1.2f, 85);
+        //Lightning Revolver, red upgraded speedy revolver.
+        //public static readonly Weapon lightningRevolver = new Weapon(0.08f, 13, 200, 22, 1.1f, 250, penetration_input: 2);
         public static readonly Weapon goldenPistol = new Weapon(0.17f, 0, 180, 15, 1.5f, 100);
+        //Russian Roulette, golden revolver One shot, deals 5000 damage, but has very bad accuracy and long cooldown.
+        //public static readonly Weapon russianRoulette = new Weapon(0.01f, 500, 250, 360, 3f, 2500, _cooldown_time: 15);
         //public static readonly Weapon devils_blaster = new Weapon(0.2f, 5, 150, 20, 1, 40);
 
         public static readonly Weapon lightAR = new Weapon(0.15f, 5, 120, 10, 1, 45);
@@ -67,6 +77,8 @@ namespace KillboxWeaponClasses
         public static readonly Weapon tacticalSmg = new Weapon(0.07f, 3, 120, 20, 0.5f, 35);
         public static readonly Weapon beamSmg = new Weapon(0.01f, 0.75f, 125, 0, 0.5f, 20);
         public static readonly Weapon combatSmg = new Weapon(0.04f, 1.5f, 135, 25, 0.30f, 70);
+        //Super Beam Smg, a red upgraded beam smg.
+        //public static readonly Weapon superBeamSmg = new Weapon(0.01f, 0.6f, 150, 0, 0.8f, 35);
         public static readonly Weapon goldenSmg = new Weapon(0.05f, 1.5f, 200, 35, 0.8f, 100);
 
         public static readonly Weapon lightShotgun = new Weapon(0.6f, 3f, 75, 50, 0.7f, 25, bps: 8);
