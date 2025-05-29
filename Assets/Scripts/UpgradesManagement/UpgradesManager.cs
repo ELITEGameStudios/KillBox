@@ -175,6 +175,16 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
             return;
         }
     }
+    
+    public void FreeUpgrade(int id)
+    {
+        if(Instance.current_levels[id] == max_levels[id]){ Debug.LogAssertion("Player has already maxed this stat"); return; }
+        Instance.current_levels[id]++;
+        SetKey(id);
+        UpdateStats();
+        ChooseUpgrade();
+    }
+
 
     void UpdateStats(bool reset = false){
         for(int i = 0; i < Instance.level_displays.Length; i++){
