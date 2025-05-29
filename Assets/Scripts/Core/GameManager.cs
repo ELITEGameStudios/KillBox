@@ -74,6 +74,9 @@ public class GameManager : MonoBehaviour, ISelfResListener
     private SpriteRenderer player_render, gun_renderer;
 
     [SerializeField]
+    private FloorColorScript floor_color;
+
+    [SerializeField]
     private float difficulty;
     public float difficulty_coefficient;
 
@@ -105,7 +108,9 @@ public class GameManager : MonoBehaviour, ISelfResListener
         for( int i = tokens.Length-1; i >= 0; i--){
             Destroy(tokens[i]);
         }
-        
+
+        floor_color.SetColorFromGradient(LvlCount, false);
+
         // Updates Pathfinding
         AstarPath.active.UpdateGraphs(currentMap.Obstacles.bounds);
 
@@ -164,7 +169,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         }
 
         // map_colors.ChangeColor(default_map_color, default_map_color, false);
-        map_colors.ChangeWall(Color.white);
+        // map_colors.ChangeWall(Color.white);
 
         // joystick_size.value = PlayerPrefs.GetFloat("joystick_size", 0.2f);
 

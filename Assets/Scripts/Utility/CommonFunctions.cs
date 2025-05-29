@@ -30,4 +30,16 @@ public class CommonFunctions
     {
         return 0.5f * Mathf.Cos(Mathf.PI* (x / peak  - startOffset)) + 0.5f;
     }
+
+    public static List<T> RandomizeList<T>(List<T> values)
+    {
+        List<T> oldPool = values;
+        List<T> newPool = values;
+        for (int i = oldPool.Count-1; i > 0; i--){
+            int random = Random.Range(0, oldPool.Count);
+            newPool.Add(oldPool[random]);
+            oldPool.RemoveAt(random);
+        }
+        return newPool;
+    }
 }

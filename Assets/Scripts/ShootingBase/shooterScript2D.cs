@@ -11,7 +11,7 @@ public class shooterScript2D : MonoBehaviour
     public string bulletName;
     public GameObject bullet, ShootGraphic, GraphicClone;
     public Transform playerTf, Spawn;
-    public float Velocity, spread, range, burst_interval;
+    public float Velocity, spread, range, burst_interval, recoilForce;
     public Rigidbody2D bulletRb, clone;
     public Vector3 SpawnRot;
     public bool shootInputIsPressed, is_dual, misc_gun, uniform_spread, is_in_ui;
@@ -216,18 +216,7 @@ public class shooterScript2D : MonoBehaviour
 
             if(!misc_gun){
                 clone = objectPool[0].GetPooledObject().GetComponent<Rigidbody2D>();
-                // if(objectPool[0].GetPooledObject() != null)
-                // else{
-                //     if(GameObject.FindWithTag("Bullet") != null){
-                //         clone = GameObject.FindWithTag("Bullet").GetComponent<Rigidbody2D>();
-                //         clone.gameObject.SetActive(false);
-                //     }
-                //     else{ //if(GameObject.FindWithTag("Grenade") != null){
-                //         //clone = GameObject.FindWithTag("Grenade").GetComponent<Rigidbody2D>();
-                //         //clone.GetComponent<GrenadeScript>().RemoteExplosion();
-                //         return;
-                //     }
-                // }
+
                 clone.gameObject.transform.position = Spawn.position;
                 clone.gameObject.transform.rotation = Spawn.rotation;
                 clone.gameObject.SetActive(true);
@@ -276,6 +265,8 @@ public class shooterScript2D : MonoBehaviour
 
             //AddingForces
             clone.AddForce(Spawn.up * Velocity);
+            
+            if (recoilForce > 0){ Player.main.rb.AddForce(Player.main.tf.up * -recoilForce, ForceMode2D.Impulse); }
             Spawn.localEulerAngles = SpawnRot;
             audio.pitch = Random.Range(0.9f, 1.1f) + GunHandler.Instance.cooldown.CurrentChargeNormalized;
             audio.Play();
@@ -334,14 +325,18 @@ public class shooterScript2D : MonoBehaviour
         burst_interval = weapon.burst_interval;
         penetration = weapon.penetration;
         uniform_spread = weapon.uniform;
+        recoilForce = weapon.recoilForce;
 
-        if(weapon.pool != 0){
-            objectPool[0] = GameObject.Find("BulletPool"+weapon.pool.ToString()).GetComponent<ObjectPool>();
+        if (weapon.pool != 0)
+        {
+            objectPool[0] = GameObject.Find("BulletPool" + weapon.pool.ToString()).GetComponent<ObjectPool>();
         }
-        else if(weapon.is_support){
-            objectPool[0] = GameObject.Find("BulletPool"+ 12.ToString()).GetComponent<ObjectPool>();
+        else if (weapon.is_support)
+        {
+            objectPool[0] = GameObject.Find("BulletPool" + 12.ToString()).GetComponent<ObjectPool>();
         }
-        else{
+        else
+        {
             objectPool[0] = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
         }
 

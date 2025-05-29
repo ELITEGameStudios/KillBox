@@ -6,15 +6,15 @@ namespace KillboxWeaponClasses
 {
     public class Weapon
     {
-        public readonly float fire_rate, cooldown_units, velocity, spread, range, burst_interval, cooldown_time;
+        public readonly float fire_rate, cooldown_units, velocity, spread, range, burst_interval, cooldown_time, recoilForce;
         public readonly int damage, bullets_per_shot, burst_quantity, pool, penetration, support_type;
 
         public readonly bool burst, is_support, launcher, uniform, misc;
 
         public Weapon(
-            float fr, float cooldown, float vel, float spr, float rnge, int dmg, int bps = 1, 
-            bool burst_input = false, int burst_quantity_input = 3, float burst_interval_input = 0.33f, 
-            int pool_input = 0, int penetration_input = 0, bool _is_support = false, int _support_type = 0, float _cooldown_time = 2.5f, bool _launcher = false, bool _uniform = false, bool _misc = false)
+            float fr, float cooldown, float vel, float spr, float rnge, int dmg, int bps = 1,
+            bool burst_input = false, int burst_quantity_input = 3, float burst_interval_input = 0.33f,
+            int pool_input = 0, int penetration_input = 0, bool _is_support = false, int _support_type = 0, float _cooldown_time = 2.5f, bool _launcher = false, bool _uniform = false, bool _misc = false, float recoilForce = 0f)
         {
             fire_rate = fr;
             cooldown_units = cooldown;
@@ -26,7 +26,7 @@ namespace KillboxWeaponClasses
             burst = burst_input;
             burst_quantity = burst_quantity_input;
             burst_interval = burst_interval_input;
-            
+
             pool = pool_input; //Use only for special Weapons
             penetration = penetration_input; //Use only for piercing weapons
 
@@ -36,6 +36,7 @@ namespace KillboxWeaponClasses
             launcher = _launcher;
             uniform = _uniform;
             misc = _misc;
+            this.recoilForce = recoilForce;
         }
     }
 
@@ -43,7 +44,7 @@ namespace KillboxWeaponClasses
 
     class WeaponLibrary
     {
-        public static readonly Weapon pistol = new Weapon(0.2f, 10, 150, 15, 1, 25);
+        public static readonly Weapon pistol = new Weapon(0.2f, 10, 150, 15, 1, 25, recoilForce: 25);
         public static readonly Weapon combatPistol = new Weapon(0.08f, 10, 120, 10, 1, 20);
         public static readonly Weapon revolver = new Weapon(0.3f, 20, 160, 5, 0.7f, 50);
         public static readonly Weapon speedRevolver = new Weapon(0.1f, 18, 170, 20, 0.7f, 150, penetration_input: 1);
