@@ -327,9 +327,9 @@ public class GunHandler : MonoBehaviour
     
     void Update(){
         if(cooldown != null){
-            if(!GameplayUI.instance.GetCooldownText().gameObject.activeInHierarchy){
-                GameplayUI.instance.GetCooldownText().gameObject.SetActive(true);
-            }
+            // if(!GameplayUI.instance.GetCooldownText().gameObject.activeInHierarchy){
+            //     GameplayUI.instance.GetCooldownText().gameObject.SetActive(true);
+            // }
             // if(cooldown.cooling_down){
             //     GameplayUI.instance.GetCooldownText().gameObject.SetActive(true);
             // }
