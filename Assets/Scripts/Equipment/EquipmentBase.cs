@@ -8,7 +8,8 @@ public abstract class EquipmentBase : MonoBehaviour
 {
     public bool startEffect, endEffect;
     [SerializeField] private float UltraTime, start_effect_clock, end_effect_clock;
-    [SerializeField] private Text buttonText;
+    [SerializeField] private string buttonText;
+    [SerializeField] private Color color;
     public EquipmentManager.EquipmentType equipmentType;
     public Volume volume;
 
