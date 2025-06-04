@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class MapData : MonoBehaviour
 {
@@ -16,23 +17,49 @@ public class MapData : MonoBehaviour
     [SerializeField]
     private Transform player_start, portal_start, weapons_start, upgrades_start, starter_start;
 
+    [SerializeField]
+    private Spawn2[] spawners;
 
+    [Header("Tile data")]
+    public Tilemap floorTiles;
+    public Tilemap wallTiles;
+    public Vector3Int[] wallPositions, floorPositions;
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-        root = gameObject;
-
-        //GameObject.Find("Manager").GetComponent<GameManager>().AddMap(this);
-        //if(index != 0){
-        //    gameObject.SetActive(false);
-        //}
+    public void Update(){
+        
     }
 
-    void Start(){
-        //if(index == 0){
-        //    GameObject.FindWithTag("Player").transform.position = Player.position;
-        //}
+
+    public void SetTileData(){
+        BoundsInt wallBounds = wallTiles.cellBounds;
+        BoundsInt floorBounds = floorTiles.cellBounds;
+
+        List<Vector3Int> wallPositions = new();
+        List<Vector3Int> floorPositions = new();
+        
+        foreach (Vector3Int point in wallBounds.allPositionsWithin){
+            if(wallTiles.HasTile(point)){wallPositions.Add(point);}
+        }
+
+        foreach (Vector3Int point in floorBounds.allPositionsWithin){
+            if(floorTiles.HasTile(point)){floorPositions.Add(point);}
+        }
+
+        this.wallPositions = wallPositions.ToArray();
+        this.floorPositions = floorPositions.ToArray();
+
+        AssignDefaultWallColors();
+    }
+
+    public void AssignDefaultWallColors(){
+        foreach (Vector3Int point in wallPositions){
+            wallTiles.SetColor(point, GridAnimationManager.instance.defaultWallColor);
+        }
+    }
+
+    // Start is called before the first frame update
+    void Awake(){
+        root = gameObject;
     }
 
     public GameObject Root{get {return root;}}
@@ -45,4 +72,14 @@ public class MapData : MonoBehaviour
     public int Index {get {return index;}}
     public int DebutRound {get {return debutRound;}}
     public int RetireRound {get {return retireRound;}}
+    public Spawn2[] GetSpawners(){return spawners;}
+    public Spawn2[] GetSpawners(int round){
+        List<Spawn2> spawnlist = new();
+        foreach (Spawn2 spawner in spawners){
+            if(spawner.unlock_on_level <= round){
+                spawnlist.Add(spawner);
+            }
+        }
+        return spawnlist.ToArray();
+    }
 }

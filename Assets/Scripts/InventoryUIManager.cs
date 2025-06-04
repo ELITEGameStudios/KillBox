@@ -25,14 +25,12 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
 
     public List<InventoryUIElement> main_buttons {get; private set;}
 
-    public GameManager manager;
-
     public bool isOwned {get; private set;}
     public bool is_purchasable {get; private set;}
     [SerializeField] private bool activeMenu;
 
     [SerializeField]
-    private ShopScript shop;
+    private ShopScript shop {get {return GameManager.main.shopScript;}}
 
     private WeaponItem target_item;
 
@@ -41,9 +39,10 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     public InventoryUIElement primary_element, secondary_element, dual_element;
     
     [SerializeField] private UnityEvent onPurchaseAttempt, onBackButton;
-    [SerializeField] private bool firstFrame;
+    [SerializeField] private bool firstFrame, uiInitialized;
 
     public string target_key;
+    public Image GetBackground() {return background;}
 
     private void Awake()
     {
@@ -59,7 +58,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         main_buttons = new List<InventoryUIElement>();
         activeMenu = false;
     }
-    void Start(){
+    public void Initialize(){
         OnSetTargetKey("Pistol");
     }
 
@@ -67,7 +66,16 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         Instance.main_buttons.Add(target);
     }
 
+    public void InitializeUI(){
+        foreach (InventoryUIElement item in main_buttons)
+        {
+            item.InitializeUIElement();
+        }
+    }
+
     public void UpdateUI(){
+        if(target_item == null) return;
+        if(!uiInitialized){InitializeUI(); uiInitialized = true;}
         OwnedCheck();
         TargetCheck();
     }
@@ -77,24 +85,11 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
 
         isOwned = false;
 
-        bool is_purchasable = target_item.Compare(manager.ScoreCount);
+        bool is_purchasable = target_item.Compare(GameManager.main.ScoreCount);
 
         for(int i = 0; i < owned_guns.Count; i++){
             if(owned_guns[i].name == target_key){
                 isOwned = true;
-            }
-        }
-
-        for(int i = 0; i < main_buttons.Count; i++){
-            if(isOwned){
-                main_buttons[i].OnOwnedCheck();
-            }
-            else{
-
-                //if(is_purchasable)
-                main_buttons[i].OnOwnedCheck();//, purchasable: true);
-                //else
-                //    main_buttons[i].OnOwnedCheck(false);
             }
         }
     }
@@ -105,9 +100,25 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         equippedSecondary.SetActive(false);
         equippedDual.SetActive(false);
 
-        is_purchasable = target_item.Compare(manager.ScoreCount);
+        is_purchasable = target_item.Compare(GameManager.main.ScoreCount);
 
         if(target_item != null && !isOwned){
+
+            if( !KillBox.currentGame.hasUpgradedArsenal && target_item.tier > 1 && target_item.tier < 4 ){ // Locked high tier weapons before SHARD
+                purchase_button.interactable = false;
+                purchase_display.text = "Defeat SHARD to purchase this weapon...";
+                costsText.text = "?";
+                costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
+                return;
+            }
+
+            if( KillBox.currentGame.specialUpgrade != 1 && target_item.tier == 4 ){ // Locked gold weapon without midas special
+                purchase_display.text = KillBox.currentGame.specialUpgrade == 0 ? "Defeat MIDAS to purchase this weapon..." : "You chose your path...";
+                purchase_button.interactable = false;
+                costsText.text = "?";
+                costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
+                return;
+            }
 
             if(is_purchasable){
                 purchase_button.interactable = true;
@@ -221,9 +232,8 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     public void OnSetTargetKey(string key)
     {
 
-        Instance.target_key = key;
-
-        Instance.target_item = WeaponItemList.Instance.GetItem(target_key);
+        target_key = key;
+        target_item = WeaponItemList.Instance.GetItem(target_key);
 
         KillboxEventSystem.TriggerWeaponButtonSelectEvent(target_item);
         
@@ -378,6 +388,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     {
         if(pressedThisFrame && background.gameObject.activeInHierarchy){
             onBackButton.Invoke();
+            GameManager.main.SetInGameButtonHandlers(true);
             KillboxEventSystem.TriggeCloseShopEvent();
             activeMenu = false;
         }

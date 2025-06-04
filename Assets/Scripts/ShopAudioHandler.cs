@@ -66,6 +66,7 @@ public class ShopAudioHandler : MonoBehaviour, IPurchaseEventListener, IShopUIEv
 
     public void OnUpgradeButtonSelect(Upgrade upgrade)
     {
+        if(GameManager.main == null){return;}
         if(GameManager.main.started_game){
 
             source.Stop();

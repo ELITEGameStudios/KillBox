@@ -16,14 +16,10 @@ public class DifficultyColor : MonoBehaviour
     void Update()
     {
         if(!getBest){
-            graphic.color = colors[DifficultyManager.main.index];        
+            graphic.color = colors[KillBox.currentGame.difficultyIndex];        
         }
         else{
-            for(int i = 0; i < GameManager.main.personalBests.Length; i++){
-                if(GameManager.main.PBInt == GameManager.main.personalBests[i]){
-                    graphic.color = colors[i];    
-                }
-            }
+            graphic.color = colors[MainMenuManager.instance.selectedDifficulty];    
         }
     }
 }

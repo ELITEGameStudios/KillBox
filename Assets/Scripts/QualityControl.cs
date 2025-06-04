@@ -36,14 +36,11 @@ public class QualityControl : MonoBehaviour
         hqVolumeIndex = PlayerPrefs.GetInt("quality_index", 1);
         bossShaderIndex = PlayerPrefs.GetInt("boss_shader_index", 1);
         
-        if(ShadowIndex == 0) {ShadowToggle.isOn = false;}
-        else {ShadowToggle.isOn = true;}
-        
-        if(hqVolumeIndex == 0) {HqVolumeToggle.isOn = false;}
-        else {HqVolumeToggle.isOn = true;}
+        // if(hqVolumeIndex == 0) {HqVolumeToggle.isOn = false;}
+        // else {HqVolumeToggle.isOn = true;}
 
-        if(bossShaderIndex == 0) {bossShaderVolume.isOn = false;}
-        else {bossShaderVolume.isOn = true;}
+        // if(bossShaderIndex == 0) {bossShaderVolume.isOn = false;}
+        // else {bossShaderVolume.isOn = true;}
 
         ToggleVolumes();
 

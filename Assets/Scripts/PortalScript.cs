@@ -17,13 +17,10 @@ public class PortalScript : MonoBehaviour
     public Spawn GetSpawn;
     public string AnimName, opening_anim;
     public float Delay, dist;
-    public int CurrentMap {get; private set;}
+    public int currentMapIndex {get; private set;}
 
     [SerializeField]
     private Animator overlay_anim;
-    
-    [SerializeField]
-    private PlayerHealth player_hp;
 
     [SerializeField]
     private ShopScript shop;
@@ -41,8 +38,6 @@ public class PortalScript : MonoBehaviour
 
     public ChestSystemManager chestSystem;
 
-    [SerializeField]
-    public List<MapData> Maps {get; private set;} = new List<MapData>(); 
 
     [SerializeField]
     private int _mode = 0, runic_map, prime_runic_map, prismatic_map; 
@@ -64,11 +59,10 @@ public class PortalScript : MonoBehaviour
     private QuestionInitiator escapeRoomInitiator;
 
     void OnEnable(){
-        Maps = gameManagerVar.GetMaps;
-
         if (Mode == 3){
             BossRoundCounterUI.main.UpdateDisplay(true);
         }
+        
     }
 
     void Awake(){
@@ -80,14 +74,10 @@ public class PortalScript : MonoBehaviour
         }
     }
 
-    //async Task LoadPathfindingTask(){
-    //    AstarPath.active.UpdateGraphs(Maps[CurrentMap].Obstacles.bounds);
-    //    Task.Yield();
-    //}
     async void LoadPathfinding(){
         await Task.Run(() =>
         {
-           AstarPath.active.UpdateGraphs(GameManager.main.GetMapByID(CurrentMap).Obstacles.bounds);
+           AstarPath.active.UpdateGraphs(GameManager.main.GetMapByID(currentMapIndex).Obstacles.bounds);
            return;
         });
     }
@@ -115,7 +105,7 @@ public class PortalScript : MonoBehaviour
     void NextLvl()
     {
 
-        portalAnimator.Play(AnimName);
+        // portalAnimator.Play(AnimName);
 //        loadingScene = true;
         StartCoroutine(LoadNextScene());
 
@@ -143,6 +133,15 @@ public class PortalScript : MonoBehaviour
     void SetRound(){
 
         ChallengeFields.UpdateRound(gameManagerVar, gameManagerVar.isFireRound);
+        // Damageless Code:
+        if(Player.main.health.isDamageless){
+            // Damageless Bonus is increased the further you get in the game.
+            if(KillBox.currentGame.round >= 3){gameManagerVar.OnPickupToken(1, false);}
+            if(KillBox.currentGame.round >= 11){gameManagerVar.OnPickupToken(2, false);}
+            if(KillBox.currentGame.round >= 18){gameManagerVar.OnPickupToken(3, false);}
+            }
+        Player.main.health.isDamageless = true;
+
         if(BossRoundManager.main.isBossRound){gameManagerVar.OnPickupToken(7, false);}
         else{gameManagerVar.OnPickupToken(1, false);}
         gameManagerVar.InitNextRound();
@@ -157,7 +156,7 @@ public class PortalScript : MonoBehaviour
             // CurrentMap = 4;
             List<int> availableMaps = GameManager.main.GetAvailableMaps();
 
-            CurrentMap = availableMaps[Random.Range(0, availableMaps.Count)];
+            currentMapIndex = availableMaps[Random.Range(0, availableMaps.Count)];
             
 
             // if(CurrentMap == 1 && gameManagerVar.LvlCount >= 5)
@@ -176,47 +175,36 @@ public class PortalScript : MonoBehaviour
             
             // { CurrentMap = 18; }
         }
-        else{ CurrentMap = next_map; }
+        else{ currentMapIndex = next_map; }
     }
 
     void LoadMap(){
-        for (int i = 0; i < Maps.Count; i++)
-        { Maps[i].Root.SetActive(false); }
-        GameManager.main.GetMapByID(CurrentMap).Root.SetActive(true);
-
-        mapEvolutionManager.OnRoundChange(gameManagerVar.LvlCount);
-        AstarPath.active.UpdateGraphs(GameManager.main.GetMapByID(CurrentMap).Obstacles.bounds);
-        
+        GameManager.main.SetNewMap( GameManager.main.GetMapByID(currentMapIndex) );
     }
 
     public void UpdatePathfinding(){
-        AstarPath.active.UpdateGraphs(GameManager.main.GetMapByID(CurrentMap).Obstacles.bounds);
+        AstarPath.active.UpdateGraphs(GameManager.main.GetMapByID(currentMapIndex).Obstacles.bounds);
         Debug.Log("Pathfinding Updated");
     } 
 
-    public void ManageSpawns(int map = -1){
-        if(map == -1){ map = CurrentMap;}
+    public void ManageSpawns(int map = -1){ // may be deprecated
+        if(map == -1){ map = currentMapIndex;}
 
-        for(int i = 0; i < GetSpawn.spawns.Count; i++)
-        {
-            if (GetSpawn.spawns[i].TargetLvl == map && gameManagerVar.LvlCount >= GetSpawn.spawns[i].unlock_on_level)
-            {
-                GetSpawn.spawns[i].ActiveSpawn = true;
-                GetSpawn.spawns[i].AutomationManager();
-            }
-            else
-                GetSpawn.spawns[i].ActiveSpawn = false;
-        }
-        if(BossRoundManager.main.isBossRound && _mode == 0){RoundCompositionManager.main.AvoidComposition();}
-        else{RoundCompositionManager.main.ChangeComposition();}
-        GetSpawn.ResetVars();
-        GetSpawn.GenerateNewEnemyPool();
-
+        // for(int i = 0; i < GetSpawn.spawns.Count; i++)
+        // {
+        //     if (GetSpawn.spawns[i].TargetLvl == map && gameManagerVar.LvlCount >= GetSpawn.spawns[i].unlock_on_level)
+        //     {
+        //         GetSpawn.spawns[i].ActiveSpawn = true;
+        //         GetSpawn.spawns[i].RefreshEntries();
+        //     }
+        //     else
+        //         GetSpawn.spawns[i].ActiveSpawn = false;
+        // }
     }
 
     void SetPositions(){
-        Player.main.tf.position = GameManager.main.GetMapByID(CurrentMap).Player.position;
-        transform.position = GameManager.main.GetMapByID(CurrentMap).Portal.position;
+        Player.main.tf.position = GameManager.main.GetMapByID(currentMapIndex).Player.position;
+        transform.position = GameManager.main.GetMapByID(currentMapIndex).Portal.position;
 
         GameObject[] allies = GameObject.FindGameObjectsWithTag("Ally");
 
@@ -236,7 +224,7 @@ public class PortalScript : MonoBehaviour
     void RemainingTasks(){
         //floor_color.ChangeColor(false);
         ToggleChannelManager.main.ResetChannels();
-        enemy_entry_list.BossAppearanceCheck(CurrentMap);
+        enemy_entry_list.BossAppearanceCheck(currentMapIndex);
         InventoryUIManager.Instance.UpdateUI();
         UpgradesManager.Instance.ChooseUpgrade();
         chestSystem.RefreshCheck();
@@ -250,7 +238,8 @@ public class PortalScript : MonoBehaviour
     }
 
     void StartRoundCountdown(){
-        lvlStarter.InitiatePreround(CurrentMap, GameManager.main.GetMapByID(CurrentMap).Player.position);
+        GridAnimationManager.instance.DoIntroRoundAnimation();
+        lvlStarter.InitiatePreround(currentMapIndex, GameManager.main.GetMapByID(currentMapIndex).Player.position);
         enemyCounter.Reset();
     }
 
@@ -281,9 +270,8 @@ public class PortalScript : MonoBehaviour
             MainAudioSystem.main.Rest();
             GunHandler.Instance.SetUIStatus(true);
             
+            
             // foreach (Door door in Door.doors){ door.NextRound(); } 
-            floor_color.SetColorFromGradient(gameManagerVar.LvlCount);
-
             StartRoundCountdown();
         }
         else{ 
@@ -322,7 +310,6 @@ public class PortalScript : MonoBehaviour
                 
                 // foreach (Door door in Door.doors){ door.NextRound(); } 
                 floor_color.ChangeColor(Color.black, Color.white);
-
                 StartRoundCountdown();
                 // KillboxEventSystem.TriggerBossRoundStartEvent();
             }
@@ -337,7 +324,22 @@ public class PortalScript : MonoBehaviour
     {
         loadingScene = true;
         ChallengeLib.UpdateChallengeValues("HUNTER", "KILLS", ChallengeFields.kills);
-        yield return new WaitForSeconds(Delay);
+        
+        float time = Delay;
+        MapData map = GameManager.main.GetCurrentMap();
+        CameraBgManager.instance.SetBackground(Color.black, Delay/2);
+
+        Color wallCol = map.wallTiles.color;
+        Color floorCol = map.floorTiles.color;
+        
+        while (time > 0){
+            map.wallTiles.color = Color.Lerp(Color.clear, wallCol, time / Delay);
+            map.floorTiles.color = Color.Lerp(Color.clear, floorCol, time / Delay);
+
+            time -= Time.deltaTime;
+            yield return null;
+        }
+        // yield return new WaitForSeconds(Delay);
 
         InitNewRound();
         loadingScene = false;

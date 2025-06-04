@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class EAI_equipment_manager : MonoBehaviour
+public class EAI_equipment_manager : EquipmentBase
 {
     public bool has_ally, startEffect, endEffect;
 
@@ -13,9 +13,6 @@ public class EAI_equipment_manager : MonoBehaviour
 
     public GameObject Ally, activate_button; 
     public GameObject[] clone;
-
-    [SerializeField]
-    private GameManager manager;
 
     [SerializeField] private Text buttonText;
     
@@ -31,36 +28,10 @@ public class EAI_equipment_manager : MonoBehaviour
         
     }
 
-    public void GamemodeStart()
+    public override void GamemodeStart()
     {
-        has_ally = true;
         clone = new GameObject[5];
-
         StartCoroutine(Lifespan());
-        activate_button.GetComponent<Animator>().Play("equipment_button_exit");
-        StartCoroutine(ButtonDeactivate());
-        manager.UpdateReqEquipmentKills();
-
-        if (has_ally)
-        {
-            manager.ResetUltraKills(0);
-        }
-    }
-
-    public void DeactivateButton(){
-        activate_button.SetActive(false);
-        if(has_ally){ 
-            endEffect = true; 
-            startEffect = false;
-            has_ally = false;
-        }
-        for (int i = 0; i < clone.Length; i++)
-        {
-            if(clone[i] != null)
-            {
-                Destroy(clone[i]);
-            }
-        }
     }
 
     IEnumerator Lifespan()
@@ -77,24 +48,11 @@ public class EAI_equipment_manager : MonoBehaviour
 
             clone[i] = Instantiate(Ally, transform);
             clone[i].transform.SetParent(null);
-
         }
+    }
 
-        float time = UltraTime;
-
-
-        while (time > 0)
-        {
-            time -= Time.deltaTime;
-            manager.equipment_slider.maxValue = UltraTime;
-            manager.equipment_slider.value  = time;
-
-            yield return null;
-        }
-
-        has_ally = false;
-        manager.player_has_ally = false;
-
+    public override void GamemodeEnd()
+    {
         for (int i = 0; i < clone.Length; i++)
         {
             if(clone[i] != null)
@@ -102,15 +60,5 @@ public class EAI_equipment_manager : MonoBehaviour
                 Destroy(clone[i]);
             }
         }
-
-        
-        manager.ResetUltraKills(0);
-
-    }
-
-    IEnumerator ButtonDeactivate(){
-        activate_button.transform.GetChild(1).GetComponent<Button>().interactable = false;
-        yield return new WaitForSecondsRealtime(0.5f);
-        activate_button.SetActive(false);
     }
 }

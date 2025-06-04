@@ -41,7 +41,7 @@ public class MainPalatte : MonoBehaviour
     }
 
     public Color GetColorByMode(){
-        switch (DifficultyManager.main.index){
+        switch (MainMenuManager.instance.selectedDifficulty){
             case 0:
                 return easy;
             case 1:

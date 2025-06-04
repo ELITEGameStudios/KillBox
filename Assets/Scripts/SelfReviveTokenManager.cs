@@ -79,8 +79,10 @@ public class SelfReviveTokenManager : MonoBehaviour, IProgressionListener, ISelf
 
     public void OnSelfResPrompt()
     {
-        
-        selfResButton.SetActive(true);
+        if(GameplayUI.instance.GetSelfResButton() != null){
+            GameplayUI.instance.GetSelfResButton().SetActive(true);
+        }
+        else return;
         if(selfResTokens > 1 && selfResThisRound == 0){
             RevivesAvailableText.text = "2 REVIVES AVAILABLE"; 
         }

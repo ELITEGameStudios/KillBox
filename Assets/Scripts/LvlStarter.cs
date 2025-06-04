@@ -18,9 +18,6 @@ public class LvlStarter : MonoBehaviour
     public Text text;
     public TpScript[] TpScripts;
 
-    [SerializeField]
-    private TabSystemMaster ui_tabs;
-
     public static LvlStarter main {get; private set;}
 
     private IEnumerator lvlStartRefreshable;
@@ -28,7 +25,7 @@ public class LvlStarter : MonoBehaviour
     void Awake()
     {
         if(main == null){ main = this; }
-        else{ Destroy(this); }    
+        else{ Destroy(this); } 
     }
 
     public void ManualStartLvl(){
@@ -56,11 +53,11 @@ public class LvlStarter : MonoBehaviour
         if(!animationFinished){
             weapons.transform.position = Vector2.Lerp(playerPos, targetWeaponsPos, CommonFunctions.SineEase(timer, animationTime));
             upgrades.transform.position = Vector2.Lerp(playerPos, targetUpgradesPos, CommonFunctions.SineEase(timer, animationTime));
-            starterObject.transform.position = Vector2.Lerp(playerPos, targetStarterPos, CommonFunctions.SineEase(timer, animationTime));
+            // starterObject.transform.position = Vector2.Lerp(playerPos, targetStarterPos, CommonFunctions.SineEase(timer, animationTime));
 
             weapons.transform.localScale = Vector2.Lerp(Vector2.zero, Vector2.one, CommonFunctions.SineEase(timer, animationTime));
             upgrades.transform.localScale = Vector2.Lerp(Vector2.zero, Vector2.one, CommonFunctions.SineEase(timer, animationTime));
-            starterObject.transform.localScale = Vector2.Lerp(Vector2.zero, Vector2.one, CommonFunctions.SineEase(timer, animationTime));
+            // starterObject.transform.localScale = Vector2.Lerp(Vector2.zero, Vector2.one, CommonFunctions.SineEase(timer, animationTime));
             
             timer += Time.deltaTime;
         }
@@ -77,7 +74,7 @@ public class LvlStarter : MonoBehaviour
         HasStarted = true;
         weapons.SetActive(false);
         upgrades.SetActive(false);
-        starterObject.SetActive(false);
+        // starterObject.SetActive(false);
 
         RoundStartDisplay.main.StartAnimation();
 
@@ -91,8 +88,8 @@ public class LvlStarter : MonoBehaviour
             KillboxEventSystem.TriggerBossRoundStartEvent();
         }
 
-
-        ui_tabs.CloseTabs();
+        
+        // GameplayUI.instance.GetUpgradeTabMaster().CloseTabs();
         GunHandler.Instance.SetUIStatus(false);
 
         for(int i = 0; i < OffList.Length; i++)
@@ -119,31 +116,55 @@ public class LvlStarter : MonoBehaviour
         KillboxEventSystem.TriggerRoundStartEvent();
     }
 
-    public void InitiatePreround(int mapId, Vector3 playerPos)
+    public void InitiatePostRound(int mapId)
     {
-        HasStarted = false;
+        // if(KillBox.currentGame.round < 3){return;}
         timer = 0;
 
-        // try{
-            targetWeaponsPos = GameManager.main.GetMapByID(mapId).Weapons.position;
-            targetUpgradesPos = GameManager.main.GetMapByID(mapId).Upgrades.position;
-            targetStarterPos= GameManager.main.GetMapByID(mapId).Starter.position;
-        // }
-        // catch(NullReferenceException){
-        //     return;
-        // }
-
+        targetWeaponsPos = GameManager.main.GetMapByID(mapId).Weapons.position;
+        targetUpgradesPos = GameManager.main.GetMapByID(mapId).Upgrades.position;
+        // targetStarterPos= GameManager.main.GetMapByID(mapId).Starter.position;
+     
         animationFinished = false;
 
         weapons.SetActive(true);
         upgrades.SetActive(true);
-        starterObject.SetActive(true);
+        // starterObject.SetActive(true);
 
         weapons.GetComponent<InGameButtonHandler>().Deactivate();
         upgrades.GetComponent<InGameButtonHandler>().Deactivate();
-        starterObject.GetComponent<InGameButtonHandler>().Deactivate();
+        // starterObject.GetComponent<InGameButtonHandler>().Deactivate();
+        
+        // this.playerPos = playerPos;
+        
+    }    
+
+    public void InitiatePreround(int mapId, Vector3 playerPos)
+    {
+        // HasStarted = false;
+        // timer = 0;
+
+        // // try{
+        // targetWeaponsPos = GameManager.main.GetMapByID(mapId).Weapons.position;
+        // targetUpgradesPos = GameManager.main.GetMapByID(mapId).Upgrades.position;
+        // targetStarterPos= GameManager.main.GetMapByID(mapId).Starter.position;
+        // // }
+        // // catch(NullReferenceException){
+        // //     return;
+        // // }
+
+        // animationFinished = false;
+
+        // weapons.SetActive(true);
+        // upgrades.SetActive(true);
+        // starterObject.SetActive(true);
+
+        // weapons.GetComponent<InGameButtonHandler>().Deactivate();
+        // upgrades.GetComponent<InGameButtonHandler>().Deactivate();
+        // starterObject.GetComponent<InGameButtonHandler>().Deactivate();
         
         this.playerPos = playerPos;
+        Invoke(nameof(StartLvl), 1);
         
     }    
 }

@@ -11,6 +11,7 @@ public class GameLoader : MonoBehaviour
     private Slider slider;
     private float timer = 5.5f, elapsed = 0, progress, time_value, init_time, post_load_time = 0.75f;
     private bool loading = false, fading_out = false;
+    [SerializeField] private string sceneName;
 
     [SerializeField]
     private Animator anim;
@@ -71,13 +72,7 @@ public class GameLoader : MonoBehaviour
 
     IEnumerator LoadYourAsyncScene()
     {
-        // The Application loads the Scene in the background as the current Scene runs.
-        // This is particularly good for creating loading screens.
-        // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
-        // a sceneBuildIndex of 1 as shown in Build Settings.
-
-        // AsyncOperation loader = SceneManager.LoadSceneAsync("Menus");
-        AsyncOperation loader = SceneManager.LoadSceneAsync("Menus");
+        AsyncOperation loader = SceneManager.LoadSceneAsync(sceneName);
         loader.allowSceneActivation = false;
 
         // Wait until the asynchronous scene fully loads
@@ -95,6 +90,7 @@ public class GameLoader : MonoBehaviour
                 post_load_time -= Time.deltaTime;
 
                 if(post_load_time <= 0){
+                    SceneSystem.Instance.UpdateSceneData();
                     loader.allowSceneActivation = true;
                 }
             }

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class KeyUI : MonoBehaviour
 {
-    public GameManager manager;
     public Image image;
 
     // Start is called before the first frame update
@@ -13,7 +12,9 @@ public class KeyUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (manager.HasKey)
+        if(GameManager.main == null) return;
+        
+        if (GameManager.main.HasKey)
         {
             image.color = Color.white;
         }
