@@ -75,7 +75,8 @@ public class GridAnimationManager : MonoBehaviour
                     originalFloorColors.Add(currentfloorColor);
                 }
                 else{
-                    currentfloorColor = originalFloorColors[i];
+                    try { currentfloorColor = originalFloorColors[i]; }
+                    catch { currentfloorColor = originalFloorColors[0]; };
 
                 }
 
