@@ -24,12 +24,21 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private Slider cooldownSlider, primaryCooldownSlider, secondaryCooldownSlider;
     [SerializeField] private Text cooldownText;
 
-    public Slider GetCooldownSlider(){return cooldownSlider;}
     public Slider GetPrimaryCooldownSlider(){return primaryCooldownSlider;}
     public Slider GetSecondaryCooldownSlider(){return secondaryCooldownSlider;}
     public Image GetPrimaryCooldownSliderImage(){return mainBarSliderImage;}
     public Image GetSecondaryCooldownSliderImage(){return secondaryBarSliderImage;}
-    public Text GetCooldownText(){return cooldownText;}
+
+
+    [Header("Equipment graphics")]
+    [SerializeField] private Image equipmentImage;
+    [SerializeField] private Slider equipmentSlider;
+    [SerializeField] private Text equipmentHeader;
+
+    public Text GetEquipmentHeader(){return equipmentHeader;}
+    public Image GetEquipmentImage(){return secondaryBarSliderImage;}
+    public Slider GetEquipmentSlider(){return cooldownSlider;}
+
     
     [Header("Weapon buttons")]
     [SerializeField] private Button primaryWeaponButton;

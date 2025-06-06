@@ -339,6 +339,10 @@ public class PortalScript : MonoBehaviour
             time -= Time.deltaTime;
             yield return null;
         }
+
+        GameManager.main.GetCurrentMap().Root.SetActive(false);
+        map.wallTiles.color = wallCol;
+        map.floorTiles.color = floorCol;
         // yield return new WaitForSeconds(Delay);
 
         InitNewRound();

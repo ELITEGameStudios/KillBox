@@ -27,14 +27,12 @@ public class CooldownScript : MonoBehaviour, IRestartListener
     [SerializeField]
     private BuffsManager buffsManager;
 
-    [SerializeField] private Animator animator;
+    // [SerializeField] private Animator animator;
     [SerializeField] private Gradient cooldownGradient, shootingGradient;
 
 
     void Start(){
         count_max = 100;
-        GameplayUI.instance.GetCooldownSlider().maxValue = count_max;
-        animator = GameplayUI.instance.GetCooldownSlider().GetComponent<Animator>();
         shot = false;
 
         if(id == 0 && GunHandler.Instance.primary_cooldown != null){
@@ -55,7 +53,7 @@ public class CooldownScript : MonoBehaviour, IRestartListener
 
     public void AnimCheck(){
         if(cooling_down){
-            animator.Play("CoolingDown");
+            // animator.Play("CoolingDown");
         }
     } 
 
@@ -69,19 +67,13 @@ public class CooldownScript : MonoBehaviour, IRestartListener
         if(cooling_down){
             if(timer <= 0){
                 count = 0;
-                //GameplayUI.instance.GetCooldownSlider().wholeNumbers = true;
-                if(GunHandler.Instance.cooldown.self_key == self_key){
-                    GameplayUI.instance.GetCooldownSlider().maxValue = count_max;
-                }
 
-                
-
-                else if(id == 1){InventoryUIManager.Instance.secondary_element.Flip();}
+                if(id == 1){InventoryUIManager.Instance.secondary_element.Flip();}
                 if(id == 0){InventoryUIManager.Instance.primary_element.Flip();}
                 (id == 0 ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = count_max;
 
                 cooling_down = false;
-                animator.CrossFade("Normal", 0.75f);
+                // animator.CrossFade("Normal", 0.75f);
 
                 if(id==0){
                     KillboxEventSystem.TriggerCooldownEnd(new WeaponEventData(GunHandler.Instance.primary_weapon, true, GunHandler.Instance.has_dual));
@@ -95,11 +87,6 @@ public class CooldownScript : MonoBehaviour, IRestartListener
                 timer -= Time.deltaTime;
                 if(GunHandler.Instance.cooldown.self_key == self_key){
 
-                    GameplayUI.instance.GetCooldownText().text = "COOLING DOWN";
-                    GameplayUI.instance.GetCooldownText().color = cooldownGradient.Evaluate((float)timer/cooldown_time);
-                    
-                    GameplayUI.instance.GetCooldownSlider().maxValue = cooldown_time;
-                    GameplayUI.instance.GetCooldownSlider().value = timer;
                     GameplayUI.instance.GetPrimaryCooldownSliderImage().color = cooldownGradient.Evaluate((float)timer/cooldown_time);
                 }
 
@@ -119,25 +106,9 @@ public class CooldownScript : MonoBehaviour, IRestartListener
                 
             }
             if(GunHandler.Instance.cooldown.self_key == self_key){
-                GameplayUI.instance.GetCooldownSlider().maxValue = count_max;
-                GameplayUI.instance.GetCooldownSlider().value = count;
-
                 GameplayUI.instance.GetPrimaryCooldownSliderImage().color = shootingGradient.Evaluate((float)count/count_max);
             }
-            if(id == 0){ 
-                GameplayUI.instance.GetCooldownText().text = GunHandler.Instance.primary_weapon.name.ToUpper(); 
-                GameplayUI.instance.GetCooldownText().color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.primary_weapon.tier];
-            }
-            else if(id == 1){ 
-                if(GunHandler.Instance.backup_weapon != null){
-                    GameplayUI.instance.GetCooldownText().text = GunHandler.Instance.backup_weapon.name.ToUpper(); 
-                    GameplayUI.instance.GetCooldownText().color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.backup_weapon.tier];
-                }
-                else{
-                    GameplayUI.instance.GetCooldownText().color = Color.white;
-                    GameplayUI.instance.GetCooldownText().text = "SECONDARY"; 
-                }
-            }
+
 
             GameplayUI.instance.GetSecondaryCooldownSliderImage().color = shootingGradient.Evaluate((float)count/count_max);
             (id == 0 ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = count_max;
@@ -153,9 +124,6 @@ public class CooldownScript : MonoBehaviour, IRestartListener
 
     void TriggerCooldown(float set_time){
         count = 0;
-        //GameplayUI.instance.GetCooldownSlider().wholeNumbers = false;
-        GameplayUI.instance.GetCooldownSlider().maxValue = set_time;
-        GameplayUI.instance.GetCooldownSlider().value = set_time;
 
         (id == 0 ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).maxValue = set_time;
         (id == 0 ? GameplayUI.instance.GetPrimaryCooldownSlider() : GameplayUI.instance.GetSecondaryCooldownSlider()).value = set_time;
@@ -172,7 +140,7 @@ public class CooldownScript : MonoBehaviour, IRestartListener
             KillboxEventSystem.TriggerCooldownBegin(new WeaponEventData(GunHandler.Instance.backup_weapon, false, GunHandler.Instance.has_dual));
         }
 
-        animator.CrossFade("CoolingDown", 0.75f);
+        // animator.CrossFade("CoolingDown", 0.75f);
 
     }
 
@@ -197,7 +165,7 @@ public class CooldownScript : MonoBehaviour, IRestartListener
     public void AddCount(shooterScript2D caller, float value){
         count += value;
         time_since_last_shot = 0;
-        animator.Play("Shot");
+        // animator.Play("Shot");
 
         if(!shot){
             shot = true;
@@ -206,7 +174,7 @@ public class CooldownScript : MonoBehaviour, IRestartListener
     public void AddCount(KunaiShooterScript caller, float value){
         count += value;
         time_since_last_shot = 0;
-        animator.Play("Shot");
+        // animator.Play("Shot");
 
 
         if(!shot){
@@ -218,14 +186,14 @@ public class CooldownScript : MonoBehaviour, IRestartListener
 
         if(reset){
             count_max = 100;
-            GameplayUI.instance.GetCooldownSlider().maxValue = count_max;
+            // GameplayUI.instance.GetCooldownSlider().maxValue = count_max;
             return;
         }
 
         if(UpgradesManager.Instance.current_levels[2] > 0){
             float value = UpgradesList.capacity.values[UpgradesManager.Instance.current_levels[2] - 1];
             count_max = (int)value;
-            GameplayUI.instance.GetCooldownSlider().maxValue = count_max;
+            // GameplayUI.instance.GetCooldownSlider().maxValue = count_max;
         }
         else{
             count_max = 100;
@@ -234,7 +202,7 @@ public class CooldownScript : MonoBehaviour, IRestartListener
 
     public void OnRestartGame()
     {
-        if(id == 1) {GameplayUI.instance.GetCooldownText().color = Color.white;}
+        // if(id == 1) {GameplayUI.instance.GetCooldownText().color = Color.white;}
     }
     public void OnReturnToMenu()
     {}
