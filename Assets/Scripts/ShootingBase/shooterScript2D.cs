@@ -265,8 +265,12 @@ public class shooterScript2D : MonoBehaviour
 
             //AddingForces
             clone.AddForce(Spawn.up * Velocity);
+            Player.main.movement.AddCustomForce(
+                new CustomForce(-Spawn.up * 1, time: 0.33f)
+            );
             
-            if (recoilForce > 0){ Player.main.rb.AddForce(Player.main.tf.up * -recoilForce, ForceMode2D.Impulse); }
+            
+            if (recoilForce > 0) { Player.main.rb.AddForce(Player.main.tf.up * -recoilForce, ForceMode2D.Impulse); }
             Spawn.localEulerAngles = SpawnRot;
             audio.pitch = Random.Range(0.9f, 1.1f) + GunHandler.Instance.cooldown.CurrentChargeNormalized;
             audio.Play();
