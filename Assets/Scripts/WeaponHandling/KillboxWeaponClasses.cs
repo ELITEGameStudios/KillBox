@@ -14,7 +14,7 @@ namespace KillboxWeaponClasses
         public Weapon(
             float fr, float cooldown, float vel, float spr, float rnge, int dmg, int bps = 1,
             bool burst_input = false, int burst_quantity_input = 3, float burst_interval_input = 0.33f,
-            int pool_input = 0, int penetration_input = 0, bool _is_support = false, int _support_type = 0, float _cooldown_time = 2.5f, bool _launcher = false, bool _uniform = false, bool _misc = false, float recoilForce = 1f, float recoilTime = 0.33f, float knockbackForce = 1, float knockbackTime = 0.33f)
+            int pool_input = 0, int penetration_input = 0, bool _is_support = false, int _support_type = 0, float _cooldown_time = 2.5f, bool _launcher = false, bool _uniform = false, bool _misc = false, float recoilForce = 1f, float recoilTime = 0.33f, float knockbackForce = 3, float knockbackTime = 0.33f)
         {
             fire_rate = fr;
             cooldown_units = cooldown;
@@ -51,8 +51,8 @@ namespace KillboxWeaponClasses
     {
         public static readonly Weapon pistol = new Weapon(0.2f, 10, 150, 15, 1, 25);
         public static readonly Weapon combatPistol = new Weapon(0.08f, 10, 120, 10, 1, 20);
-        public static readonly Weapon revolver = new Weapon(0.3f, 20, 160, 5, 0.7f, 50);
-        public static readonly Weapon speedRevolver = new Weapon(0.1f, 18, 170, 20, 0.7f, 150, penetration_input: 1);
+        public static readonly Weapon revolver = new Weapon(0.3f, 20, 160, 5, 0.7f, 50, knockbackForce: 8);
+        public static readonly Weapon speedRevolver = new Weapon(0.1f, 18, 170, 20, 0.7f, 150, penetration_input: 1, knockbackForce: 8);
         // public static readonly Weapon goldenPistol = new Weapon(0.17f, 7, 180, 15, 1.5f, 160);
         public static readonly Weapon goldenPistol = new Weapon(0.17f, 0, 180, 15, 1.5f, 100);
         //public static readonly Weapon devils_blaster = new Weapon(0.2f, 5, 150, 20, 1, 40);
@@ -75,7 +75,7 @@ namespace KillboxWeaponClasses
         public static readonly Weapon combatSmg = new Weapon(0.04f, 1.5f, 135, 25, 0.30f, 70);
         public static readonly Weapon goldenSmg = new Weapon(0.05f, 1.5f, 200, 35, 0.8f, 100);
 
-        public static readonly Weapon lightShotgun = new Weapon(0.6f, 3f, 75, 50, 0.7f, 25, bps: 8, recoilForce: 5);
+        public static readonly Weapon lightShotgun = new Weapon(0.6f, 3f, 75, 50, 0.7f, 25, bps: 8, recoilForce: 7);
         public static readonly Weapon triShotgun = new Weapon(0.2f, 5f, 135, 30, 0.5f, 50, bps: 3, _uniform: true, recoilForce: 3);
         public static readonly Weapon pentaShotgun = new Weapon(0.25f, 2, 150, 25, 0.5f, 50, bps: 5, recoilForce: 2);
         public static readonly Weapon dualActionShotgun = new Weapon(0.1f, 1.5f, 150, 50, 0.5f, 50, bps: 8, burst_input: true, burst_quantity_input: 2, burst_interval_input: 0.33f, recoilForce: 2.5f);

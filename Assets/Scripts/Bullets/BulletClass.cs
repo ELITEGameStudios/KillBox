@@ -15,9 +15,9 @@ public class BulletClass : MonoBehaviour
     public bool isTrigger { get {return col.isTrigger;} }
 
     [SerializeField]
-    private bool misc_bullet, lock_trigger;
+    private bool misc_bullet, lock_trigger, inWall;
 
-    public float knockbackForce, knockbackTime;
+    public float knockbackForce, knockbackTime, startingVel;
     public float range { get; private set; }
     public int slowdownVel { get; protected set; } // only set for penetration bullets
 
@@ -40,7 +40,7 @@ public class BulletClass : MonoBehaviour
     //    wall_penetration = wall_penetration_int;
     //}
 
-    public void SetBullet(string name_input, int dmg, int penetration_input = 0, bool wall_penetration_int = false, float _range = 1, float knockbackForce = 1, float knockbackTime = 0.33f)
+    public void SetBullet(string name_input, int dmg, int penetration_input = 0, bool wall_penetration_int = false, float _range = 1, float knockbackForce = 1, float knockbackTime = 0.33f, float startingVel = 0)
     {
         name = name_input;
         damage = dmg;
@@ -60,6 +60,7 @@ public class BulletClass : MonoBehaviour
             integrity = penetration_input;
         }
 
+        inWall = false;
         wall_penetration = wall_penetration_int;
         this.knockbackForce = knockbackForce;
         this.knockbackTime = knockbackTime;
@@ -72,15 +73,16 @@ public class BulletClass : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D hit)
     {
-        if (wall_penetration)
+        if (hit.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
+        {
+            // integrity--;
+            inWall = true;
+        }
+        else if (hit.tag == "Enemy")
         {
             integrity--;
         }
-        else if(hit.tag == "Enemy")
-        {
-            integrity--;
-        }
-        else if(hit.GetComponent<EnemyHealth>() != null)
+        else if (hit.GetComponent<EnemyHealth>() != null)
         {
             integrity--;
         }
@@ -93,7 +95,24 @@ public class BulletClass : MonoBehaviour
         }
     }
 
-    public void SetName(string nameInput){
+    void OnTriggerExit2D(Collider2D hit)
+    {
+        if (hit.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
+        {
+            inWall = false;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        Rigidbody2D rb = GetComponent<Rigidbody2D>(); 
+        if (inWall){
+            rb.AddForce(-rb.velocity * Time.fixedDeltaTime * 75 / integrity);// / (100 * integrity));
+        }
+    }
+
+    public void SetName(string nameInput)
+    {
         name = nameInput;
         gameObject.name = nameInput;
     }

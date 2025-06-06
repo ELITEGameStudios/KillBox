@@ -225,7 +225,7 @@ public class shooterScript2D : MonoBehaviour
                 clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
 
 
-                clone.gameObject.GetComponent<BulletClass>().SetBullet(bulletName, bulletDamage, penetration_input: penetration, _range: range, knockbackForce: knockbackForce, knockbackTime: knockbackTime);
+                clone.gameObject.GetComponent<BulletClass>().SetBullet(bulletName, bulletDamage, penetration_input: penetration, _range: range, knockbackForce: knockbackForce, knockbackTime: knockbackTime, startingVel: weapon.velocity);
             }
             else
             {
@@ -290,7 +290,7 @@ public class shooterScript2D : MonoBehaviour
         // recoilTime = Mathf.Clamp(0, 0.33f, Mathf.Infinity);
         // initRecoilTime = recoilTime;
         Player.main.movement.AddCustomForce(
-            new CustomForce(-Spawn.up * recoilForce, time: recoilTime)
+            new CustomForce(-Spawn.up.normalized * recoilForce, time: recoilTime)
         );
         
         //GraphicClone = Instantiate(ShootGraphic, Spawn.position, Spawn.rotation);
