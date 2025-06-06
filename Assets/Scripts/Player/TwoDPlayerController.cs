@@ -35,7 +35,7 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
     {
         
         controls = new InputManager();
-        customForces = new();
+        if(customForces == null) customForces = new();
 
         controls.Gameplay.move.performed += ctx => movement = ctx.ReadValue<Vector2>();
         controls.Gameplay.move.canceled += ctx => movement = Vector2.zero;

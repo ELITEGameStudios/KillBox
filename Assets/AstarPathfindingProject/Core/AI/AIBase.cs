@@ -170,6 +170,7 @@ namespace Pathfinding {
 
 		/// <summary>Cached CharacterController component</summary>
 		protected CharacterController controller;
+		public CharacterController GetCharacterController() { return controller; }
 
 
 		/// <summary>
@@ -582,7 +583,7 @@ namespace Pathfinding {
 			}
 		}
 
-		void FinalizePosition (Vector3 nextPosition) {
+		public void FinalizePosition (Vector3 nextPosition) {
 			// Use a local variable, it is significantly faster
 			Vector3 currentPosition = simulatedPosition;
 			bool positionDirty1 = false;

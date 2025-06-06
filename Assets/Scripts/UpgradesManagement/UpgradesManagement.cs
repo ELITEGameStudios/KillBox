@@ -86,7 +86,7 @@ public class UpgradesList
     public static Upgrade GetUpgrade(int id, UpgradesManager caller = null){
 
         if (caller = null) {
-            return null;
+            // return null;
         }
 
         switch (id) {

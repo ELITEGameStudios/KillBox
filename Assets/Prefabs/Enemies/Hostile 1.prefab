@@ -331,9 +331,11 @@ MonoBehaviour:
   ExplosionDamage: 0
   ultra_immune: 0
   custom_hit_txt_size: 0
+  kbImmune: 0
   HitTxt: {fileID: 0}
   ultraManager: {fileID: 0}
   objectPool: {fileID: 0}
+  customForces: []
 --- !u!114 &172803866762992228
 MonoBehaviour:
   m_ObjectHideFlags: 0
