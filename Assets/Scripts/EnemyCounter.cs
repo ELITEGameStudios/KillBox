@@ -99,6 +99,8 @@ public class EnemyCounter : MonoBehaviour
         if (noEnemiesOrSpawns && noLongerSpawning && !GameManager.main.EscapeRoom() && !Portal.activeInHierarchy)
         {
             Portal.SetActive(true);
+            CameraBgManager.instance.SetBackground(Color.black, 2);
+
             LvlStarter.main.InitiatePostRound(PortalScript.main.currentMapIndex);
             GridAnimationManager.instance.DoEndRoundAnimation();
             KillboxEventSystem.TriggerRoundEndEvent();
@@ -116,11 +118,11 @@ public class EnemyCounter : MonoBehaviour
             }
 
             // Portal animation
-            if (AnimAccept)
-            {
-                portalScript.portalAnimator.Play("PortalAnim");
-                AnimAccept = false;
-            }
+            // if (AnimAccept)
+            // {
+            //     portalScript.portalAnimator.Play("PortalAnim");
+            //     AnimAccept = false;
+            // }
 
             // Door behaviour
             if(!end_of_main_round){

@@ -39,8 +39,6 @@ public class LvlStarter : MonoBehaviour
     {
         if(timer >= animationTime && !animationFinished){
             animationFinished = true;
-            weapons.transform.position = targetWeaponsPos;
-            upgrades.transform.position = targetUpgradesPos;
             starterObject.transform.position = targetStarterPos;
 
             weapons.GetComponent<InGameButtonHandler>().Activate();
@@ -51,8 +49,8 @@ public class LvlStarter : MonoBehaviour
 
         }
         if(!animationFinished){
-            weapons.transform.position = Vector2.Lerp(playerPos, targetWeaponsPos, CommonFunctions.SineEase(timer, animationTime));
-            upgrades.transform.position = Vector2.Lerp(playerPos, targetUpgradesPos, CommonFunctions.SineEase(timer, animationTime));
+            weapons.transform.rotation = Quaternion.Lerp(Quaternion.Euler(0, 0, -180), Quaternion.Euler(0, 0, 0), CommonFunctions.SineEase(timer, animationTime));
+            upgrades.transform.rotation = Quaternion.Lerp(Quaternion.Euler(0, 0, -180), Quaternion.Euler(0, 0, 0), CommonFunctions.SineEase(timer, animationTime));
             // starterObject.transform.position = Vector2.Lerp(playerPos, targetStarterPos, CommonFunctions.SineEase(timer, animationTime));
 
             weapons.transform.localScale = Vector2.Lerp(Vector2.zero, Vector2.one, CommonFunctions.SineEase(timer, animationTime));
@@ -116,6 +114,12 @@ public class LvlStarter : MonoBehaviour
         KillboxEventSystem.TriggerRoundStartEvent();
     }
 
+    public void DisableInGameButtons()
+    {
+        weapons.SetActive(false);
+        upgrades.SetActive(false);
+    }
+
     public void InitiatePostRound(int mapId)
     {
         // if(KillBox.currentGame.round < 3){return;}
@@ -123,8 +127,12 @@ public class LvlStarter : MonoBehaviour
 
         targetWeaponsPos = GameManager.main.GetMapByID(mapId).Weapons.position;
         targetUpgradesPos = GameManager.main.GetMapByID(mapId).Upgrades.position;
+
+        weapons.transform.position = targetWeaponsPos;
+        upgrades.transform.position = targetUpgradesPos;
+
         // targetStarterPos= GameManager.main.GetMapByID(mapId).Starter.position;
-     
+
         animationFinished = false;
 
         weapons.SetActive(true);
@@ -134,9 +142,9 @@ public class LvlStarter : MonoBehaviour
         weapons.GetComponent<InGameButtonHandler>().Deactivate();
         upgrades.GetComponent<InGameButtonHandler>().Deactivate();
         // starterObject.GetComponent<InGameButtonHandler>().Deactivate();
-        
+
         // this.playerPos = playerPos;
-        
+
     }    
 
     public void InitiatePreround(int mapId, Vector3 playerPos)
