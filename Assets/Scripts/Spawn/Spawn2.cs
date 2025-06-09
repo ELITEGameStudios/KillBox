@@ -51,7 +51,7 @@ public class Spawn2 : MonoBehaviour
 
     public void RefreshEntries() { Entries = GameManager.main.GetSpawn.Entries; }
 
-    public void InstantSpawn()
+    public void InstantSpawn(bool withDrop = false)
     {
         enemyIndex = Random.Range(0, Entries.Count);
         bool spawned = false;
@@ -76,20 +76,33 @@ public class Spawn2 : MonoBehaviour
                     }
                 }
             }
+            FinalizeSpawnEntry(withDrop);
 
-            Instantiate(Entries[enemyIndex], transform.position, transform.rotation); 
             spawned = true;
             break;
         }
         if(!spawned){
             EnemyProfile candaditeProfile = Entries[enemyIndex].GetComponent<EnemyProfile>();
-            Instantiate(Entries[enemyIndex], transform.position, transform.rotation); 
+            FinalizeSpawnEntry(withDrop);
+
             spawned = true;
         }
         
         enemyIndex = 0;
     }
 
+    void FinalizeSpawnEntry(bool hasDrop = false)
+    {
+        GameObject newEnemy = Instantiate(Entries[enemyIndex], transform.position, transform.rotation);
+        if (hasDrop)
+        {
+            EnemyProfile profile = newEnemy.GetComponent<EnemyProfile>();
+            if (profile != null){
+                profile.AddDrop();
+            }
+        }
+        
+    }
     public void BossSpawn(){
             Instantiate(boss_entry, transform.position, transform.rotation);
     }

@@ -28,7 +28,7 @@ public class PortalScript : MonoBehaviour
     [SerializeField]
     private EnemyList enemy_entry_list;
 
-    public bool loadingScene, loadedScene;
+    public bool loadingScene, loadedScene, portalIsUsable;
 
     [SerializeField]
     private MapEvolutionManager mapEvolutionManager;
@@ -64,8 +64,9 @@ public class PortalScript : MonoBehaviour
         {
             BossRoundCounterUI.main.UpdateDisplay(true);
         }
-        
+
         portalAnim.Play("PortalAnim");
+        portalIsUsable = true;
         
     }
     public void StopParticles(){
@@ -100,7 +101,7 @@ public class PortalScript : MonoBehaviour
     void Update()
     {
         dist = Vector3.Distance(Player.main.tf.position, transform.position);
-        if (dist < 0.5)
+        if (dist < 0.5 && portalIsUsable)
         { NextLvl(); }
 
         if(BossRoundManager.main.timeUntilNextBoss == 1){
@@ -118,15 +119,13 @@ public class PortalScript : MonoBehaviour
 
     void NextLvl()
     {
+        portalIsUsable = false;
+        print("Entering next level");
 
-        // portalAnimator.Play(AnimName);
-        //        loadingScene = true;
         StartCoroutine(LoadNextScene());
         Player.main.Dissapear();
         Player.main.movement.SetCanMove(false);
         LvlStarter.main.DisableInGameButtons();
-        
-
     }
 
     public void SetMode(int mode, bool open = true){
@@ -201,17 +200,7 @@ public class PortalScript : MonoBehaviour
 
     public void ManageSpawns(int map = -1){ // may be deprecated
         if(map == -1){ map = currentMapIndex;}
-
-        // for(int i = 0; i < GetSpawn.spawns.Count; i++)
-        // {
-        //     if (GetSpawn.spawns[i].TargetLvl == map && gameManagerVar.LvlCount >= GetSpawn.spawns[i].unlock_on_level)
-        //     {
-        //         GetSpawn.spawns[i].ActiveSpawn = true;
-        //         GetSpawn.spawns[i].RefreshEntries();
-        //     }
-        //     else
-        //         GetSpawn.spawns[i].ActiveSpawn = false;
-        // }
+        GameManager.main.GetSpawn.Refresh();
     }
 
     void SetPositions(){
@@ -250,10 +239,12 @@ public class PortalScript : MonoBehaviour
 
     }
 
-    void StartRoundCountdown(){
+    void StartRoundCountdown()
+    {
         GridAnimationManager.instance.DoIntroRoundAnimation();
         lvlStarter.InitiatePreround(currentMapIndex, GameManager.main.GetMapByID(currentMapIndex).Player.position);
         enemyCounter.Reset();
+        gameObject.SetActive(false);
     }
 
 

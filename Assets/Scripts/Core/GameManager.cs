@@ -89,23 +89,33 @@ public class GameManager : MonoBehaviour, ISelfResListener
     public MapData GetCurrentMap(){ return currentMap; }
 
     [SerializeField] private List<InGameButtonHandler> inGameButtonHandlers;
+    public enum RoundState
+    {
+        PREROUND,
+        MIDROUND,
+        POSTROUND
+    }
+    
+    public RoundState roundState = RoundState.PREROUND;
 
-    public void SetNewMap(MapData map){
-        if(map == null) return;
-        
+    public void SetNewMap(MapData map)
+    {
+        if (map == null) return;
+
         // Updates map
-        if(currentMap != null) currentMap.Root.SetActive(false);
+        if (currentMap != null) currentMap.Root.SetActive(false);
         currentMap = map;
         currentMap.Root.SetActive(true);
-        
+
         // Updates spawn system
-        GetSpawn.UpdateRoundBasedVars();
+        // GetSpawn.UpdateRoundBasedVars();
         GetSpawn.GenerateNewEnemyPool();
         GetSpawn.SetSpawns(currentMap.GetSpawners(KillBox.currentGame.round));
 
         // Deletes uncollected tokens
         GameObject[] tokens = GameObject.FindGameObjectsWithTag("DroppedToken");
-        for( int i = tokens.Length-1; i >= 0; i--){
+        for (int i = tokens.Length - 1; i >= 0; i--)
+        {
             Destroy(tokens[i]);
         }
 
@@ -371,11 +381,13 @@ public class GameManager : MonoBehaviour, ISelfResListener
         StartCoroutine(StartNumerator());
     }
 
-    public void InitNextRound(){
+    public void InitNextRound()
+    {
         KillBox.currentGame.AdvanceLevel();
         _level = KillBox.currentGame.round;
         SetMaxTokenCount();
         UpdateDifficulty();
+        roundState = RoundState.PREROUND;
 
         // LvlTxt.text = _level.ToString();
         // ScoreTxt.text = ScoreCount.ToString();
@@ -451,7 +463,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
         if(maxTokensPerRound <= tokensThisRound && isToken)
         { return; }
         ScoreCount += tokens;
-        if(isToken) {tokensThisRound++;};
+        KillBox.currentGame.AddToken(tokens);
+        if (isToken) { tokensThisRound++; }
         TokenUI.main.InitPickupAnimation(tokens);
     }
 
@@ -614,6 +627,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
         }
 
         started_game = true;
+        roundState = RoundState.MIDROUND;
+
         HotkeyManager.instance.enabled = true;
 
         BossRoundManager.main.UpdateCounters(); 

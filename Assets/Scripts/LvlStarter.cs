@@ -69,7 +69,6 @@ public class LvlStarter : MonoBehaviour
 
     void StartLvl()
     {
-        HasStarted = true;
         weapons.SetActive(false);
         upgrades.SetActive(false);
         // starterObject.SetActive(false);
@@ -106,12 +105,14 @@ public class LvlStarter : MonoBehaviour
         //AudioSystemMaster.main.PlayAction();
 
         Teleporters = GameObject.FindGameObjectsWithTag("Teleporter");
-        for(int i = 0; i < TpScripts.Length; i++)
-        {
-            TpScripts[i].IsActive = true;
-        }
+        // for(int i = 0; i < TpScripts.Length; i++)
+        // {
+        //     TpScripts[i].IsActive = true;
+        // }
 
         KillboxEventSystem.TriggerRoundStartEvent();
+        GameManager.main.roundState = GameManager.RoundState.MIDROUND;
+        HasStarted = true;
     }
 
     public void DisableInGameButtons()
