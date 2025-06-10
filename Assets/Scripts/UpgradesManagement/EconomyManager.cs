@@ -7,6 +7,9 @@ public class EconomyManager : MonoBehaviour
 {
     public List<EconomyRange> ranges;
     public List<int> tokensPerRound;
+    public int[] finishedRoundBonus; 
+    public int[] damagelessBonusValues; 
+    public int[] bossRewardTokens; 
     public bool hasRange = false;
     public int tokensThisRound {
         get
@@ -72,9 +75,52 @@ public class EconomyManager : MonoBehaviour
         tokensPerRound.AddRange(tokensPerRoundLocal);
     }
 
-    // Update is called once per frame
-    void Update()
+    public int GetFinishedRoundBonus()
+    {
+        List<int> bossRounds = EnemyList.instance.bossRounds;
+        int round = KillBox.currentGame.round;
+        for (int i = 0; i < finishedRoundBonus.Length; i++)
+        {
+            if (round < bossRounds[i]) { return finishedRoundBonus[i]; }
+        }
+
+        return 0;
+    }
+
+    public int GetBossBonus()
     {
 
+        List<int> bossRounds = EnemyList.instance.bossRounds;
+        int round = KillBox.currentGame.round;
+        for (int i = 0; i < bossRewardTokens.Length; i++)
+        {
+            if ((int)BossRoundManager.main.bossType == i) { return bossRewardTokens[i]; }
+        }
+
+        return 0;
+    }
+
+    public int GetDamagelessBonus()
+    {
+        List<int> bossRounds = EnemyList.instance.bossRounds;
+        int round = KillBox.currentGame.round;
+        for (int i = 0; i < damagelessBonusValues.Length; i++)
+        {
+            if (round < bossRounds[i]) { return damagelessBonusValues[i]; }
+        }
+
+        return 0;
+    }
+
+    public int Get5RoundBonus()
+    {
+        // List<int> bossRounds = EnemyList.instance.bossRounds;
+        // int round = KillBox.currentGame.round;
+        // for (int i = 0; i < finishedRoundBonus.Length; i++)
+        // {
+        //     if (round < bossRounds[i]) { return finishedRoundBonus[i]; }
+        // }
+
+        return 5;
     }
 }
