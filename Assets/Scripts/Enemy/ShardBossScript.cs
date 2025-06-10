@@ -30,6 +30,7 @@ public class ShardBossScript : MonoBehaviour
     private string name;
 
     public Sprite displaySprite;
+    public Color displayColor;
 
 
 
@@ -42,7 +43,7 @@ public class ShardBossScript : MonoBehaviour
         player = GameObject.FindWithTag("Player").transform;
 
         //BossAudio.Instance.OnShardSpawn(gameObject);
-        BossBarManager.Instance.AddToQueue(gameObject, name, Color.yellow, displaySprite);
+        BossBarManager.Instance.AddToQueue(gameObject, name, displayColor, displaySprite);
 
     }
 

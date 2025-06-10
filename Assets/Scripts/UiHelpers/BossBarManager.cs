@@ -8,14 +8,13 @@ public class BossBarManager : MonoBehaviour
 {
 
     [SerializeField] private GameObject boss_bar;
-
     [SerializeField] private Text name_txt, health_txt;
-
     [SerializeField] private Slider slider;
-
     [SerializeField] private List<BossDisplayObj> bossList;
     [SerializeField] private Volume boss_volume;
     [SerializeField] private float volume_weight;
+    [SerializeField] private Graphic sliderFillGraphic;
+    [SerializeField] private Image bossImage, glow, glow2;
 
     public static BossBarManager Instance {get; private set;}
     void Awake()
@@ -47,12 +46,12 @@ public class BossBarManager : MonoBehaviour
         // if(QualityControl.main.BossShaderVolume.isOn){
         // if(QualityControl.main.BossShaderVolume.isOn){
 
-            if(bossList.Count > 0 && volume_weight < 1 || PortalScript.main.Mode == 3 && volume_weight < 1 && PortalScript.main.gameObject.activeInHierarchy){ volume_weight += 0.25f * Time.deltaTime; }
-            else if (bossList.Count == 0 && volume_weight > 0){ volume_weight -= 0.25f * Time.deltaTime; } 
-            else if (bossList.Count > 0){ volume_weight = 1; }
-            else{ volume_weight = 0; }
+            // if(bossList.Count > 0 && volume_weight < 1 || PortalScript.main.Mode == 3 && volume_weight < 1 && PortalScript.main.gameObject.activeInHierarchy){ volume_weight += 0.25f * Time.deltaTime; }
+            // else if (bossList.Count == 0 && volume_weight > 0){ volume_weight -= 0.25f * Time.deltaTime; } 
+            // else if (bossList.Count > 0){ volume_weight = 1; }
+            // else{ volume_weight = 0; }
 
-            boss_volume.weight = volume_weight;
+            // boss_volume.weight = volume_weight;
         // }
         // else{
         //     boss_volume.weight = 0;
@@ -86,10 +85,19 @@ public class BossBarManager : MonoBehaviour
                 boss_bar.SetActive(true);
             }
 
+            // Setting information
             health_txt.text =   displayObj.health.CurrentHealth.ToString() + " | " + bossList[0].health.maxHealth.ToString();
             name_txt.text = displayObj._name;
             slider.maxValue =   displayObj.health.maxHealth;
             slider.value =   displayObj.health.CurrentHealth;
+
+            // Setting colors
+            sliderFillGraphic.color =   displayObj.color;
+            bossImage.color =   displayObj.color;
+            bossImage.sprite =   displayObj.sprite;
+            name_txt.color =   displayObj.color;
+            glow.color =   Color.Lerp(Color.clear, displayObj.color, 0.57f);
+            glow2.color =   Color.Lerp(Color.clear, displayObj.color, 0.57f);
         }
         else{
             if(boss_bar.activeInHierarchy){
