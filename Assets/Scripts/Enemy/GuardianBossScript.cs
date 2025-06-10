@@ -47,7 +47,7 @@ public class GuardianBossScript : MonoBehaviour
         player = GameObject.FindWithTag("Player").transform;
 
         //BossAudio.Instance.OnShardSpawn(gameObject);
-        BossBarManager.Instance.AddToQueue(gameObject, name);
+        // BossBarManager.Instance.AddToQueue(gameObject, name);
 
     }
 

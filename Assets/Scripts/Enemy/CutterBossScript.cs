@@ -48,7 +48,7 @@ public class CutterBossScript : MonoBehaviour
         defaultColor = renderer.color;
 
         //BossAudio.Instance.OnShardSpawn(gameObject);
-        BossBarManager.Instance.AddToQueue(gameObject, name);
+        // BossBarManager.Instance.AddToQueue(gameObject, name);
 
         dashParticlesA.transform.SetParent(null);
         dashParticlesB.transform.SetParent(null);

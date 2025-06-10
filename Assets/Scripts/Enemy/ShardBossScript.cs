@@ -29,6 +29,8 @@ public class ShardBossScript : MonoBehaviour
     [SerializeField]
     private string name;
 
+    public Sprite displaySprite;
+
 
 
     // Start is called before the first frame update
@@ -40,7 +42,7 @@ public class ShardBossScript : MonoBehaviour
         player = GameObject.FindWithTag("Player").transform;
 
         //BossAudio.Instance.OnShardSpawn(gameObject);
-        BossBarManager.Instance.AddToQueue(gameObject, name);
+        BossBarManager.Instance.AddToQueue(gameObject, name, Color.yellow, displaySprite);
 
     }
 

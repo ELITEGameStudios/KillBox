@@ -16,7 +16,7 @@ public class BossScytheAiScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BossBarManager.Instance.AddToQueue(gameObject, "SCYTHE");
+        // BossBarManager.Instance.AddToQueue(gameObject, "SCYTHE");
         
         thrower = ThrowAttackNumerator();
         StartCoroutine(thrower);
