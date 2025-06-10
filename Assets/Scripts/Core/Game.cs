@@ -19,9 +19,9 @@ public class Game
     public float difficultyCoefficient;
     public int round;
     public int[] upgradesPurchased; // Indexed in order of upgrade type sorted in Upgrade Manager scripts
-    public int tokensCollectedOverall;
+    public int scoreCollectedOverall;
     public int tokensUsed;
-    public int tokens;
+    public int score;
     public Lifetime lifetime;
     public bool started {get {return lifetime == Lifetime.STARTED || lifetime == Lifetime.FINISHED;}}
     
@@ -41,8 +41,8 @@ public class Game
 
         round = 1;
         upgradesPurchased = new int[5];
-        tokens = 0;
-        tokensCollectedOverall = 0;
+        score = 0;
+        scoreCollectedOverall = 0;
         specialUpgrade = -1;
         freeplay = isFreeplay;
         lifetime = Lifetime.INITIALIZED;
@@ -52,9 +52,9 @@ public class Game
         round++;
     }
 
-    public void AddToken(){
-        tokens++;
-        tokensCollectedOverall++;
+    public void AddToken(int tokens){
+        this.score++;
+        scoreCollectedOverall++;
     }
 
     public void StartGame(){

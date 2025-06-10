@@ -9,6 +9,7 @@ public class EnemyProfile : MonoBehaviour
     [SerializeField] private int maxHealth, damage, limit;
     [SerializeField] private float speed, acceleration;
     [SerializeField] private bool boss;
+    public bool hasDrop;
 
 
     public string EnemyName { get => enemyName; private set => enemyName = value; }
@@ -37,5 +38,10 @@ public class EnemyProfile : MonoBehaviour
 
     public void Retire(){
         EnemyCounter.main.RemoveEnemy(this);
+    }
+    
+    public void AddDrop()
+    {
+        hasDrop = true;
     }
 }

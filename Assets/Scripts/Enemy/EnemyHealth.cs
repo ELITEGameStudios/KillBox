@@ -73,39 +73,42 @@ public class EnemyHealth : MonoBehaviour
     }
     public void Die(bool to_player = true)
     {
-
-        profile.Retire();
-        if(triggerDeathEvent){onDie.Invoke();}
-        
         a = Random.Range(1, 6);
-        if (a == 1 && !no_drops && !BossRoundManager.main.isBossRound && to_player)
+        if (profile.hasDrop || (KillBox.currentGame.round > 45 && a == 1))
         {
-            //DpdItemClone = Instantiate(DroppedItem, transform);
-            if(objectPool[0].GetPooledObject() != null){
-                DpdItemClone = objectPool[0].GetPooledObject();
-
-                DpdItemClone.transform.SetParent(null);
-                DpdItemClone.GetComponent<sine_movement>().ROOT = transform.position;
-                DpdItemClone.transform.position = transform.position;
-
-                DpdItemClone.gameObject.SetActive(true);
-
-
-                Transform grid = GameObject.Find("Grid").transform;
-
-                for (int i = 0; i < grid.childCount; i++)
+            if (!BossRoundManager.main.isBossRound && to_player)
+            {
+                // Instantiates a token drop
+                if (objectPool[0].GetPooledObject() != null)
                 {
-                    if (grid.GetChild(i).gameObject.activeInHierarchy)
+                    DpdItemClone = objectPool[0].GetPooledObject();
+
+                    DpdItemClone.transform.SetParent(null);
+                    DpdItemClone.GetComponent<sine_movement>().ROOT = transform.position;
+                    DpdItemClone.transform.position = transform.position;
+
+                    DpdItemClone.gameObject.SetActive(true);
+
+
+                    Transform grid = GameObject.Find("Grid").transform;
+
+                    for (int i = 0; i < grid.childCount; i++)
                     {
-                        DpdItemClone.transform.SetParent(grid.GetChild(i));
-                        DpdItemClone.transform.localEulerAngles = new Vector3(0, 0, 0);
-                        DpdItemClone.transform.position = transform.position;
-                        DpdItemClone.transform.rotation = transform.rotation;
-                        break;
+                        if (grid.GetChild(i).gameObject.activeInHierarchy)
+                        {
+                            DpdItemClone.transform.SetParent(grid.GetChild(i));
+                            DpdItemClone.transform.localEulerAngles = new Vector3(0, 0, 0);
+                            DpdItemClone.transform.position = transform.position;
+                            DpdItemClone.transform.rotation = transform.rotation;
+                            break;
+                        }
                     }
                 }
             }
         }
+        profile.Retire();
+        if(triggerDeathEvent){onDie.Invoke();}
+        
 
         //int b = Random.Range(1, 800);
         //if(b == 1 && !no_drops){

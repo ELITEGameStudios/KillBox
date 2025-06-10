@@ -96,9 +96,10 @@ public class EnemyCounter : MonoBehaviour
             {noLongerSpawning = true;}
 
         // End round event
-        if (noEnemiesOrSpawns && noLongerSpawning && !GameManager.main.EscapeRoom() && !Portal.activeInHierarchy)
+        if (noEnemiesOrSpawns && noLongerSpawning && !GameManager.main.EscapeRoom() && !Portal.activeInHierarchy && GameManager.main.roundState == GameManager.RoundState.MIDROUND)
         {
             Portal.SetActive(true);
+            print("Round has finished");
             CameraBgManager.instance.SetBackground(Color.black, 2);
 
             LvlStarter.main.InitiatePostRound(PortalScript.main.currentMapIndex);
@@ -131,7 +132,7 @@ public class EnemyCounter : MonoBehaviour
                 // }    
             
             }
-
+            GameManager.main.roundState = GameManager.RoundState.POSTROUND;
             end_of_main_round = true;
         }
 

@@ -13,6 +13,7 @@ public class Spawn : MonoBehaviour
     public float InstancesFloat, stepRate, SpawnRound, InstancesRound, SRTS, IRTS, EndRate, SVTime, spawnTime, spawnTimeConstant;
     public int instances, InstancesCap, boss_chance, guaranteed_boss_instance;
 
+    public int[] enemyDropIndexes; // list of instances with drops
     [SerializeField] private EnemyCounter enemyCounter;
     [SerializeField] public List<GameObject> Entries {get; private set;}
     [SerializeField] private EnemyList enemyList;
@@ -25,7 +26,7 @@ public class Spawn : MonoBehaviour
 
     void Start(){
         GenerateNewEnemyPool();
-        UpdateRoundBasedVars();
+        // UpdateRoundBasedVars();
     }
 
     //int GetFireInstances(){
@@ -40,51 +41,54 @@ public class Spawn : MonoBehaviour
     public void init()
     {
         GenerateNewEnemyPool();
-        UpdateRoundBasedVars();
+        // UpdateRoundBasedVars();
         // SetVars = true;
         // StartCoroutine(SVarTimer());
     }
 
-    void Update()
+    public void GenerateDrops()
     {
-        // if(SetVars)
-        // {
+        
+        int dropsThisRound = EconomyManager.instance.tokensThisRound;
+        if (dropsThisRound == -1) return;
 
-        //     // OLD spawnTime = 1f + ((-gameManager.Difficulty / (float)Mathf.Pow(80, 2)) * (gameManager.LvlCount));
-        //     spawnTime = (float) (1/gameManager.difficulty_coefficient)*Mathf.Pow(1.3f, (-gameManager.LvlCount / 1.5f) + 4) + spawnTimeConstant;
+        // list of instances with drops
+        enemyDropIndexes = new int[dropsThisRound];
+        
+        // list from 1 to (instances)
+        List<int> indexDraws = new();
+        for (int i = 1; i < instances; i++) { indexDraws.Add(i); } 
 
-        //     //if(spawnTime < 0.3f)
-        //     //{
-        //     //    spawnTime = 0.3f;
-        //     //}
-        // }
+        for (int i = 0; i < enemyDropIndexes.Length && i < instances-1; i++)
+        {
+            // this minisystem is intended to add random draws for which instances of enemies drop tokens, without adding duplicate draws
+
+            int newIndex = Random.Range(0, indexDraws.Count); // retrieves random index from indexdraws
+            enemyDropIndexes[i] = indexDraws[newIndex]; // adds the number indexDraws has at that random index
+            indexDraws.RemoveAt(newIndex); // removes that indexDraws number from the indexDraws pool
+        }
+    }
+
+    public void Refresh()
+    {
+        ended = false;
     }
 
     public void UpdateRoundBasedVars()
     {
-        
-        if( gameManager.LvlCount != 1){ instances = (int)((2.5 * Mathf.Sqrt(GameManager.main.Difficulty)) - 16f); }
-        spawnTime = (float) (1/KillBox.currentGame.difficultyCoefficient)*Mathf.Pow(1.3f, (-KillBox.currentGame.round / 1.5f) + 4) + spawnTimeConstant;
+
+        if (gameManager.LvlCount != 1) { instances = (int)((2.5 * Mathf.Sqrt(GameManager.main.Difficulty)) - 16f); }
+        spawnTime = (float)(1 / KillBox.currentGame.difficultyCoefficient) * Mathf.Pow(1.3f, (-KillBox.currentGame.round / 1.5f) + 4) + spawnTimeConstant;
         ended = false;
 
+        GenerateDrops();
 
-        if(BossRoundManager.main.isBossRound){RoundCompositionManager.main.AvoidComposition();}
-        else{RoundCompositionManager.main.ChangeComposition();}
-
-        // active_spawns.Clear();
-
-        // for (int i = 0; i < spawns.Count; i++) {
-        //     // if (spawns[i].ActiveSpawn)
-        //     if (spawns[i].ActiveSpawn && spawns[i].gameObject.activeInHierarchy)
-        //     { active_spawns.Add(spawns[i]); }
-        // }
+        if (BossRoundManager.main.isBossRound) { RoundCompositionManager.main.AvoidComposition(); }
+        else { RoundCompositionManager.main.ChangeComposition(); }
     }
 
     public void GenerateNewEnemyPool()
     {
-
-        // if(!GameManager.main.isFireRound){ Entries = enemyList.UpdatedList; }
-        // else{ Entries = enemyList.FireList; }
         Entries = enemyList.UpdatedList;
         
         if(RoundCompositionManager.main.hasComposition){
@@ -99,7 +103,9 @@ public class Spawn : MonoBehaviour
             Entries = filteredEntries;
         }
 
-        foreach (Spawn2 spawn in spawns){
+
+        foreach (Spawn2 spawn in spawns)
+        {
             spawn.RefreshEntries();
         }
     }
@@ -110,14 +116,8 @@ public class Spawn : MonoBehaviour
 
     public void StartSpawnSequence()
     {
-        // active_spawns = new List<Spawn2>();
-
         UpdateRoundBasedVars();
         allow = true;
-        
-        // if(boss_round){
-        //     guaranteed_boss_instance = Random.Range(4, instances);    
-        // }
 
         StartCoroutine(spawning());
         if (instant)
@@ -172,50 +172,38 @@ public class Spawn : MonoBehaviour
 
     IEnumerator spawning()
     {
-        // if(gameManager.LvlCount >= 26){
-        //     boss_chance = 50;
-        // }
-        // else if(gameManager.LvlCount >= 45){
-        //     boss_chance = 25;
-        // }
-        // else{
-        //     boss_chance = 75;
-        // }
 
         if(instances == 0){
             instances = 1;
         }
-        while(instances != 0)
+        
+        // Spawns enemies until there are no more instances
+        while (instances != 0)
         {
-            if(enemyCounter.enemiesInScene < 35 && allow)
+            // Checks if enemies are able to spawn (crowd control)
+            if (enemyCounter.enemiesInScene < 35 && allow)
             {
 
+                // iterates between each spawner
                 for (int ii = 0; ii < spawns.Count; ii++)
                 {
+                    // Waits the spawn time
                     yield return new WaitForSeconds(spawnTime);
 
-                    if (instances <= 0 || ended)
-                    {
+                    if (instances <= 0 || ended){
+                        // Detects if there are no more instances
                         break;
                     }
 
-                    // if(guaranteed_boss_instance == instances && boss_round){
-                    //     active_spawns[ii].MiniBossSpawn();
-                    //     instances--;
-                    //     continue;
-                    // }
-
+                    // Spawns the next enemy if this is not a normal spawner
                     if (spawns[ii].proximitySpawning != true)
                     {
-                        // int chance = Random.Range(0, boss_chance);
-
-                        // if(chance == 1 && boss_round){//> gameManager.BossRoundStart){
-
-                        //     active_spawns[ii].MiniBossSpawn();
-                        // }
-                        // else{
-                        // }
-                        spawns[ii].InstantSpawn();
+                        bool hasDrop = false;
+                        foreach (int item in enemyDropIndexes)
+                        {
+                            if (item == instances) { hasDrop = true; break; }
+                        }    
+                        spawns[ii].InstantSpawn(hasDrop);
 
                         instances--;
                     }
@@ -223,7 +211,8 @@ public class Spawn : MonoBehaviour
                     continue; //ReIterate();
                 }
 
-                if(ended){
+                if (ended)
+                {
                     break;
                 }
 
