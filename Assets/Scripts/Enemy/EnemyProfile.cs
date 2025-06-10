@@ -10,6 +10,7 @@ public class EnemyProfile : MonoBehaviour
     [SerializeField] private float speed, acceleration;
     [SerializeField] private bool boss;
 
+
     public string EnemyName { get => enemyName; private set => enemyName = value; }
     public int MaxHealth { get => maxHealth; private set => maxHealth = value; }
     public int Damage { get => damage; private set => damage = value; }
@@ -22,6 +23,7 @@ public class EnemyProfile : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+
         AIPath pathfinding = gameObject.GetComponent<AIPath>();
         if(pathfinding != null){
             speed = pathfinding.maxSpeed;
@@ -35,11 +37,5 @@ public class EnemyProfile : MonoBehaviour
 
     public void Retire(){
         EnemyCounter.main.RemoveEnemy(this);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

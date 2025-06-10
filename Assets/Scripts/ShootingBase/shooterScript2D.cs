@@ -11,7 +11,7 @@ public class shooterScript2D : MonoBehaviour
     public string bulletName;
     public GameObject bullet, ShootGraphic, GraphicClone;
     public Transform playerTf, Spawn;
-    public float Velocity, spread, range, burst_interval;
+    public float Velocity, spread, range, burst_interval, recoilForce;
     public Rigidbody2D bulletRb, clone;
     public Vector3 SpawnRot;
     public bool shootInputIsPressed, is_dual, misc_gun, uniform_spread, is_in_ui;
@@ -64,7 +64,7 @@ public class shooterScript2D : MonoBehaviour
     [SerializeField] private AnimationCurve recoilCurve;
     [SerializeField] private Transform gunGraphicTf;
     [SerializeField] private Vector3 initGunPos;
-    [SerializeField] private float recoilTime, initRecoilTime;
+    [SerializeField] private float graphicRecoilTime, initGraphicRecoilTime, recoilTime, knockbackForce, knockbackTime;
 
     void Awake(){
         initGunPos = gunGraphicTf.localPosition;
@@ -169,10 +169,10 @@ public class shooterScript2D : MonoBehaviour
         //     }
         // }
 
-        if(recoilTime > 0 && gunGraphicTf != null){
+        if(graphicRecoilTime > 0 && gunGraphicTf != null){
             
-            gunGraphicTf.localPosition = initGunPos - Vector3.up * recoilCurve.Evaluate(recoilTime/initRecoilTime);
-            recoilTime -= Time.deltaTime;
+            gunGraphicTf.localPosition = initGunPos - Vector3.up * recoilCurve.Evaluate(graphicRecoilTime/initGraphicRecoilTime);
+            graphicRecoilTime -= Time.deltaTime;
         }
         else if(gunGraphicTf != null ){
             gunGraphicTf.localPosition = initGunPos;
@@ -202,39 +202,30 @@ public class shooterScript2D : MonoBehaviour
             }
         }
 
-        for(int i = 0; i < bulletsPerShot; i++)
+        // For each bullet operation
+        for (int i = 0; i < bulletsPerShot; i++)
         {
-            if(!uniform_spread){
+            if (!uniform_spread)
+            {
                 Spawn.localEulerAngles += new Vector3(0, 0, Random.Range(-spread, spread));
             }
-            else{
+            else
+            {
                 Spawn.localEulerAngles += new Vector3(0, 0, uniform_directions[i]);
             }
 
-            recoilTime = Mathf.Clamp(FR, 0.15f, Mathf.Infinity);
-            initRecoilTime = recoilTime;
 
-            if(!misc_gun){
+            if (!misc_gun)
+            {
                 clone = objectPool[0].GetPooledObject().GetComponent<Rigidbody2D>();
-                // if(objectPool[0].GetPooledObject() != null)
-                // else{
-                //     if(GameObject.FindWithTag("Bullet") != null){
-                //         clone = GameObject.FindWithTag("Bullet").GetComponent<Rigidbody2D>();
-                //         clone.gameObject.SetActive(false);
-                //     }
-                //     else{ //if(GameObject.FindWithTag("Grenade") != null){
-                //         //clone = GameObject.FindWithTag("Grenade").GetComponent<Rigidbody2D>();
-                //         //clone.GetComponent<GrenadeScript>().RemoteExplosion();
-                //         return;
-                //     }
-                // }
+
                 clone.gameObject.transform.position = Spawn.position;
                 clone.gameObject.transform.rotation = Spawn.rotation;
                 clone.gameObject.SetActive(true);
                 clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
 
 
-                clone.gameObject.GetComponent<BulletClass>().SetBullet(bulletName, bulletDamage, penetration_input: penetration, _range: range);
+                clone.gameObject.GetComponent<BulletClass>().SetBullet(bulletName, bulletDamage, penetration_input: penetration, _range: range, knockbackForce: knockbackForce, knockbackTime: knockbackTime, startingVel: weapon.velocity);
             }
             else
             {
@@ -244,31 +235,36 @@ public class shooterScript2D : MonoBehaviour
                 clone.gameObject.transform.position = Spawn.position;
                 clone.gameObject.transform.rotation = Spawn.rotation;
                 clone.gameObject.SetActive(true);
-                
-                if(clone.gameObject.GetComponent<BulletDestroy>() != null){
+
+                if (clone.gameObject.GetComponent<BulletDestroy>() != null)
+                {
                     clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
                 }
-                    
+
                 clone.gameObject.transform.SetParent(null);
             }
-            
+
             //setting color
-            if(!misc_gun){
+            if (!misc_gun)
+            {
                 clone_sprite = clone.gameObject.transform.GetChild(0).gameObject;
                 clone_particle = clone_sprite.GetComponent<ParticleSystem>();
                 trails = clone_particle.trails;
                 clone_sprite.GetComponent<SpriteRenderer>().color = bullet_color;
             }
 
-            if(weapon.is_support){
+            if (weapon.is_support)
+            {
                 bullet_color = Color.cyan;
                 particle_color = Color.cyan;
             }
-            else if(!misc_gun){
+            else if (!misc_gun)
+            {
                 Themify();
             }
 
-            if(!misc_gun){
+            if (!misc_gun)
+            {
                 clone_particle.startColor = particle_color;
                 trails.colorOverLifetime = particle_color;
                 trails.colorOverTrail = particle_color;
@@ -276,14 +272,26 @@ public class shooterScript2D : MonoBehaviour
 
             //AddingForces
             clone.AddForce(Spawn.up * Velocity);
+
+
+            if (recoilForce > 0) { Player.main.rb.AddForce(Player.main.tf.up * -recoilForce, ForceMode2D.Impulse); }
             Spawn.localEulerAngles = SpawnRot;
             audio.pitch = Random.Range(0.9f, 1.1f) + GunHandler.Instance.cooldown.CurrentChargeNormalized;
             audio.Play();
 
             GunHandler.Instance.cooldown.AddCount(this, cooldown_units);
-            
+
         }
 
+        // Once per shot operations
+
+        // recoil force
+
+        // recoilTime = Mathf.Clamp(0, 0.33f, Mathf.Infinity);
+        // initRecoilTime = recoilTime;
+        Player.main.movement.AddCustomForce(
+            new CustomForce(-Spawn.up.normalized * recoilForce, time: recoilTime)
+        );
         
         //GraphicClone = Instantiate(ShootGraphic, Spawn.position, Spawn.rotation);
         if(objectPool[1].GetPooledObject() != null){
@@ -300,7 +308,7 @@ public class shooterScript2D : MonoBehaviour
         
         // CanShoot = false;
         burst_rounds++;
-
+        graphicRecoilTime = initGraphicRecoilTime;
         GunHandler.Instance.OnShoot();
         // KillboxEventSystem.TriggerFireWeaponEvent(new WeaponEventData(weaponItem, GunHandler.Instance.current_is_primary, GunHandler.Instance.has_dual));
 
@@ -335,13 +343,23 @@ public class shooterScript2D : MonoBehaviour
         penetration = weapon.penetration;
         uniform_spread = weapon.uniform;
 
-        if(weapon.pool != 0){
-            objectPool[0] = GameObject.Find("BulletPool"+weapon.pool.ToString()).GetComponent<ObjectPool>();
+        recoilForce = weapon.recoilForce;
+        recoilTime = weapon.recoilTime;
+        initGraphicRecoilTime = weapon.recoilTime;
+
+        knockbackForce = weapon.knockbackForce;
+        knockbackTime = weapon.knockbackTime;
+
+        if (weapon.pool != 0)
+        {
+            objectPool[0] = GameObject.Find("BulletPool" + weapon.pool.ToString()).GetComponent<ObjectPool>();
         }
-        else if(weapon.is_support){
-            objectPool[0] = GameObject.Find("BulletPool"+ 12.ToString()).GetComponent<ObjectPool>();
+        else if (weapon.is_support)
+        {
+            objectPool[0] = GameObject.Find("BulletPool" + 12.ToString()).GetComponent<ObjectPool>();
         }
-        else{
+        else
+        {
             objectPool[0] = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
         }
 

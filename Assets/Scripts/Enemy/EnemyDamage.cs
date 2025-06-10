@@ -11,6 +11,7 @@ public class EnemyDamage : MonoBehaviour
     [SerializeField]
     private Rigidbody2D playerRigidBody;
     public int damage, _ignite_intensity;
+    public float hitKb;
     public float HitCooldown = 1, AtCooldown = 1, immunity_time;
     private float currentHitCooldown;
 
@@ -62,8 +63,13 @@ public class EnemyDamage : MonoBehaviour
         
         if(immediate) { playerHealthScript.TakeImmediateDmg(damage, immunity_time); }
         else{ playerHealthScript.TakeDmg(damage, immunity_time); }
+        if (hitKb != 0)
+        {
+            Player.main.movement.AddCustomForce(new((Player.main.tf.transform.position - transform.position).normalized * hitKb, 0.33f));
+        }
 
-        if(_ignites){
+        if (_ignites)
+        {
             playerHealthScript.gameObject.GetComponent<PlayerFireDamage>().Ignite(_ignite_time, _ignite_intensity);
         }
 

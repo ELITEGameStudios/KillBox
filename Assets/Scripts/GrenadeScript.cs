@@ -64,6 +64,14 @@ public class GrenadeScript : MonoBehaviour
             }
         }
     }
+
+    void OnTriggerEnter2D(Collider2D collider){
+        if(collider.gameObject.tag != "Grenade"){
+            if(collider.gameObject.tag != "Bullet" && collider.gameObject.tag != "Player"){
+                range_clock = 0;
+            }
+        }
+    }
     
 
 }
