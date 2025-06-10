@@ -64,9 +64,8 @@ public class PortalScript : MonoBehaviour
         {
             BossRoundCounterUI.main.UpdateDisplay(true);
         }
-        
-        portalAnim.Play("PortalAnim");
-        
+
+        portalAnim.Play("PortalAnim");        
     }
     public void StopParticles(){
         particles.Stop();
@@ -151,11 +150,6 @@ public class PortalScript : MonoBehaviour
     void SetRound(){
 
         ChallengeFields.UpdateRound(gameManagerVar, gameManagerVar.isFireRound);
-        // Damageless Code:
-        if(Player.main.health.isDamageless){gameManagerVar.OnPickupToken(1, false);}
-        Player.main.health.isDamageless = true;
-        if(BossRoundManager.main.isBossRound){gameManagerVar.OnPickupToken(7, false);}
-        else{gameManagerVar.OnPickupToken(1, false);}
         gameManagerVar.InitNextRound();
     }
 

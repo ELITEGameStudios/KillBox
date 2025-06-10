@@ -374,12 +374,23 @@ public class GameManager : MonoBehaviour, ISelfResListener
     public void InitNextRound(){
         KillBox.currentGame.AdvanceLevel();
         _level = KillBox.currentGame.round;
+        Player.main.health.isDamageless = true;
+
         SetMaxTokenCount();
         UpdateDifficulty();
-
         // LvlTxt.text = _level.ToString();
         // ScoreTxt.text = ScoreCount.ToString();
 
+    }
+
+    public void CheckDamageless()
+    {
+        // Damageless Code:
+        if (Player.main.health.isDamageless)
+        {
+            BonusesUIManager.instance.ActivateBonus("damageless", 1);
+            OnPickupToken(1, false);
+        }
     }
 
     void SetMaxTokenCount(){

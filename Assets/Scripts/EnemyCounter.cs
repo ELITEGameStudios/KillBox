@@ -99,6 +99,21 @@ public class EnemyCounter : MonoBehaviour
         if (noEnemiesOrSpawns && noLongerSpawning && !GameManager.main.EscapeRoom() && !Portal.activeInHierarchy)
         {
             Portal.SetActive(true);
+            GameManager.main.CheckDamageless();
+
+            if (BossRoundManager.main.isBossRound) { GameManager.main.OnPickupToken(7, false); }
+            else
+            {
+                GameManager.main.OnPickupToken(1, false);
+                BonusesUIManager.instance.ActivateBonus("finished_round", 1);
+
+                if (KillBox.currentGame.round % 5 == 0)
+                {
+                    GameManager.main.OnPickupToken(4, false);
+                    BonusesUIManager.instance.ActivateBonus("5round", 4);
+                }
+            }
+
             CameraBgManager.instance.SetBackground(Color.black, 2);
 
             LvlStarter.main.InitiatePostRound(PortalScript.main.currentMapIndex);

@@ -27,7 +27,6 @@ public class CameraBgManager : MonoBehaviour
                 transitioning = false;
             }
             else{
-                Debug.Log("Fading cam to black | " + Time.unscaledDeltaTime);
                 cam.backgroundColor = Color.Lerp(targetBg, lastBg, timer/time);
                 timer -= Time.unscaledDeltaTime;
             }
