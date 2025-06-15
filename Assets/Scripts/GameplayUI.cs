@@ -62,6 +62,11 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private GameObject selfResButton;
     public GameObject GetSelfResButton(){return selfResButton;}
 
+
+    [Header("Round Display UI")]
+    [SerializeField] private Animator lvlDisplayAnimator;
+    public Animator GetLevelDisplayAnimator(){return lvlDisplayAnimator;}
+
     public static GameplayUI instance {get; private set;}
 
     // Start is called before the first frame update

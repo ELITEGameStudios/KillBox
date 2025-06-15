@@ -75,10 +75,13 @@ public class LvlStarter : MonoBehaviour
 
         RoundStartDisplay.main.StartAnimation();
 
-        if(!BossRoundManager.main.isBossRound){
+        if (!BossRoundManager.main.isBossRound)
+        {
             GetSpawn.StartSpawnSequence();
+            GameplayUI.instance.GetLevelDisplayAnimator().SetBool("InGame", true);
         }
-        else{
+        else
+        {
             MainAudioSystem.main.TriggerBossMusic(BossRoundManager.main.bossRoundTier);
             VolumeControl.main.SetSilentSnapshot(false, 0);
             BossRoomSpawnSystem.main.StartSpawnSequence();

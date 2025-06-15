@@ -101,6 +101,7 @@ public class EnemyCounter : MonoBehaviour
             Portal.SetActive(true);
             print("Round has finished");
             GameManager.main.CheckDamageless();
+            GameplayUI.instance.GetLevelDisplayAnimator().SetBool("InGame", false);
 
             if (BossRoundManager.main.isBossRound) { GameManager.main.OnPickupToken(7, false); }
             else

@@ -28,8 +28,8 @@ public class EquipmentManager : MonoBehaviour
 
 
     public enum EquipmentType{
-        HOTSHOT,
         ULTRAMODE,
+        HOTSHOT,
         OVERDRIVE,
         MINIONS
     }
@@ -38,10 +38,11 @@ public class EquipmentManager : MonoBehaviour
     {
         if (instance == null) { instance = this; }
         else if (instance != this) { Destroy(this); }
-        
+
         equipment_slider = GameplayUI.instance.GetEquipmentSlider();
         equipmentText = GameplayUI.instance.GetEquipmentHeader();
-        equipmentImage= GameplayUI.instance.GetEquipmentImage();
+        equipmentImage = GameplayUI.instance.GetEquipmentImage();
+        SetEquipmentType(0);
     }
 
     // Update is called once per frame
