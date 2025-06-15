@@ -71,9 +71,9 @@ public class LvlStarter : MonoBehaviour
     {
         weapons.SetActive(false);
         upgrades.SetActive(false);
-        // starterObject.SetActive(false);
 
-        RoundStartDisplay.main.StartAnimation();
+        // starterObject.SetActive(false);
+        // RoundStartDisplay.main.StartAnimation();
 
         if (!BossRoundManager.main.isBossRound)
         {

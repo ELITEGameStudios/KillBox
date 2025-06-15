@@ -17,6 +17,7 @@ public class EquipmentManager : MonoBehaviour
     public Slider equipment_slider;
     [SerializeField] private Text equipmentText;
     [SerializeField] private Image equipmentImage;
+    [SerializeField] private Animator equipmentAnimator;
 
     private float timer;
     private float[] activeTimes = new float[]{12, 8, 10, 20};
@@ -42,6 +43,7 @@ public class EquipmentManager : MonoBehaviour
         equipment_slider = GameplayUI.instance.GetEquipmentSlider();
         equipmentText = GameplayUI.instance.GetEquipmentHeader();
         equipmentImage = GameplayUI.instance.GetEquipmentImage();
+        equipmentAnimator = GameplayUI.instance.GetEquipmentAnimator();
         SetEquipmentType(0);
     }
 
@@ -50,13 +52,10 @@ public class EquipmentManager : MonoBehaviour
     {
         if (!usingEquipment)
         {
-    
-            equipment_slider.maxValue = req_equipment_kills;
-
             if (equipmentKills >= req_equipment_kills)
             {
-                equipment_slider.value = equipment_slider.maxValue;
-
+                if(!equipmentAnimator.GetBool("charged")){ equipmentAnimator.SetBool("charged", true); }
+                
                 if (DetectInputDevice.main.isController) { equipmentText.text = "PRESS X TO USE EQUIPMENT"; }
                 else if (DetectInputDevice.main.isKBM) { equipmentText.text = "PRESS " + CustomKeybinds.main.Ultramode.ToString() + " TO USE EQUIPMENT"; }
 
@@ -70,13 +69,13 @@ public class EquipmentManager : MonoBehaviour
             else
             {
                 equipmentText.text = ""; 
-                equipment_slider.value = equipmentKills;
             }
         }
         else{
             if(timer <= 0) {
                 ResetUltraKills(0);
                 equipmentScripts[(int)equipmentType].GamemodeEnd();
+                equipmentAnimator.SetBool("active", false);
                 /*Deactivate equipment*/
             
             }
@@ -90,11 +89,24 @@ public class EquipmentManager : MonoBehaviour
 
     public void SetEquipmentType(EquipmentType type){
         equipmentType = type;
+        equipment_slider.maxValue = req_equipment_kills;
+        equipment_slider.value = equipmentKills;
+
         KillBox.Save();
     }
     public void ActivateEquipment()
     {
-        equipmentScripts[(int)equipmentType].GamemodeStart();
+        EquipmentBase equipment = equipmentScripts[(int)equipmentType];
+        equipment.GamemodeStart();
+
+        equipment_slider.maxValue = equipment.time;
+        equipment_slider.value = equipment.time;
+        timer = equipment.time;
+
+        equipmentAnimator.SetBool("active", true);
+        equipmentAnimator.SetBool("charged", false);
+        equipmentAnimator.Play("Activate");
+
 
         //For mobile eventually
         // activate_button.GetComponent<Animator>().Play("equipment_button_exit");
@@ -106,14 +118,25 @@ public class EquipmentManager : MonoBehaviour
         req_equipment_kills = (int)Mathf.Clamp(req_equipment_kills * 2, 30, 300);
         equipmentKills = 0;
 
-        equipment_slider.maxValue = activeTimes[equipment_index];
-        equipment_slider.value = activeTimes[equipment_index];
         
         if(KillBox.currentGame.freeplay){ req_equipment_kills = 0; }
     }
 
     public void ResetUltraKills(int kills){
         equipmentKills = kills;
+        equipment_slider.maxValue = req_equipment_kills;
+        equipment_slider.value = kills;
+    }
+
+    public void AddEquipmentKill()
+    {
+        if (usingEquipment) return;
+
+        equipmentKills++;
+        equipment_slider.value = equipmentKills;
+        if (!equipmentAnimator.GetBool("charged")){
+            equipmentAnimator.Play("hit");
+        }
     }
 
     IEnumerator ButtonDeactivate(){

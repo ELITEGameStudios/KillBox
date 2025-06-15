@@ -43,6 +43,8 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     private Toggle cameraShakeToggle;
     public int[] defaultHealth;
 
+    public bool isMaxHealth {get { return CurrentHealth == MaxHealth; }}
+
     void Start(){
         dmgVolumeToggle = QualityControl.main.DmgVolumeToggle;
         cameraShakeToggle = QualityControl.main.CsVolumeToggle;
@@ -145,20 +147,24 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
             }
         }
 
+        GameplayUI.instance.GetHealthAnimator().SetBool("regen", regen);
+        GameplayUI.instance.GetHealthAnimator().SetBool("hurt", (float)CurrentHealth/MaxHealth <= 0.34f);
+        // GameplayUI.instance.GetHealthAnimator().SetBool("hurt", false);
+
         //if(CurrentHealth / MaxHealth <= 0.15f && stage_txt.can_hurt_message){
         //    stage_txt.HurtDialogue();
         //}
 
-        if(hit_volume.weight != normalized_weight_inv && hit_volume_on)
+        if (hit_volume.weight != normalized_weight_inv && hit_volume_on)
         {
-            if(hit_volume.weight - Time.deltaTime < normalized_weight_inv)
+            if (hit_volume.weight - Time.deltaTime < normalized_weight_inv)
             {
                 hit_volume.weight = normalized_weight_inv;
             }
             else
                 hit_volume.weight -= Time.deltaTime;
         }
-        else if(!triggerDamageVolume)
+        else if (!triggerDamageVolume)
         {
             hit_volume_on = false;
             hit_volume.weight = 0;
@@ -177,7 +183,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     }
     public void TakeDmg(int Dmg, float immunity_time)
     {
-        if(ultraManager.IsUltra == false)
+        if(!(EquipmentManager.instance.equipmentType == EquipmentManager.EquipmentType.ULTRAMODE && EquipmentManager.instance.usingEquipment))
         {
             CurrentHealth -= (int)(Dmg * (1 - ( 0.05f * buffsManager.buff_strength[0])));
             immune = true;
@@ -203,6 +209,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
                 hit_volume.weight = 0;
             }
 
+            GameplayUI.instance.GetHealthAnimator().Play("hit");
             //audio.clip = clips[0];
             //audio.pitch = Random.Range(0.9f, 1.2f);
             //audio.Play();
@@ -220,7 +227,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
 
     public void TakeImmediateDmg(int Dmg, float immunity_time)
     {
-        if (ultraManager.IsUltra == false)
+        if (!(EquipmentManager.instance.equipmentType == EquipmentManager.EquipmentType.ULTRAMODE && EquipmentManager.instance.usingEquipment))
         {
             // CurrentHealth -= (int)(Dmg * (1 - (0.05f * buffsManager.buff_strength[0])));
             CurrentHealth -= (Dmg);
@@ -235,6 +242,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
                 currentImmunityTime = immunity_time;
             }
 
+            GameplayUI.instance.GetHealthAnimator().Play("hit");
             currentRegenTime = RegenTime;
             regen = false;
             hit_volume.weight = (float)((MaxHealth - CurrentHealth) / (float)MaxHealth) * hitVolumeCoefficient;

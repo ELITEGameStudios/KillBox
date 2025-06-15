@@ -42,9 +42,11 @@ public class Player
 
     private static Player player;
 
-    public void AddKill(){
+    public void AddKill()
+    {
         kills++;
         kills_in_round++;
+        EquipmentManager.instance.AddEquipmentKill();
     }
 
     public void NewRound(){

@@ -108,7 +108,7 @@ public class EnemyHealth : MonoBehaviour
         }
         profile.Retire();
         if(triggerDeathEvent){onDie.Invoke();}
-        
+
 
         //int b = Random.Range(1, 800);
         //if(b == 1 && !no_drops){
@@ -116,80 +116,90 @@ public class EnemyHealth : MonoBehaviour
         //    color_ee_instance.transform.SetParent(null);
         //}
 
-        int c = Random.Range(1, 1500);
-        if(c == 1 & can_drop_lvl_4 && !no_drops){
-            GameObject gun_drop = Instantiate(lvl_4_prefabs[Random.Range(0, 4)], transform);
-            gun_drop.transform.SetParent(null);
-            gun_drop.transform.localEulerAngles =new Vector3(0, 0, 0);
-        }
-
-
-        if(objectPool[1].GetPooledObject() != null){
-            InsObject = objectPool[1].GetPooledObject();
-            InsObject.transform.position = gameObject.transform.position;
-            InsObject.transform.rotation = gameObject.transform.rotation;
-            InsObject.gameObject.SetActive(true);
-            InsObject.GetComponent<ParticleSystem>().startColor = explosionColor;
-            InsObject.GetComponent<ParticleSystem>().Play();
-            InsObject.GetComponent<BulletDestroy>().RestartTimer();
-            //InsObject = Instantiate(ExplosionOnDeath, transform);
-            InsObject.transform.SetParent(null);
-            InsObject.transform.localEulerAngles = new Vector3(0, 0, 0);
-        }
-
-        if (key_drops)
+        // int c = Random.Range(1, 1500);
+        // if(c == 1 & can_drop_lvl_4 && !no_drops){
+        //     GameObject gun_drop = Instantiate(lvl_4_prefabs[Random.Range(0, 4)], transform);
+        //     gun_drop.transform.SetParent(null);
+        //     gun_drop.transform.localEulerAngles =new Vector3(0, 0, 0);
+        // }
+        try
         {
-            GameObject item = Instantiate(key_item, transform);
-            Transform grid = GameObject.Find("Grid").transform;
 
-            for(int i = 0; i < grid.childCount; i++)
+
+            if (objectPool[1].GetPooledObject() != null)
             {
-                if (grid.GetChild(i).gameObject.activeInHierarchy)
+                InsObject = objectPool[1].GetPooledObject();
+                InsObject.transform.position = gameObject.transform.position;
+                InsObject.transform.rotation = gameObject.transform.rotation;
+                InsObject.gameObject.SetActive(true);
+                InsObject.GetComponent<ParticleSystem>().startColor = explosionColor;
+                InsObject.GetComponent<ParticleSystem>().Play();
+                InsObject.GetComponent<BulletDestroy>().RestartTimer();
+                //InsObject = Instantiate(ExplosionOnDeath, transform);
+                InsObject.transform.SetParent(null);
+                InsObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+            }
+
+            if (key_drops)
+            {
+                GameObject item = Instantiate(key_item, transform);
+                Transform grid = GameObject.Find("Grid").transform;
+
+                for (int i = 0; i < grid.childCount; i++)
                 {
-                    item.transform.SetParent(grid.GetChild(i));
-                    item.transform.localEulerAngles = new Vector3(0, 0, 0);
-                    item.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
-                    break;
+                    if (grid.GetChild(i).gameObject.activeInHierarchy)
+                    {
+                        item.transform.SetParent(grid.GetChild(i));
+                        item.transform.localEulerAngles = new Vector3(0, 0, 0);
+                        item.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+                        break;
+                    }
                 }
             }
-        }
 
-        if (guaranteed_drop_bool)
-        {
-            GameObject item = Instantiate(guaranteed_drop_item, transform);
-            Transform grid = GameObject.Find("Grid").transform;
-
-            for(int i = 0; i < grid.childCount; i++)
+            if (guaranteed_drop_bool)
             {
-                if (grid.GetChild(i).gameObject.activeInHierarchy)
+                GameObject item = Instantiate(guaranteed_drop_item, transform);
+                Transform grid = GameObject.Find("Grid").transform;
+
+                for (int i = 0; i < grid.childCount; i++)
                 {
-                    item.transform.SetParent(grid.GetChild(i));
-                    item.transform.localEulerAngles = new Vector3(0, 0, 0);
-                    item.transform.localScale = new Vector3(1, 1, 1);
-                    break;
+                    if (grid.GetChild(i).gameObject.activeInHierarchy)
+                    {
+                        item.transform.SetParent(grid.GetChild(i));
+                        item.transform.localEulerAngles = new Vector3(0, 0, 0);
+                        item.transform.localScale = new Vector3(1, 1, 1);
+                        break;
+                    }
                 }
             }
-        }
 
 
-        if (main_player != null && UpgradesManager.Instance.current_levels[3] != 0 && to_player)
-        {
-            main_player.GetComponent<PlayerHealth>().CurrentHealth += (int)UpgradesList.lifesteal.values[UpgradesManager.Instance.current_levels[3] - 1];
-        }
-        if(manager == null)
-        {
-            manager = GameObject.Find("Manager").GetComponent<GameManager>();
-        }
-        manager.player_kills++;
-        ChallengeFields.UpdateKills(this);
-        manager.ultra_kills++;
+            if (UpgradesManager.Instance.current_levels[3] != 0 && to_player && !Player.main.health.isMaxHealth)
+            {
+                Player.main.health.CurrentHealth += (int)UpgradesList.lifesteal.values[UpgradesManager.Instance.current_levels[3] - 1];
+                GameplayUI.instance.GetHealthAnimator().Play("lifestealTick");
+            }
+            if (manager == null)
+            {
+                manager = GameObject.Find("Manager").GetComponent<GameManager>();
+            }
+            manager.player_kills++;
+            ChallengeFields.UpdateKills(this);
+            manager.ultra_kills++;
 
-        if(in_fortress){
-            GameObject.FindGameObjectWithTag("fortress_rune").GetComponent<RuneFortressClass>().AddKill(this);
-        }
+            if (in_fortress)
+            {
+                GameObject.FindGameObjectWithTag("fortress_rune").GetComponent<RuneFortressClass>().AddKill(this);
+            }
 
-        if(to_player){
-            Player.main.AddKill();
+            if (to_player)
+            {
+                Player.main.AddKill();
+            }
+        }
+        catch{
+            Debug.LogAssertion("Error within enemy death sequence... (Comment out try-catch with this comment in EnemyHealth script to find error)");
         }
         Destroy(gameObject);
     }

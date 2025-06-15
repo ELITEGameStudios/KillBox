@@ -14,14 +14,16 @@ public class GameplayUI : MonoBehaviour
     [Header("Health")]
     [SerializeField] private Text healthText;
     [SerializeField] private Slider healthSlider;
+    [SerializeField] private Animator healthAnimator;
     public Slider GetHealthSlider(){return healthSlider;}
     public Text GetHealthText(){return healthText;}
+    public Animator GetHealthAnimator(){return healthAnimator;}
     
     
     [Header("Cooldown graphics")]
     [SerializeField] private Image mainBarSliderImage;
     [SerializeField] private Image secondaryBarSliderImage;
-    [SerializeField] private Slider cooldownSlider, primaryCooldownSlider, secondaryCooldownSlider;
+    [SerializeField] private Slider primaryCooldownSlider, secondaryCooldownSlider;
     [SerializeField] private Text cooldownText;
 
     public Slider GetPrimaryCooldownSlider(){return primaryCooldownSlider;}
@@ -34,10 +36,12 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private Image equipmentImage;
     [SerializeField] private Slider equipmentSlider;
     [SerializeField] private Text equipmentHeader;
+    [SerializeField] private Animator equipmentAnimator;
 
     public Text GetEquipmentHeader(){return equipmentHeader;}
     public Image GetEquipmentImage(){return secondaryBarSliderImage;}
-    public Slider GetEquipmentSlider(){return cooldownSlider;}
+    public Slider GetEquipmentSlider(){return equipmentSlider;}
+    public Animator GetEquipmentAnimator(){return equipmentAnimator;}
 
     
     [Header("Weapon buttons")]
