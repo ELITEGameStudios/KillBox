@@ -15,9 +15,22 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
     public int bossRoundTier {get; private set;}
     public int timeUntilNextBoss{get; private set;}
     public int timeSinceLastBoss{get; private set;}
+    public BossType bossType;
 
     [SerializeField] private EnemyList enemyList;
-    
+
+    public enum BossType
+    {
+        SHARD,
+        CUTTER,
+        GUARDIANS,
+        LOOPY,
+        MIDAS,
+        TWINS,
+        ALPHATRIAD,
+        X
+    }
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -42,15 +55,23 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
         // if(LvlStarter.main.HasStarted){ Debug.Log("the level has in fact started.");}
         // if(finishedBossRoundMainPhase){ Debug.Log("the main phase has in fact finished.");}
 
-
-        if(
+        // Detects if all bosses have died
+        if (
             EnemyCounter.main.bossProfiles.Count == 0 &&
             LvlStarter.main.HasStarted &&
-            spawnSystem.currentBossIndex ==  spawnSystem.CurrentBossTable.Count &&
+            spawnSystem.currentBossIndex == spawnSystem.CurrentBossTable.Count &&
             spawnSystem.isSpawning &&
             spawnSystem.spawnsAfterBoss >= 10)
 
-        { spawnSystem.StopSpawning(); finishedBossRoundMainPhase = true; }
+        {
+            spawnSystem.StopSpawning();
+            finishedBossRoundMainPhase = true;
+
+            // Giving bonus
+            int bonus = EconomyManager.instance.GetBossBonus();
+            GameManager.main.OnPickupToken(bonus, false);
+            BonusesUIManager.instance.ActivateBonus(bossType.ToString().ToLower(), bonus, 10);
+        }
     }
     public int GetTierOfRound(int round){
         return enemyList.bossRounds.FindIndex(match => match == round);
@@ -63,6 +84,8 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
             finishedBossRoundMainPhase = false;
 
             bossRoundTier = enemyList.bossRounds.FindIndex(match => match == GameManager.main.LvlCount);
+            bossType = (BossType)bossRoundTier; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
+
             spawnSystem.SetBossSpawnList(bossRoundTier % 5);
             KillboxEventSystem.TriggerBossRoundChangeEvent();
         }
