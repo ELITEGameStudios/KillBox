@@ -48,9 +48,13 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private Button primaryWeaponButton;
     [SerializeField] private Button backupWeaponButton;
     [SerializeField] private GameObject[] weapon_ui_overlays;
+    [SerializeField] private Animator primaryAnimator;
+    [SerializeField] private Animator secondaryAnimator;
 
     public Button GetPrimaryWeaponButton(){return primaryWeaponButton;}
     public Button GetBackupWeaponButton(){return backupWeaponButton;}
+    public Animator GetPrimaryAnimator(){return primaryAnimator;}
+    public Animator GetSecondaryAnimator(){return secondaryAnimator;}
     
     [Header("Dash indicator")]
     [SerializeField] private Text dashTimerText;
@@ -124,7 +128,11 @@ public class GameplayUI : MonoBehaviour
             weapon_ui_overlays[2].SetActive(false);
         }
 
-        for(int i = 0; i < InventoryUIManager.Instance.main_buttons.Count; i++){
+        primaryAnimator.SetBool("Active", handler.current_is_primary);
+        secondaryAnimator.SetBool("Active", !handler.current_is_primary);
+
+        for (int i = 0; i < InventoryUIManager.Instance.main_buttons.Count; i++)
+        {
             InventoryUIManager.Instance.main_buttons[i].EquipDisplay();
         }
     }

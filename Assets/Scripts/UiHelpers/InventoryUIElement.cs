@@ -180,14 +180,14 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
             }
         }
 
-        if(animator != null){
-            if(type == 1 && GunHandler.Instance.current_is_primary){
-                animator.Play("Selected");
-            }
-            else if(type == 2 && !GunHandler.Instance.current_is_primary){
-                animator.Play("Selected");
-            }
-        }
+        // if(animator != null){
+        //     if(type == 1 && GunHandler.Instance.current_is_primary){
+        //         animator.Play("Selected");
+        //     }
+        //     else if(type == 2 && !GunHandler.Instance.current_is_primary){
+        //         animator.Play("Selected");
+        //     }
+        // }
     }
 
     bool CoolingDownCheck(){
@@ -209,7 +209,7 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
         StartCoroutine("CooldownAnim");
     }
     public void Flip(){
-        animator.Play("Selected");
+        animator.Play("gunFlip");
     }
 
     void Update(){
@@ -279,14 +279,17 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
         // state = ButtonStatus.SELECTED;
     }
 
-    IEnumerator CooldownAnim(){
-        while (CoolingDownCheck()){
-            if(gun_img.color == cooldown_color){gun_img.color = Color.white;}
-            else{gun_img.color = cooldown_color;}
+    IEnumerator CooldownAnim()
+    {
+        while (CoolingDownCheck())
+        {
+            if (gun_img.color == cooldown_color) { gun_img.color = Color.white; }
+            else { gun_img.color = cooldown_color; }
 
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
         }
         EquipDisplay();
+        Flip();
 
     }
 
