@@ -313,7 +313,7 @@ MonoBehaviour:
   tag: Player
   CanAttack: 1
   EndOfContact: 0
-  ignore_immunity: 1
+  ignore_immunity: 0
   _ignites: 0
   triggerEvent: 0
   eh: {fileID: 1747766047015550256}
