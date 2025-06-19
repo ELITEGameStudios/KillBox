@@ -14,14 +14,16 @@ public class GameplayUI : MonoBehaviour
     [Header("Health")]
     [SerializeField] private Text healthText;
     [SerializeField] private Slider healthSlider;
+    [SerializeField] private Animator healthAnimator;
     public Slider GetHealthSlider(){return healthSlider;}
     public Text GetHealthText(){return healthText;}
+    public Animator GetHealthAnimator(){return healthAnimator;}
     
     
     [Header("Cooldown graphics")]
     [SerializeField] private Image mainBarSliderImage;
     [SerializeField] private Image secondaryBarSliderImage;
-    [SerializeField] private Slider cooldownSlider, primaryCooldownSlider, secondaryCooldownSlider;
+    [SerializeField] private Slider primaryCooldownSlider, secondaryCooldownSlider;
     [SerializeField] private Text cooldownText;
 
     public Slider GetPrimaryCooldownSlider(){return primaryCooldownSlider;}
@@ -34,19 +36,25 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private Image equipmentImage;
     [SerializeField] private Slider equipmentSlider;
     [SerializeField] private Text equipmentHeader;
+    [SerializeField] private Animator equipmentAnimator;
 
     public Text GetEquipmentHeader(){return equipmentHeader;}
     public Image GetEquipmentImage(){return secondaryBarSliderImage;}
-    public Slider GetEquipmentSlider(){return cooldownSlider;}
+    public Slider GetEquipmentSlider(){return equipmentSlider;}
+    public Animator GetEquipmentAnimator(){return equipmentAnimator;}
 
     
     [Header("Weapon buttons")]
     [SerializeField] private Button primaryWeaponButton;
     [SerializeField] private Button backupWeaponButton;
     [SerializeField] private GameObject[] weapon_ui_overlays;
+    [SerializeField] private Animator primaryAnimator;
+    [SerializeField] private Animator secondaryAnimator;
 
     public Button GetPrimaryWeaponButton(){return primaryWeaponButton;}
     public Button GetBackupWeaponButton(){return backupWeaponButton;}
+    public Animator GetPrimaryAnimator(){return primaryAnimator;}
+    public Animator GetSecondaryAnimator(){return secondaryAnimator;}
     
     [Header("Dash indicator")]
     [SerializeField] private Text dashTimerText;
@@ -61,6 +69,11 @@ public class GameplayUI : MonoBehaviour
     [Header("Death UI")]
     [SerializeField] private GameObject selfResButton;
     public GameObject GetSelfResButton(){return selfResButton;}
+
+
+    [Header("Round Display UI")]
+    [SerializeField] private Animator lvlDisplayAnimator;
+    public Animator GetLevelDisplayAnimator(){return lvlDisplayAnimator;}
 
     public static GameplayUI instance {get; private set;}
 
@@ -115,7 +128,11 @@ public class GameplayUI : MonoBehaviour
             weapon_ui_overlays[2].SetActive(false);
         }
 
-        for(int i = 0; i < InventoryUIManager.Instance.main_buttons.Count; i++){
+        primaryAnimator.SetBool("Active", handler.current_is_primary);
+        secondaryAnimator.SetBool("Active", !handler.current_is_primary);
+
+        for (int i = 0; i < InventoryUIManager.Instance.main_buttons.Count; i++)
+        {
             InventoryUIManager.Instance.main_buttons[i].EquipDisplay();
         }
     }

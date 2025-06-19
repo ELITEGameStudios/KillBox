@@ -62,7 +62,7 @@ public class TriadBossScript : MonoBehaviour
         player = Player.main.tf;
 
         //BossAudio.Instance.OnShardSpawn(gameObject);
-        BossBarManager.Instance.AddToQueue(gameObject, "ALPHA TRIAD");
+        // BossBarManager.Instance.AddToQueue(gameObject, "ALPHA TRIAD");
 
 
         ConstraintSource constraint = new ConstraintSource();

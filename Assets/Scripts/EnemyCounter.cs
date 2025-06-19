@@ -96,9 +96,31 @@ public class EnemyCounter : MonoBehaviour
             {noLongerSpawning = true;}
 
         // End round event
-        if (noEnemiesOrSpawns && noLongerSpawning && !GameManager.main.EscapeRoom() && !Portal.activeInHierarchy)
+        if (noEnemiesOrSpawns && noLongerSpawning && !GameManager.main.EscapeRoom() && !Portal.activeInHierarchy && GameManager.main.roundState == GameManager.RoundState.MIDROUND)
         {
             Portal.SetActive(true);
+            print("Round has finished");
+
+
+            // Generating bonuses
+            int finishedBonus = EconomyManager.instance.GetFinishedRoundBonus();
+            GameManager.main.OnPickupToken(finishedBonus, false);
+            BonusesUIManager.instance.ActivateBonus("finished_round", finishedBonus);
+
+            if (KillBox.currentGame.round % 5 == 0)
+            {
+                int fiveRoundBonus= EconomyManager.instance.Get5RoundBonus();
+                GameManager.main.OnPickupToken(fiveRoundBonus, false);
+                BonusesUIManager.instance.ActivateBonus("5round", fiveRoundBonus);
+            }
+
+            GameManager.main.CheckDamageless();
+            GameplayUI.instance.GetLevelDisplayAnimator().SetBool("InGame", false);
+
+
+
+            CameraBgManager.instance.SetBackground(Color.black, 2);
+
             LvlStarter.main.InitiatePostRound(PortalScript.main.currentMapIndex);
             GridAnimationManager.instance.DoEndRoundAnimation();
             KillboxEventSystem.TriggerRoundEndEvent();
@@ -116,11 +138,11 @@ public class EnemyCounter : MonoBehaviour
             }
 
             // Portal animation
-            if (AnimAccept)
-            {
-                portalScript.portalAnimator.Play("PortalAnim");
-                AnimAccept = false;
-            }
+            // if (AnimAccept)
+            // {
+            //     portalScript.portalAnimator.Play("PortalAnim");
+            //     AnimAccept = false;
+            // }
 
             // Door behaviour
             if(!end_of_main_round){
@@ -129,7 +151,7 @@ public class EnemyCounter : MonoBehaviour
                 // }    
             
             }
-
+            GameManager.main.roundState = GameManager.RoundState.POSTROUND;
             end_of_main_round = true;
         }
 

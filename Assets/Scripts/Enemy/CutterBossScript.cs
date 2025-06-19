@@ -36,6 +36,8 @@ public class CutterBossScript : MonoBehaviour
     [SerializeField] private bool instantDashes, chaining;
     [SerializeField] private EnemyHealth health;
 
+    public Sprite displaySprite;
+    public Color displayColor;
 
 
     // Start is called before the first frame update
@@ -48,7 +50,7 @@ public class CutterBossScript : MonoBehaviour
         defaultColor = renderer.color;
 
         //BossAudio.Instance.OnShardSpawn(gameObject);
-        BossBarManager.Instance.AddToQueue(gameObject, name);
+        BossBarManager.Instance.AddToQueue(gameObject, name, displayColor, displaySprite);
 
         dashParticlesA.transform.SetParent(null);
         dashParticlesB.transform.SetParent(null);

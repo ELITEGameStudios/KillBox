@@ -20,7 +20,7 @@ public class PortalScript : MonoBehaviour
     public int currentMapIndex {get; private set;}
 
     [SerializeField]
-    private Animator overlay_anim;
+    private Animator portalAnim;
 
     [SerializeField]
     private ShopScript shop;
@@ -28,7 +28,7 @@ public class PortalScript : MonoBehaviour
     [SerializeField]
     private EnemyList enemy_entry_list;
 
-    public bool loadingScene, loadedScene;
+    public bool loadingScene, loadedScene, portalIsUsable;
 
     [SerializeField]
     private MapEvolutionManager mapEvolutionManager;
@@ -47,7 +47,7 @@ public class PortalScript : MonoBehaviour
     [SerializeField]
     private UnityEngine.Rendering.Universal.Light2D light;
     [SerializeField]
-    private ParticleSystem particles;
+    private ParticleSystem particles, secondaryParticles;
 
     public Color[] mode_colors, map_styles, wall_styles;
 
@@ -58,11 +58,26 @@ public class PortalScript : MonoBehaviour
     [SerializeField]
     private QuestionInitiator escapeRoomInitiator;
 
-    void OnEnable(){
-        if (Mode == 3){
+    void OnEnable()
+    {
+        if (Mode == 3)
+        {
             BossRoundCounterUI.main.UpdateDisplay(true);
         }
+
+        portalAnim.Play("PortalAnim");
+        portalIsUsable = true;
         
+    }
+    public void StopParticles(){
+        particles.Stop();
+        secondaryParticles.Stop();
+    }
+    
+    public void StartParticles()
+    {
+        particles.Play();
+        secondaryParticles.Play();
     }
 
     void Awake(){
@@ -86,7 +101,7 @@ public class PortalScript : MonoBehaviour
     void Update()
     {
         dist = Vector3.Distance(Player.main.tf.position, transform.position);
-        if (dist < 0.5)
+        if (dist < 0.5 && portalIsUsable)
         { NextLvl(); }
 
         if(BossRoundManager.main.timeUntilNextBoss == 1){
@@ -104,11 +119,13 @@ public class PortalScript : MonoBehaviour
 
     void NextLvl()
     {
+        portalIsUsable = false;
+        print("Entering next level");
 
-        // portalAnimator.Play(AnimName);
-//        loadingScene = true;
         StartCoroutine(LoadNextScene());
-
+        Player.main.Dissapear();
+        Player.main.movement.SetCanMove(false);
+        LvlStarter.main.DisableInGameButtons();
     }
 
     public void SetMode(int mode, bool open = true){
@@ -119,7 +136,7 @@ public class PortalScript : MonoBehaviour
         particles.startColor = mode_colors[Mode];
 
         if(open){
-            portalAnimator.Play(opening_anim);
+            portalAnim.Play("PortalAnim");
         }
     }
 
@@ -133,17 +150,6 @@ public class PortalScript : MonoBehaviour
     void SetRound(){
 
         ChallengeFields.UpdateRound(gameManagerVar, gameManagerVar.isFireRound);
-        // Damageless Code:
-        if(Player.main.health.isDamageless){
-            // Damageless Bonus is increased the further you get in the game.
-            if(KillBox.currentGame.round >= 3){gameManagerVar.OnPickupToken(1, false);}
-            if(KillBox.currentGame.round >= 11){gameManagerVar.OnPickupToken(2, false);}
-            if(KillBox.currentGame.round >= 18){gameManagerVar.OnPickupToken(3, false);}
-            }
-        Player.main.health.isDamageless = true;
-
-        if(BossRoundManager.main.isBossRound){gameManagerVar.OnPickupToken(7, false);}
-        else{gameManagerVar.OnPickupToken(1, false);}
         gameManagerVar.InitNextRound();
     }
 
@@ -189,22 +195,13 @@ public class PortalScript : MonoBehaviour
 
     public void ManageSpawns(int map = -1){ // may be deprecated
         if(map == -1){ map = currentMapIndex;}
-
-        // for(int i = 0; i < GetSpawn.spawns.Count; i++)
-        // {
-        //     if (GetSpawn.spawns[i].TargetLvl == map && gameManagerVar.LvlCount >= GetSpawn.spawns[i].unlock_on_level)
-        //     {
-        //         GetSpawn.spawns[i].ActiveSpawn = true;
-        //         GetSpawn.spawns[i].RefreshEntries();
-        //     }
-        //     else
-        //         GetSpawn.spawns[i].ActiveSpawn = false;
-        // }
+        GameManager.main.GetSpawn.Refresh();
     }
 
     void SetPositions(){
         Player.main.tf.position = GameManager.main.GetMapByID(currentMapIndex).Player.position;
         transform.position = GameManager.main.GetMapByID(currentMapIndex).Portal.position;
+        CameraMovvement.main.SetCameraPosition(Player.main.tf.position);
 
         GameObject[] allies = GameObject.FindGameObjectsWithTag("Ally");
 
@@ -237,10 +234,12 @@ public class PortalScript : MonoBehaviour
 
     }
 
-    void StartRoundCountdown(){
+    void StartRoundCountdown()
+    {
         GridAnimationManager.instance.DoIntroRoundAnimation();
         lvlStarter.InitiatePreround(currentMapIndex, GameManager.main.GetMapByID(currentMapIndex).Player.position);
         enemyCounter.Reset();
+        gameObject.SetActive(false);
     }
 
 
@@ -314,25 +313,27 @@ public class PortalScript : MonoBehaviour
                 // KillboxEventSystem.TriggerBossRoundStartEvent();
             }
 
-            overlay_anim.Play("Standard");
+            // overlay_anim.Play("Standard");
         }
     
         KillboxEventSystem.TriggerRoundChangeEvent();
     }
 
+
     IEnumerator LoadNextScene()
     {
         loadingScene = true;
+        portalAnim.Play("portalDissapear");
         ChallengeLib.UpdateChallengeValues("HUNTER", "KILLS", ChallengeFields.kills);
-        
+
         float time = Delay;
         MapData map = GameManager.main.GetCurrentMap();
-        CameraBgManager.instance.SetBackground(Color.black, Delay/2);
 
         Color wallCol = map.wallTiles.color;
         Color floorCol = map.floorTiles.color;
-        
-        while (time > 0){
+
+        while (time > 0)
+        {
             map.wallTiles.color = Color.Lerp(Color.clear, wallCol, time / Delay);
             map.floorTiles.color = Color.Lerp(Color.clear, floorCol, time / Delay);
 
@@ -347,5 +348,7 @@ public class PortalScript : MonoBehaviour
 
         InitNewRound();
         loadingScene = false;
+        Player.main.Appear();
+        Player.main.movement.SetCanMove(true);
     }
 }

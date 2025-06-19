@@ -8,7 +8,7 @@ public class GridAnimationManager : MonoBehaviour
 {
     
     public Color defaultWallColor, portalBrightWallCol, worldGenBlue; 
-    public AnimationCurve brightCurve, floorFadeinCurve; // xMax will represent the range this effect spans
+    public AnimationCurve brightCurve, floorFadeinCurve, linear2WallCurve; // xMax will represent the range this effect spans
     public static GridAnimationManager instance {get; private set;}
 
     [SerializeField]float time;
@@ -32,7 +32,7 @@ public class GridAnimationManager : MonoBehaviour
 
     public void DoIntroRoundAnimation(){
         // StartCoroutine(MapIntroRandomizedCoroutine(GameManager.main.GetCurrentMap(), worldGenBlue, defaultWallColor));
-        StartCoroutine(MapIntroLinearCoroutine(GameManager.main.GetCurrentMap(), worldGenBlue, defaultWallColor));
+        StartCoroutine(MapIntroLinearNewCoroutine(GameManager.main.GetCurrentMap(), worldGenBlue, defaultWallColor));
     } 
 
     public IEnumerator EndRoundCoroutine(Vector3 origin, MapData map, Color brightColor, Color normalColor, float speed = 12.5f, float initDist = 1.5f){
@@ -165,6 +165,82 @@ public class GridAnimationManager : MonoBehaviour
             wall.SetColor(point, normalColor);
         }
         foreach (Vector3Int point in map.floorPositions){
+            floor.SetColor(point, endFloorColor);
+        }
+        CameraBgManager.instance.SetBackground(CameraBgManager.instance.defaultBg, 1);
+
+    }
+
+    public IEnumerator MapIntroLinearNewCoroutine(MapData map, Color brightColor, Color normalColor, float speed = 20)
+    {
+        floor = map.floorTiles;
+        wall = map.wallTiles;
+
+        float modifiedOffset = 5;
+        range = wall.cellBounds.size.y + modifiedOffset + 30;
+        time = range / speed;
+        timer = 0;
+        normalizedTime = timer / time;
+        distance = wall.cellBounds.min.y;
+        Color endFloorColor = floorColorScript.GetColorFromGradient(KillBox.currentGame.round);
+
+        // setting Starting invisible states
+        foreach (Vector3Int point in map.wallPositions)
+        {
+            wall.SetColor(point, Color.clear);
+        }
+        foreach (Vector3Int point in map.floorPositions)
+        {
+            floor.SetColor(point, Color.clear);
+        }
+
+        Debug.Log("Begun some fancy animation or smth idk");
+
+
+        while (timer < time)
+        {
+
+            float modifiedDistance = distance - modifiedOffset;
+            normalizedTime = timer / time;
+            distance = Mathf.Lerp(wall.cellBounds.min.y, range, normalizedTime);
+
+            foreach (Vector3Int point in map.wallPositions)
+            {
+                if (point.y < distance)
+                {
+                    Color targetColor = Color.Lerp(
+                        normalColor, brightColor,
+                        linear2WallCurve.Evaluate(distance - point.y)
+                    );
+
+                    wall.SetColor(point, targetColor);
+                }
+            }
+            foreach (Vector3Int point in map.floorPositions)
+            {
+
+                // if (point.y < distance)
+                // {
+
+                    Color targetColor = Color.Lerp(
+                        endFloorColor, Color.clear, 
+                        linear2WallCurve.Evaluate(distance)
+                    );
+
+                    floor.SetColor(point, targetColor);
+                // }
+            }
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        foreach (Vector3Int point in map.wallPositions)
+        {
+            wall.SetColor(point, normalColor);
+        }
+        foreach (Vector3Int point in map.floorPositions)
+        {
             floor.SetColor(point, endFloorColor);
         }
         CameraBgManager.instance.SetBackground(CameraBgManager.instance.defaultBg, 1);

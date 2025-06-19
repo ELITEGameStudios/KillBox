@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyOnlyWall 1
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: 592fa9533c66d450aaed2c952ebdcb0b, type: 3}
-  m_Color: {r: 1, g: 0.02479886, b: 0, a: 0.31764707}
+  m_Color: {r: 1, g: 0.023529414, b: 0, a: 0.3882353}
   m_Transform:
     e00: 1
     e01: 0

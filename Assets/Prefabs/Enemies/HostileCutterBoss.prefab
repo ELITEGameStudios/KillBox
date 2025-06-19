@@ -15685,6 +15685,8 @@ MonoBehaviour:
   instantDashes: 0
   chaining: 0
   health: {fileID: 5310180238275447514}
+  displaySprite: {fileID: 21300000, guid: 85ed772d5c3e82b49bc7693a699aeb6d, type: 3}
+  displayColor: {r: 0.02745098, g: 1, b: 0, a: 1}
 --- !u!58 &6428480845840962986
 CircleCollider2D:
   m_ObjectHideFlags: 0

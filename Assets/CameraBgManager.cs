@@ -27,13 +27,15 @@ public class CameraBgManager : MonoBehaviour
                 transitioning = false;
             }
             else{
+                // Debug.Log("Fading cam to black | " + Time.unscaledDeltaTime);
                 cam.backgroundColor = Color.Lerp(targetBg, lastBg, timer/time);
-                timer -= Time.deltaTime;
+                timer -= Time.unscaledDeltaTime;
             }
         }
     }
 
-    public void SetBackground(Color color, float time){
+    public void SetBackground(Color color, float time)
+    {
         timer = time;
         this.time = time;
         targetBg = color;

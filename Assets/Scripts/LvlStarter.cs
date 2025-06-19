@@ -39,8 +39,6 @@ public class LvlStarter : MonoBehaviour
     {
         if(timer >= animationTime && !animationFinished){
             animationFinished = true;
-            weapons.transform.position = targetWeaponsPos;
-            upgrades.transform.position = targetUpgradesPos;
             starterObject.transform.position = targetStarterPos;
 
             weapons.GetComponent<InGameButtonHandler>().Activate();
@@ -51,8 +49,8 @@ public class LvlStarter : MonoBehaviour
 
         }
         if(!animationFinished){
-            weapons.transform.position = Vector2.Lerp(playerPos, targetWeaponsPos, CommonFunctions.SineEase(timer, animationTime));
-            upgrades.transform.position = Vector2.Lerp(playerPos, targetUpgradesPos, CommonFunctions.SineEase(timer, animationTime));
+            weapons.transform.rotation = Quaternion.Lerp(Quaternion.Euler(0, 0, -180), Quaternion.Euler(0, 0, 0), CommonFunctions.SineEase(timer, animationTime));
+            upgrades.transform.rotation = Quaternion.Lerp(Quaternion.Euler(0, 0, -180), Quaternion.Euler(0, 0, 0), CommonFunctions.SineEase(timer, animationTime));
             // starterObject.transform.position = Vector2.Lerp(playerPos, targetStarterPos, CommonFunctions.SineEase(timer, animationTime));
 
             weapons.transform.localScale = Vector2.Lerp(Vector2.zero, Vector2.one, CommonFunctions.SineEase(timer, animationTime));
@@ -71,17 +69,19 @@ public class LvlStarter : MonoBehaviour
 
     void StartLvl()
     {
-        HasStarted = true;
         weapons.SetActive(false);
         upgrades.SetActive(false);
+
         // starterObject.SetActive(false);
+        // RoundStartDisplay.main.StartAnimation();
 
-        RoundStartDisplay.main.StartAnimation();
-
-        if(!BossRoundManager.main.isBossRound){
+        if (!BossRoundManager.main.isBossRound)
+        {
             GetSpawn.StartSpawnSequence();
+            GameplayUI.instance.GetLevelDisplayAnimator().SetBool("InGame", true);
         }
-        else{
+        else
+        {
             MainAudioSystem.main.TriggerBossMusic(BossRoundManager.main.bossRoundTier);
             VolumeControl.main.SetSilentSnapshot(false, 0);
             BossRoomSpawnSystem.main.StartSpawnSequence();
@@ -108,12 +108,20 @@ public class LvlStarter : MonoBehaviour
         //AudioSystemMaster.main.PlayAction();
 
         Teleporters = GameObject.FindGameObjectsWithTag("Teleporter");
-        for(int i = 0; i < TpScripts.Length; i++)
-        {
-            TpScripts[i].IsActive = true;
-        }
+        // for(int i = 0; i < TpScripts.Length; i++)
+        // {
+        //     TpScripts[i].IsActive = true;
+        // }
 
         KillboxEventSystem.TriggerRoundStartEvent();
+        GameManager.main.roundState = GameManager.RoundState.MIDROUND;
+        HasStarted = true;
+    }
+
+    public void DisableInGameButtons()
+    {
+        weapons.SetActive(false);
+        upgrades.SetActive(false);
     }
 
     public void InitiatePostRound(int mapId)
@@ -123,8 +131,12 @@ public class LvlStarter : MonoBehaviour
 
         targetWeaponsPos = GameManager.main.GetMapByID(mapId).Weapons.position;
         targetUpgradesPos = GameManager.main.GetMapByID(mapId).Upgrades.position;
+
+        weapons.transform.position = targetWeaponsPos;
+        upgrades.transform.position = targetUpgradesPos;
+
         // targetStarterPos= GameManager.main.GetMapByID(mapId).Starter.position;
-     
+
         animationFinished = false;
 
         weapons.SetActive(true);
@@ -134,9 +146,9 @@ public class LvlStarter : MonoBehaviour
         weapons.GetComponent<InGameButtonHandler>().Deactivate();
         upgrades.GetComponent<InGameButtonHandler>().Deactivate();
         // starterObject.GetComponent<InGameButtonHandler>().Deactivate();
-        
+
         // this.playerPos = playerPos;
-        
+
     }    
 
     public void InitiatePreround(int mapId, Vector3 playerPos)

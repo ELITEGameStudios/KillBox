@@ -28,6 +28,11 @@ public class CameraMovvement : MonoBehaviour
 
     }
 
+    public void SetCameraPosition(Vector2 position)
+    {
+        camera_tf.position = new Vector3(position.x, position.y, camera_tf.position.z);
+    }
+
     // Update is called once per frame
     void LateUpdate()
     {
@@ -36,12 +41,13 @@ public class CameraMovvement : MonoBehaviour
         Vector2 target_pos;
 
         // if(BossRoundManager.main.isBossRound){
-        if(false){
-            target_pos = Vector2.Lerp(camera2Dpos, player2Dpos / 3 , smoothing * Time.deltaTime);
-        }
-        else{
-            target_pos = Vector2.Lerp(camera2Dpos, player2Dpos, smoothing * Time.deltaTime);
-        }
+        // if(false){
+        //     target_pos = Vector2.Lerp(camera2Dpos, player2Dpos / 3 , smoothing * Time.deltaTime);      SECONDARY BOSS BATTLE CAMERA SETTING
+        // }
+        // else{
+        // }
+
+        target_pos = Vector2.Lerp(camera2Dpos, player2Dpos, smoothing * Time.deltaTime);
        
         camera_tf.position = new Vector3(target_pos.x, target_pos.y, camera_tf.position.z);
 
@@ -63,19 +69,5 @@ public class CameraMovvement : MonoBehaviour
 
         cam.orthographicSize = current_zoom + (zoom_diff * (1 / zoom_smoothing));
     }
-
-    //7
-    //
-    //7 + 2 * 1 = 9
-    //0.01 * 100 = 1   :    1 / 10
-    //8
-    //
-    //9 - 7 = 2
-    //
-    //9 - 8 = 1
-    //
-    //
-    //
-    //17 = 8 + 2 * 1
 
 }

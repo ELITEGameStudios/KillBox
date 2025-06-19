@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class UltraManager : MonoBehaviour
+public class UltraManager : EquipmentBase
 {
-    public bool IsUltra, startEffect, endEffect;
+    public bool IsUltra;
 
     [SerializeField]
     private float UltraTime, start_effect_clock, end_effect_clock;
@@ -16,47 +16,61 @@ public class UltraManager : MonoBehaviour
     [SerializeField]
     private GameManager manager;
     [SerializeField] private Text buttonText;
-    
 
-    void Update(){
+
+    void Update()
+    {
         //startAnim
-        if(startEffect){
+        if (startEffect)
+        {
             start_effect_clock = 0f;
             startEffect = false;
         }
 
-        if(start_effect_clock < 1){
+        if (start_effect_clock < 1)
+        {
             start_effect_clock += Time.deltaTime * 2;
-            CamEffectObj.GetComponent<Volume>().weight = start_effect_clock;
+            // CamEffectObj.GetComponent<Volume>().weight = start_effect_clock;
         }
-        else{
-            if(start_effect_clock > 1){
+        else
+        {
+            if (start_effect_clock > 1)
+            {
                 start_effect_clock = 1;
-                CamEffectObj.GetComponent<Volume>().weight = start_effect_clock;
+                // CamEffectObj.GetComponent<Volume>().weight = start_effect_clock;
             }
         }
 
         //endAnim
-        if(endEffect){
+        if (endEffect)
+        {
             end_effect_clock = 1f;
             endEffect = false;
         }
 
-        if(end_effect_clock > 0){
+        if (end_effect_clock > 0)
+        {
             end_effect_clock -= Time.deltaTime * 2;
-            CamEffectObj.GetComponent<Volume>().weight = end_effect_clock;
+            // CamEffectObj.GetComponent<Volume>().weight = end_effect_clock;
         }
-        else{
-            if(end_effect_clock < 0){
+        else
+        {
+            if (end_effect_clock < 0)
+            {
                 end_effect_clock = 0;
-                CamEffectObj.GetComponent<Volume>().weight = end_effect_clock;
+                // CamEffectObj.GetComponent<Volume>().weight = end_effect_clock;
             }
         }
     }
 
-    public void GamemodeStart()
+    public override void GamemodeStart()
     {
-        CamEffectObj.SetActive(true);
+        // CamEffectObj.SetActive(true);
+        // throw new System.NotImplementedException();
     }
 
+    public override void GamemodeEnd()
+    {
+        
+    }
 }
