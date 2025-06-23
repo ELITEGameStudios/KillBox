@@ -597,7 +597,6 @@ GameObject:
   - component: {fileID: 6813785317433982690}
   - component: {fileID: 9105510410394289740}
   - component: {fileID: 7185130803034862204}
-  - component: {fileID: 7861911614305147835}
   - component: {fileID: 434004796953595433}
   - component: {fileID: 434004796953595437}
   - component: {fileID: -7835417255786554062}
@@ -889,48 +888,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HQGameObjects:
   - {fileID: 6813785316913839051}
---- !u!114 &7861911614305147835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6813785317433982693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2484041c0ece9df428a96ecd9d054127, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  states: 
-  movement_script: {fileID: 6813785317433982719}
-  shoot_sources:
-  - {fileID: 5102053157571067317}
-  - {fileID: 5102053157003238479}
-  - {fileID: 5102053157081141582}
-  - {fileID: 5102053158424536931}
-  - {fileID: 1557319778303774909}
-  - {fileID: 9221464225968666073}
-  player: {fileID: 0}
-  current_chase_time: 0
-  chase_time: 3
-  clone_distance: 0
-  Adrag:
-  - 0
-  - 0
-  - 0
-  Aspeed:
-  - 5000
-  - 3000
-  - 24000
-  Rspeed:
-  - 1
-  - 1
-  - 1
-  locked_rotation: {x: 0, y: 0, z: 0}
-  self_collider: {fileID: 0}
-  name: SHARD
-  displaySprite: {fileID: 21300000, guid: 420caf93035bea840a4ef82b5d112554, type: 3}
-  displayColor: {r: 0.8784314, g: 1, b: 0, a: 1}
 --- !u!82 &434004796953595433
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1357,6 +1314,7 @@ MonoBehaviour:
   speed: 3
   acceleration: 0
   boss: 1
+  hasDrop: 0
 --- !u!1 &6813785317823682139
 GameObject:
   m_ObjectHideFlags: 0

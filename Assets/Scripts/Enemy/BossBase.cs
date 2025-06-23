@@ -25,7 +25,7 @@ public class BossBase : MonoBehaviour
 
 
     [Header("State Machine")]
-    public List<Phase> phases; // Add phases in minHealth descending order.
+    public Phase[] phases; // Add phases in minHealth descending order.
     public BossStateData[] statesInPhase;
     public Phase currentPhase;
     public BossStateData currentState;
@@ -41,10 +41,15 @@ public class BossBase : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
-        if (phases.Count > 0){
+
+        if (phases.Length > 0)
+        {
             SetPhase(phases[0]);
             PhaseCheck();
+            SetState(currentPhase.statesInPhase[nextStateIndex]);
         }
+
+        BossBarManager.Instance.AddToQueue(gameObject, name, displayColor, displaySprite);
     }
 
     void SetPhase(Phase phase)
@@ -60,13 +65,20 @@ public class BossBase : MonoBehaviour
         if (nextStateIndex >= statesInPhase.Length) { nextStateIndex = 0; }
 
         currentState = state;
-        currentState.OnInit();
+        currentState.OnReset();
         currentState.Start();
     }
 
     void StateCheck()
     {
-        
+        if (currentState != null && !currentState.finished)
+        {
+            currentState.Update();
+        }
+        else
+        {
+            SetState(currentPhase.statesInPhase[nextStateIndex]);
+        }
     }
 
     void PhaseCheck()
@@ -86,19 +98,13 @@ public class BossBase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!currentState.finished)
-        {
-            currentState.Update();
-        }
-        else
-        {
-            SetState(currentPhase.statesInPhase[nextStateIndex]);
-        }
+        PhaseCheck();
+        StateCheck();
     }
 
     void FixedUpdate()
     {
-        if (!currentState.finished)
+        if (currentState != null && !currentState.finished)
         { currentState.FixedUpdate(); }
         else
         { return; }

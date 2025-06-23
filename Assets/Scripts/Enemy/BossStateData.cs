@@ -3,7 +3,7 @@ using Pathfinding;
 using UnityEngine;
 
 [System.Serializable]
-public class BossStateData
+public abstract class BossStateData
 {
     protected BossBase host;
     public BossBase GetBase() { return host; }
@@ -35,29 +35,20 @@ public class BossStateData
         health = bossBase.health;
         animator = bossBase.animator;
 
-        OnInit();
+        OnReset();
     }
 
 
-    public virtual void OnInit()
-    { // Called When the state object is first created. Put all initial values and variable data here instead of on declaration
-
-    }
-
-    public virtual void Start() // Called When the state object becomes active
+    public virtual void OnReset() // Called When the state object is first created and when resetting the state to be used again. Put all reset code here
     {
-
+        finished = false;
     }
 
-    public virtual void Update() // Called every frame while the object is active
-    {
+    public abstract void Start(); // Called When the state object becomes active
 
-    }
+    public abstract void Update(); // Called every frame while the object is active
 
-    public virtual void FixedUpdate() // Called every physics frame while the object is active
-    {
-
-    }
+    public virtual void FixedUpdate() {} // Called every physics frame while the object is active
 
     public virtual void End(bool interrupted = false) // Called once the state declares it is finished its task
     {

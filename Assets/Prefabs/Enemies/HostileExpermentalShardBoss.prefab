@@ -604,8 +604,8 @@ GameObject:
   - component: {fileID: 7213579200607919374}
   - component: {fileID: 6490342167364339143}
   - component: {fileID: 2846585816642808413}
+  - component: {fileID: 2373698372788235846}
   - component: {fileID: 987719025233917754}
-  - component: {fileID: 8213784332846920873}
   m_Layer: 9
   m_Name: HostileExpermentalShardBoss
   m_TagString: Enemy
@@ -1296,6 +1296,58 @@ PolygonCollider2D:
       - {x: -0.00052855327, y: 2.359075}
       - {x: 0.20699412, y: 0.35098326}
   m_UseDelaunayMesh: 0
+--- !u!114 &2373698372788235846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6813785317433982693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f288d357025b3cc4795451a5295b9dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: SHAARD
+  displaySprite: {fileID: 21300000, guid: 420caf93035bea840a4ef82b5d112554, type: 3}
+  displayColor: {r: 1, g: 0.9584457, b: 0, a: 1}
+  transform: {fileID: 6813785317433982714}
+  movement_script: {fileID: 6813785317433982719}
+  rb_self: {fileID: 6813785317433982689}
+  self_collider: {fileID: 2846585816642808413}
+  health: {fileID: 6813785317433982690}
+  animator: {fileID: 0}
+  phases: []
+  currentPhase:
+    minHealth: 0
+  nextStateIndex: 0
+  shoot_sources:
+  - {fileID: 5102053157571067317}
+  - {fileID: 5102053157003238479}
+  - {fileID: 5102053157081141582}
+  - {fileID: 5102053158424536931}
+  - {fileID: 1557319778303774909}
+  - {fileID: 9221464225968666073}
+  current_chase_time: 0
+  chase_time: 0
+  clone_distance: 0
+  Adrag:
+  - 0
+  - 0
+  - 0
+  Aspeed:
+  - 1000
+  - 5000
+  - 24000
+  Rspeed:
+  - 1
+  - 1
+  - 1
+  locked_rotation: {x: 0, y: 0, z: 0}
+  firstPhase:
+    minHealth: 0
+  lastPhase:
+    minHealth: 0
 --- !u!114 &987719025233917754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1316,43 +1368,6 @@ MonoBehaviour:
   acceleration: 0
   boss: 1
   hasDrop: 0
---- !u!114 &8213784332846920873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6813785317433982693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1064cd886885474eac636f79181dbb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: 
-  displaySprite: {fileID: 0}
-  displayColor: {r: 0, g: 0, b: 0, a: 0}
-  transform: {fileID: 0}
-  movement_script: {fileID: 0}
-  rb_self: {fileID: 0}
-  self_collider: {fileID: 0}
-  health: {fileID: 0}
-  animator: {fileID: 0}
-  phases: []
-  statesInPhase: []
-  currentPhase:
-    statesInPhase: []
-    minHealth: 0
-  currentState:
-    name: 
-    displaySprite: {fileID: 0}
-    displayColor: {r: 0, g: 0, b: 0, a: 0}
-    movement_script: {fileID: 0}
-    rb_self: {fileID: 0}
-    self_collider: {fileID: 0}
-    health: {fileID: 0}
-    animator: {fileID: 0}
-    finished: 0
-  nextStateIndex: 0
 --- !u!1 &6813785317823682139
 GameObject:
   m_ObjectHideFlags: 0
