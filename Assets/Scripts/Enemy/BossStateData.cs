@@ -17,6 +17,7 @@ public abstract class BossStateData
     public Collider2D self_collider;
     public EnemyHealth health;
     public Animator animator;
+    public Transform transform;
     public float normalizedHealth { get { return (float)health.CurrentHealth / health.maxHealth; } }
 
     public bool finished;
@@ -34,6 +35,7 @@ public abstract class BossStateData
         self_collider = bossBase.self_collider;
         health = bossBase.health;
         animator = bossBase.animator;
+        transform = bossBase.transform;
 
         OnReset();
     }

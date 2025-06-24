@@ -21,6 +21,7 @@ public class ShardChaseState : BossStateData {
 
     public override void Start() // Called When the state object becomes active
     {
+        shardData.rotator.SetRotationRate(shardData.Aspeed[0], 1f);
         rb_self.angularDrag = aDrag;
         movement_script.rotationSpeed = rSpeed;
         movement_script.maxSpeed = maxSpeed;

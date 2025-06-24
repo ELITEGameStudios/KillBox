@@ -6,8 +6,9 @@ public class ShardSpiralAttackState : BossStateData
 {
     ShardBoss shardData;
     public AIShooterScript[] shoot_sources;
-    private float spiralTime, currentSpiralTime;
+    private float spiralTime, currentSpiralTime, warmupTime, currentWarmupTime;
     private float maxSpeed, maxAccel, aDrag, rSpeed;
+    private bool warmingUp;
 
     public ShardSpiralAttackState(ShardBoss bossBase, float maxSpeed, float maxAccel, float aDrag, float rSpeed) : base(bossBase) // need to test if this auto-calls the super constructor
     {
@@ -17,7 +18,7 @@ public class ShardSpiralAttackState : BossStateData
         this.maxAccel = maxAccel;
         this.aDrag = aDrag;
         this.rSpeed = rSpeed;
-        shoot_sources = shardData.shoot_sources;
+
     }
 
     public override void Start() // Called When the state object becomes active
@@ -30,17 +31,40 @@ public class ShardSpiralAttackState : BossStateData
         currentSpiralTime = 0;
         spiralTime = 3;
 
-        for (int i = 0; i < shoot_sources.Length; i++)
-        {
-            shoot_sources[i].enabled = true;
-            shoot_sources[i].CanShoot = true;
-        }
+        // warmup setup
+        warmupTime = 1.5f;
+        currentWarmupTime = warmupTime;
+        shoot_sources = shardData.shoot_sources;
+        warmingUp = true;
 
+        shardData.rotator.SetRotationRate(shardData.Aspeed[1], 1.5f);
     }
     public override void Update() // Called every frame while the object is active
     {
-        rb_self.angularVelocity = shardData.Aspeed[1] * Time.deltaTime;
+        // rb_self.angularVelocity = shardData.Aspeed[1] * Time.deltaTime;
 
+        // Warming up
+        if (warmingUp)
+        {
+            if (currentWarmupTime <= 0)
+            {
+                warmingUp = false;
+                for (int i = 0; i < shoot_sources.Length; i++)
+                {
+                    shoot_sources[i].enabled = true;
+                    shoot_sources[i].CanShoot = true;
+                }
+                return;
+            }
+            else
+            {
+                currentWarmupTime -= Time.deltaTime;
+            }
+
+            return;
+        }
+
+        // Active
         if (currentSpiralTime < spiralTime)
         {
             currentSpiralTime += Time.deltaTime;

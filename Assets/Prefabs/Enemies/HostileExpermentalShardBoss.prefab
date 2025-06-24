@@ -71,7 +71,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053157003238473}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90b06e3a7de2042b980092e78033ba85, type: 3}
   m_Name: 
@@ -85,12 +85,13 @@ MonoBehaviour:
   bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
-  CanShoot: 1
+  CanShoot: 0
   sees_player: 0
   FAS: 0
   boss: 1
   spray: 1
   has_audio: 0
+  dontAutoShoot: 1
   BulletsPerShot: 1
   poolIndex: 11
   damage_boss_field: 75
@@ -141,7 +142,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053157081141576}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90b06e3a7de2042b980092e78033ba85, type: 3}
   m_Name: 
@@ -155,12 +156,13 @@ MonoBehaviour:
   bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
-  CanShoot: 1
+  CanShoot: 0
   sees_player: 0
   FAS: 0
   boss: 1
   spray: 1
   has_audio: 0
+  dontAutoShoot: 1
   BulletsPerShot: 1
   poolIndex: 11
   damage_boss_field: 75
@@ -242,7 +244,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053157571067319}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90b06e3a7de2042b980092e78033ba85, type: 3}
   m_Name: 
@@ -256,12 +258,13 @@ MonoBehaviour:
   bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
-  CanShoot: 1
+  CanShoot: 0
   sees_player: 0
   FAS: 0
   boss: 1
   spray: 1
   has_audio: 0
+  dontAutoShoot: 1
   BulletsPerShot: 1
   poolIndex: 11
   damage_boss_field: 75
@@ -343,7 +346,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053158424536861}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90b06e3a7de2042b980092e78033ba85, type: 3}
   m_Name: 
@@ -357,12 +360,13 @@ MonoBehaviour:
   bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
-  CanShoot: 1
+  CanShoot: 0
   sees_player: 0
   FAS: 0
   boss: 1
   spray: 1
   has_audio: 0
+  dontAutoShoot: 1
   BulletsPerShot: 1
   poolIndex: 11
   damage_boss_field: 75
@@ -605,6 +609,7 @@ GameObject:
   - component: {fileID: 6490342167364339143}
   - component: {fileID: 2846585816642808413}
   - component: {fileID: 2373698372788235846}
+  - component: {fileID: 909645299401001874}
   - component: {fileID: 987719025233917754}
   m_Layer: 9
   m_Name: HostileExpermentalShardBoss
@@ -1336,18 +1341,135 @@ MonoBehaviour:
   - 0
   - 0
   Aspeed:
-  - 1000
-  - 5000
-  - 24000
+  - 180
+  - 360
+  - 1080
   Rspeed:
   - 1
   - 1
   - 1
   locked_rotation: {x: 0, y: 0, z: 0}
+  rotator: {fileID: 909645299401001874}
+  chaseState:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+  agroChaseState:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+  spiralState:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    shoot_sources: []
+  leaveState:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+  sphereAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    shoot_sources: []
+    angularSpeed: 0
+    maxDist: 0
+    minDist: 0
+    distance: 0
+    enterCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    enterTime: 0
+    fireTime: 0
+    fireInterval: 0
+    currentFireInterval: 0
+    exitTime: 0
+    state: 0
+    timeInState: 0
   firstPhase:
     minHealth: 0
   lastPhase:
     minHealth: 0
+  enterCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -1.8386736
+      outSlope: -1.8386736
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.042777847
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.06953981
+      outSlope: -0.06953981
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11140269
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &909645299401001874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6813785317433982693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32fdefedcd424f1892c40aaff78b4ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 360
+  initialSpeed: 0
+  targetSpeed: 0
+  timer: 0
+  targetTime: 0
+  inTransition: 0
 --- !u!114 &987719025233917754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1492,7 +1614,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7792379036292073602}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90b06e3a7de2042b980092e78033ba85, type: 3}
   m_Name: 
@@ -1506,12 +1628,13 @@ MonoBehaviour:
   bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
-  CanShoot: 1
+  CanShoot: 0
   sees_player: 0
   FAS: 0
   boss: 1
   spray: 1
   has_audio: 0
+  dontAutoShoot: 1
   BulletsPerShot: 1
   poolIndex: 11
   damage_boss_field: 75
@@ -1562,7 +1685,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8403833838776191327}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90b06e3a7de2042b980092e78033ba85, type: 3}
   m_Name: 
@@ -1576,12 +1699,13 @@ MonoBehaviour:
   bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
-  CanShoot: 1
+  CanShoot: 0
   sees_player: 0
   FAS: 0
   boss: 1
   spray: 1
   has_audio: 0
+  dontAutoShoot: 1
   BulletsPerShot: 1
   poolIndex: 11
   damage_boss_field: 75
