@@ -16,6 +16,7 @@ public class ShardBoss : BossBase
     public ShardSpiralAttackState spiralState;
     public ShardLeaveState leaveState;
     public ShardSphericalAttack sphereAttack;
+    public ShardDashAttack dashAttack;
     
     public Phase firstPhase, lastPhase;
 
@@ -30,9 +31,10 @@ public class ShardBoss : BossBase
         spiralState = new ShardSpiralAttackState(this, 2, 2, Adrag[1], Rspeed[1]);
         leaveState = new ShardLeaveState(this, 250, 35);
         sphereAttack = new ShardSphericalAttack(this, 90, 20, 8, enterCurve, 2, 7, 2, 0.5f);
+        dashAttack = new ShardDashAttack(this, 6, 25, 0.4f, 4);
 
 
-        firstPhase.statesInPhase = new BossStateData[] { chaseState, leaveState, sphereAttack, chaseState, spiralState};
+        firstPhase.statesInPhase = new BossStateData[] { chaseState, leaveState, dashAttack, sphereAttack, chaseState, spiralState};
         firstPhase.minHealth = 0.5f;
 
         lastPhase.statesInPhase = new BossStateData[] { agroChaseState, spiralState };

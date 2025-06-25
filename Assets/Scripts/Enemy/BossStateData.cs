@@ -54,6 +54,7 @@ public abstract class BossStateData
 
     public virtual void End(bool interrupted = false) // Called once the state declares it is finished its task
     {
+        // if(finished){ return; }
         finished = true;
     }
 }

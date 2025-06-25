@@ -73,7 +73,9 @@ public class ShardSphericalAttack : BossStateData
             Mathf.Cos(angleDegrees * Mathf.Deg2Rad),
             Mathf.Sin(angleDegrees * Mathf.Deg2Rad)
         ) * distance;
-
+        
+        movement_script.updatePosition = false;
+        movement_script.enabled = false;
     }
     public override void Update() // Called every frame while the object is active
     {
