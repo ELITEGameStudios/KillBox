@@ -21,7 +21,7 @@ public class WeaponItemList : MonoBehaviour
         new WeaponItem("Combat AR", WeaponLibrary.combatAR, price_input: 45, tier_input: 3),
         new WeaponItem("Golden AR", WeaponLibrary.goldenAR, price_input: 70, tier_input: 4),
 
-        new WeaponItem("Light Burst AR", WeaponLibrary.lightBurstRifle, price_input: 3, tier_input: 0),
+        new WeaponItem("Light Burst AR", WeaponLibrary.lightBurstRifle, price_input: 4, tier_input: 0),
         new WeaponItem("Speedy Burst AR", WeaponLibrary.speedyBurstRifle, price_input: 10, tier_input: 1),
         new WeaponItem("Heavy Burst AR", WeaponLibrary.heavyBurstRifle, price_input: 20, tier_input: 2),
         new WeaponItem("Combat Burst Rifle", WeaponLibrary.combatBurstRifle, price_input: 45, tier_input: 3),

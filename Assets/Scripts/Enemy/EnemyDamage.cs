@@ -61,8 +61,7 @@ public class EnemyDamage : MonoBehaviour
     }
     void doDamage(bool immediate){
         
-        if(immediate) { playerHealthScript.TakeImmediateDmg(damage, immunity_time); }
-        else{ playerHealthScript.TakeDmg(damage, immunity_time); }
+        playerHealthScript.TakeDmg(damage, immunity_time);
         if (hitKb != 0)
         {
             Player.main.movement.AddCustomForce(new((Player.main.tf.transform.position - transform.position).normalized * hitKb, 0.33f));
