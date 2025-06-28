@@ -53,7 +53,8 @@ public class ShardDashAttack : BossStateData
 
     void SetupNewDash()
     {
-        vertical = Random.Range(0, 2) == 1;
+        // vertical = Random.Range(0, 2) == 1;
+        vertical = false;
         float invert = Random.Range(0, 2) == 1 ? 1 : -1;
         startPos = new Vector2(
             vertical ? Player.main.tf.position.x : Player.main.tf.position.x + (distance * invert),
