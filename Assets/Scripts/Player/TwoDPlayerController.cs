@@ -7,7 +7,14 @@ using UnityEngine.UI;
 public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
 {
     [SerializeField] private Transform gunTransform, dualGunTransform;
-    public float speed = 5f, slow_mod = 1f,  angle, deadzone, pointBlankRange;
+    public float speed = 5f, slow_mod = 1f, angle, deadzone, pointBlankRange;
+
+    public float debuffedSpeed {get { return debuffedSpeed; } set { debuffedSpeed = Mathf.Clamp(value, 0, speed / 5); }}
+    public float netSpeed {get { return speed - debuffedSpeed; }}
+    public float debuffedTimer;
+    public AnimationCurve debuffRegenRate;
+    private bool debuffed {get { return debuffedSpeed > 0; }}
+
 
     [SerializeField]
     private float dashTimer, dashCooldownTimer, dashMod, dashCooldown, dashDuration;
@@ -75,11 +82,26 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
             // movement.y = Input.GetAxisRaw("Vertical");
         }
 
-
+        if (debuffed)
+        {
+            debuffedSpeed -= debuffRegenRate.Evaluate(debuffedTimer);
+            debuffedTimer += Time.deltaTime;
+        }
 
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
     }
+    public void AddDebuff(float debuff)
+    {
+        debuffedSpeed += debuff;
+        debuffedTimer = 0;
+    }
 
+    public void SetDebuff(float debuff)
+    {
+        debuffedSpeed = debuff;
+        debuffedTimer = 0;
+    }
+    
     void Dash(){
         
         // Dash functionality
@@ -159,22 +181,22 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
         {
             if (!dashing) {
                 
-                rb.velocity = ((movement * speed * slow_mod) + (dashVector * dashMod)) * Time.fixedDeltaTime * 0.8f;
+                rb.velocity = ((movement * netSpeed * slow_mod) + (dashVector * dashMod)) * Time.fixedDeltaTime * 0.8f;
                 rb.velocity += UpdateForces();
             }
             else
-                rb.velocity = dashVector * (speed + dashMod) * Time.fixedDeltaTime * 0.8f;
+                rb.velocity = dashVector * (netSpeed + dashMod) * Time.fixedDeltaTime * 0.8f;
             //rb.MovePosition(rb.position + (movement * Speed * slow_mod * Time.fixedDeltaTime) * 0.8f);
         }
         else
         {
             if (!dashing) {
                 
-                rb.velocity = ((movement * speed * slow_mod) + (dashVector * dashMod)) * Time.fixedDeltaTime;
+                rb.velocity = ((movement * netSpeed * slow_mod) + (dashVector * dashMod)) * Time.fixedDeltaTime;
                 rb.velocity += UpdateForces();
             }
             else
-                rb.velocity = dashVector * (speed + dashMod) * Time.fixedDeltaTime;
+                rb.velocity = dashVector * (netSpeed + dashMod) * Time.fixedDeltaTime;
             //rb.MovePosition(rb.position + movement * Speed * slow_mod * Time.fixedDeltaTime);
 
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using Pathfinding;
 
-public class BossBase : MonoBehaviour 
+public class BossBase : MonoBehaviour
 {
 
     [Header("Display Information")]
@@ -20,8 +20,8 @@ public class BossBase : MonoBehaviour
     public Collider2D self_collider;
     public EnemyHealth health;
     public Animator animator;
-    public float normalizedHealth {get{ return (float)health.CurrentHealth / health.maxHealth; }}
-    public bool hasAnimator {get{ return animator != null; }}
+    public float normalizedHealth { get { return (float)health.CurrentHealth / health.maxHealth; } }
+    public bool hasAnimator { get { return animator != null; } }
 
 
     [Header("State Machine")]
@@ -40,7 +40,8 @@ public class BossBase : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
 
         if (phases.Length > 0)
         {
@@ -50,6 +51,7 @@ public class BossBase : MonoBehaviour
         }
 
         BossBarManager.Instance.AddToQueue(gameObject, name, displayColor, displaySprite);
+        OnStart();
     }
 
     void SetPhase(Phase phase)
@@ -83,7 +85,8 @@ public class BossBase : MonoBehaviour
 
     void PhaseCheck()
     {
-        if (currentPhase.minHealth >= normalizedHealth){ // Detects wether a new phase should be chosen
+        if (currentPhase.minHealth >= normalizedHealth)
+        { // Detects wether a new phase should be chosen
             foreach (Phase phase in phases)
             {
                 if (phase.minHealth < normalizedHealth)
@@ -100,14 +103,19 @@ public class BossBase : MonoBehaviour
     {
         PhaseCheck();
         StateCheck();
+        OnUpdate();
     }
 
     void FixedUpdate()
     {
         if (currentState != null && !currentState.finished)
         { currentState.FixedUpdate(); }
-        else
-        { return; }
+
+        OnFixedUpdate();
     }
+    
+    protected virtual void OnUpdate(){}
+    protected virtual void OnStart(){}
+    protected virtual void OnFixedUpdate(){}
 }   
     
