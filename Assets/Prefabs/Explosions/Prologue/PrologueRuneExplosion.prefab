@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -93,8 +93,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1651422988480768683}
-  - component: {fileID: 472047756651561223}
   - component: {fileID: 4481330724153766966}
+  - component: {fileID: 472047756651561223}
   m_Layer: 0
   m_Name: PrologueRuneExplosion
   m_TagString: Untagged
@@ -120,6 +120,269 @@ Transform:
   - {fileID: 8965212027115641867}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4481330724153766966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2438884424478172007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d33827bbecb03648b2b263ebfc88d85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 472047756651561223}
+  circleRenderer: {fileID: 3355488191899390848}
+  runeRenderer: {fileID: 1706480468640902172}
+  arrowRenderer: {fileID: 3164138593126603235}
+  debuffColor:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0.9563775, b: 1, a: 1}
+  - {r: 1, g: 0.9549617, b: 0, a: 1}
+  - {r: 0.10893285, g: 1, b: 0, a: 1}
+  runeColor: {r: 0, g: 0, b: 0, a: 0}
+  circleColor: {r: 0, g: 0, b: 0, a: 0}
+  arrowColor: {r: 0, g: 0, b: 0, a: 0}
+  debuffType: 0
+  startPos: {x: 0, y: 0}
+  endPos: {x: 0, y: 0}
+  state: 0
+  radius: 3
+  explosionTime: 1.5
+  seekTime: 1
+  currentTimer: 0
+  seekLerpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0027008057
+      value: 0.0045166016
+      inSlope: 4.848271
+      outSlope: 4.848271
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.026503164
+    - serializedVersion: 3
+      time: 0.61130893
+      value: 1.0026423
+      inSlope: 0.044452608
+      outSlope: 0.044452608
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1.0015106
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  circleAlphaOnExplosion:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0018005371
+      value: 0.79909515
+      inSlope: 0.076662645
+      outSlope: 0.076662645
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1769994
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -2.4919443
+      outSlope: -2.4919443
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.029649576
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  runeAlphaOnExplosion:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.99845886
+      inSlope: -0.0066940957
+      outSlope: -0.0066940957
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.3704179
+      value: 0.99597925
+      inSlope: -0.14042766
+      outSlope: -0.14042766
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5327529
+      value: 0.9514733
+      inSlope: -1.1496572
+      outSlope: -1.1496572
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.0052261353
+      inSlope: -2.0251534
+      outSlope: -2.0251534
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  arrowAlphaOnExplosion:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.99845886
+      inSlope: -0.0066940957
+      outSlope: -0.0066940957
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.3704179
+      value: 0.99597925
+      inSlope: -0.14042766
+      outSlope: -0.14042766
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5327529
+      value: 0.9514733
+      inSlope: -1.1496572
+      outSlope: -1.1496572
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.0052261353
+      inSlope: -2.0251534
+      outSlope: -2.0251534
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  circleAlphaOnSeek:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0010490417
+      value: 0.0014801025
+      inSlope: 2.4512715
+      outSlope: 2.4512715
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.20518406
+      value: 0.50701344
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9991455
+      value: 0.49848938
+      inSlope: -0.010736113
+      outSlope: -0.010736113
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  runeAlphaOnSeek:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0018005371
+      value: -0.0045318604
+      inSlope: 2.4852087
+      outSlope: 2.4852087
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.28613502
+      value: 0.70209867
+      inSlope: 1.4512582
+      outSlope: 1.4512582
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.41730767
+      outSlope: 0.41730767
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  arrowAlphaOnSeek:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!95 &472047756651561223
 Animator:
   serializedVersion: 5
@@ -141,76 +404,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4481330724153766966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2438884424478172007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d33827bbecb03648b2b263ebfc88d85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  circleRenderer: {fileID: 0}
-  runeRenderer: {fileID: 0}
-  arrowRenderer: {fileID: 0}
-  debuffColor: []
-  runeColor: {r: 0, g: 0, b: 0, a: 0}
-  circleColor: {r: 0, g: 0, b: 0, a: 0}
-  arrowColor: {r: 0, g: 0, b: 0, a: 0}
-  debuffType: 0
-  startPos: {x: 0, y: 0}
-  endPos: {x: 0, y: 0}
-  state: 0
-  radius: 0
-  explosionTime: 0
-  seekTime: 0
-  currentTimer: 0
-  seekLerpCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  circleAlphaOnExplosion:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  runeAlphaOnExplosion:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  arrowAlphaOnExplosion:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  circleAlphaOnSeek:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  runeAlphaOnSeek:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  arrowAlphaOnSeek:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &2767801475805562059
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +431,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.14151642}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 9.2659, y: 9.2659, z: 9.2659}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1651422988480768683}
@@ -283,8 +476,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_SortingOrder: 100
+  m_Sprite: {fileID: 21300000, guid: f224bfd122877a34aa49c63693fc317b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -367,7 +560,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 7afb673e6281b2a40921f9a665c2a4c2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

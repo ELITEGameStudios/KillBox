@@ -12,8 +12,22 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     [SerializeField]
     private int MaxHealth; 
     public int CurrentHealth;
-    public int netMaxHealth {get { return MaxHealth - (int)debuffedHealth; }}
-    public float debuffedHealth { get{ return debuffedHealth; } set { debuffedHealth = Mathf.Clamp(value, 0, (float)MaxHealth / 5); } }
+    public int netMaxHealth {get { return MaxHealth - (int)DebuffedHealth; }}
+    public float DebuffedHealth
+    {
+        get { return debuffedHealth; }
+        set
+        {
+            if (debuffedHealth < value) { debuffHealthRegenTime = 0; } // Resets regen timer if nessecary
+            
+            debuffedHealth = Mathf.Clamp(value, 0, MaxHealth * 4 / 5);  // Sets value with constraints
+            if (CurrentHealth > netMaxHealth){ CurrentHealth = netMaxHealth; } // ensures current health is not higher than netMaxHealth
+        }
+    }
+    private float debuffedHealth;
+
+
+    
     private float debuffHealthRegenTime;
     public AnimationCurve debuffHealthRegenRate;
 
@@ -47,7 +61,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     public int[] defaultHealth;
 
     public bool isMaxHealth {get { return CurrentHealth == netMaxHealth; }}
-    public bool hasHealthDebuff {get { return debuffedHealth > 0; }}
+    public bool hasHealthDebuff {get { return DebuffedHealth > 0; }}
 
     void Start(){
         dmgVolumeToggle = QualityControl.main.DmgVolumeToggle;
@@ -159,7 +173,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
         {
             // Only if the player has a debuff
             debuffHealthRegenTime += Time.deltaTime;
-            debuffedHealth -= debuffHealthRegenRate.Evaluate(debuffHealthRegenTime) * Time.deltaTime;    
+            DebuffedHealth -= debuffHealthRegenRate.Evaluate(debuffHealthRegenTime) * Time.deltaTime;    
         }
 
         GameplayUI.instance.GetHealthAnimator().SetBool("regen", regen);
@@ -200,22 +214,16 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
 
     public void AddDebuffHealth(float debuffHealth)
     {
-        debuffedHealth += debuffHealth;
-        debuffHealthRegenTime = 0;
-        if (CurrentHealth > netMaxHealth)
-        {
-            CurrentHealth = netMaxHealth;
-        }
+        DebuffedHealth += debuffHealth;
+        // debuffHealthRegenTime = 0;
+
     }
 
     public void SetDebuffHealth(float debuffHealth)
     {
-        debuffedHealth = debuffHealth;
-        debuffHealthRegenTime = 0;
-        if (CurrentHealth > netMaxHealth)
-        {
-            CurrentHealth = netMaxHealth;
-        }
+        DebuffedHealth = debuffHealth;
+        // debuffHealthRegenTime = 0;
+
     }
 
     public void TakeDmg(int Dmg, float immunity_time)
@@ -364,7 +372,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     public void ResetHealth()
     {
         CurrentHealth = MaxHealth;
-        debuffedHealth = 0;
+        DebuffedHealth = 0;
     }
 
     public void MaxHealthCheck(){

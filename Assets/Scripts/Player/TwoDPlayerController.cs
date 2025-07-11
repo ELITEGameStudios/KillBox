@@ -9,11 +9,19 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
     [SerializeField] private Transform gunTransform, dualGunTransform;
     public float speed = 5f, slow_mod = 1f, angle, deadzone, pointBlankRange;
 
-    public float debuffedSpeed {get { return debuffedSpeed; } set { debuffedSpeed = Mathf.Clamp(value, 0, speed / 5); }}
-    public float netSpeed {get { return speed - debuffedSpeed; }}
+    public float DebuffedSpeed {get { return debuffedSpeed; }
+        set
+        {
+            if (debuffedSpeed > speed * 4/ 5) { debuffedSpeed = value; }
+            else{ debuffedSpeed = speed * 4 / 5; }
+        }
+    }
+
+    public float debuffedSpeed;
+    public float netSpeed {get { return speed - DebuffedSpeed; }}
     public float debuffedTimer;
     public AnimationCurve debuffRegenRate;
-    private bool debuffed {get { return debuffedSpeed > 0; }}
+    private bool debuffed {get { return DebuffedSpeed > 0; }}
 
 
     [SerializeField]
@@ -84,7 +92,7 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
 
         if (debuffed)
         {
-            debuffedSpeed -= debuffRegenRate.Evaluate(debuffedTimer);
+            DebuffedSpeed -= debuffRegenRate.Evaluate(debuffedTimer);
             debuffedTimer += Time.deltaTime;
         }
 
@@ -92,13 +100,13 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
     }
     public void AddDebuff(float debuff)
     {
-        debuffedSpeed += debuff;
+        DebuffedSpeed += debuff;
         debuffedTimer = 0;
     }
 
     public void SetDebuff(float debuff)
     {
-        debuffedSpeed = debuff;
+        DebuffedSpeed = debuff;
         debuffedTimer = 0;
     }
     

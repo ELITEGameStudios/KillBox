@@ -52,6 +52,8 @@ public class PrologueRuneProjectile : MonoBehaviour
     {
         this.startPos = startPos;
         this.endPos = endPos;
+
+        transform.position = startPos;
         animator.Play("Intro");
 
         runeRenderer.enabled = true;
@@ -95,11 +97,13 @@ public class PrologueRuneProjectile : MonoBehaviour
                 if (currentTimer <= 0) { Explode(); }
                 else
                 {
-                    transform.position = Vector2.Lerp(startPos, endPos, seekLerpCurve.Evaluate(currentTimer / seekTime));
+                    transform.position = Vector2.Lerp(startPos, endPos, seekLerpCurve.Evaluate(1 - (currentTimer / seekTime)));
+
+                    circleRenderer.transform.position = endPos;
 
                     circleRenderer.color = Color.Lerp(Color.clear, circleColor, circleAlphaOnSeek.Evaluate(currentTimer / seekTime));
                     runeRenderer.color = Color.Lerp(Color.clear, runeColor, runeAlphaOnSeek.Evaluate(currentTimer / seekTime));
-                    arrowRenderer.color = Color.Lerp(Color.clear, arrowColor, arrowAlphaOnSeek.Evaluate(currentTimer / seekTime));
+                    arrowRenderer.color = Color.clear;
                 }
 
                 currentTimer -= Time.deltaTime;
@@ -110,9 +114,9 @@ public class PrologueRuneProjectile : MonoBehaviour
                 if (currentTimer <= 0) { Deactivate(); }
                 else
                 {
-                    circleRenderer.color = Color.Lerp(Color.clear, circleColor, circleAlphaOnExplosion.Evaluate(currentTimer / explosionTime));
-                    runeRenderer.color = Color.Lerp(Color.clear, runeColor, runeAlphaOnExplosion.Evaluate(currentTimer / explosionTime));
-                    arrowRenderer.color = Color.Lerp(Color.clear, arrowColor, arrowAlphaOnExplosion.Evaluate(currentTimer / explosionTime));
+                    circleRenderer.color = Color.Lerp(Color.clear, circleColor, 1 - circleAlphaOnExplosion.Evaluate(currentTimer / explosionTime));
+                    runeRenderer.color = Color.Lerp(Color.clear, runeColor, 1 - runeAlphaOnExplosion.Evaluate(currentTimer / explosionTime));
+                    arrowRenderer.color = Color.Lerp(Color.clear, arrowColor, 1 - arrowAlphaOnExplosion.Evaluate(currentTimer / explosionTime));
                 }
 
                 currentTimer -= Time.deltaTime;
@@ -125,7 +129,7 @@ public class PrologueRuneProjectile : MonoBehaviour
     {
         state = State.EXPLODING;
         animator.Play("Explosion");
-
+        circleRenderer.transform.localPosition = Vector3.zero;
         Collider2D possiblePlayer = Physics2D.OverlapCircle(transform.position, radius, LayerMask.NameToLayer("Player"));
         if (possiblePlayer != null)
         {

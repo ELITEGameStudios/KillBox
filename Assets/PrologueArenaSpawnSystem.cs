@@ -14,9 +14,12 @@ public class PrologueArenaSpawnSystem : MonoBehaviour
         else if(instance != this){ Destroy(this); }
     }
 
-    public void SpawnEnemies(GameObject prefab, float cycles, float time, float startAngle, bool clockwise = true)
+    public static void SpawnEnemies(GameObject prefab, float cycles, float time, float startAngle, bool clockwise = true)
     {
-        StartCoroutine(SpawnCoroutine(prefab, cycles, time, startAngle, clockwise));
+        if (instance != null)
+        {
+            instance.StartCoroutine(instance.SpawnCoroutine(prefab, cycles, time, startAngle, clockwise));
+        }
     }
 
     IEnumerator SpawnCoroutine(GameObject prefab, float cycles, float time, float startAngle, bool clockwise = true)

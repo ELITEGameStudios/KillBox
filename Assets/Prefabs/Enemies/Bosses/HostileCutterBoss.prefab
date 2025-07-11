@@ -16151,6 +16151,7 @@ MonoBehaviour:
   speed: 3
   acceleration: 0
   boss: 1
+  hasDrop: 0
 --- !u!1 &5793766690180569013
 GameObject:
   m_ObjectHideFlags: 0
