@@ -74,7 +74,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
                 // Shard boss
                 currentEnemyTable = shardEnemyTable;
                 spawnRate = (BossRoundManager.main.bossRoundTier > 4 ? 0.5f : 1.25f) / GameManager.main.difficulty_coefficient;
-                enemyCap = 18;
+                enemyCap = 9;
                 bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 2 : Random.Range(10, 20);
                 bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 1 : 0;
                 currentBossTable = shardBossTable;

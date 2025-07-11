@@ -12,11 +12,28 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     [SerializeField]
     private int MaxHealth; 
     public int CurrentHealth;
+    public int netMaxHealth {get { return MaxHealth - (int)DebuffedHealth; }}
+    public float DebuffedHealth
+    {
+        get { return debuffedHealth; }
+        set
+        {
+            if (debuffedHealth < value) { debuffHealthRegenTime = 0; } // Resets regen timer if nessecary
+            
+            debuffedHealth = Mathf.Clamp(value, 0, MaxHealth * 4 / 5);  // Sets value with constraints
+            if (CurrentHealth > netMaxHealth){ CurrentHealth = netMaxHealth; } // ensures current health is not higher than netMaxHealth
+        }
+    }
+    private float debuffedHealth;
+
+
+    
+    private float debuffHealthRegenTime;
+    public AnimationCurve debuffHealthRegenRate;
 
     public Volume hit_volume;
 
-    public GameManager manager;
-    public GameObject Player, camera_parent, camera_obj;
+    public GameObject camera_obj;
     public bool IsPlayer, regen, Revived = false, immune = false, tutorialPlayer, hit_volume_on = false, isDamageless = false;
     public float RegenTime, immunityTime, camera_magnitude, camera_shake_duration;
     private float currentRegenTime, currentImmunityTime;
@@ -43,7 +60,8 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     private Toggle cameraShakeToggle;
     public int[] defaultHealth;
 
-    public bool isMaxHealth {get { return CurrentHealth == MaxHealth; }}
+    public bool isMaxHealth {get { return CurrentHealth == netMaxHealth; }}
+    public bool hasHealthDebuff {get { return DebuffedHealth > 0; }}
 
     void Start(){
         dmgVolumeToggle = QualityControl.main.DmgVolumeToggle;
@@ -115,22 +133,26 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
 
         if (IsPlayer)
         {
-            GameplayUI.instance.GetHealthSlider().maxValue = MaxHealth;
+            GameplayUI.instance.GetHealthSlider().maxValue = netMaxHealth;
             GameplayUI.instance.GetHealthSlider().value = CurrentHealth;
         }
-
-        if (CurrentHealth >= MaxHealth)
-        {
+        
+        if (CurrentHealth >= netMaxHealth)
+        {   
+            // If the max possible current health is reached (fully regenerated)
             regen = false;
-            CurrentHealth = MaxHealth;
+            CurrentHealth = netMaxHealth;
+            currentRegenTime = RegenTime;
         }
-
-        if(currentRegenTime > 0){
+        else if (currentRegenTime > 0)
+        {
+            // If the timer until regen is not yet elapsed
             regen = false;
             regenToggle = true;
             currentRegenTime -= Time.deltaTime;
         }
-        if(currentRegenTime <= 0){
+        else{
+            // If the timer until regen is elapsed
             if(!regen && regenToggle){
                 regen = true;
                 regenToggle = false;
@@ -145,6 +167,13 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
             if(immune){
                 immune = false;
             }
+        }
+
+        if (hasHealthDebuff)
+        {
+            // Only if the player has a debuff
+            debuffHealthRegenTime += Time.deltaTime;
+            DebuffedHealth -= debuffHealthRegenRate.Evaluate(debuffHealthRegenTime) * Time.deltaTime;    
         }
 
         GameplayUI.instance.GetHealthAnimator().SetBool("regen", regen);
@@ -176,20 +205,36 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
         if (regen)
         {
             if(!PauseHandler.main.paused){
-                CurrentHealth += 2;
+                CurrentHealth += (int)(100 * Time.fixedDeltaTime);
+                // CurrentHealth += 2;
             }
             //health_has_changed = true;
         }
     }
+
+    public void AddDebuffHealth(float debuffHealth)
+    {
+        DebuffedHealth += debuffHealth;
+        // debuffHealthRegenTime = 0;
+
+    }
+
+    public void SetDebuffHealth(float debuffHealth)
+    {
+        DebuffedHealth = debuffHealth;
+        // debuffHealthRegenTime = 0;
+
+    }
+
     public void TakeDmg(int Dmg, float immunity_time)
     {
-        if(!(EquipmentManager.instance.equipmentType == EquipmentManager.EquipmentType.ULTRAMODE && EquipmentManager.instance.usingEquipment))
+        if (!(EquipmentManager.instance.equipmentType == EquipmentManager.EquipmentType.ULTRAMODE && EquipmentManager.instance.usingEquipment))
         {
-            CurrentHealth -= (int)(Dmg * (1 - ( 0.05f * buffsManager.buff_strength[0])));
+            CurrentHealth -= (int)(Dmg * (1 - (0.05f * buffsManager.buff_strength[0])));
             immune = true;
             isDamageless = false;
 
-            if(immunity_time == 0)
+            if (immunity_time == 0)
             {
                 currentImmunityTime = immunityTime;
             }
@@ -201,11 +246,13 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
             currentRegenTime = RegenTime;
             regen = false;
 
-            if(triggerDamageVolume){
-                hit_volume.weight = (float)((MaxHealth - CurrentHealth)*1.5f/ (float)MaxHealth) * hitVolumeCoefficient;
+            if (triggerDamageVolume)
+            {
+                hit_volume.weight = (float)((MaxHealth - CurrentHealth) * 1.5f / (float)MaxHealth) * hitVolumeCoefficient;
                 hit_volume_on = true;
             }
-            else{
+            else
+            {
                 hit_volume.weight = 0;
             }
 
@@ -219,7 +266,8 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
                 AttemptExtraLife();
             }
 
-            if(triggerCameraShake){
+            if (triggerCameraShake)
+            {
                 StartCoroutine(CameraShake(camera_shake_duration, camera_magnitude));
             }
         }
@@ -321,8 +369,10 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     
     }
 
-    public void ResetHealth(){
+    public void ResetHealth()
+    {
         CurrentHealth = MaxHealth;
+        DebuffedHealth = 0;
     }
 
     public void MaxHealthCheck(){

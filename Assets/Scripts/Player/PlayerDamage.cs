@@ -67,12 +67,13 @@ public class PlayerDamage : MonoBehaviour
         if (!kbImmune)
         {
             ///     ai.canMove = false;
-            if (ai != null)
+            if (ai != null && ai.enabled)
             {
                 Vector3 nextPosition;
                 Quaternion nextRotation;
                 // Calculate how the AI wants to move
                 ai.MovementUpdate(Time.deltaTime, out nextPosition, out nextRotation);
+                
 
                 // Add forces
                 nextPosition += (Vector3)UpdateForces();

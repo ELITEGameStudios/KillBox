@@ -9,7 +9,7 @@ public class AIShooterScript : MonoBehaviour
     public float Velocity, spread;
     public Rigidbody2D bulletRb, clone;
     public Vector3 SpawnRot;
-    public bool CanShoot, sees_player, FAS, boss, spray, has_audio;
+    public bool CanShoot, sees_player, FAS, boss, spray, has_audio, dontAutoShoot;
     public int BulletsPerShot, poolIndex, damage_boss_field;
     public float FR, AimProxim;
     public Camera cam;
@@ -26,7 +26,7 @@ public class AIShooterScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CanShoot = true;
+        CanShoot = !dontAutoShoot;
         SpawnRot = Spawn.localEulerAngles;
         objectPool = GameObject.Find("BulletPool"+poolIndex.ToString()).GetComponent<ObjectPool>();
 
@@ -64,7 +64,7 @@ public class AIShooterScript : MonoBehaviour
             Shoot();
     }
 
-    void Shoot()
+    public void Shoot()
     {
         for(int i = 0; i < BulletsPerShot; i++)
         {
@@ -97,9 +97,11 @@ public class AIShooterScript : MonoBehaviour
         {
             audio.Play();
         }
-
-        CanShoot = false;
-        StartCoroutine(ShootCooldown());
+        if (CanShoot)
+        {
+            CanShoot = false;
+            StartCoroutine(ShootCooldown());
+        }
     }
 
     IEnumerator ShootCooldown()
