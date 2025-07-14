@@ -4,26 +4,37 @@ using UnityEngine;
 
 public class PrologueBoss : BossBase
 {
+    [Header("General Info")]
+    public float epilogueTimer;
+    public BossDisplayObj linkedDisplay;
 
 
     [Header("Rune Info")]
     public FixedRotator runesRotator;
     public GameObject[] runeList;
+    public GameObject[] specialRuneList;
     public Transform[] runeParentTf;
 
 
     [Header("State Info")]
     public Phase prologuePhase;
     public Phase epiloguePhase;
+
+    // Prologue
     public PrologueDrainAttack healthDrain, speedDrain;
     public PrologueShootAttack shootAttack;
     public PrologueRuneLaserAttack runeLaserAttack;
+
+    // Epilogue
+    public PrologueSpecialRuneLaserAttack epilogueLasers;
 
     [Header("Drain Graphic")]
     public SpriteRenderer mainSquare;
     public Transform drainTransform;
     public Color[] debuffColor;
+    public Color specialColor;
     public GameObject beamObject;
+    public GameObject[] specialBeamObjects;
 
 
     [Header("Spawner prefabs")]
@@ -35,10 +46,11 @@ public class PrologueBoss : BossBase
     [Header("Fire Rate Timers")]
     public float fireTimer;
     public float fireInterval;
-    
+
     [Header("Animation Curves")]
     public AnimationCurve fireLerpCurve;
     public AnimationCurve beamWidthCurve;
+    public AnimationCurve specialBeamWidthCurve;
 
     public enum DebuffType
     {
@@ -46,21 +58,30 @@ public class PrologueBoss : BossBase
         SPEED,
         CAPACITY,
         LIFESTEAL
-    } 
+    }
+
+    public enum SpecialDebuffType
+    {
+        UPGRADES, // Megadebuffs all stats
+        WEAPONS, // Disables Weapons
+        NECRO, // Spawns Many special enemies
+        EQUIPMENT, // Removes all Kills towards equipment/deactivats equipment?
+    }
 
     // Start is called before the first frame update
     void Awake()
     {
         healthDrain = new PrologueDrainAttack(this, 9, DebuffType.HEALTH);
         speedDrain = new PrologueDrainAttack(this, 9, DebuffType.SPEED);
-        shootAttack= new PrologueShootAttack(this, 10, 0.2f, 3, 12);
-        runeLaserAttack= new PrologueRuneLaserAttack(this, 4, 2, 1, 9);
+        shootAttack = new PrologueShootAttack(this, 10, 0.2f, 3, 12);
+        runeLaserAttack = new PrologueRuneLaserAttack(this, 4, 2, 1, 9);
 
         prologuePhase.statesInPhase = new BossStateData[] { healthDrain, runeLaserAttack, shootAttack, speedDrain };
-        prologuePhase.minHealth = 0.5f;
+        prologuePhase.minHealth = 0f;
 
-        epiloguePhase.statesInPhase = new BossStateData[] { };
-        epiloguePhase.minHealth = 0f;
+        epiloguePhase.statesInPhase = new BossStateData[] { epilogueLasers };
+        epiloguePhase.minHealth = -1f;
+        
 
         phases = new Phase[2] { prologuePhase, epiloguePhase };
 
@@ -128,6 +149,12 @@ public class PrologueBoss : BossBase
         return true;
     }
 
+    void TransformToEpilogue()
+    {
+        BossBarManager.Instance.RemoveFromQueue(gameObject);
+        BossBarManager.Instance.AddTimerToQueue(epilogueTimer, name, displayColor, displaySprite, out linkedDisplay, 50);
+        runesRotator.SetRotationRate(360);
+    }
 
     protected override void OnUpdate()
     {
@@ -138,5 +165,15 @@ public class PrologueBoss : BossBase
             fireTimer = fireInterval;
         }
         fireTimer -= Time.deltaTime;
+    }
+
+    public override void DeathEvent(bool to_player = false)
+    {
+        health.SetImmortal(true);
+
+        // Play transform animation
+        runesRotator.SetRotationRate(0, 1.5f);
+
+        Invoke(nameof(TransformToEpilogue), 2f);
     }
 }

@@ -8,7 +8,7 @@ public class EnemyHealth : MonoBehaviour
 {
     public int maxHealth, CurrentHealth, a;
     public GameManager manager;
-    public GameObject player, DroppedItem, ExplosionOnDeath, color_easter_egg_portal, InsObject, DpdItemClone, main_player, key_item, guaranteed_drop_item;
+    public GameObject player, DroppedItem, ExplosionOnDeath, color_easter_egg_portal, InsObject, tokenClone, main_player, key_item, guaranteed_drop_item;
     public GameObject[] lvl_4_prefabs;
     public ObjectPool[] objectPool;
     public Color explosionColor;
@@ -16,12 +16,23 @@ public class EnemyHealth : MonoBehaviour
     public AudioClip death, hit;
     public bool can_drop_lvl_4, destructive_immune, no_drops, key_drops, guaranteed_drop_bool, triggerDeathEvent;
     public bool in_fortress {get; private set;}
+    [SerializeField] private bool preventDefaultDeath, immortal;
     [SerializeField] private EnemyProfile profile; 
     [SerializeField] private UnityEvent onTakeDamage, onDie; 
+    [SerializeField] private IDeathHandler deathHandler;
+    public void SetDeathHandler(IDeathHandler deathHandler) {
+        this.deathHandler = deathHandler;
+    } 
+    public void SetImmortal(bool immortal)
+    {
+        this.immortal = immortal;
+    }
+
 
     void Awake(){
         if (profile != null) {maxHealth = profile.MaxHealth;}
     }
+
     
     // Start is called before the first frame update
     void Start()
@@ -47,20 +58,12 @@ public class EnemyHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(CurrentHealth == 0)
+        if(CurrentHealth <= 0 && !immortal)
         {
             Die();
         }
-
-        else
-        {
-            if(CurrentHealth < 0)
-            {
-                Die();
-            }
-        }
-
     }
+
     public void TakeDmg(int Dmg)
     {
         CurrentHealth -= Dmg;
@@ -73,6 +76,7 @@ public class EnemyHealth : MonoBehaviour
     }
     public void Die(bool to_player = true)
     {
+
         a = Random.Range(1, 6);
         if (profile.hasDrop || (KillBox.currentGame.round > 45 && a == 1))
         {
@@ -81,13 +85,11 @@ public class EnemyHealth : MonoBehaviour
                 // Instantiates a token drop
                 if (objectPool[0].GetPooledObject() != null)
                 {
-                    DpdItemClone = objectPool[0].GetPooledObject();
-
-                    DpdItemClone.transform.SetParent(null);
-                    DpdItemClone.GetComponent<sine_movement>().ROOT = transform.position;
-                    DpdItemClone.transform.position = transform.position;
-
-                    DpdItemClone.gameObject.SetActive(true);
+                    tokenClone = objectPool[0].GetPooledObject();
+                    tokenClone.transform.SetParent(null);
+                    tokenClone.GetComponent<sine_movement>().ROOT = transform.position;
+                    tokenClone.transform.position = transform.position;
+                    tokenClone.gameObject.SetActive(true);
 
 
                     Transform grid = GameObject.Find("Grid").transform;
@@ -96,36 +98,21 @@ public class EnemyHealth : MonoBehaviour
                     {
                         if (grid.GetChild(i).gameObject.activeInHierarchy)
                         {
-                            DpdItemClone.transform.SetParent(grid.GetChild(i));
-                            DpdItemClone.transform.localEulerAngles = new Vector3(0, 0, 0);
-                            DpdItemClone.transform.position = transform.position;
-                            DpdItemClone.transform.rotation = transform.rotation;
+                            tokenClone.transform.SetParent(grid.GetChild(i));
+                            tokenClone.transform.localEulerAngles = new Vector3(0, 0, 0);
+                            tokenClone.transform.position = transform.position;
+                            tokenClone.transform.rotation = transform.rotation;
                             break;
                         }
                     }
                 }
             }
         }
-        profile.Retire();
-        if(triggerDeathEvent){onDie.Invoke();}
+        
 
 
-        //int b = Random.Range(1, 800);
-        //if(b == 1 && !no_drops){
-        //    GameObject color_ee_instance = Instantiate(color_easter_egg_portal, transform);
-        //    color_ee_instance.transform.SetParent(null);
-        //}
-
-        // int c = Random.Range(1, 1500);
-        // if(c == 1 & can_drop_lvl_4 && !no_drops){
-        //     GameObject gun_drop = Instantiate(lvl_4_prefabs[Random.Range(0, 4)], transform);
-        //     gun_drop.transform.SetParent(null);
-        //     gun_drop.transform.localEulerAngles =new Vector3(0, 0, 0);
-        // }
         try
         {
-
-
             if (objectPool[1].GetPooledObject() != null)
             {
                 InsObject = objectPool[1].GetPooledObject();
@@ -201,6 +188,17 @@ public class EnemyHealth : MonoBehaviour
         catch{
             Debug.LogAssertion("Error within enemy death sequence... (Comment out try-catch with this comment in EnemyHealth script to find error)");
         }
+
+
+        if(triggerDeathEvent){onDie.Invoke();}
+        
+        if (deathHandler != null)
+        {
+            deathHandler.OnDeath(to_player);
+        }
+        if(preventDefaultDeath) { return; }
+
+        profile.Retire();
         Destroy(gameObject);
     }
 

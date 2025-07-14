@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using Pathfinding;
 
-public class BossBase : MonoBehaviour
+public class BossBase : MonoBehaviour, IDeathHandler
 {
 
     [Header("Display Information")]
@@ -39,6 +39,15 @@ public class BossBase : MonoBehaviour
         public float minHealth;
     }
 
+
+    // Death Handler Addons
+    public bool preventDefaultDeath;
+    void IDeathHandler.OnDeath(bool to_player){ DeathEvent(to_player); }
+    public virtual void DeathEvent(bool to_player = false)
+    {
+        Debug.Log(name + " Has Died");
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +59,7 @@ public class BossBase : MonoBehaviour
             SetState(currentPhase.statesInPhase[nextStateIndex]);
         }
 
+        health.SetDeathHandler(this);
         BossBarManager.Instance.AddToQueue(gameObject, name, displayColor, displaySprite);
         OnStart();
     }
