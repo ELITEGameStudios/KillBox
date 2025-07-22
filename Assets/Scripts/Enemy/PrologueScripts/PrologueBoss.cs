@@ -27,6 +27,7 @@ public class PrologueBoss : BossBase
 
     // Epilogue
     public PrologueSpecialRuneLaserAttack epilogueLasers;
+    public PrologueAOERuneAttack epilogueAOE;
 
     [Header("Drain Graphic")]
     public SpriteRenderer mainSquare;
@@ -42,6 +43,7 @@ public class PrologueBoss : BossBase
     public GameObject runeProjectile;
     public SweepingIndicator sweepingIndicator;
     public List<PrologueRuneProjectile> runeExplosionPool;
+    public AOEAttackRune AOEPrefab;
 
     [Header("Fire Rate Timers")]
     public float fireTimer;
@@ -75,11 +77,13 @@ public class PrologueBoss : BossBase
         speedDrain = new PrologueDrainAttack(this, 9, DebuffType.SPEED);
         shootAttack = new PrologueShootAttack(this, 10, 0.2f, 3, 12);
         runeLaserAttack = new PrologueRuneLaserAttack(this, 4, 2, 1, 9);
+        epilogueAOE = new PrologueAOERuneAttack(this, iterations: 5);
 
-        prologuePhase.statesInPhase = new BossStateData[] { healthDrain, runeLaserAttack, shootAttack, speedDrain };
+        // prologuePhase.statesInPhase = new BossStateData[] { healthDrain, runeLaserAttack, shootAttack, speedDrain };
+        prologuePhase.statesInPhase = new BossStateData[] { epilogueAOE };
         prologuePhase.minHealth = 0f;
 
-        epiloguePhase.statesInPhase = new BossStateData[] { epilogueLasers };
+        epiloguePhase.statesInPhase = new BossStateData[] { epilogueLasers, epilogueAOE };
         epiloguePhase.minHealth = -1f;
         
 
@@ -154,6 +158,11 @@ public class PrologueBoss : BossBase
         BossBarManager.Instance.RemoveFromQueue(gameObject);
         BossBarManager.Instance.AddTimerToQueue(epilogueTimer, name, displayColor, displaySprite, out linkedDisplay, 50);
         runesRotator.SetRotationRate(360);
+    }
+
+    public AOEAttackRune CreateAOERune()
+    {
+        return Instantiate(AOEPrefab, transform);
     }
 
     protected override void OnUpdate()
