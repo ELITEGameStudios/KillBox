@@ -33,7 +33,7 @@ public class DebugShootState : BossStateData
     {
         currentStateTime = stateTime;
         // Teleports Debug to a position near the player.
-        trig = Random.Range(0f, 3.14f);
+        trig = Random.Range(0f, 6.28f);
         target = Player.main.tf.position;
         debugData.transform.position = new Vector2(target.x + Random.Range(min, max)*Mathf.Cos(trig), target.y + Random.Range(min, max)*Mathf.Sin(trig));
         debugData.rb_self.velocity = new Vector2(0, 0);

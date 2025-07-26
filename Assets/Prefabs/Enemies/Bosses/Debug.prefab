@@ -5478,7 +5478,7 @@ MonoBehaviour:
   ExplosionOnDeath: {fileID: 7029634076664512277, guid: 910d8b988f87a4007bed6f4290a2317b, type: 3}
   color_easter_egg_portal: {fileID: 6708033527536035730, guid: 8d90fc0071569402dbb9cc1a7bc39ee3, type: 3}
   InsObject: {fileID: 0}
-  DpdItemClone: {fileID: 0}
+  tokenClone: {fileID: 0}
   main_player: {fileID: 0}
   key_item: {fileID: 0}
   guaranteed_drop_item: {fileID: 0}
@@ -5497,6 +5497,8 @@ MonoBehaviour:
   key_drops: 0
   guaranteed_drop_bool: 0
   triggerDeathEvent: 0
+  preventDefaultDeath: 0
+  immortal: 0
   profile: {fileID: 1023506516429487659}
   onTakeDamage:
     m_PersistentCalls:
@@ -5598,6 +5600,7 @@ MonoBehaviour:
   currentPhase:
     minHealth: 0
   nextStateIndex: 0
+  preventDefaultDeath: 0
   shoot_sources:
   - {fileID: 8848850664717313493}
   - {fileID: 6936352044765463564}

@@ -9817,8 +9817,8 @@ GameObject:
   - component: {fileID: 7182511856099403016}
   - component: {fileID: 3058283485345405569}
   - component: {fileID: 1842351548194581166}
-  - component: {fileID: 5048353137539281784}
   - component: {fileID: 7165752951767464016}
+  - component: {fileID: 9152758953643801670}
   m_Layer: 0
   m_Name: TriadBullet4
   m_TagString: Untagged
@@ -9978,32 +9978,6 @@ MonoBehaviour:
       m_Calls: []
   destruct_on_harm: 0
   profile: {fileID: 0}
---- !u!114 &5048353137539281784
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5993488408805620187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a799649cfe69f4bbc1cfa6f2eed85b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 6723365783674798921}
-  speed: 0
-  accel: 1000
-  rotate: 1200
-  rotateTime: 0.2
-  currentRotateTime: 0
-  angle: 0
-  useMaxSpeed: 0
-  useForce: 0
-  forceRight: 0
-  forceLeft: 0
-  useRotate: 1
-  canSeePlayer: 0
-  trail: {fileID: 7165752951767464016}
 --- !u!96 &7165752951767464016
 TrailRenderer:
   serializedVersion: 3
@@ -10117,6 +10091,28 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!114 &9152758953643801670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5993488408805620187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f96fb2296eae384783623462da37c2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 6723365783674798921}
+  accel: 1000
+  rotate: 1200
+  rotateTime: 0.2
+  currentRotateTime: 0
+  angle: 0
+  minAngle: 20
+  canSeePlayer: 0
+  hasTrail: 1
+  trail: {fileID: 7165752951767464016}
 --- !u!1 &8240178325973999433
 GameObject:
   m_ObjectHideFlags: 0

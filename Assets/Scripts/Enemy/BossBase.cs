@@ -64,11 +64,13 @@ public class BossBase : MonoBehaviour, IDeathHandler
         OnStart();
     }
 
-    void SetPhase(Phase phase)
+    public void SetPhase(Phase phase)
     {
         currentPhase = phase;
         statesInPhase = phase.statesInPhase;
         nextStateIndex = 0;
+
+        OnSetPhase();
     }
 
     void SetState(BossStateData state)
@@ -123,7 +125,7 @@ public class BossBase : MonoBehaviour, IDeathHandler
 
         OnFixedUpdate();
     }
-    
+    protected virtual void OnSetPhase(){}
     protected virtual void OnUpdate(){}
     protected virtual void OnStart(){}
     protected virtual void OnFixedUpdate(){}

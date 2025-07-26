@@ -37,6 +37,7 @@ TagManager:
   - fortress_rune
   - rune_fortress_field
   - particle
+  - MeteorTrigger
   layers:
   - Default
   - TransparentFX
