@@ -10,9 +10,8 @@ public class PrologueBoss : BossBase
 
 
     [Header("Rune Info")]
-    public FixedRotator runesRotator;
-    public GameObject[] runeList;
-    public GameObject[] specialRuneList;
+    // public FixedRotator runesRotator;
+    public PrologueRuneScript[] runeList;
     public Transform[] runeParentTf;
 
 
@@ -27,6 +26,7 @@ public class PrologueBoss : BossBase
 
     // Epilogue
     public PrologueSpecialRuneLaserAttack epilogueLasers;
+    public PrologueAOERuneAttack epilogueAOE;
 
     [Header("Drain Graphic")]
     public SpriteRenderer mainSquare;
@@ -42,6 +42,8 @@ public class PrologueBoss : BossBase
     public GameObject runeProjectile;
     public SweepingIndicator sweepingIndicator;
     public List<PrologueRuneProjectile> runeExplosionPool;
+    public AOEAttackRune AOEPrefab;
+    public GameObject[] entitiesToSpawn;
 
     [Header("Fire Rate Timers")]
     public float fireTimer;
@@ -73,13 +75,16 @@ public class PrologueBoss : BossBase
     {
         healthDrain = new PrologueDrainAttack(this, 9, DebuffType.HEALTH);
         speedDrain = new PrologueDrainAttack(this, 9, DebuffType.SPEED);
-        shootAttack = new PrologueShootAttack(this, 10, 0.2f, 3, 12);
+        shootAttack = new PrologueShootAttack(this, 10, 0.33f, 3, 12);
         runeLaserAttack = new PrologueRuneLaserAttack(this, 4, 2, 1, 9);
+        epilogueAOE = new PrologueAOERuneAttack(this, iterations: 5);
 
-        prologuePhase.statesInPhase = new BossStateData[] { healthDrain, runeLaserAttack, shootAttack, speedDrain };
+        // prologuePhase.statesInPhase = new BossStateData[] {  shootAttack, epilogueAOE };
+        prologuePhase.statesInPhase = new BossStateData[] { healthDrain, runeLaserAttack, shootAttack, speedDrain, runeLaserAttack };
+        // prologuePhase.statesInPhase = new BossStateData[] { epilogueAOE };
         prologuePhase.minHealth = 0f;
 
-        epiloguePhase.statesInPhase = new BossStateData[] { epilogueLasers };
+        epiloguePhase.statesInPhase = new BossStateData[] { epilogueLasers, epilogueAOE };
         epiloguePhase.minHealth = -1f;
         
 
@@ -91,6 +96,16 @@ public class PrologueBoss : BossBase
         movement_script.enabled = false;
     }
 
+    public void SetRotSpeed(float speedConstant){
+        animator.SetFloat("RotationSpeedConstant", speedConstant);
+        animator.SetBool("Rotating", speedConstant > 0.0f);
+    }
+    public void SetRuneVisibility(bool visible){
+        foreach (PrologueRuneScript rune in runeList){
+            if(visible){ rune.Appear(); }
+            else{ rune.Dissapear(); }
+        }
+    }
 
     public PrologueRuneProjectile GetNewRuneProjectile()
     {
@@ -123,9 +138,10 @@ public class PrologueBoss : BossBase
     {
         Vector2 target;
         bool hit_player;
+        
         mainSquare.color = debuffColor[(int)debuffType];
-        RaycastHit2D ray = Physics2D.Raycast(transform.position, (Vector2)Player.main.tf.position - (Vector2)transform.position);
-        if (ray.transform.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
+        RaycastHit2D ray = Physics2D.Raycast(runeList[(int)debuffType].transform.position, (Vector2)Player.main.tf.position - (Vector2)transform.position);
+        if (ray.transform.gameObject.layer == LayerMask.GetMask("Obstacles"))
         {
             // The ray has hit a wall
             target = ray.point;
@@ -153,7 +169,23 @@ public class PrologueBoss : BossBase
     {
         BossBarManager.Instance.RemoveFromQueue(gameObject);
         BossBarManager.Instance.AddTimerToQueue(epilogueTimer, name, displayColor, displaySprite, out linkedDisplay, 50);
-        runesRotator.SetRotationRate(360);
+        animator.SetTrigger("transform");
+
+        foreach (PrologueRuneScript prologueRune in runeList)
+        {
+            prologueRune.TransformToSpecial();
+        }
+        
+        // runesRotator.SetRotationRate(360);
+    }
+
+    public AOEAttackRune CreateAOERune()
+    {
+        return Instantiate(AOEPrefab, transform);
+    }
+
+    public GameObject GetInstantiate(GameObject prefab, Transform transform){
+        return Instantiate(prefab, transform);
     }
 
     protected override void OnUpdate()
@@ -172,7 +204,7 @@ public class PrologueBoss : BossBase
         health.SetImmortal(true);
 
         // Play transform animation
-        runesRotator.SetRotationRate(0, 1.5f);
+        // runesRotator.SetRotationRate(0, 1.5f);
 
         Invoke(nameof(TransformToEpilogue), 2f);
     }

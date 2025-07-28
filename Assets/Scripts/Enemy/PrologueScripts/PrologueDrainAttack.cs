@@ -33,6 +33,7 @@ public class PrologueDrainAttack : BossStateData
     {
         PrologueArenaSpawnSystem.SpawnEnemies(prologueData.drainSpawn, 1, drainTime, 0, Random.Range(0, 2) == 1);
         currentLaserTime = drainTime;
+        prologueData.runeList[(int)debuffType].ToggleDrain(true);
 
         // if (fires)
         // {
@@ -79,19 +80,10 @@ public class PrologueDrainAttack : BossStateData
             Debug.Log("Ended drain phase");
         }
     }
-    
-    // void FiringUpdate() {
-    //     if (currentFireInterval <= 0)
-    //     {
-    //         // foreach (AIShooterScript source in prologueData.shoot_sources)
-    //         // {
-    //         //     source.Shoot();
-    //         // }
-    //         currentFireInterval = fireRate;
-    //     }
-    //     else
-    //     {
-    //         currentFireInterval -= Time.deltaTime;
-    //     }
-    // }
+
+    public override void End(bool interrupted = false)
+    {
+        prologueData.runeList[(int)debuffType].ToggleDrain(false);
+        base.End(interrupted);
+    }
 }
