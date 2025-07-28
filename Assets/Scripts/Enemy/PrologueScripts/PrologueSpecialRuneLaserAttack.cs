@@ -53,7 +53,7 @@ public class PrologueSpecialRuneLaserAttack : BossStateData
     }
     public override void Start() // Called When the state object becomes active
     {
-        prologueData.runesRotator.SetRotationRate(angularSpeed, 0.25f);
+        // prologueData.runesRotator.SetRotationRate(angularSpeed, 0.25f);
         currentRounds = rounds;
         runeObjs = prologueData.runeParentTf;
         beamObjects = prologueData.specialBeamObjects;

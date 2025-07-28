@@ -23,9 +23,11 @@ public class PrologueRuneLaserAttack : BossStateData
     public float beamWidth = 6;
 
 
-    public GameObject currentRuneObj, currentBeamObject;
+    public PrologueRuneScript currentRuneObj;
+    public GameObject currentBeamObject;
     public Transform initialTransform;
     public Vector2 fireStartPos, fireEndPos, initialPos, initialPlayerPos;
+    public Vector3 initialOffset;
     public float distanceFromPlayer;
     public FiringStatus beamState;
 
@@ -56,10 +58,14 @@ public class PrologueRuneLaserAttack : BossStateData
     }
     public override void Start() // Called When the state object becomes active
     {
-        prologueData.runesRotator.SetRotationRate(angularSpeed, 0.25f);
+        // prologueData.runesRotator.SetRotationRate(angularSpeed, 0.25f);
         currentRounds = rounds;
         runeObjIndex = Random.Range(0, 4);
+
+        // prologueData.SetRotSpeed(0);
+        // prologueData.SetRuneVisibility(false);
         SetupNewBeam();
+
     }
     public override void Update() // Called every frame while the object is active
     {
@@ -84,15 +90,17 @@ public class PrologueRuneLaserAttack : BossStateData
     void SetupNewBeam()
     {
         // Getting Objects
-        runeObjIndex++; if(runeObjIndex > 3) { runeObjIndex = 0; }
-        currentRuneObj = prologueData.runeList[runeObjIndex];
+        runeObjIndex++; if (runeObjIndex > 3) { runeObjIndex = 0; }
+        prologueData.runeList[runeObjIndex].Dissapear();
+        currentRuneObj = prologueData.GetInstantiate(prologueData.runeList[runeObjIndex].gameObject, transform).GetComponent<PrologueRuneScript>();
+        initialTransform = prologueData.runeList[runeObjIndex].transform;
         initialPos = currentRuneObj.transform.position;
 
         currentBeamObject = prologueData.beamObject;
         currentBeamObject.transform.SetParent(currentRuneObj.transform);
 
-        initialTransform = currentRuneObj.transform.parent;
         currentRuneObj.transform.SetParent(null);
+        currentRuneObj.Appear();
 
 
         // Setting Positions and Markers
@@ -116,7 +124,7 @@ public class PrologueRuneLaserAttack : BossStateData
         // Setting Beam Size
         // Beam width - x. Height - y
         currentBeamObject.transform.localScale = new Vector2(0, beamHeight);
-        
+
         prologueData.sweepingIndicator.StartIndicator(warningTime, fireStartPos, (Vector2)Player.main.tf.position - fireStartPos);
 
 
@@ -155,7 +163,7 @@ public class PrologueRuneLaserAttack : BossStateData
                 prologueData.beamWidthCurve.Evaluate(1 - (timer / fireTime)),
                 beamHeight);
 
-            Debug.Log(timer);
+            // Debug.Log(timer);
 
         }
         else
@@ -179,11 +187,17 @@ public class PrologueRuneLaserAttack : BossStateData
         }
         else
         {
-            currentRuneObj.transform.SetParent(initialTransform);
-            currentRuneObj.transform.localPosition = Vector2.zero;
-
             if (currentRounds <= 0) { End(); return; }
+            currentRuneObj.gameObject.SetActive(false);
+            prologueData.runeList[runeObjIndex].Appear();
             SetupNewBeam();
         }
+    }
+
+    public override void End(bool interrupted = false)
+    {
+        base.End(interrupted);
+        prologueData.SetRuneVisibility(true);
+        PrologueArenaSpawnSystem.SpawnEnemies(prologueData.entitiesToSpawn[0], 1, 1, 0);
     }
 }

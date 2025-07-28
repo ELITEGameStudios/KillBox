@@ -9,6 +9,7 @@ public class PrologueRuneProjectile : MonoBehaviour
     [Header("Graphic info")]
     public Animator animator;
     public SpriteRenderer circleRenderer, runeRenderer, arrowRenderer;
+    public ParticleSystem particles;
     public Color[] debuffColor;
     public Color runeColor, circleColor, arrowColor;
 
@@ -48,7 +49,7 @@ public class PrologueRuneProjectile : MonoBehaviour
         state = State.INACTIVE;
     }
 
-    public void StartSeek(Vector2 startPos, Vector2 endPos)
+    public void StartSeek(Vector2 startPos, Vector2 endPos, DebuffType debuff)
     {
         this.startPos = startPos;
         this.endPos = endPos;
@@ -56,36 +57,24 @@ public class PrologueRuneProjectile : MonoBehaviour
         transform.position = startPos;
         animator.Play("Intro");
 
+        debuffType = debuff;
+
         runeRenderer.enabled = true;
         circleRenderer.enabled = true;
         arrowRenderer.enabled = true;
 
-        runeRenderer.color = runeColor;
+        // runeColor = mainColor;
+        // runeRenderer.color = runeColor;
 
         state = State.SEEKING;
         currentTimer = seekTime;
 
-
-            switch (debuffType)
-            {
-                case DebuffType.HEALTH:
-                
-                    circleColor = debuffColor[0];
-                    runeColor = debuffColor[0];
-                    arrowColor = debuffColor[0];
-                
-                    break;
-
-                case DebuffType.SPEED:
-
-                    circleColor = debuffColor[1];
-                    runeColor = debuffColor[1];
-                    arrowColor = debuffColor[1];
-                    
-                    break;
-
-            }
+        circleColor = debuffColor[(int)debuffType];
+        runeColor = debuffColor[(int)debuffType];
+        arrowColor = debuffColor[(int)debuffType];
+        particles.startColor = debuffColor[(int)debuffType];
     }
+    
 
 
     void Update()
@@ -130,7 +119,7 @@ public class PrologueRuneProjectile : MonoBehaviour
         state = State.EXPLODING;
         animator.Play("Explosion");
         circleRenderer.transform.localPosition = Vector3.zero;
-        Collider2D possiblePlayer = Physics2D.OverlapCircle(transform.position, radius, LayerMask.NameToLayer("Player"));
+        Collider2D possiblePlayer = Physics2D.OverlapCircle(transform.position, radius, LayerMask.GetMask("Player"));
         if (possiblePlayer != null)
         {
             switch (debuffType)
@@ -153,6 +142,9 @@ public class PrologueRuneProjectile : MonoBehaviour
     void Deactivate()
     {
         state = State.INACTIVE;
+        runeRenderer.enabled = false;
+        circleRenderer.enabled = false;
+        arrowRenderer.enabled = false;
         gameObject.SetActive(false);       
     }
 }

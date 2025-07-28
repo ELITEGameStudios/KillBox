@@ -14,15 +14,15 @@ public class PrologueArenaSpawnSystem : MonoBehaviour
         else if(instance != this){ Destroy(this); }
     }
 
-    public static void SpawnEnemies(GameObject prefab, float cycles, float time, float startAngle, bool clockwise = true)
+    public static void SpawnEnemies(GameObject prefab, float cycles, float time, float startAngle, bool clockwise = true, int step = 1)
     {
         if (instance != null)
         {
-            instance.StartCoroutine(instance.SpawnCoroutine(prefab, cycles, time, startAngle, clockwise));
+            instance.StartCoroutine(instance.SpawnCoroutine(prefab, cycles, time, startAngle, clockwise, step));
         }
     }
 
-    IEnumerator SpawnCoroutine(GameObject prefab, float cycles, float time, float startAngle, bool clockwise = true)
+    IEnumerator SpawnCoroutine(GameObject prefab, float cycles, float time, float startAngle, bool clockwise = true, int step = 1)
     {
         // Setup
         int spawns = (int)(spawnTransforms.Count * cycles);
@@ -51,8 +51,8 @@ public class PrologueArenaSpawnSystem : MonoBehaviour
 
             if (clockwise)
             {
-                currentIndex++;
-                if (currentIndex >= spawnTransforms.Count) { currentIndex = 0; }
+                currentIndex += step;
+                if (currentIndex >= spawnTransforms.Count) { currentIndex -= spawnTransforms.Count; } // resets in respect to step variable
             }
             else
             {
