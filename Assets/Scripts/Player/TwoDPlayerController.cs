@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,8 +13,9 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
     public float DebuffedSpeed {get { return debuffedSpeed; }
         set
         {
-            if (debuffedSpeed > speed * 4/ 5) { debuffedSpeed = value; }
-            else{ debuffedSpeed = speed * 4 / 5; }
+            if (debuffedSpeed < value) { debuffedTimer = 0; } // Resets regen timer if nessecary
+            debuffedSpeed = Math.Clamp(value, 0, speed * 4 / 5);
+            // if{ debuffedSpeed = speed * 4 / 5; }
         }
     }
 
