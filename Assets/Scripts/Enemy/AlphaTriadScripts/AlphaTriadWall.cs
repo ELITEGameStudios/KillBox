@@ -39,7 +39,7 @@ public class AlphaTriadWall : BossStateData
     }
     public override void FixedUpdate(){
         if (!atTarget){
-            if (Vector2.Distance((Vector2)triadData.transform.position, target) <= 0.5f){
+            if (Vector2.Distance((Vector2)triadData.transform.position, target) <= 1f){
                 atTarget = true;
             }
             triadData.transform.rotation = Quaternion.LookRotation(Vector3.forward, target - (Vector2)triadData.transform.position);
