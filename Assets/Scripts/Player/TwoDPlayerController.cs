@@ -34,7 +34,7 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
     public Camera cam;
     public Joystick MoveJoystick, RotJoystick;
     public bool mobile, dashing, canDash;
-    [SerializeField] private bool canMove;
+    public bool canMove { get; private set; }
     [SerializeField] private GameObject dashParticleObject;
 
     [SerializeField] private TriggerColliderTracker colliders;
@@ -62,6 +62,15 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
         canDash = true;
         dashParticleObject.SetActive(true);
     }
+
+    public void SetDashCooldown(float dashCooldown)
+    {
+        this.dashCooldown = dashCooldown;
+        if(dashCooldownTimer > dashDuration){ dashCooldownTimer = dashDuration; }
+    }
+
+    public float GetDashCooldown() { return dashCooldown; }
+    public float GetCurrentDashCooldown() { return dashCooldownTimer; }
 
     void OnEnable()
     {
@@ -119,12 +128,11 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
         dashCooldownTimer = dashCooldown;
         dashVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         dashVector.Normalize();
+        customForces.Clear(); // Clears all other forces acting on this player
         
         // State changes
         canDash = false;
         dashing = true;
-
-        customForces.Clear(); // Clears all other forces acting on this player
 
         // Dash in-game graphics
         particleAngleVector = dashVector;
@@ -137,11 +145,14 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
     }
 
     void CheckDashTimers(){
-        if(dashTimer > 0){
+        
+        if (dashTimer > 0)
+        {
             dashTimer -= Time.fixedDeltaTime;
-            dashParticleObject.transform.eulerAngles = new Vector3(-Vector2.SignedAngle(Vector2.up, particleAngleVector)-90, 90, -90);
+            dashParticleObject.transform.eulerAngles = new Vector3(-Vector2.SignedAngle(Vector2.up, particleAngleVector) - 90, 90, -90);
         }
-        else if(dashTimer <= 0 && dashing){
+        else if (dashTimer <= 0 && dashing)
+        {
             dashing = false;
             dashVector = Vector2.zero;
             dashParticleObject.GetComponent<ParticleSystem>().Stop();
@@ -156,6 +167,7 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
     }
 
     Vector2 UpdateForces() {
+        // if (!canMove) return Vector2.zero;
         Vector2 netCustomForces = Vector2.zero;
 
         foreach (CustomForce force in customForces) { // Updating and retrieving forces
