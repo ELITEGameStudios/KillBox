@@ -28,32 +28,40 @@ public class MainAudioSystem : MonoBehaviour
     public AudioClip current_song {get; private set;}
     public bool looping {get; private set;}
     public bool exterior_track {get; private set;}
+    public bool hasStarted {get; private set;}
     
     [SerializeField] private VolumeControl volumeControl;
     public VolumeControl GetVolumeControl() {return volumeControl;}
 
-    void Awake(){
-        if (main == null){
+    void Awake()
+    {
+        if (main == null)
+        {
             main = this;
         }
-        else if(main != this){
+        else if (main != this)
+        {
             Destroy(gameObject);
         }
 
         DontDestroyOnLoad(gameObject);
         main.transition_length = 0.5f;
+        hasStarted = false;
+        Invoke(nameof(StartPlaying), 0.5f);
     }
 
     // Start is called before the first frame update
-    void Start()
+    void StartPlaying()
     {
         main_loop_playlist_index = Random.Range(0, 5);
         PlayMainLoop(false);
+        hasStarted = true;
     }
 
-    public void PlayMainLoop(bool next = true){
+    public void PlayMainLoop(bool next = true)
+    {
 
-        if(next){ UpdateIndex(); }
+        if (next) { UpdateIndex(); }
         current_song = main_loop_playlist[main_loop_playlist_index];
 
         clip_length = current_song.length;
@@ -129,7 +137,7 @@ public class MainAudioSystem : MonoBehaviour
     {
         time_played += Time.deltaTime;
 
-        if(!source.active_source.isPlaying){//(time_played >= clip_length - transition_length){
+        if(!source.active_source.isPlaying && hasStarted){//(time_played >= clip_length - transition_length){
             if(looping){
                 ReplaySong();
             }
