@@ -191,7 +191,7 @@ public class CooldownScript : MonoBehaviour, IRestartListener
         }
 
         if(UpgradesManager.Instance.current_levels[2] > 0){
-            float value = UpgradesList.capacity.values[0][UpgradesManager.Instance.current_levels[2] - 1];
+            float value = UpgradesList.capacity.values[UpgradesManager.Instance.current_levels[2] - 1];
             count_max = (int)value;
             // GameplayUI.instance.GetCooldownSlider().maxValue = count_max;
         }

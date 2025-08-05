@@ -198,6 +198,6 @@ public class PrologueRuneLaserAttack : BossStateData
     {
         base.End(interrupted);
         prologueData.SetRuneVisibility(true);
-        // PrologueArenaSpawnSystem.SpawnEnemies(prologueData.entitiesToSpawn[0], 1, 1, 0);
+        PrologueArenaSpawnSystem.SpawnEnemies(prologueData.entitiesToSpawn[0], 1, 1, 0);
     }
 }

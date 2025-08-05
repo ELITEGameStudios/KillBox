@@ -35,7 +35,6 @@ public class PrologueShootAttack : BossStateData
     }
     public override void OnReset() // Called When the state object becomes active
     {
-        base.OnReset();
         timer = fireRate;
         currentRounds = rounds;
     }
@@ -79,6 +78,6 @@ public class PrologueShootAttack : BossStateData
     public override void End(bool interrupted = false)
     {
         base.End(interrupted);
-        // PrologueArenaSpawnSystem.SpawnEnemies(prologueData.entitiesToSpawn[1], 0.2f, 2, 0, false, 5);
+        PrologueArenaSpawnSystem.SpawnEnemies(prologueData.entitiesToSpawn[1], 0.2f, 2, 0, false, 5);
     }
 }

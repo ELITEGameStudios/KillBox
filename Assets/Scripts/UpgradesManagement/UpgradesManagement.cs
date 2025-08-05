@@ -6,15 +6,15 @@ using UnityEngine;
 public class Upgrade
 {
     public readonly int max_level, current_level;
-    public readonly float[][] values;
+    public readonly float[] values;
     public readonly int[] costs;
 
     public readonly string name;
 
-    public Upgrade(float[][] values_input, int[] costs_input, string _name){
+    public Upgrade(float[] values_input, int[] costs_input, string _name){
         values = values_input;
         costs = costs_input;
-        max_level = values[0].Length;
+        max_level = values.Length;
         name = _name;
     }
 
@@ -55,42 +55,31 @@ public class UpgradesList
 {
     static public readonly Upgrade speed = new Upgrade(
         _name : "SPEED",
-        values_input : new float[][]{
-            new float[]{5.5f, 5.5f, 6, 6, 6.5f, 6.5f, 7},
-            new float[]{5,    4,    4, 3, 3,    2,    1},
-        },
+        values_input : new float[]{5.5f, 6, 7, 8f, 9 , 9.5f, 10f},
         costs_input : new int[]{1, 3, 8, 15, 20, 25, 30}
     );
 
     static public readonly Upgrade health = new Upgrade(
         _name : "HEALTH", 
-        values_input : new float[][]{
-            new float[]{300, 350, 425, 500, 650, 800, 1000, 1250}
-        },
+        values_input : new float[]{300, 350, 425, 500, 650, 800, 1000, 1250},
         costs_input : new int[]{1, 3, 5, 8, 15, 20, 25, 35}
     );
 
     static public readonly Upgrade capacity = new Upgrade(
         _name : "CAPACITY",
-        values_input : new float[][]{
-            new float[]{120, 150, 200, 250, 300, 400}
-        },
+        values_input : new float[]{120, 150, 200, 250, 300, 400},
         costs_input : new int[]{1, 3, 6, 12, 18, 30}
     );
 
     static public readonly Upgrade lifesteal = new Upgrade(
         _name : "LIFESTEAL",
-        values_input : new float[][]{
-             new float[]{2, 5, 10, 15, 20}
-        },
+        values_input : new float[] {2, 5, 10, 15, 20},
         costs_input : new int[]{1, 5, 15, 25, 40}
     );
 
     static public readonly Upgrade dual = new Upgrade(
         _name : "DUAL",
-        values_input : new float[][]{
-            new float[]{1}
-        },
+        values_input : new float[] {1},
         costs_input : new int[] {25}
     );
 
