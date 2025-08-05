@@ -10360,7 +10360,7 @@ MonoBehaviour:
   destroy_on_any_collision: 0
   has_particles: 1
   destroy_on_shard_trigger: 0
-  ignore_timer: 1
+  ignore_timer: 0
 --- !u!114 &6409948956466856208
 MonoBehaviour:
   m_ObjectHideFlags: 0
