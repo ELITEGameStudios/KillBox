@@ -37,12 +37,13 @@ public class VolumeControl : MonoBehaviour
         else if(main != this){
             Destroy(this);
         }
+        
+        music_value = PlayerPrefs.GetInt("Volume", 100);
+        sfx_value = PlayerPrefs.GetInt("SFXVolume", 100);
     }
 
     void Start()
     {
-        music_value = PlayerPrefs.GetInt("Volume", 100);
-        sfx_value = PlayerPrefs.GetInt("SFXVolume", 100);
         VolumeSlider.value = music_value;
         SFXSlider.value = sfx_value;
         // p_health = GameObject.FindWithTag("Player").GetComponent<PlayerHealth>();
