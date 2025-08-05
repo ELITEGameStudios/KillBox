@@ -88,10 +88,13 @@ public class InGameButtonHandler : MonoBehaviour, IShopButtonStateListener, IMai
 
     public void OpenWeaponsMenu(){
         InventoryUIManager.Instance.GetBackground().gameObject.SetActive(true);
+        Player.main.movement.OnOpenShop(0);
     }
 
-    public void OpenUpgradesMenu(){
+    public void OpenUpgradesMenu()
+    {
         UpgradesManager.Instance.GetBackground().gameObject.SetActive(true);
+        Player.main.movement.OnOpenShop(0);
     }
 
     public void OnAnimationFinished()

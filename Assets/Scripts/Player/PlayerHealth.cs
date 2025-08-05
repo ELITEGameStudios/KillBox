@@ -377,7 +377,7 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
 
     public void MaxHealthCheck(){
         if(UpgradesManager.Instance.current_levels[1] > 0){
-            float value = UpgradesList.health.values[UpgradesManager.Instance.current_levels[1] - 1];
+            float value = UpgradesList.health.values[0][UpgradesManager.Instance.current_levels[1] - 1];
             MaxHealth = defaultHealth[KillBox.currentGame.difficultyIndex] + ((int)value - 250);
             regen = true;
             regenToggle = false;
