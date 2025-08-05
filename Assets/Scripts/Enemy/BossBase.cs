@@ -118,6 +118,11 @@ public class BossBase : MonoBehaviour, IDeathHandler
         OnUpdate();
     }
 
+    void LateUpdate()
+    {
+        OnLateUpdate();
+    }
+
     void FixedUpdate()
     {
         if (currentState != null && !currentState.finished)
@@ -126,6 +131,8 @@ public class BossBase : MonoBehaviour, IDeathHandler
         OnFixedUpdate();
     }
     protected virtual void OnSetPhase(){}
+    
+    protected virtual void OnLateUpdate(){}
     protected virtual void OnUpdate(){}
     protected virtual void OnStart(){}
     protected virtual void OnFixedUpdate(){}

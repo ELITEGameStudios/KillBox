@@ -57,9 +57,11 @@ public class GameplayUI : MonoBehaviour
     public Animator GetSecondaryAnimator(){return secondaryAnimator;}
     
     [Header("Dash indicator")]
-    [SerializeField] private Text dashTimerText;
-    [SerializeField] private Image dashIndicator;
-    [SerializeField] private Color canDashColor, cannotDashColor;
+    // [SerializeField] private Text dashTimerText;
+    // [SerializeField] private Image dashIndicator;
+    // [SerializeField] private Color canDashColor, cannotDashColor;
+    [SerializeField] private DashElementScript dashElement;
+    public DashElementScript GetDashUI(){return dashElement;}
 
     [Header("Weapon and Stat Upgrade Tabs")]
     [SerializeField] private TabSystemMaster upgradeTabs;
@@ -88,26 +90,29 @@ public class GameplayUI : MonoBehaviour
     {
         if(GameManager.main != null){
 
-            if(KillBox.currentGame.started){
+            if (KillBox.currentGame.started)
+            {
                 SetAllText(roundKeepers, KillBox.currentGame.round.ToString());
                 SetAllText(scorekeepers, GameManager.main.ScoreCount.ToString());
                 SetAllText(pbKeepers, KillBox.main.PBInt.ToString());
-                
-                if(Player.main.health != null){
+
+                if (Player.main.health != null)
+                {
                     healthSlider.value = Player.main.health.CurrentHealth;
                     healthText.text = Player.main.health.CurrentHealth.ToString();
                 }
-                
+
                 enemiesLeftText.text = EnemyCounter.main.enemiesInScene.ToString();
 
-                if(Player.main.movement.canDash){
-                    dashIndicator.color = canDashColor;
-                    dashTimerText.text = "";
-                }
-                else{
-                    dashIndicator.color = cannotDashColor;
-                    dashTimerText.text = ((int)(Player.main.movement.GetDashCooldownTimer()+1)).ToString();
-                }
+                // Legacy Dash Code
+                // if(Player.main.movement.canDash){
+                //     dashIndicator.color = canDashColor;
+                //     dashTimerText.text = "";
+                // }
+                // else{
+                //     dashIndicator.color = cannotDashColor;
+                //     dashTimerText.text = ((int)(Player.main.movement.GetDashCooldownTimer()+1)).ToString();
+                // }
             }
             
         }
@@ -137,7 +142,12 @@ public class GameplayUI : MonoBehaviour
         }
     }
 
-    public void Initialize(){
+    public void PauseGame(bool pause){
+        GameManager.main.pauseHandler.PausePlay(pause?0:1);
+    }
+    
+    public void Initialize()
+    {
         // InventoryUIManager.Instance.InitializeUI();
         // if(QualityControl.main.ShadowIndex == 0) {QualityControl.main.ShadowToggle.isOn = false;}
         // else {QualityControl.main.ShadowToggle.isOn = true;}

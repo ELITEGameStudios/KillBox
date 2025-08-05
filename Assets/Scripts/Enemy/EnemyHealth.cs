@@ -164,7 +164,7 @@ public class EnemyHealth : MonoBehaviour
 
             if (UpgradesManager.Instance.current_levels[3] != 0 && to_player && !Player.main.health.isMaxHealth)
             {
-                Player.main.health.CurrentHealth += (int)UpgradesList.lifesteal.values[UpgradesManager.Instance.current_levels[3] - 1];
+                Player.main.health.CurrentHealth += (int)UpgradesList.lifesteal.values[0][UpgradesManager.Instance.current_levels[3] - 1];
                 GameplayUI.instance.GetHealthAnimator().Play("lifestealTick");
             }
             if (manager == null)
