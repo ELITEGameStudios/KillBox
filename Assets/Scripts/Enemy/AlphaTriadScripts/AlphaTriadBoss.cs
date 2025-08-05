@@ -39,13 +39,13 @@ public class AlphaTriadBoss : BossBase
 
     burstState3 = new AlphaTriadBurst(this, 8f, 3f, 1000, 1.1f);
     deltaState3 = new AlphaTriadDelta(this, 6f, 2.5f, 1000, 0.3f);
-    triangleState3 = new AlphaTriadTriangle(this, 10f, 1.5f, 1000, 1.25f, 1f);
+    triangleState3 = new AlphaTriadTriangle(this, 10f, 1.5f, 1000, 1.25f, 0.6f);
 
     firstPhase.statesInPhase = new BossStateData[] {burstState, wallState, deltaState, lineState, triangleState, spiralState};
-    firstPhase.minHealth = 0.7f;
+    firstPhase.minHealth = 0.75f;
 
     secondPhase.statesInPhase = new BossStateData[] {burstState2, lineState, spiralState, deltaState2, wallState, triangleState2};
-    secondPhase.minHealth = 0.3f;
+    secondPhase.minHealth = 0.4f;
 
     thirdPhase.statesInPhase = new BossStateData[] {burstState3, deltaState3, wallState, burstState3, lineState, triangleState3, spiralState};
     thirdPhase.minHealth = 0f;

@@ -447,8 +447,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: Wing Triad 2
-  maxHealth: 1000
-  damage: 100
+  maxHealth: 800
+  damage: 125
   limit: 0
   speed: 12
   acceleration: 5
