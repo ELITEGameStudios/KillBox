@@ -136,6 +136,9 @@ public class GameplayUI : MonoBehaviour
         primaryAnimator.SetBool("Active", handler.current_is_primary);
         secondaryAnimator.SetBool("Active", !handler.current_is_primary);
 
+        primaryAnimator.GetComponent<InventoryUIElement>().EquipDisplay();
+        secondaryAnimator.GetComponent<InventoryUIElement>().EquipDisplay();
+
         for (int i = 0; i < InventoryUIManager.Instance.main_buttons.Count; i++)
         {
             InventoryUIManager.Instance.main_buttons[i].EquipDisplay();

@@ -310,7 +310,8 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     public void Backup(){
         // Equips backup weapon
 
-        if (Instance.target_item.owned && (target_item != GunHandler.Instance.primary_weapon))
+        // if (Instance.target_item.owned && (target_item != GunHandler.Instance.primary_weapon))
+        if (Instance.target_item.owned)
         {
 
             GunHandler.Instance.SetBackup(Instance.target_key);

@@ -24,7 +24,7 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
     }
 
     [SerializeField]
-    private Image overlay, equipOverlay, main_img, gun_img;
+    private Image overlay, equipOverlay, main_img, gun_img, auraImg;
 
     [SerializeField] private bool assigned, is_main, selected, initialized;
 
@@ -143,6 +143,7 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
                 gun_img.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.primary_weapon.tier];
                 gun_img.sprite = GunHandler.Instance.primary_weapon.graphic;
                 if(equipOverlay != null) equipOverlay.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.primary_weapon.tier];
+                if(auraImg != null) auraImg.color = GunHandler.Instance.current_is_primary ? Color.Lerp(Color.clear, gun_img.color, 0.5f) : Color.clear;
                 break;
             }
             case 2:
@@ -152,13 +153,14 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
                     gun_img.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.backup_weapon.tier];
                     gun_img.sprite = GunHandler.Instance.backup_weapon.graphic;
                     if(equipOverlay != null) equipOverlay.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.backup_weapon.tier];
+                    if(auraImg != null) auraImg.color = !GunHandler.Instance.current_is_primary ? Color.Lerp(Color.clear, gun_img.color, 0.5f) : Color.clear;
                 }
                 else{
                     main_img.color = Color.white;
                     gun_img.color = Color.white;
                     gun_img.sprite = null;
                     gun_img.color= Color.clear;
-
+                    if(auraImg != null) auraImg.color = Color.clear;
                 }
 
                 break;
