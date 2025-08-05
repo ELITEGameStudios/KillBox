@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEventListener
 {
     [SerializeField]
-    private Button purchase_button, dual_button;
+    private Button purchase_button;
 
     [SerializeField]
     private Image purchase_button_graphic, targetImageDisplay, targetImageDisplayPanel, background;
@@ -85,8 +85,6 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
 
         isOwned = false;
 
-        bool is_purchasable = target_item.Compare(GameManager.main.ScoreCount);
-
         for(int i = 0; i < owned_guns.Count; i++){
             if(owned_guns[i].name == target_key){
                 isOwned = true;
@@ -100,11 +98,19 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         equippedSecondary.SetActive(false);
         equippedDual.SetActive(false);
 
+        // Setting equip button animators
+        primary_element.GetAnimator().SetBool("Equippable", false);
+        secondary_element.GetAnimator().SetBool("Equippable", false);
+        dual_element.GetAnimator().SetBool("Equippable", false);
+
         is_purchasable = target_item.Compare(GameManager.main.ScoreCount);
 
         if(target_item != null && !isOwned){
 
-            if( !KillBox.currentGame.hasUpgradedArsenal && target_item.tier > 1 && target_item.tier < 4 ){ // Locked high tier weapons before SHARD
+
+            if (!KillBox.currentGame.hasUpgradedArsenal && target_item.tier > 1 && target_item.tier < 4)
+            {
+                // Locked high tier weapons before SHARD
                 purchase_button.interactable = false;
                 purchase_display.text = "Defeat SHARD to purchase this weapon...";
                 costsText.text = "?";
@@ -112,7 +118,8 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
                 return;
             }
 
-            if( KillBox.currentGame.specialUpgrade != 1 && target_item.tier == 4 ){ // Locked gold weapon without midas special
+            if( KillBox.currentGame.specialUpgrade != 1 && target_item.tier == 4 ){
+                // Locked gold weapon without midas special
                 purchase_display.text = KillBox.currentGame.specialUpgrade == 0 ? "Defeat MIDAS to purchase this weapon..." : "You chose your path...";
                 purchase_button.interactable = false;
                 costsText.text = "?";
@@ -181,27 +188,37 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
             secondary_button.GetComponent<Button>().interactable = false;
             dual_button_obj.GetComponent<Button>().interactable = false;
 
-            if(target_item != GunHandler.Instance.primary_weapon){
+            // What a nice repeating set of code (at least it works [right?])
+            // Checks if the selected and owned weapon is not the current primary, secondary, or dual weapon
+            if (target_item != GunHandler.Instance.primary_weapon)
+            {
                 primary_button.GetComponent<Button>().interactable = true;
+                primary_element.GetAnimator().SetBool("Equippable", true);
             }
-            else{
+            else
+            {
+                // primary_element.GetAnimator().SetBool("Equippable", false);
                 equippedPrimary.SetActive(true);
             }
 
             if(target_item != GunHandler.Instance.backup_weapon){
                 if(GunHandler.Instance.owned_weapons.Count > 1){
                     secondary_button.GetComponent<Button>().interactable = true;
+                    secondary_element.GetAnimator().SetBool("Equippable", true);
                 }
             }
             else{
+                // secondary_element.GetAnimator().SetBool("Equippable", false);
                 equippedSecondary.SetActive(true);
             }
 
             if(GunHandler.Instance.owns_dual && GunHandler.Instance.dual_weapon != target_item){
                 dual_button_obj.GetComponent<Button>().interactable = true;
+                dual_element.GetAnimator().SetBool("Equippable", true);
             }
             else if(GunHandler.Instance.owns_dual){
                 equippedDual.SetActive(true);
+                // dual_element.GetAnimator().SetBool("Equippable", false);
             }
 
         }
@@ -262,12 +279,14 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     }
 
     public void EquipCall(bool dual){
+        // Equips primary or dual weapon
 
         if(Instance.target_item.owned){
             if(!dual)
             {
                 GunHandler.Instance.EquipWeapon(target_item.name);
                 primary_button.GetComponent<Button>().interactable = false;
+                primary_element.GetAnimator().SetTrigger("Equip");
 
                 KillboxEventSystem.TriggerSetNewWeaponEvent(target_item, 0);
             }
@@ -275,6 +294,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
             {
                 GunHandler.Instance.EquipWeapon(Instance.target_key, dual: true);
                 dual_button_obj.GetComponent<Button>().interactable = false;
+                dual_element.GetAnimator().SetTrigger("Equip");
 
                 KillboxEventSystem.TriggerSetNewWeaponEvent(target_item, 2);
             }
@@ -288,10 +308,15 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         }
     }
     public void Backup(){
-        if(Instance.target_item.owned && (target_item != GunHandler.Instance.primary_weapon)){
+        // Equips backup weapon
+
+        // if (Instance.target_item.owned && (target_item != GunHandler.Instance.primary_weapon))
+        if (Instance.target_item.owned)
+        {
 
             GunHandler.Instance.SetBackup(Instance.target_key);
             secondary_button.GetComponent<Button>().interactable = false;
+            secondary_element.GetAnimator().SetTrigger("Equip");
 
             KillboxEventSystem.TriggerSetNewWeaponEvent(target_item, 1);
         }

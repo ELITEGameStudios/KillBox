@@ -24,7 +24,7 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
     }
 
     [SerializeField]
-    private Image overlay, main_img, gun_img;
+    private Image overlay, equipOverlay, main_img, gun_img, auraImg;
 
     [SerializeField] private bool assigned, is_main, selected, initialized;
 
@@ -33,6 +33,7 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
 
     [SerializeField]
     private Animator animator;
+    public Animator GetAnimator(){ return animator; }
     [SerializeField] private Vector3 initScale;
 
     [SerializeField] private float timer;
@@ -141,6 +142,8 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
                 main_img.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.primary_weapon.tier];
                 gun_img.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.primary_weapon.tier];
                 gun_img.sprite = GunHandler.Instance.primary_weapon.graphic;
+                if(equipOverlay != null) equipOverlay.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.primary_weapon.tier];
+                if(auraImg != null) auraImg.color = GunHandler.Instance.current_is_primary ? Color.Lerp(Color.clear, gun_img.color, 0.5f) : Color.clear;
                 break;
             }
             case 2:
@@ -149,13 +152,15 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
                     main_img.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.backup_weapon.tier];
                     gun_img.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.backup_weapon.tier];
                     gun_img.sprite = GunHandler.Instance.backup_weapon.graphic;
+                    if(equipOverlay != null) equipOverlay.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.backup_weapon.tier];
+                    if(auraImg != null) auraImg.color = !GunHandler.Instance.current_is_primary ? Color.Lerp(Color.clear, gun_img.color, 0.5f) : Color.clear;
                 }
                 else{
                     main_img.color = Color.white;
                     gun_img.color = Color.white;
                     gun_img.sprite = null;
                     gun_img.color= Color.clear;
-
+                    if(auraImg != null) auraImg.color = Color.clear;
                 }
 
                 break;
@@ -166,6 +171,7 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
                     main_img.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.dual_weapon.tier];
                     gun_img.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.dual_weapon.tier];
                     gun_img.sprite = GunHandler.Instance.dual_weapon.graphic;
+                    if(equipOverlay != null) equipOverlay.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.dual_weapon.tier];
                 }
                 else if(UpgradesManager.Instance.current_levels[4] != 1){
                     main_img.color = Color.black;
@@ -228,7 +234,6 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
 
         // This button is selected
         if(InventoryUIManager.Instance.target_key == weapon_key && type == 0){ // Should be selected here??
-            Debug.Log("Hi! I should be selected...");
             bool purchasable = item.Compare(GameManager.main.ScoreCount);
 
             gun_img.transform.localScale = Vector3.Lerp(initScale, initScale + new Vector3(0.2f, 0.2f, 0.2f),CommonFunctions.SineEase(timer/ (purchasable ? 0.5f : 1)));
@@ -260,7 +265,7 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
                             
                         if(item.Compare(GameManager.main.ScoreCount)){
                             // The player can buy this weapon
-                            main_img.color = Color.Lerp(Color.clear, InventoryUIManager.Instance.purchasable_shade, CommonFunctions.SineNormalize(Time.timeSinceLevelLoad, 2));
+                            main_img.color = Color.Lerp(Color.clear, InventoryUIManager.Instance.tier_colors[tier], CommonFunctions.SineNormalize(Time.timeSinceLevelLoad, 2));
                         }
                     }
                 }
@@ -297,13 +302,16 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
     {
         if(!InventoryUIManager.Instance.primary_element == this)
         {
-            if(type==3){
+            if (type == 3)
+            {
 
                 main_img.color = Color.black;
                 gun_img.sprite = WeaponItemList.Instance.GetItem("Light AR").graphic;
-                gun_img.color= Color.black;
+                gun_img.color = Color.black;
+                gameObject.SetActive(false);
             }
-            else{
+            else
+            {
                 main_img.color = Color.white;
                 gun_img.color = Color.white;
             }
@@ -316,14 +324,14 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
     }
 
     public void OnSelect(){
-        // if(baseEventData.selectedObject.GetComponent<Button>() == mainButton){
+        if(type == 0){
             overlay.color = Color.clear;
             main_img.color = Color.white;
             gun_img.color = Color.white;
             selected = true;
             Debug.Log("g");
 
-        // }
+        }
     }
 
     public void OnDeselect(){

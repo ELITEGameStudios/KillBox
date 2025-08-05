@@ -12,6 +12,7 @@ public class TokenUI : MonoBehaviour
     [SerializeField] private bool isPlaying;
     [SerializeField] private float animationTime, animationTimer;
     [SerializeField] private int tokenCount, countUntilMaxColor;
+    [SerializeField] private Animator animator;
     
     
     public static TokenUI main {get; private set;}
@@ -46,12 +47,14 @@ public class TokenUI : MonoBehaviour
         }
     }
 
-    public void InitPickupAnimation(int tokenCount){
-        if(!isPlaying){ isPlaying = true; }
+    public void InitPickupAnimation(int tokenCount)
+    {
+        if (!isPlaying) { isPlaying = true; }
 
         this.tokenCount += tokenCount;
         animationTimer = animationTime;
-        currentColor = pickupTextGradient.Evaluate(  (float)(this.tokenCount / (float)countUntilMaxColor)  );
-        tokenPickupText.text = "+"+this.tokenCount.ToString();
+        currentColor = pickupTextGradient.Evaluate((float)(this.tokenCount / (float)countUntilMaxColor));
+        tokenPickupText.text = "+" + this.tokenCount.ToString();
+        animator.SetTrigger("Attain");
     }
 }

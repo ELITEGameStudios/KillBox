@@ -132,11 +132,11 @@ public class CooldownScript : MonoBehaviour, IRestartListener
         cooling_down = true;
         //animator.Play("CoolingDown");
         if(id == 0){
-            InventoryUIManager.Instance.primary_element.StartCooldown();
+            // InventoryUIManager.Instance.primary_element.StartCooldown();
             KillboxEventSystem.TriggerCooldownBegin(new WeaponEventData(GunHandler.Instance.primary_weapon, true, GunHandler.Instance.has_dual));
         }
         else if(id == 1){
-            InventoryUIManager.Instance.secondary_element.StartCooldown();
+            // InventoryUIManager.Instance.secondary_element.StartCooldown();
             KillboxEventSystem.TriggerCooldownBegin(new WeaponEventData(GunHandler.Instance.backup_weapon, false, GunHandler.Instance.has_dual));
         }
 

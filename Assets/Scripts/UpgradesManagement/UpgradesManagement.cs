@@ -56,8 +56,8 @@ public class UpgradesList
     static public readonly Upgrade speed = new Upgrade(
         _name : "SPEED",
         values_input : new float[][]{
-            new float[]{5.5f, 5.5f, 6, 6, 6.5f, 6.5f, 7},
-            new float[]{5,    4,    4, 3, 3,    2,    1},
+            new float[]{5.5f, 5.75f, 6, 6.25f, 6.5f, 7f},
+            new float[]{5,    4,     4, 3,     3,    2},
         },
         costs_input : new int[]{1, 3, 8, 15, 20, 25, 30}
     );
