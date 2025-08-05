@@ -167,7 +167,7 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
     }
 
     Vector2 UpdateForces() {
-        // if (!canMove) return Vector2.zero;
+        if (!canMove) return Vector2.zero;
         Vector2 netCustomForces = Vector2.zero;
 
         foreach (CustomForce force in customForces) { // Updating and retrieving forces
