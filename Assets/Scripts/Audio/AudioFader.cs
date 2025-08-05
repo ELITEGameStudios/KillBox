@@ -17,17 +17,11 @@ public class AudioFader : MonoBehaviour
     [SerializeField]
     private float fade_timer, rate, receding_volume;
 
-    void Awake()
-    {
+    void Awake(){
         active_source = source2;
     }
-    void Start()
-    {
-        CheckVolume();
-    }
 
-    public void ChangeMixerGroup(AudioMixerGroup group)
-    {
+    public void ChangeMixerGroup(AudioMixerGroup group){
 
         active_source.outputAudioMixerGroup = group;
         other_source.outputAudioMixerGroup = group;

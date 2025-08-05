@@ -6,7 +6,6 @@ public class PrologueBoss : BossBase
 {
     [Header("General Info")]
     public float epilogueTimer;
-    public float maxSpeed;
     public BossDisplayObj linkedDisplay;
 
 
@@ -30,13 +29,12 @@ public class PrologueBoss : BossBase
     public PrologueAOERuneAttack epilogueAOE;
 
     [Header("Drain Graphic")]
-    public SpriteRenderer[] drainGraphics;
-    public Transform drainTransform, hitEffectTransform;
+    public SpriteRenderer mainSquare;
+    public Transform drainTransform;
     public Color[] debuffColor;
     public Color specialColor;
     public GameObject beamObject;
     public GameObject[] specialBeamObjects;
-    public bool drainedThisFrame;
 
 
     [Header("Spawner prefabs")]
@@ -55,9 +53,6 @@ public class PrologueBoss : BossBase
     public AnimationCurve fireLerpCurve;
     public AnimationCurve beamWidthCurve;
     public AnimationCurve specialBeamWidthCurve;
-
-    [Header("Debug")]
-    public RaycastHit2D[] raysss;
 
     public enum DebuffType
     {
@@ -114,14 +109,14 @@ public class PrologueBoss : BossBase
 
     public PrologueRuneProjectile GetNewRuneProjectile()
     {
-        // PrologueRuneProjectile obj;
-        // foreach (PrologueRuneProjectile item in runeExplosionPool)
-        // {
-        //     if (item.state == PrologueRuneProjectile.State.INACTIVE)
-        //     {
-        //         return item;
-        //     }
-        // }
+        PrologueRuneProjectile obj;
+        foreach (PrologueRuneProjectile item in runeExplosionPool)
+        {
+            if (item.state == PrologueRuneProjectile.State.INACTIVE)
+            {
+                return item;
+            }
+        }
 
         GameObject newObj = Instantiate(runeProjectile, transform);
         newObj.transform.SetParent(null);
@@ -133,7 +128,7 @@ public class PrologueBoss : BossBase
 
     public void ResetDrainGraphic() // Bool returns if the drain graphic is hitting the player
     {
-        foreach(var graphic in drainGraphics) graphic.color = Color.clear;
+        mainSquare.color = Color.clear;
         drainTransform.localScale = Vector3.one;
         drainTransform.rotation = transform.rotation;
     }
@@ -141,27 +136,15 @@ public class PrologueBoss : BossBase
 
     public bool SetDrainGraphic(DebuffType debuffType) // Bool returns if the drain graphic is hitting the player
     {
-        Vector2 spawn = runeList[(int)debuffType].transform.position;
         Vector2 target;
         bool hit_player;
         
-        RaycastHit2D[] rays = Physics2D.RaycastAll(spawn, (Vector2)Player.main.tf.position - (Vector2)runeList[(int)debuffType].transform.position, Mathf.Infinity, LayerMask.GetMask("Obstacles", "Player"));
-        raysss = rays;
-        RaycastHit2D hit = rays.Length > 0 ? rays[0] : new RaycastHit2D();
-        float dist = rays.Length > 0 ? Vector2.Distance(hit.point, spawn) : Mathf.Infinity;
-        foreach (var ray in rays)
-        {
-            if (!hit || Vector2.Distance(hit.point, spawn) > dist)
-            {
-                hit = ray;
-                dist = Vector2.Distance(hit.point, spawn);
-            }
-        }
-
-        if (hit.transform != null && hit.transform.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
+        mainSquare.color = debuffColor[(int)debuffType];
+        RaycastHit2D ray = Physics2D.Raycast(runeList[(int)debuffType].transform.position, (Vector2)Player.main.tf.position - (Vector2)transform.position);
+        if (ray.transform.gameObject.layer == LayerMask.GetMask("Obstacles"))
         {
             // The ray has hit a wall
-            target = hit.point;
+            target = ray.point;
             hit_player = false;
         }
         else
@@ -171,23 +154,15 @@ public class PrologueBoss : BossBase
             hit_player = true;
         }
 
-        drainTransform.position = spawn;
         drainTransform.localScale = new Vector3(
             1,
-            Vector2.Distance(target, spawn),
+            Vector2.Distance(target, transform.position),
             1
         );
-        foreach(var graphic in drainGraphics) graphic.color = debuffColor[(int)debuffType];
 
-        drainTransform.rotation = Quaternion.LookRotation(Vector3.forward, target - spawn);
-        hitEffectTransform.rotation = Quaternion.LookRotation(Vector3.forward, spawn - target);
-
-        hitEffectTransform.position = target;
-        // hitEffectTransform.rotation = drainTransform.rotation;
+        drainTransform.rotation = Quaternion.LookRotation(Vector3.forward, target - (Vector2)transform.position);
         // drainTransform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle((Vector2)transform.position, target));
-
-        drainedThisFrame = true;
-        return hit_player;
+        return true;
     }
 
     void TransformToEpilogue()
@@ -218,22 +193,10 @@ public class PrologueBoss : BossBase
         if (fireTimer <= 0)
         {
             // Shoot rune
-            PrologueRuneProjectile projectile = GetNewRuneProjectile();
-            Vector2 target = (Vector2)Player.main.tf.position + (Vector2)Player.main.rb.velocity * projectile.seekTime;
-            projectile.StartSeek(transform.position, target, DebuffType.SPEED);
 
             fireTimer = fireInterval;
         }
-
-        rb_self.velocity = (Player.main.tf.position - transform.position).normalized * (maxSpeed * 1 - (health.CurrentHealth / health.maxHealth)) * Time.deltaTime;
         fireTimer -= Time.deltaTime;
-        
-    }
-
-    protected override void OnLateUpdate()
-    {
-        hitEffectTransform.gameObject.SetActive(drainedThisFrame);
-        drainedThisFrame = false;
     }
 
     public override void DeathEvent(bool to_player = false)

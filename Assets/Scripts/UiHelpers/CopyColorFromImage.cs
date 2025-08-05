@@ -11,7 +11,6 @@ public class CopyColorFromImage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(copyied_image != null && target_image != null)
         copyied_image.color = target_image.color;
     }
 }

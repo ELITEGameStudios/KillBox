@@ -389,7 +389,6 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         if(pressedThisFrame && background.gameObject.activeInHierarchy){
             onBackButton.Invoke();
             GameManager.main.SetInGameButtonHandlers(true);
-            Player.main.movement.OnCloseShop();
             KillboxEventSystem.TriggeCloseShopEvent();
             activeMenu = false;
         }
