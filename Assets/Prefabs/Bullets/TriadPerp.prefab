@@ -9818,10 +9818,10 @@ GameObject:
   - component: {fileID: 3058283485345405569}
   - component: {fileID: 1842351548194581166}
   - component: {fileID: 7165752951767464016}
+  - component: {fileID: 7839011232891233859}
   - component: {fileID: 4019508538582900270}
   - component: {fileID: 7052608774973401468}
   - component: {fileID: 6443746434658913158}
-  - component: {fileID: 7839011232891233859}
   m_Layer: 0
   m_Name: TriadPerp
   m_TagString: Untagged
@@ -10025,7 +10025,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.8
+  m_Time: 0.4
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -10096,6 +10096,21 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!114 &7839011232891233859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5993488408805620187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c1aa0da1fac8a549aed54103aea8424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waitTime: 0.1
+  currentWaitTime: 0
+  trail: {fileID: 7165752951767464016}
 --- !u!114 &4019508538582900270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10139,21 +10154,6 @@ MonoBehaviour:
   - {fileID: 3295273526096427957}
   baseSpeed: 20
   accel: 100
---- !u!114 &7839011232891233859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5993488408805620187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c1aa0da1fac8a549aed54103aea8424, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waitTime: 0.1
-  currentWaitTime: 0
-  trail: {fileID: 7165752951767464016}
 --- !u!1 &8240178325973999433
 GameObject:
   m_ObjectHideFlags: 0

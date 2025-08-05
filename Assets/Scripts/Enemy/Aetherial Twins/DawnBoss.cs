@@ -12,8 +12,14 @@ public class DawnBoss : BossBase
 
     [Header("Death Handler")]
     public bool isSolo;
-    public bool isHalf;
+    public int phaseInt;
     public DuskBoss duskScript;
+
+    [Header("Enrage Handler")]
+    public SpriteRenderer[] spriteArray;
+    public SpriteRenderer[] glowArray;
+    public Color startColor, endColor, startGlow, endGlow;
+    public float timeElapsed, colorChange;
 
     [Header("States")]
     public DawnMainAttackState mainAttack, halfHpAttack, enragedMain;
@@ -57,10 +63,21 @@ public class DawnBoss : BossBase
         }
     }
     protected override void OnSetPhase(){
-        if (!isSolo && isHalf){
+        phaseInt ++;
+        if (!isSolo && phaseInt == 2){
             duskScript.SetPhase(duskScript.secondPhase);
         }
-        isHalf = true;
+    }
+    protected override void OnUpdate(){
+        if (phaseInt >= 2){
+            timeElapsed += Time.deltaTime;
+            foreach (SpriteRenderer body in spriteArray){
+                body.color = Color.Lerp(startColor, endColor, timeElapsed * colorChange);
+            }
+            foreach (SpriteRenderer glow in glowArray){
+                glow.color = Color.Lerp(startGlow, endGlow, timeElapsed * colorChange);
+            }
+        }
     }
 
 }

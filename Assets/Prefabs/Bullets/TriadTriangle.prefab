@@ -9818,8 +9818,8 @@ GameObject:
   - component: {fileID: 3058283485345405569}
   - component: {fileID: 1842351548194581166}
   - component: {fileID: 7165752951767464016}
-  - component: {fileID: -325929345005158171}
   - component: {fileID: 9134640948524201179}
+  - component: {fileID: -325929345005158171}
   m_Layer: 0
   m_Name: TriadTriangle
   m_TagString: Untagged
@@ -10021,7 +10021,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.3
+  m_Time: 0.2
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -10092,21 +10092,6 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
---- !u!114 &-325929345005158171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5993488408805620187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f45e0b694ffb79045b5489b7299e83fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 6723365783674798921}
-  speed: 0
-  accel: 400
 --- !u!114 &9134640948524201179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10122,6 +10107,21 @@ MonoBehaviour:
   waitTime: 0.2
   currentWaitTime: 0
   trail: {fileID: 7165752951767464016}
+--- !u!114 &-325929345005158171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5993488408805620187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f45e0b694ffb79045b5489b7299e83fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 6723365783674798921}
+  speed: 0
+  accel: 400
 --- !u!1 &8240178325973999433
 GameObject:
   m_ObjectHideFlags: 0

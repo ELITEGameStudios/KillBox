@@ -27,7 +27,7 @@ public class AlphaTriadBoss : BossBase
 
     // this,  stateTime,  speed,  force,  fireRate
     burstState = new AlphaTriadBurst(this, 8f, 1.2f, 100, 1.5f);
-    wallState = new AlphaTriadWall(this, 10f, 10f, 2000, 5.5f, 3f, 0.8f);
+    wallState = new AlphaTriadWall(this, 10f, 10f, 2000, 7f, 3f, 0.8f);
     deltaState = new AlphaTriadDelta(this, 6f, 1f, 100, 0.5f);
     spiralState = new AlphaTriadOther(this, 10f, 0f, 0f, 0.7f, 1.2f, 0);
     triangleState = new AlphaTriadTriangle(this, 10f, 0.5f, 100, 1.8f, 1f);
