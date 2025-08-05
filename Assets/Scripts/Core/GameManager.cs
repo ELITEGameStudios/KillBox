@@ -294,15 +294,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
         time_played += Time.deltaTime;
     }
 
-    // void LateUpdate(){
-    //     if(escapeRoom && WeaponItemList.Instance.GetItem("Revolver").owned){
-    //         inventoryUI.SetActive(false);
-    //         if(!clickedStartGame){
-    //             gameplayHUD.SetActive(false);
-    //         }
-    //     }
-    // }
-
     public void StartGame()
     {
         // FadeAnimator.Play("FadeAnim");
@@ -575,14 +566,15 @@ public class GameManager : MonoBehaviour, ISelfResListener
             OnList[i].SetActive(true);
         }
 
-        while (timer > 0)
-        {
-            timer -= Time.deltaTime;
-            yield return null;
-        }
+        // while (timer > 0)
+        // {
+        //     timer -= Time.deltaTime;
+        //     yield return null;
+        // }
 
         timer = 1;
 
+        GameplayUI.instance.gameObject.SetActive(false);
         camera.gameObject.SetActive(true);
         camera.orthographicSize = 0;
         while (timer > 0)
@@ -619,6 +611,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         camera_tf.localEulerAngles = new Vector3(0, 0, 0);
 
         Player.main.obj.SetActive(true);
+        Player.main.Appear();
         // GameObject effect = Instantiate(player_spawn_FX, Player.transform);
         // effect.transform.SetParent(null);
         
