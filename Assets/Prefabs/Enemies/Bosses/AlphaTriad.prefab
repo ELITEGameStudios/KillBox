@@ -3074,6 +3074,7 @@ GameObject:
   - component: {fileID: -7481427406063058164}
   - component: {fileID: -7763688133781399833}
   - component: {fileID: 1409773320836524839}
+  - component: {fileID: 145730444501202384}
   m_Layer: 9
   m_Name: AlphaTriad
   m_TagString: Enemy
@@ -3765,3 +3766,24 @@ MonoBehaviour:
   - {fileID: 5153110765835925730}
   - {fileID: 5138938443953651531}
   rotator: {fileID: 2993104213824101514}
+--- !u!95 &145730444501202384
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9210085316317323341}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a6d696cd82d840343bcbe618667e88a6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
