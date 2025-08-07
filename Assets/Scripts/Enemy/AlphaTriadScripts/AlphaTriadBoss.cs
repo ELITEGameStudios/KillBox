@@ -31,7 +31,7 @@ public class AlphaTriadBoss : BossBase
     deltaState = new AlphaTriadDelta(this, 6f, 1f, 100, 0.5f);
     spiralState = new AlphaTriadOther(this, 10f, 0f, 0f, 0.7f, 1.2f, 0);
     triangleState = new AlphaTriadTriangle(this, 10f, 0.5f, 100, 1.8f, 1f);
-    lineState = new AlphaTriadOther(this, 12f, 0f, 100f, 2f, 1.5f, 1);
+    lineState = new AlphaTriadOther(this, 9f, 0f, 100f, 2f, 1.5f, 1);
 
     burstState2 = new AlphaTriadBurst(this, 8f, 1.8f, 1000, 1.3f);
     deltaState2 = new AlphaTriadDelta(this, 6f, 1.5f, 1000, 0.4f);
