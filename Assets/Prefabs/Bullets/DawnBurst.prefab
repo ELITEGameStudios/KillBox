@@ -48,7 +48,7 @@ MonoBehaviour:
   playerTf: {fileID: 5536115794039641595}
   Spawn: {fileID: 5536115794039641595}
   Enemytf: {fileID: 0}
-  Velocity: 250
+  Velocity: 300
   spread: 0
   bulletRb: {fileID: 6324844401079243494, guid: 36bf2201355e07c409e7042d8dbcc2ff, type: 3}
   clone: {fileID: 0}
@@ -63,7 +63,7 @@ MonoBehaviour:
   BulletsPerShot: 1
   poolIndex: 32
   damage_boss_field: 0
-  FR: 1.3
+  FR: 1.5
   AimProxim: 0
   cam: {fileID: 0}
   GetPrefabToGameObject: {fileID: 0}
@@ -9968,7 +9968,7 @@ MonoBehaviour:
   playerTf: {fileID: 3628040125142131891}
   Spawn: {fileID: 3628040125142131891}
   Enemytf: {fileID: 0}
-  Velocity: 250
+  Velocity: 300
   spread: 0
   bulletRb: {fileID: 6324844401079243494, guid: 36bf2201355e07c409e7042d8dbcc2ff, type: 3}
   clone: {fileID: 0}
@@ -9983,7 +9983,7 @@ MonoBehaviour:
   BulletsPerShot: 1
   poolIndex: 32
   damage_boss_field: 0
-  FR: 1.3
+  FR: 1.5
   AimProxim: 0
   cam: {fileID: 0}
   GetPrefabToGameObject: {fileID: 0}
@@ -10024,7 +10024,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 2}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1.6}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4147284260696222601}
@@ -10046,7 +10046,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0.3
+  m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -10094,7 +10094,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.4
 --- !u!114 &2927667452841412849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10254,7 +10254,7 @@ MonoBehaviour:
   playerTf: {fileID: 1528313818493315445}
   Spawn: {fileID: 1528313818493315445}
   Enemytf: {fileID: 0}
-  Velocity: 250
+  Velocity: 300
   spread: 0
   bulletRb: {fileID: 6324844401079243494, guid: 36bf2201355e07c409e7042d8dbcc2ff, type: 3}
   clone: {fileID: 0}
@@ -10269,7 +10269,7 @@ MonoBehaviour:
   BulletsPerShot: 1
   poolIndex: 32
   damage_boss_field: 0
-  FR: 1.3
+  FR: 1.5
   AimProxim: 0
   cam: {fileID: 0}
   GetPrefabToGameObject: {fileID: 0}
@@ -10463,7 +10463,7 @@ MonoBehaviour:
   playerTf: {fileID: 6359059887606510730}
   Spawn: {fileID: 6359059887606510730}
   Enemytf: {fileID: 0}
-  Velocity: 250
+  Velocity: 300
   spread: 0
   bulletRb: {fileID: 6324844401079243494, guid: 36bf2201355e07c409e7042d8dbcc2ff, type: 3}
   clone: {fileID: 0}
@@ -10478,7 +10478,7 @@ MonoBehaviour:
   BulletsPerShot: 1
   poolIndex: 32
   damage_boss_field: 0
-  FR: 1.3
+  FR: 1.5
   AimProxim: 0
   cam: {fileID: 0}
   GetPrefabToGameObject: {fileID: 0}

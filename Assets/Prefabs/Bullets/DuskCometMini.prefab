@@ -9994,12 +9994,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 6324844401079243494}
-  accel: 300
-  rotate: 1000
-  rotateTime: 0.3
+  accel: 400
+  rotate: 600
+  rotateTime: 0.1
   currentRotateTime: 0
   angle: 0
-  minAngle: 6
+  minAngle: 3
   canSeePlayer: 0
   hasTrail: 0
   trail: {fileID: 0}

@@ -9920,7 +9920,7 @@ MonoBehaviour:
   rb: {fileID: 6324844401079243494}
   playerHealthScript: {fileID: 0}
   playerRigidBody: {fileID: 0}
-  damage: 60
+  damage: 100
   _ignite_intensity: 0
   hitKb: 0
   HitCooldown: 0.2

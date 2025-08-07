@@ -9994,7 +9994,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 6324844401079243494}
   speed: 0
-  accel: 250
+  accel: 150
 --- !u!1 &5515957348477740430
 GameObject:
   m_ObjectHideFlags: 0
@@ -10161,7 +10161,7 @@ MonoBehaviour:
   BulletsPerShot: 1
   poolIndex: 35
   damage_boss_field: 0
-  FR: 0.9
+  FR: 1.1
   AimProxim: 0
   cam: {fileID: 0}
   GetPrefabToGameObject: {fileID: 0}

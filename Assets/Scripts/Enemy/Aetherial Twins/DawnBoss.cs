@@ -32,7 +32,7 @@ public class DawnBoss : BossBase
         // this,  stateTime,  speed,  force, distance, fireRate, init
         mainAttack = new DawnMainAttackState(this, 8f, 5f, 1500f, 7.5f, 1.9f, 2f);
         gravAttack = new DawnGravityState(this, 12f, 4.5f, 1000f, 6f, 2.5f, 2.7f, 1.5f);
-        burstAttack = new DawnOtherAttackState(this, 10f, 5f, 1500f, 8f, 3f, 1f, 0);
+        burstAttack = new DawnOtherAttackState(this, 7.5f, 5f, 1500f, 8f, 3f, 1f, 0);
         clusterAttack = new DawnOtherAttackState(this, 8f, 3f, 1000f, 7.5f, 1.5f, 1.3f, 1);
         trailAttack = new DawnOtherAttackState(this, 10f, 3f, 1500f, 8f, 2.2f, 1f, 2);
 
@@ -41,7 +41,7 @@ public class DawnBoss : BossBase
         meteorAttackLong = new DawnOtherAttackState(this, 10f, 5f, 1500f, 8.5f, 2.5f, 1f, 3);
         rainAttack = new DawnOtherAttackState(this, 10f, 3f, 1000f, 7.5f, 0.5f, 0.9f, 4);
 
-        enragedMain = new DawnMainAttackState(this, 8f, 9f, 1500f, 8.5f, 0.4f, 1.5f);
+        enragedMain = new DawnMainAttackState(this, 8f, 9f, 1500f, 8.5f, 0.3f, 0.1f);
 
         firstPhase.statesInPhase = new BossStateData[] {mainAttack, gravAttack, mainAttack, burstAttack, clusterAttack, trailAttack};
         firstPhase.minHealth = 0.5f;

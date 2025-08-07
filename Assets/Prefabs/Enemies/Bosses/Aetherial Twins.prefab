@@ -2271,8 +2271,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: DUSK
-  maxHealth: 25000
-  damage: 150
+  maxHealth: 20000
+  damage: 125
   limit: 0
   speed: 0
   acceleration: 0
@@ -2530,6 +2530,17 @@ MonoBehaviour:
     atPlayer: 0
     atStart: 0
   cannonAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+  cannonAttackLong:
     name: 
     displaySprite: {fileID: 0}
     displayColor: {r: 0, g: 0, b: 0, a: 0}
@@ -3148,8 +3159,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: DAWN
-  maxHealth: 25000
-  damage: 150
+  maxHealth: 20000
+  damage: 125
   limit: 0
   speed: 0
   acceleration: 0
@@ -3443,6 +3454,17 @@ MonoBehaviour:
     animator: {fileID: 0}
     transform: {fileID: 0}
     finished: 0
+  meteorAttackLong:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
   firstPhase:
     minHealth: 0
   secondPhase:
@@ -3567,7 +3589,7 @@ MonoBehaviour:
   playerTf: {fileID: 5871577366889041923}
   Spawn: {fileID: 5871577366889041923}
   Enemytf: {fileID: 0}
-  Velocity: 400
+  Velocity: 450
   spread: 0
   bulletRb: {fileID: 6324844401079243494, guid: abc7fedaf0cea464fbfc629b8ff5f9e3, type: 3}
   clone: {fileID: 0}
@@ -3588,7 +3610,7 @@ MonoBehaviour:
   GetPrefabToGameObject: {fileID: 0}
   objectPool: {fileID: 0}
   audio: {fileID: 0}
-  range: 3
+  range: 2.5
 --- !u!1 &6403932836101573083
 GameObject:
   m_ObjectHideFlags: 0

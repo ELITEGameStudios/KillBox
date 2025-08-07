@@ -10142,7 +10142,7 @@ MonoBehaviour:
   BulletsPerShot: 1
   poolIndex: 28
   damage_boss_field: 0
-  FR: 0.8
+  FR: 0.6
   AimProxim: 0
   cam: {fileID: 0}
   GetPrefabToGameObject: {fileID: 0}
