@@ -9,7 +9,7 @@ public class BulletRotate : MonoBehaviour
     [SerializeField]
     private float accel, rotate, rotateTime, currentRotateTime, angle, minAngle;
     [SerializeField]
-    private bool canSeePlayer, hasTrail;
+    private bool canSeePlayer, hasTrail, bulletFreeze;
     private Vector2 target;
     [SerializeField]
     private TrailRenderer trail;
@@ -17,6 +17,7 @@ public class BulletRotate : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
+        bulletFreeze = true;
         currentRotateTime = rotateTime;
         canSeePlayer = false;
         if (hasTrail){
@@ -45,7 +46,10 @@ public class BulletRotate : MonoBehaviour
                 if (hasTrail){
                     trail.emitting = true;
                 }
-                
+                if (bulletFreeze){
+                    rb.velocity = new Vector2(0, 0);
+                    bulletFreeze = false;
+                }
                 rb.AddForce(transform.up * accel * Time.fixedDeltaTime);
             }
             

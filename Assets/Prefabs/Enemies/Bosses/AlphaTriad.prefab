@@ -3338,7 +3338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: ALPHA TRIAD
-  maxHealth: 40000
+  maxHealth: 75000
   damage: 125
   limit: 0
   speed: 0

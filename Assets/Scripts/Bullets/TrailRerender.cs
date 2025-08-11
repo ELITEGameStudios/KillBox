@@ -27,5 +27,8 @@ public class TrailRerender : MonoBehaviour
             currentWaitTime -= Time.deltaTime;
         }
     }
+    void OnDisable(){
+        trail.Clear();
+    }
         
     }
