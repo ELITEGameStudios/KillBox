@@ -22,15 +22,15 @@ public class MidasBoss : BossBase
 
     void Awake(){
         // this,  stateTime,  speed,  force, distance, fireRate, init
-        crownShoot = new MidasShootState(this, 7f, 3f, 3000f, 5f, 0.8f, 1.5f);
-        nerfedShoot = new MidasShootState(this, 7f, 2f, 3000f, 5f, 1.3f, 2f);
+        crownShoot = new MidasShootState(this, 7f, 3f, 3000f, 5f, 1f, 1.5f);
+        nerfedShoot = new MidasShootState(this, 10f, 2f, 3000f, 5f, 1.4f, 2f);
         ramAttack = new MidasRamState(this, 14f, 1700f, 0.6f);
-        crownFall = new MidasFallState(this, 6f, 2f, 3000f, 6f, 0.6f, 1.5f);
+        crownFall = new MidasFallState(this, 6f, 2f, 3000f, 6f, 0.8f, 1.5f);
         wallAttack = new MidasOtherState(this, 8.5f, 2f, 3000f, 5f, 1.3f, 1.5f, 0);
         corridorAttack = new MidasCorridorState(this);
         bannerAttack = new MidasAlterState(this, 7f, 2f, 3000f, 5f, 1.4f, 1.5f, 0);
-        nerfedBanner = new MidasAlterState(this, 7f, 1.5f, 3000f, 5f, 1.9f, 1.8f, 0);
-        guillotineAttack = new MidasGuillotineState(this, 4f, 3000f, 5.5f, 15f, 1);
+        nerfedBanner = new MidasAlterState(this, 10f, 1.5f, 3000f, 5f, 1.9f, 1.8f, 0);
+        guillotineAttack = new MidasGuillotineState(this, 4f, 3000f, 5.5f, 12f, 1);
 
         firstPhase.statesInPhase = new BossStateData[] {crownShoot, ramAttack, ramAttack, ramAttack, crownFall};
         firstPhase.minHealth = 0.85f;

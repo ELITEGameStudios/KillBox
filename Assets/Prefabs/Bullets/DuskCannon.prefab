@@ -9817,6 +9817,7 @@ GameObject:
   - component: {fileID: 2799389909094348940}
   - component: {fileID: 2927667452841412849}
   - component: {fileID: 1479406010563227614}
+  - component: {fileID: 6439496919459833476}
   m_Layer: 0
   m_Name: DuskCannon
   m_TagString: MeteorTrigger
@@ -9964,6 +9965,21 @@ MonoBehaviour:
   has_particles: 1
   destroy_on_shard_trigger: 0
   ignore_timer: 0
+--- !u!114 &6439496919459833476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5001199621994018729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f45e0b694ffb79045b5489b7299e83fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 6324844401079243494}
+  speed: 0
+  accel: 400
 --- !u!1 &5515957348477740430
 GameObject:
   m_ObjectHideFlags: 0

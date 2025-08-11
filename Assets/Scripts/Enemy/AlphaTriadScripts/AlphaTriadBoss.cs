@@ -13,7 +13,7 @@ public class AlphaTriadBoss : BossBase
     public AlphaTriadBurst burstState, burstState2, burstState3;
     public AlphaTriadWall wallState;
     public AlphaTriadDelta deltaState, deltaState2, deltaState3;
-    public AlphaTriadOther spiralState, lineState;
+    public AlphaTriadOther spiralState, lineState, spiralState2;
     public AlphaTriadTriangle triangleState, triangleState2, triangleState3;
     public Phase firstPhase, secondPhase, thirdPhase;
 
@@ -31,11 +31,12 @@ public class AlphaTriadBoss : BossBase
     deltaState = new AlphaTriadDelta(this, 6f, 1f, 100, 0.5f);
     spiralState = new AlphaTriadOther(this, 10f, 0f, 0f, 0.7f, 1.2f, 0);
     triangleState = new AlphaTriadTriangle(this, 10f, 0.5f, 100, 1.8f, 1f);
-    lineState = new AlphaTriadOther(this, 9f, 0f, 100f, 2f, 1.5f, 1);
+    lineState = new AlphaTriadOther(this, 5f, 0f, 100f, 2f, 1.5f, 1);
 
     burstState2 = new AlphaTriadBurst(this, 8f, 1.8f, 1000, 1.3f);
     deltaState2 = new AlphaTriadDelta(this, 6f, 1.5f, 1000, 0.4f);
     triangleState2 = new AlphaTriadTriangle(this, 10f, 0.6f, 1000, 1.4f, 0.8f);
+    spiralState2 = new AlphaTriadOther(this, 8f, 0f, 0f, 0.6f, 1f, 0);
 
     burstState3 = new AlphaTriadBurst(this, 8f, 3f, 1000, 1.1f);
     deltaState3 = new AlphaTriadDelta(this, 6f, 2.5f, 1000, 0.3f);
@@ -44,10 +45,10 @@ public class AlphaTriadBoss : BossBase
     firstPhase.statesInPhase = new BossStateData[] {burstState, wallState, deltaState, lineState, triangleState, spiralState};
     firstPhase.minHealth = 0.75f;
 
-    secondPhase.statesInPhase = new BossStateData[] {burstState2, lineState, spiralState, deltaState2, wallState, triangleState2};
+    secondPhase.statesInPhase = new BossStateData[] {burstState2, lineState, spiralState2, deltaState2, wallState, triangleState2};
     secondPhase.minHealth = 0.4f;
 
-    thirdPhase.statesInPhase = new BossStateData[] {burstState3, deltaState3, wallState, burstState3, lineState, triangleState3, spiralState};
+    thirdPhase.statesInPhase = new BossStateData[] {burstState3, deltaState3, wallState, burstState3, lineState, triangleState3, spiralState2};
     thirdPhase.minHealth = 0f;
 
     phases = new Phase[3]{firstPhase, secondPhase, thirdPhase};

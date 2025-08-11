@@ -24,7 +24,7 @@ public class DuskBoss : BossBase
 
     [Header("States")]
     public DuskMainAttackState mainAttack, halfHpAttack, enragedMain;
-    public DuskOtherAttackState retargetAttack, barrageAttack, cometAttack;
+    public DuskOtherAttackState retargetAttack, barrageAttack, cometAttack, enragedRetarget;
     public DuskDashState dashAttack;
     public DuskCannonState cannonAttack, cannonAttackLong;
     public DuskWaveState waveAttack;
@@ -33,18 +33,19 @@ public class DuskBoss : BossBase
     void Awake()
     {
         // this,  stateTime,  speed,  force, distance, fireRate, init
-        mainAttack = new DuskMainAttackState(this, 8f, 5f, 1000f, 7.5f, 1.6f, 1.8f);
-        retargetAttack = new DuskOtherAttackState(this, 9f, 3f, 1000f, 8f, 1.8f, 2f, 2);
+        mainAttack = new DuskMainAttackState(this, 8f, 5f, 1000f, 7.5f, 1.55f, 1.8f);
+        retargetAttack = new DuskOtherAttackState(this, 9f, 3f, 1000f, 8f, 1.7f, 2f, 2);
         barrageAttack = new DuskOtherAttackState(this, 3f, 5f, 1000f, 7.5f, 2f, 2f, 3);
-        cometAttack = new DuskOtherAttackState(this, 7.5f, 7f, 1500f, 8.5f, 2f, 1.5f, 4);
-        dashAttack = new DuskDashState(this, 14f, 2000f, 8f, 8000f, 0.2f, 1.7f);
+        cometAttack = new DuskOtherAttackState(this, 7.5f, 7f, 1500f, 8.5f, 1.3f, 1.5f, 4);
+        dashAttack = new DuskDashState(this, 12f, 2000f, 8f, 8000f, 0.2f, 1.7f);
 
-        halfHpAttack = new DuskMainAttackState(this, 8f, 7f, 1500f, 8.5f, 1.4f, 1.8f);
-        cannonAttack = new DuskCannonState(this, 7f, 3f, 1000f, 9f, 1.8f, 1.8f, 0.9f, 0.4f);
-        cannonAttackLong = new DuskCannonState(this, 12f, 3f, 1000f, 9f, 1.8f, 1.8f, 0.9f, 0.4f);
+        halfHpAttack = new DuskMainAttackState(this, 8f, 7f, 1500f, 8.5f, 1.3f, 1.8f);
+        cannonAttack = new DuskCannonState(this, 7f, 3f, 1000f, 9f, 1.8f, 1.8f, 0.95f, 0.45f);
+        cannonAttackLong = new DuskCannonState(this, 12f, 3f, 1000f, 9f, 1.8f, 1.8f, 0.95f, 0.45f);
         waveAttack = new DuskWaveState(this, 2f, 8f, 3000f, 9f, 0.08f);
 
         enragedMain = new DuskMainAttackState(this, 8f, 9f, 1500f, 8.5f, 0.2f, 0.15f);
+        enragedRetarget = new DuskOtherAttackState(this, 9f, 9f, 1500f, 8f, 0.35f, 0.1f, 2);
 
         firstPhase.statesInPhase = new BossStateData[] {mainAttack, dashAttack, dashAttack, retargetAttack, cometAttack, barrageAttack};
         firstPhase.minHealth = 0.5f;
@@ -53,7 +54,7 @@ public class DuskBoss : BossBase
         dashAttack, dashAttack, dashAttack, waveAttack, waveAttack, waveAttack, retargetAttack};
         secondPhase.minHealth = -0.5f;
 
-        enragedPhase.statesInPhase = new BossStateData[] {enragedMain};
+        enragedPhase.statesInPhase = new BossStateData[] {enragedMain, enragedRetarget};
         enragedPhase.minHealth = -1f;
 
 

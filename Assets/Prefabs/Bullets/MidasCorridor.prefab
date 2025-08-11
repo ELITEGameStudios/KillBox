@@ -48,7 +48,7 @@ MonoBehaviour:
   playerTf: {fileID: 3437655568062173146}
   Spawn: {fileID: 3437655568062173146}
   Enemytf: {fileID: 0}
-  Velocity: 150
+  Velocity: 200
   spread: 0
   bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
@@ -118,7 +118,7 @@ MonoBehaviour:
   playerTf: {fileID: 4644272208796419499}
   Spawn: {fileID: 4644272208796419499}
   Enemytf: {fileID: 0}
-  Velocity: 150
+  Velocity: 200
   spread: 0
   bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
@@ -273,7 +273,7 @@ MonoBehaviour:
   playerTf: {fileID: 8374989489240544021}
   Spawn: {fileID: 8374989489240544021}
   Enemytf: {fileID: 0}
-  Velocity: 150
+  Velocity: 200
   spread: 0
   bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
@@ -5294,7 +5294,7 @@ MonoBehaviour:
   playerTf: {fileID: 8760808409164921222}
   Spawn: {fileID: 8760808409164921222}
   Enemytf: {fileID: 0}
-  Velocity: 150
+  Velocity: 200
   spread: 0
   bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
@@ -5364,7 +5364,7 @@ MonoBehaviour:
   playerTf: {fileID: 4373595716804202923}
   Spawn: {fileID: 4373595716804202923}
   Enemytf: {fileID: 0}
-  Velocity: 150
+  Velocity: 200
   spread: 0
   bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
@@ -5434,7 +5434,7 @@ MonoBehaviour:
   playerTf: {fileID: 5681436418733732058}
   Spawn: {fileID: 5681436418733732058}
   Enemytf: {fileID: 0}
-  Velocity: 150
+  Velocity: 200
   spread: 0
   bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
@@ -5504,7 +5504,7 @@ MonoBehaviour:
   playerTf: {fileID: 860332897511205549}
   Spawn: {fileID: 860332897511205549}
   Enemytf: {fileID: 0}
-  Velocity: 150
+  Velocity: 200
   spread: 0
   bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
@@ -5574,7 +5574,7 @@ MonoBehaviour:
   playerTf: {fileID: 600544207408565418}
   Spawn: {fileID: 600544207408565418}
   Enemytf: {fileID: 0}
-  Velocity: 150
+  Velocity: 200
   spread: 0
   bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
@@ -10510,7 +10510,7 @@ MonoBehaviour:
   playerTf: {fileID: 6434307589198959694}
   Spawn: {fileID: 6434307589198959694}
   Enemytf: {fileID: 0}
-  Velocity: 150
+  Velocity: 200
   spread: 0
   bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
@@ -10771,7 +10771,7 @@ MonoBehaviour:
   playerTf: {fileID: 5453972437163857464}
   Spawn: {fileID: 5453972437163857464}
   Enemytf: {fileID: 0}
-  Velocity: 150
+  Velocity: 200
   spread: 0
   bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}

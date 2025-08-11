@@ -10834,7 +10834,7 @@ MonoBehaviour:
   playerTf: {fileID: 460806398071714300}
   Spawn: {fileID: 460806398071714300}
   Enemytf: {fileID: 0}
-  Velocity: 550
+  Velocity: 500
   spread: 1
   bulletRb: {fileID: 3050550830639310726, guid: 06fc229d343e45d4ebcf3fa92fbbdc87, type: 3}
   clone: {fileID: 0}
