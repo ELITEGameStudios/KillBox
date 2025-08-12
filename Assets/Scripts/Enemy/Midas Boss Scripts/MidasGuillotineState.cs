@@ -41,6 +41,9 @@ public class MidasGuillotineState : BossStateData
             midasData.alterShooter[index].Velocity *= -1;
             midasData.alterShooter[index].Shoot();
             currentFireInterval = fireRate * midasData.normalizedHealth;
+            if (currentFireInterval < 0.26f){
+                currentFireInterval = 0.26f;
+            }
         }
         else{
             currentFireInterval -= Time.deltaTime;
