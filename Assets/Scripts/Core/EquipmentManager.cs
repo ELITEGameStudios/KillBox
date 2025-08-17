@@ -44,7 +44,7 @@ public class EquipmentManager : MonoBehaviour
         equipmentText = GameplayUI.instance.GetEquipmentHeader();
         equipmentImage = GameplayUI.instance.GetEquipmentImage();
         equipmentAnimator = GameplayUI.instance.GetEquipmentAnimator();
-        SetEquipmentType(0);
+        SetEquipmentType(0); 
     }
 
     // Update is called once per frame

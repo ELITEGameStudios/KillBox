@@ -86,12 +86,15 @@ public class MainMenuManager : MonoBehaviour
     public void Return(){ OpenMenuViaState(lastState); }
     public void Resume(){ OpenMenuViaState(MenuState.NONE); }
 
-    public void TriggerGameStart(bool freeplay = false){ KillBox.StartNewGame(selectedDifficulty, freeplay); }
-    public void OnGameSceneLoad(){ 
-        OpenMenuViaState(MenuState.NONE, false); 
+    public void TriggerGameStart(bool freeplay = false){ KillBox.StartNewGame(Game.Gamemode.MAIN, selectedDifficulty, freeplay); }
+    public void TriggerBossChallengeGameStart(bool freeplay = false){ KillBox.StartNewGame(Game.Gamemode.BOSSCHALLENGE, selectedDifficulty, freeplay); }
+    
+    public void OnGameSceneLoad()
+    {
+        OpenMenuViaState(MenuState.NONE, false);
         InstantSwitch();
         menusComponents.SetActive(false);
-        foreach(GameObject cam in menuCameras){cam.SetActive(false);}
+        foreach (GameObject cam in menuCameras) { cam.SetActive(false); }
     }
 
     public void End(){

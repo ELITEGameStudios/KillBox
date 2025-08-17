@@ -67,6 +67,12 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
             spawnSystem.StopSpawning();
             finishedBossRoundMainPhase = true;
 
+            if (GameManager.main.GetType() == typeof(BossChallengeGameManager))
+            {
+                BossChallengeGameManager manager = GameManager.main as BossChallengeGameManager;
+                manager.UpdateCurrentBoss();
+            }
+
             // Giving bonus
             int bonus = EconomyManager.instance.GetBossBonus();
             GameManager.main.OnPickupToken(bonus, false);
@@ -74,12 +80,24 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
         }
     }
     public int GetTierOfRound(int round){
-        return enemyList.bossRounds.FindIndex(match => match == round);
+        return KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE
+        ? GameManager.main.LvlCount
+        : enemyList.bossRounds.FindIndex(match => match == GameManager.main.LvlCount);
     }
 
     public void SetBossRound(bool hasBoss){
         isBossRound = hasBoss;
+        if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
+        {
+            finishedBossRoundMainPhase = false;
+            bossRoundTier = (int)(GameManager.main as BossChallengeGameManager).currentBoss;
+            bossType = (GameManager.main as BossChallengeGameManager).currentBoss; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
+            spawnSystem.SetBossSpawnList((int)bossType);
+            KillboxEventSystem.TriggerBossRoundChangeEvent();
 
+            return;
+
+        }
         if(isBossRound){ 
             finishedBossRoundMainPhase = false;
 
@@ -93,6 +111,15 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
     }
 
     public void UpdateCounters(){
+
+        if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
+        {
+            timeUntilNextBoss = 0;
+            timeSinceLastBoss = 0;
+            // finishedBossRoundMainPhase = false; ;
+            return;
+        }
+
         int round = GameManager.main.LvlCount;
         int targetRound = GameManager.main.LvlCount;
 

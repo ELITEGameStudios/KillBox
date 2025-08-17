@@ -94,6 +94,17 @@ public class BossRoomSpawnSystem : MonoBehaviour
                 break;
             
             case 2:
+                // Guardian Boss
+                currentEnemyTable = guardianEnemyTable;
+                spawnRate = 0.85f;
+                enemyCap = 4000;
+                bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 8 : Random.Range(12, 23);
+                bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 9 : Random.Range(20, 40);
+                currentBossTable = guardianBossTable;
+                active_spawns = guardianMapSpawns;
+                break;
+
+            case 3:
                 // Alpha Triad Boss
                 currentEnemyTable = alphaTriadEnemyTable;
                 spawnRate = 0.7f;
@@ -103,17 +114,6 @@ public class BossRoomSpawnSystem : MonoBehaviour
                 bossSpawnStep = Random.Range(10, 24);
                 currentBossTable = alphaTriadBossTable;
                 active_spawns = aTriadMapSpawns;
-                break;
-            
-            case 3:
-                // Guardian Boss
-                currentEnemyTable = guardianEnemyTable;
-                spawnRate = 0.85f;
-                enemyCap = 4000;
-                bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 8 : Random.Range(12, 23);
-                bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 9 : Random.Range(20, 40);
-                currentBossTable = guardianBossTable;
-                active_spawns = guardianMapSpawns;
                 break;
             
             case 4:

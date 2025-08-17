@@ -46,7 +46,8 @@ public class ChestScript : MonoBehaviour
 
     void Update()
     {
-        dist = Vector3.Distance(player.transform.position, gameObject.transform.position);
+        if (Player.main == null) return;
+        dist = Vector3.Distance(Player.main.tf.position, gameObject.transform.position);
         if (dist < 2 && !player_is_nearby)
         {
             player_is_nearby = true;

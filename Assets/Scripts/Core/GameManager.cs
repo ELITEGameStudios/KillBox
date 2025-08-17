@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using static UpgradesList;
+using UnityEngine.Rendering;
 
 [DefaultExecutionOrder(-1001)]
 public class GameManager : MonoBehaviour, ISelfResListener
 {
     [SerializeField]
-    private int _level;
+    protected int _level;
     public int ScoreCount, Dualindex, player_kills, ultra_kills, equipment_index;
     public int[] personalBests {get; private set;}
     public float time_played {get; private set;}
@@ -23,10 +25,10 @@ public class GameManager : MonoBehaviour, ISelfResListener
     private EnemyList enemyList;
     
     // [SerializeField]
-    private PortalScript portalScript;
+    protected PortalScript portalScript;
 
     [SerializeField]
-    private int boss_round_start;
+    protected int boss_round_start;
 
 
     public string online_username, pb_run_id;
@@ -44,6 +46,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
     [SerializeField]
     private GameObject[] use_equipment_button_list, equipment_list, equippedEquipmentDisplay;
+    public Volume[] equipmentVolumes;
 
     public bool[] completed_challenges; 
     public Text LvlTxt, ScoreTxt, ScoreTxt2, LvlText2;
@@ -138,8 +141,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
     public int tokensThisRound {get; private set;}
 
 
-    public static GameManager main {get; private set;}
-    [SerializeField] private Game game;
+    public static GameManager main {get; protected set;}
+    [SerializeField] protected Game game;
 
 
     void Awake(){
@@ -223,7 +226,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
         return null;
     }
-    public List<int> GetAvailableMaps(){
+    public virtual List<int> GetAvailableMaps(){
         List<int> availableIndexes = new List<int>(); 
         foreach (MapData map in Maps)
         { 
@@ -294,19 +297,18 @@ public class GameManager : MonoBehaviour, ISelfResListener
         time_played += Time.deltaTime;
     }
 
-    public void StartGame()
+    public virtual void StartGame()
     {
         // FadeAnimator.Play("FadeAnim");
 
         SetMaxTokenCount();
 
-        if(freeplay){
-            req_equipment_kills = 0;
-        }
-        
+        if (freeplay){ req_equipment_kills = 0;}
+
         enemyList.OnStart();
-        if(escapeRoom){ AstarPath.active.UpdateGraphs(GetMapByID(20).Obstacles.bounds); }
-        else{ 
+        if (escapeRoom) { AstarPath.active.UpdateGraphs(GetMapByID(20).Obstacles.bounds); }
+        else
+        {
             SetNewMap(GetMapByID(0));
             // SetNewMap(Maps[0]);
             // AstarPath.active.UpdateGraphs(GetMapByID(0).Obstacles.bounds); 
@@ -372,7 +374,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         StartCoroutine(StartNumerator());
     }
 
-    public void InitNextRound()
+    public virtual void InitNextRound()
     {
         KillBox.currentGame.AdvanceLevel();
         _level = KillBox.currentGame.round;
@@ -536,7 +538,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         return escapeRoom;
     }
 
-    IEnumerator StartNumerator()
+    protected IEnumerator StartNumerator()
     {
         float timer = 0;
         float Modifier = 2;
@@ -610,6 +612,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
         camera_tf.localEulerAngles = new Vector3(0, 0, 0);
 
+        Player.main.tf.position = head_start_transform.position;
         Player.main.obj.SetActive(true);
         Player.main.Appear();
         // GameObject effect = Instantiate(player_spawn_FX, Player.transform);
@@ -636,9 +639,9 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
         HotkeyManager.instance.enabled = true;
 
-        BossRoundManager.main.UpdateCounters(); 
+        BossRoundManager.main.UpdateCounters();
 
-        
+
 
         // if(escapeRoom){
         //     // escapeRoomSpawnSystem.StartSpawnSequence();
@@ -646,7 +649,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         //     StopCoroutine(StartNumerator());
         // }
 
-        if (!head_start)
+        if (!head_start && KillBox.currentGame.gamemode != Game.Gamemode.BOSSCHALLENGE)
         {
             // Debug.Log("ASDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             GetSpawn.StartSpawnSequence();
@@ -654,8 +657,16 @@ public class GameManager : MonoBehaviour, ISelfResListener
         }
         else
         {
-            GetSpawn.instances = 0;
-            LvlStarter.main.ManualStartLvl();
+            if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
+            {
+                EnemyCounter.main.EndRound();
+                // PortalScript.main.StartRoundCountdown();
+            }
+            else
+            {
+                GetSpawn.instances = 0;
+                LvlStarter.main.ManualStartLvl();
+            }
         }
     }
 

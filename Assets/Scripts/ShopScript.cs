@@ -8,7 +8,6 @@ using KillboxWeaponClasses;
 
 public class ShopScript : MonoBehaviour
 {
-    public GameManager manager;
     public PlayerHealth playerHealth;
     public GameObject Ar2, DWButton, ErrorMessage;
     public GameObject[] Guns, ToggleOnBuy, ToggleOffBuy, EquipButtons, WeaponGraphicSprites, weapon_buttons;
@@ -43,11 +42,11 @@ public class ShopScript : MonoBehaviour
 
     public void PurchaseGun(string key)
     {
-        PurchaseRequest result = PurchaseRequest.BuyWeapon(key, manager.ScoreCount);
+        PurchaseRequest result = PurchaseRequest.BuyWeapon(key, GameManager.main.ScoreCount);
         
         if (result != null && result.purchased)
         {
-            manager.SetLowerScore(result.money);
+            GameManager.main.SetLowerScore(result.money);
             GunHandler.Instance.NewItem(WeaponItemList.Instance.GetItem(key));
             KillboxEventSystem.TriggerPurchaseWeaponEvent( WeaponItemList.Instance.GetItem(key), WeaponItemList.Instance.GetItem(key).price);
         }
@@ -57,11 +56,11 @@ public class ShopScript : MonoBehaviour
     public int PurchaseUpgrade(Upgrade upgrade, int level)
     {
 
-        int result = upgrade.Transaction(manager.ScoreCount, level, this);
+        int result = upgrade.Transaction(GameManager.main.ScoreCount, level, this);
 
         if (result != -1)
         {
-            manager.ScoreCount = result;
+            GameManager.main.ScoreCount = result;
             // ChallengeFields.UpdateUpgrades(this, upgrade, level);
             KillboxEventSystem.TriggerPurchaseUpgradeEvent( upgrade, upgrade.costs[level], level);
             return 1;
@@ -128,8 +127,8 @@ public class ShopScript : MonoBehaviour
 
     public void PurchaseDualWield()
     {
-        if(manager.ScoreCount >= 20){
-            manager.SetLowerScore(manager.ScoreCount - 20);
+        if(GameManager.main.ScoreCount >= 20){
+            GameManager.main.SetLowerScore(GameManager.main.ScoreCount - 20);
             GunHandler.Instance.PurchaseDual();
         }
     }

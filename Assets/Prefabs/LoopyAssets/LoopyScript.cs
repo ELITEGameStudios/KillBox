@@ -23,40 +23,72 @@ public class LoopyScript : MonoBehaviour
 
     private bool isVisible {get{return visibleTime > 0;}}
 
-    public static LoopyScript main {get; private set;}
-    public LoopyState currentState {get; private set;}
+    // Static singleton setup
+    public static LoopyScript[] instances { get; private set; }
+    public static LoopyScript main {get{ return instances[0]; }}
+    public static LoopyScript upgrades {get{ return instances[1]; }}
+    public static LoopyScript weapons {get{ return instances[2]; }}
+    public static LoopyScript inGame {get{ return instances[3]; }}
+    
+
+    public LoopyState currentState { get; private set; }
+    public LoopyState nextState;
+    public LoopyInstance loopyType;
 
 
     void Awake(){
-        if(main == null) main = this;
-        else if(main != this) Destroy(this);
+        if(instances == null){
+            instances = new LoopyScript[4]; // count of types
+        }
+
+
+        if (instances[(int)loopyType] == null) instances[(int)loopyType] = this;
+        else if (instances[(int)loopyType] != this) Destroy(this);
+
+
         stateQueue = new();
-        AddState(
-            new LoopyState(
-                LoopyPose.HAPPY, 
-                "Hello There, Welcome to the KillBox!\nI'm LOOPY, and I am here to help you on your way!",
-                4)
-            );
+
+        // Plays the startup state
+        if (main == this)
+        {
+            AddState(
+                new LoopyState(
+                    LoopyPose.HAPPY, 
+                    "Hello There, Welcome to the KillBox!\nI'm LOOPY, and I am here to help you on your way!",
+                    4)
+                );
+            
+        }
     }
 
     void SetState(LoopyState state){
+
         currentState = state;
         // image.sprite = poseSprite[(int)state.pose];
-        anim.Play((int)state.pose);
+
+        // anim.Play((int)state.pose);
+        anim.SetFloat("Blend", 0.3f * (int)state.pose);
+
         image.color = poseColor[(int)state.pose];
         glow.color = Color.Lerp(Color.clear, poseColor[(int)state.pose], 0.66f);
         textElement.color = poseColor[(int)state.pose];
 
         StartCoroutine(TextDisplayCoroutine());
         
-        visibleTime = state.lifetime;
+        visibleTime =
+            main == this || inGame == this
+            ? state.lifetime 
+            : Mathf.Infinity;
+        
         status = Status.ACTIVE;
     }
 
-    void AddState(LoopyState state, bool priority = false){
+    public void AddState(LoopyState state, bool priority = false){
+        // Adds a state to the queue
         Debug.Log("adding state");
         if(priority){stateQueue = new Queue<LoopyState>();}
         stateQueue.Enqueue(state);
+
         CheckQueue();
     }
 
@@ -68,31 +100,54 @@ public class LoopyScript : MonoBehaviour
     }
 
     void CheckQueue(){
+        // Sets the state to the next in line
         Debug.Log("checking queue");
-        if(stateQueue.Count > 0){
+        
+        if (stateQueue.Count > 0)
+        {
             Debug.Log("something is in queue");
-            LoopyState nextState = stateQueue.Dequeue();
-            switch(status){
-                case Status.INACTIVE: 
+            nextState = stateQueue.Dequeue();
+            switch (status)
+            {
+                case Status.INACTIVE:
+                    // Plays intro if was inactive
                     Debug.Log("awakening");
                     StartCoroutine(IntroSetStateCoroutine(nextState));
                     break;
-                case Status.ACTIVE: 
-                    SetState(nextState); 
+
+                case Status.ACTIVE:
+                    // Sets to next state
+                    SetState(nextState);
                     break;
-                case Status.OUTRO:
-                    StopAllCoroutines(); 
-                    SetState(nextState); 
-                    break;
+
+                // Not sure if this is nessecary...
+                // case Status.OUTRO:
+                //     // Plays outro
+                //     StopAllCoroutines();
+                //     SetState(nextState);
+                //     break;
             }
         }
-        else{
+        else
+        {
+            nextState = null;
+
+            // Plays outro if queue is empty
             StartCoroutine(OutroStateCoroutine());
             status = Status.OUTRO;
         }
     }
 
-    public IEnumerator IntroSetStateCoroutine(LoopyState newState){
+    public void SetToNextStateSprite(){
+        image.sprite = poseSprite[(int)nextState.pose];
+    }
+
+    public IEnumerator IntroSetStateCoroutine(LoopyState newState)
+    {
+        anim.SetFloat("Blend", 0.3f * (int)newState.pose);
+
+        // Plays intro 
+
         ToggleElements(true);
         anim.Play(introAnimName);
         yield return new WaitForSeconds(introTime);
@@ -158,10 +213,18 @@ public class LoopyState{
     public float scrollTime, lifetime;
 }
 
-public enum LoopyPose{
+public enum LoopyPose
+{
     NEUTRAL,
     HAPPY,
     SAD,
     ANGRY,
     DEMENTED
+}
+
+public enum LoopyInstance{
+    MAIN, // Game UI
+    UPGRADESMENU,
+    WEAPONSMENU,
+    INGAME,
 }

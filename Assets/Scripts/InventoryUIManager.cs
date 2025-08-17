@@ -41,6 +41,16 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     [SerializeField] private UnityEvent onPurchaseAttempt, onBackButton;
     [SerializeField] private bool firstFrame, uiInitialized;
 
+    [Header("Weapon Stat Texts")]
+    [SerializeField] private Text frText;
+    [SerializeField] private Text rangeText, capacityText, spreadText, dmgText, bpsText;
+    public int loopyCharsPerSecond;
+
+
+    [Header("Purchase token")]
+    [SerializeField] private Text purchaseCostDisplay;
+    [SerializeField] private GameObject tokenGraphicObject;
+
     public string target_key;
     public Image GetBackground() {return background;}
 
@@ -97,6 +107,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         equippedPrimary.SetActive(false);
         equippedSecondary.SetActive(false);
         equippedDual.SetActive(false);
+        tokenGraphicObject.SetActive(false);
 
         // Setting equip button animators
         primary_element.GetAnimator().SetBool("Equippable", false);
@@ -106,26 +117,31 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         is_purchasable = target_item.Compare(GameManager.main.ScoreCount);
 
         if(target_item != null && !isOwned){
+            bool needsBaseUpgrade = target_item.tier > 1 && target_item.tier < 4;
 
-
-            if (!KillBox.currentGame.hasUpgradedArsenal && target_item.tier > 1 && target_item.tier < 4)
+            if (!KillBox.currentGame.hasUpgradedArsenal && needsBaseUpgrade)
             {
                 // Locked high tier weapons before SHARD
                 purchase_button.interactable = false;
                 purchase_display.text = "Defeat SHARD to purchase this weapon...";
-                costsText.text = "?";
+                // costsText.text = "?";
+                costsText.text = target_item.price.ToString();
                 costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
                 return;
             }
 
-            if( KillBox.currentGame.specialUpgrade != 1 && target_item.tier == 4 ){
+            if( Player.main.specialUpgrade != UpgradesList.SpecialUpgrades.GOLDEN && target_item.tier == 4 ){
                 // Locked gold weapon without midas special
-                purchase_display.text = KillBox.currentGame.specialUpgrade == 0 ? "Defeat MIDAS to purchase this weapon..." : "You chose your path...";
+                purchase_display.text = Player.main.specialUpgrade == UpgradesList.SpecialUpgrades.NONE ? "Defeat MIDAS to purchase this weapon..." : "You chose your path...";
                 purchase_button.interactable = false;
-                costsText.text = "?";
+                // costsText.text = "?";
+                costsText.text = target_item.price.ToString();
                 costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
                 return;
             }
+
+            tokenGraphicObject.SetActive(true);
+            purchaseCostDisplay.text = target_item.price.ToString();
 
             if(is_purchasable){
                 purchase_button.interactable = true;
@@ -177,6 +193,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         }
 
         else if(isOwned){
+            tokenGraphicObject.SetActive(false);
             purchase_button.interactable = false;
             //purchase_button_graphic.color = dim_shade;
             purchase_display.text = "Owned";
@@ -253,20 +270,66 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         target_item = WeaponItemList.Instance.GetItem(target_key);
 
         KillboxEventSystem.TriggerWeaponButtonSelectEvent(target_item);
+
+        // -------------- Setting Weaopon Stat Texts ----------------------
+        float fireRate = target_item.weapon.fire_rate;
+        int damage = target_item.weapon.damage;
+        float capacity = target_item.weapon.cooldown_units * target_item.weapon.bullets_per_shot / target_item.weapon.fire_rate;
+        float spread = target_item.weapon.spread;
         
+        if (fireRate < 0.05f) { frText.text = "INSANE"; frText.color = tier_colors[4]; }
+        else if (fireRate < 0.15f) { frText.text = "FAST"; frText.color = tier_colors[3]; }
+        else if (fireRate < 0.25f) { frText.text = "AVERAGE"; frText.color = tier_colors[2]; }
+        else if (fireRate < 0.7f) { frText.text = "SLOW"; frText.color = tier_colors[1]; }
+        else { frText.text = "ABYSMAL"; frText.color = tier_colors[0]; }
+
+        if (damage >= 300 ) { dmgText.text = "INSANE"; dmgText.color = tier_colors[4]; }
+        else if (damage >= 150) { dmgText.text = "POWERFUL"; dmgText.color = tier_colors[3]; }
+        else if (damage >= 75) { dmgText.text = "STRONG"; dmgText.color = tier_colors[2]; }
+        else if (damage >= 25) { dmgText.text = "MEDIOCRE"; dmgText.color = tier_colors[1]; }
+        else { dmgText.text = "SOFT"; dmgText.color = tier_colors[0]; }
+
+        if ( capacity <= 0) { capacityText.text = "INFINITE"; capacityText.color = tier_colors[4]; }
+        else if ( capacity <= 7) { capacityText.text = "PLENTIFUL"; capacityText.color = tier_colors[3]; }
+        else if ( capacity < 20) { capacityText.text = "GOOD"; capacityText.color = tier_colors[2]; }
+        else if ( capacity <= 50) { capacityText.text = "SMALL"; capacityText.color = tier_colors[1]; }
+        else { capacityText.text = "EMPTY"; capacityText.color = tier_colors[0]; }
+
+        if (spread == 0 ) { spreadText.text = "PINPOINT"; spreadText.color = tier_colors[4]; }
+        else if (spread <= 5) { spreadText.text = "GREAT"; spreadText.color = tier_colors[3]; }
+        else if (spread <= 15) { spreadText.text = "ALRIGHT"; spreadText.color = tier_colors[2]; }
+        else if (spread <= 30) { spreadText.text = "BAD"; spreadText.color = tier_colors[1]; }
+        else { spreadText.text = "LOST"; spreadText.color = tier_colors[0]; }
+
+        bpsText.text = target_item.weapon.bullets_per_shot.ToString(); bpsText.color = Color.white;
+
+        if (target_item.loopyDesc != "" && LoopyScript.weapons != null)
+        {
+            LoopyScript.weapons.AddState(
+                new LoopyState(LoopyPose.NEUTRAL, target_item.loopyDesc, target_item.loopyDesc.Length / loopyCharsPerSecond),
+                true
+            );
+        }
+        
+        // Required functions
         OwnedCheck();
         TargetCheck();
         ButtonCheck();
         //OwnedCheck();
     }
 
-    public void PurchaseCall(){
-        if(GameManager.main.EscapeRoom()){
+    public void PurchaseCall() {
+        if (GameManager.main.EscapeRoom())
+        {
             WeaponItemList.Instance.GetItem(target_key).owned = true;
             GunHandler.Instance.NewItem(WeaponItemList.Instance.GetItem(target_key));
         }
-        else{
-            shop.PurchaseGun(target_key);
+        else if (
+            (!KillBox.currentGame.hasUpgradedArsenal && target_item.tier > 1 && target_item.tier < 4) ||
+            ( Player.main.specialUpgrade != UpgradesList.SpecialUpgrades.MASTERY && target_item.tier == 4 )
+        ) { return; }
+        else {
+            GameManager.main.shopScript.PurchaseGun(target_key);
         }
         OwnedCheck();
         TargetCheck();

@@ -227,7 +227,7 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
                 else{dimLevel = 0.15f;}
             }
             else{ // Gold weapons
-                if(KillBox.currentGame.specialUpgrade == 2){dimLevel = 1;}
+                if(Player.main.specialUpgrade == UpgradesList.SpecialUpgrades.GOLDEN){dimLevel = 1;}
                 else{dimLevel = 0.15f;}
             }
         }

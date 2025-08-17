@@ -12,15 +12,16 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
     [SerializeField] private ShopScript shop {get {return GameManager.main.shopScript;}}
 
     public Color purchasable, error, purchasable_text_color;
-    [SerializeField] private Color[] desc_panel_colors;
+    [SerializeField] private Color[] desc_panel_colors, upgradeColors;
     [SerializeField] private Image purchase_button_graphic, description_panel, backgroundImage;
-    [SerializeField] private Text description_display, purchase_display, costsText, oldStat;
-    [SerializeField] private Text[] level_displays, costDisplays, levelDisplays2, costDisplays2;
+    [SerializeField] private Text upgradeNameDisplay, purchase_display, costsText;
+    [SerializeField] private Text[] level_displays, costDisplays, levelDisplays2, costDisplays2, statNameDisplays, statValueDisplays;
     [SerializeField] private Slider[] slider_displays;
     [SerializeField] private Button purchase_button;
     [SerializeField] private PlayerHealth health_script;
 
     [SerializeField] private TwoDPlayerController movement_script;
+    [SerializeField] private SpecialUpgradeButton[] specialUpgradeButtons;
 
     public int target_key {get; private set;}
 
@@ -73,18 +74,18 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
         }
 
         isPurchasable[target] = purchasable;
+        button.interactable = true;
         
         // If the selected upgrade can be purchased
         if (purchasable)
         {
-            button.interactable = true;
             //graphic.color = purchasable;
             // text.color = purchasable_text_color;
             //purchase_display.text = "Costs "+ target_upgrade.costs[current_levels[target_key]].ToString() +" Tokens";
         }
         else
         {
-            button.interactable = false;
+            // button.interactable = false;
             //graphic.color = error;
             text.color = text_color;
         }
@@ -98,19 +99,41 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
         target_upgrade = UpgradesList.GetUpgrade(target_key, Instance);
         // description_panel.color = desc_panel_colors[target_key];
         backgroundImage.color = desc_panel_colors[target_key];
-        description_display.text = UpgradesList.descriptions[target_key];
+
+        if (target_upgrade != null) {
+            upgradeNameDisplay.text = target_upgrade.name;
+            upgradeNameDisplay.color = upgradeColors[target_key];
+        }
+        else{
+            // upgradeNameDisplay.text = target_upgrade.name;
+            upgradeNameDisplay.text = "";
+        }
+
+        if (LoopyScript.upgrades != null)
+        {
+
+            LoopyScript.upgrades.AddState(
+                new LoopyState(
+                    LoopyPose.NEUTRAL,
+                    UpgradesList.descriptions[target_key],
+                    0.1f
+                ),
+                priority: true
+            );
+        }
+            
 
 
 
         // If the selected upgrade is maxed out
-        if(current_levels[target_key] >= target_upgrade.max_level){
-            can_purchase = false;
-            purchase_button.interactable = false;
-            purchase_button_graphic.color = error;
-            purchase_display.text = "This Is MAXED!";
-            return;
+            if (current_levels[target_key] >= target_upgrade.max_level) {
+                can_purchase = false;
+                purchase_button.interactable = false;
+                purchase_button_graphic.color = error;
+                purchase_display.text = "This Is MAXED!";
+                return;
 
-        }
+            }
 
         if(GameManager.main != null){
             // Check for if the upgrade is purchasable 
@@ -136,26 +159,44 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
                 purchase_display.text = "Choose an upgrade to PURCHASE";
 
         }
+        costsText.text = target_upgrade.costs[current_levels[target_key]].ToString();
 
-        for(int i = 0; i < costDisplays.Length; i++){
-            try {
-                costDisplays[i].text = UpgradesList.GetUpgrade(i, this).costs[current_levels[i]].ToString(); 
-                if(costDisplays2[i] != null ){costDisplays2[i].text = UpgradesList.GetUpgrade(i, this).costs[current_levels[i]].ToString(); }
+        for (int i = 0; i < costDisplays.Length; i++)
+        {
+            try
+            {
+                costDisplays[i].text = UpgradesList.GetUpgrade(i, this).costs[current_levels[i]].ToString();
+                if (costDisplays2[i] != null) { costDisplays2[i].text = UpgradesList.GetUpgrade(i, this).costs[current_levels[i]].ToString(); }
             }
-            catch (System.Exception) { 
-                costDisplays[i].text = "MAX"; 
-                if(costDisplays2[i] != null ){costDisplays2[i].text = "MAX"; }
+            catch (System.Exception)
+            {
+                costDisplays[i].text = "MAX";
+                if (costDisplays2[i] != null) { costDisplays2[i].text = "MAX"; }
             }
         }
-        
-        // oldStat.text = target_upgrade.values[current_levels[target_key]].ToString();
-        try{
-            oldStat.text = target_key == 1?
-                (DifficultyManager.main.defaultHealth + ((int)target_upgrade.values[0][current_levels[target_key] - 1] - 250)).ToString() :
-                target_upgrade.values[0][current_levels[target_key]-1].ToString(); }
-        catch{oldStat.text = ""; }
 
-        if( target_upgrade.costs.Length > current_levels[target_key]){
+        // oldStat.text = target_upgrade.values[current_levels[target_key]].ToString();
+        for (int i = 0; i < statValueDisplays.Length; i++)
+        {
+            if (target_upgrade.stat_names.Length <= i)
+            {
+                statNameDisplays[i].text = ""; statValueDisplays[i].text = "";
+                continue;
+            }
+
+            statNameDisplays[i].color = upgradeColors[target_key];
+            statNameDisplays[i].text = target_upgrade.stat_names[i];
+            try
+            {
+                statValueDisplays[i].text = target_key == 1 ?
+                    (DifficultyManager.main.defaultHealth + ((int)target_upgrade.values[0][current_levels[target_key] - 1] - 250)).ToString() :
+                    target_upgrade.values[i][current_levels[target_key]-1].ToString() + " -> " + target_upgrade.values[i][current_levels[target_key]].ToString();
+            }
+            catch { statValueDisplays[i].text = target_upgrade.defaultValues[i][KillBox.currentGame.difficultyIndex].ToString() + " -> " + target_upgrade.values[i][0]; } // if the player has not purchased this upgrade
+        }
+
+        if (target_upgrade.costs.Length > current_levels[target_key])
+        {
             // costsText.text = target_upgrade.costs[current_levels[target_key]].ToString();
         }
     }
@@ -229,21 +270,40 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
 
     public Image GetBackground(){return backgroundImage;}
 
-    void Update(){
-        if(can_purchase && backgroundImage.gameObject.activeInHierarchy){
-            
-            if(DetectInputDevice.main.isKBM) {
-                purchase_display.text = "Press " + CustomKeybinds.main.Interact.ToString() + " to Purchase "+ target_upgrade.name + " " + (current_levels[target_key]+1).ToString();
+    void Update()
+    {
+        if (can_purchase && backgroundImage.gameObject.activeInHierarchy)
+        {
+
+            if (DetectInputDevice.main.isKBM)
+            {
+                purchase_display.text = "Press " + CustomKeybinds.main.Interact.ToString() + " to Purchase " + target_upgrade.name + " " + (current_levels[target_key] + 1).ToString();
             }
-            else if(DetectInputDevice.main.isController) {
-                purchase_display.text = "Press Y to Purchase "+ target_upgrade.name + " " + (current_levels[target_key]+1).ToString();
+            else if (DetectInputDevice.main.isController)
+            {
+                purchase_display.text = "Press Y to Purchase " + target_upgrade.name + " " + (current_levels[target_key] + 1).ToString();
             }
 
-            
 
-            if(CustomKeybinds.main.PressingInteract()){
+
+            if (CustomKeybinds.main.PressingInteract())
+            {
                 // onPurchaseAttempt.Invoke();
                 BuyUpgrade();
+            }
+        }
+        
+        
+        foreach (SpecialUpgradeButton button in specialUpgradeButtons)
+        {
+            if (Player.main.specialUpgrade == button.targetUpgrade)
+            {
+                if (!button.unlocked) { button.SetUnlocked(); }
+                continue;
+            }
+            else
+            {
+                if (button.unlocked) { button.SetLocked(); }
             }
         }
     }

@@ -77,6 +77,11 @@ public class EconomyManager : MonoBehaviour
 
     public int GetFinishedRoundBonus()
     {
+        if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
+        {
+
+            return 25;
+        }
         List<int> bossRounds = EnemyList.instance.bossRounds;
         int round = KillBox.currentGame.round;
         for (int i = 0; i < finishedRoundBonus.Length; i++)

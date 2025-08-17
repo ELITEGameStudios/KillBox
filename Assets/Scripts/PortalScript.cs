@@ -11,7 +11,6 @@ public class PortalScript : MonoBehaviour
     public GameObject[] OnList;
     public GameObject portal;
     public Animator portalAnimator;
-    public GameManager gameManagerVar;
     public EnemyCounter enemyCounter;
     public LvlStarter lvlStarter;
     public Spawn GetSpawn;
@@ -104,7 +103,7 @@ public class PortalScript : MonoBehaviour
         if (dist < 0.5 && portalIsUsable)
         { NextLvl(); }
 
-        if(BossRoundManager.main.timeUntilNextBoss == 1){
+        if(BossRoundManager.main.timeUntilNextBoss == 1 || KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE){
             
             if(Mode != 3){
                 SetMode(3);
@@ -147,10 +146,10 @@ public class PortalScript : MonoBehaviour
         SetPositions();
     }
 
-    void SetRound(){
+    public void SetRound(){
 
-        ChallengeFields.UpdateRound(gameManagerVar, gameManagerVar.isFireRound);
-        gameManagerVar.InitNextRound();
+        // ChallengeFields.UpdateRound(gameManagerVar, gameManagerVar.isFireRound);
+        GameManager.main.InitNextRound();
     }
 
     void SelectMap(int next_map = -1){
@@ -160,8 +159,13 @@ public class PortalScript : MonoBehaviour
 
         if(next_map == -1){
             // CurrentMap = 4;
-            List<int> availableMaps = GameManager.main.GetAvailableMaps();
+            if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
+            {
+                currentMapIndex = 100 + (int)(GameManager.main as BossChallengeGameManager).currentBoss;
+                return;
+            }
 
+            List<int> availableMaps = GameManager.main.GetAvailableMaps();
             currentMapIndex = availableMaps[Random.Range(0, availableMaps.Count)];
             
 
@@ -229,14 +233,21 @@ public class PortalScript : MonoBehaviour
         BossRoundManager.main.UpdateCounters();
         if(_mode != 3){ BossRoundManager.main.SetBossRound(false); }
 
-        if(BossRoundManager.main.timeUntilNextBoss == 1){ SetMode(3); }
+        if(BossRoundManager.main.timeUntilNextBoss == 1 || KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE){ SetMode(3); }
         else{ SetMode(0); }
 
     }
 
-    void StartRoundCountdown()
+    public void StartRoundCountdown()
     {
-        GridAnimationManager.instance.DoIntroRoundAnimation();
+        if (BossRoundManager.main.isBossRound)
+        {
+            GridAnimationManager.instance.DoBossRoundAnimation();
+        }
+        else
+        {
+            GridAnimationManager.instance.DoIntroRoundAnimation();
+        }
         lvlStarter.InitiatePreround(currentMapIndex, GameManager.main.GetMapByID(currentMapIndex).Player.position);
         enemyCounter.Reset();
         gameObject.SetActive(false);
@@ -290,13 +301,22 @@ public class PortalScript : MonoBehaviour
             }
             else if(Mode == 3){
                 int mapToSelect;
-                SetRound();
-                if(GameManager.main.LvlCount == enemy_entry_list.bossRounds[0]){ mapToSelect = 101; }
-                else if(GameManager.main.LvlCount == enemy_entry_list.bossRounds[1]){ mapToSelect = 102; }
-                else if(GameManager.main.LvlCount == enemy_entry_list.bossRounds[2]){ mapToSelect = 103; }
-                else { mapToSelect = 101; }
+
+                if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
+                {
+                    SetRound();
+                    SelectMap();
+                }
+                else
+                {
+                    SetRound();
+                    if(GameManager.main.LvlCount == enemy_entry_list.bossRounds[0]){ mapToSelect = 101; }
+                    else if(GameManager.main.LvlCount == enemy_entry_list.bossRounds[1]){ mapToSelect = 102; }
+                    else if(GameManager.main.LvlCount == enemy_entry_list.bossRounds[2]){ mapToSelect = 103; }
+                    else { mapToSelect = 101; }
+                    SelectMap(mapToSelect);
+                }
                 
-                SelectMap(mapToSelect);
                 LoadMap();
                 ManageSpawns();
                 SetPositions();

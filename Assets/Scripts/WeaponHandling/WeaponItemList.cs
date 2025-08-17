@@ -10,7 +10,7 @@ public class WeaponItemList : MonoBehaviour
 
     public readonly List<WeaponItem> weapon_items = new List<WeaponItem>
     {
-        new WeaponItem("Pistol", WeaponLibrary.pistol, price_input: -1, tier_input: 0, owned_input: true),
+        new WeaponItem("Pistol", WeaponLibrary.pistol, price_input: -1, tier_input: 0, owned_input: true, loopyDesc: "The gun where all KillBox runs begin with"),
         new WeaponItem("Combat Pistol", WeaponLibrary.combatPistol, price_input: 1, tier_input: 0),
         new WeaponItem("Revolver", WeaponLibrary.revolver, price_input: 1, tier_input: 0),
         new WeaponItem("Speed Revolver", WeaponLibrary.speedRevolver, price_input: 13, tier_input: 2),
@@ -25,11 +25,11 @@ public class WeaponItemList : MonoBehaviour
         new WeaponItem("Speedy Burst AR", WeaponLibrary.speedyBurstRifle, price_input: 10, tier_input: 1),
         new WeaponItem("Heavy Burst AR", WeaponLibrary.heavyBurstRifle, price_input: 20, tier_input: 2),
         new WeaponItem("Combat Burst Rifle", WeaponLibrary.combatBurstRifle, price_input: 45, tier_input: 3),
-        new WeaponItem("Golden Burst Rifle", WeaponLibrary.goldenBurstRifle, price_input: 80, tier_input: 4),
+        new WeaponItem("Golden Burst Rifle", WeaponLibrary.goldenBurstRifle, price_input: 80, tier_input: 4, loopyDesc: "Not even the toughest of enemies can withstand this absolute force of nature"),
 
         new WeaponItem("Light SMG", WeaponLibrary.lightSmg, price_input: 3, tier_input: 0),
         new WeaponItem("Tactical SMG", WeaponLibrary.tacticalSmg, price_input: 10, tier_input: 1),
-        new WeaponItem("B.E.A.M SMG", WeaponLibrary.beamSmg, price_input: 13, tier_input: 2),
+        new WeaponItem("B.E.A.M SMG", WeaponLibrary.beamSmg, price_input: 13, tier_input: 2, loopyDesc: "This is a fun one..."),
         new WeaponItem("Combat SMG", WeaponLibrary.combatSmg, price_input: 32, tier_input: 3),
         new WeaponItem("Golden SMG", WeaponLibrary.goldenSmg, price_input: 60, tier_input: 4),
 
@@ -44,13 +44,13 @@ public class WeaponItemList : MonoBehaviour
         new WeaponItem("Musket", WeaponLibrary.musket, price_input: 10, tier_input: 1),
         new WeaponItem("Heavy Rifle", WeaponLibrary.heavyRifle, price_input: 26, tier_input: 2),
         new WeaponItem("Combat Marksman", WeaponLibrary.combatRifle, price_input: 28, tier_input: 3),
-        new WeaponItem("Golden Marksman", WeaponLibrary.goldenRifle, price_input: 65, tier_input: 4),
+        new WeaponItem("Golden Marksman", WeaponLibrary.goldenRifle, price_input: 65, tier_input: 4, loopyDesc: "CURRY FROM THE MOON"),
 
         new WeaponItem("Light Grenade Launcher", WeaponLibrary.lightGrenadeLauncher, price_input: 4, tier_input: 0),
         new WeaponItem("Double Launcher", WeaponLibrary.doubleLauncher, price_input: 8, tier_input: 1),
-        new WeaponItem("Tripwire Launcher", WeaponLibrary.tripwireLauncher, price_input: 20, tier_input: 2),
+        new WeaponItem("Tripwire Launcher", WeaponLibrary.tripwireLauncher, price_input: 20, tier_input: 2, loopyDesc: "The grenades are so slow the enemies trigger them before they hit anything! Maybe pair this with a shotgun..."),
         new WeaponItem("Burst Launcher", WeaponLibrary.burstLauncher, price_input: -1, tier_input: 3, attain_desc: "Found in Chests"),
-        new WeaponItem("Heavy Launcher", WeaponLibrary.heavyLauncher,price_input: -1, tier_input: 4, attain_desc: "Found in Chests"),
+        new WeaponItem("Heavy Launcher", WeaponLibrary.heavyLauncher,price_input: -1, tier_input: 4, attain_desc: "Found in Chests", loopyDesc: "Ah yes, the time old tale of hiroshima and nagasaki :)"),
         
         new WeaponItem("KUNAIS", SpecialistLibrary.kunais_2, price_input: -1, tier_input: 5, attain_desc: "Find in chests", _special_key: "_kunai"),
         //new WeaponItem("KUNAIS", SpecialistLibrary.kunais, price_input: -1, tier_input: 4, attain_desc: "Craft with PRIME-RUNIC runes", _special_key: "_kunai"),

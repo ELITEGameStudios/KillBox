@@ -119,8 +119,8 @@ public class KillBox : MonoBehaviour
 
     }
 
-    public static void StartNewGame(int difficulty, bool freeplay){
-        currentGame = new Game(difficulty, freeplay);
+    public static void StartNewGame(Game.Gamemode gamemode, int difficulty, bool freeplay){
+        currentGame = new Game(gamemode, difficulty, freeplay);
         SceneSystem.Instance.LoadGameScenes();
     }
 
