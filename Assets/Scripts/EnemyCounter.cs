@@ -98,62 +98,9 @@ public class EnemyCounter : MonoBehaviour
         // End round event
         if (noEnemiesOrSpawns && noLongerSpawning && !GameManager.main.EscapeRoom() && !Portal.activeInHierarchy && GameManager.main.roundState == GameManager.RoundState.MIDROUND)
         {
-            Portal.SetActive(true);
-            print("Round has finished");
-
-
-            // Generating bonuses
-            int finishedBonus = EconomyManager.instance.GetFinishedRoundBonus();
-            GameManager.main.OnPickupToken(finishedBonus, false);
-            BonusesUIManager.instance.ActivateBonus("finished_round", finishedBonus);
-
-            if (KillBox.currentGame.round % 5 == 0)
-            {
-                int fiveRoundBonus= EconomyManager.instance.Get5RoundBonus();
-                GameManager.main.OnPickupToken(fiveRoundBonus, false);
-                BonusesUIManager.instance.ActivateBonus("5round", fiveRoundBonus);
-            }
-
-            GameManager.main.CheckDamageless();
-            GameplayUI.instance.GetLevelDisplayAnimator().SetBool("InGame", false);
-
-
-
-            CameraBgManager.instance.SetBackground(Color.black, 2);
-
-            LvlStarter.main.InitiatePostRound(PortalScript.main.currentMapIndex);
-            GridAnimationManager.instance.DoEndRoundAnimation();
-            KillboxEventSystem.TriggerRoundEndEvent();
-            
-            // Audio
-            if(BossRoundManager.main.isBossRound && !end_of_main_round){
-                // MainAudioSystem.main.PlayMainLoop();
-                VolumeControl.main.SetSilentSnapshot(true, 2);
-                KillboxEventSystem.TriggerBossRoundEndEvent();
-            }
-            else if(BossRoundManager.main.GetTierOfRound(GameManager.main.LvlCount+1) != -1 && !end_of_main_round){
-                MainAudioSystem.main.PlayBossAmbience(
-                    BossRoundManager.main.GetTierOfRound(GameManager.main.LvlCount+1), true);
-                MainAudioSystem.main.Ambience();
-            }
-
-            // Portal animation
-            // if (AnimAccept)
-            // {
-            //     portalScript.portalAnimator.Play("PortalAnim");
-            //     AnimAccept = false;
-            // }
-
-            // Door behaviour
-            if(!end_of_main_round){
-                // foreach (Door door in Door.doors){ 
-                //     door.RoundEnd();
-                // }    
-            
-            }
-            GameManager.main.roundState = GameManager.RoundState.POSTROUND;
-            end_of_main_round = true;
+            EndRound();
         }
+ 
 
         if (enemies.Length > 0 && !GameManager.main.EscapeRoom())
         {
@@ -179,6 +126,67 @@ public class EnemyCounter : MonoBehaviour
             
         }
 
+    }
+    public void EndRound()
+    {
+        Portal.SetActive(true);
+        print("Round has finished");
+
+
+        // Generating bonuses
+        int finishedBonus = EconomyManager.instance.GetFinishedRoundBonus();
+        GameManager.main.OnPickupToken(finishedBonus, false);
+        BonusesUIManager.instance.ActivateBonus("finished_round", finishedBonus);
+
+        if (KillBox.currentGame.round % 5 == 0)
+        {
+            int fiveRoundBonus = EconomyManager.instance.Get5RoundBonus();
+            GameManager.main.OnPickupToken(fiveRoundBonus, false);
+            BonusesUIManager.instance.ActivateBonus("5round", fiveRoundBonus);
+        }
+
+        GameManager.main.CheckDamageless();
+        GameplayUI.instance.GetLevelDisplayAnimator().SetBool("InGame", false);
+
+
+
+        CameraBgManager.instance.SetBackground(Color.black, 2);
+
+        LvlStarter.main.InitiatePostRound(PortalScript.main.currentMapIndex);
+        GridAnimationManager.instance.DoEndRoundAnimation();
+        KillboxEventSystem.TriggerRoundEndEvent();
+
+        // Audio
+        if (BossRoundManager.main.isBossRound && !end_of_main_round)
+        {
+            // MainAudioSystem.main.PlayMainLoop();
+            VolumeControl.main.SetSilentSnapshot(true, 2);
+            KillboxEventSystem.TriggerBossRoundEndEvent();
+        }
+        else if (BossRoundManager.main.GetTierOfRound(GameManager.main.LvlCount + 1) != -1 && !end_of_main_round)
+        {
+            MainAudioSystem.main.PlayBossAmbience(
+                BossRoundManager.main.GetTierOfRound(GameManager.main.LvlCount + 1), true);
+            MainAudioSystem.main.Ambience();
+        }
+
+        // Portal animation
+        // if (AnimAccept)
+        // {
+        //     portalScript.portalAnimator.Play("PortalAnim");
+        //     AnimAccept = false;
+        // }
+
+        // Door behaviour
+        if (!end_of_main_round)
+        {
+            // foreach (Door door in Door.doors){ 
+            //     door.RoundEnd();
+            // }    
+
+        }
+        GameManager.main.roundState = GameManager.RoundState.POSTROUND;
+        end_of_main_round = true;
     }
 
     public void AddEnemy(EnemyProfile profile){

@@ -10,12 +10,12 @@ public class WeaponItem
     public readonly Weapon weapon;
     public readonly int price, tier;
 
-    public readonly string non_purchase_desc, special_key;
+    public readonly string non_purchase_desc, special_key, loopyDesc;
     public Sprite graphic { get; private set; }
     // public bool owned { get; private set; }
     public bool owned;
 
-    public WeaponItem(string name_input, Weapon weapon_input, Sprite texture = null, int price_input = -1, bool owned_input = false, int tier_input = 0, string attain_desc = "Unpurchasable", string _special_key = "")
+    public WeaponItem(string name_input, Weapon weapon_input, Sprite texture = null, int price_input = -1, bool owned_input = false, int tier_input = 0, string attain_desc = "Unpurchasable", string _special_key = "", string loopyDesc = "")
     {
         name = name_input;
         weapon = weapon_input;
@@ -23,6 +23,7 @@ public class WeaponItem
         owned = owned_input;
         tier = tier_input;
         non_purchase_desc = attain_desc;
+        this.loopyDesc = loopyDesc;
 
         if (texture != null)
         {

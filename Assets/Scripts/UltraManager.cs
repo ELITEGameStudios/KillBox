@@ -30,14 +30,14 @@ public class UltraManager : EquipmentBase
         if (start_effect_clock < 1)
         {
             start_effect_clock += Time.deltaTime * 2;
-            // CamEffectObj.GetComponent<Volume>().weight = start_effect_clock;
+            GameManager.main.equipmentVolumes[(int)EquipmentManager.EquipmentType.ULTRAMODE].weight = start_effect_clock;
         }
         else
         {
             if (start_effect_clock > 1)
             {
                 start_effect_clock = 1;
-                // CamEffectObj.GetComponent<Volume>().weight = start_effect_clock;
+                GameManager.main.equipmentVolumes[(int)EquipmentManager.EquipmentType.ULTRAMODE].weight = start_effect_clock;
             }
         }
 
@@ -51,14 +51,14 @@ public class UltraManager : EquipmentBase
         if (end_effect_clock > 0)
         {
             end_effect_clock -= Time.deltaTime * 2;
-            // CamEffectObj.GetComponent<Volume>().weight = end_effect_clock;
+            GameManager.main.equipmentVolumes[(int)EquipmentManager.EquipmentType.ULTRAMODE].weight = end_effect_clock;
         }
         else
         {
             if (end_effect_clock < 0)
             {
                 end_effect_clock = 0;
-                // CamEffectObj.GetComponent<Volume>().weight = end_effect_clock;
+                GameManager.main.equipmentVolumes[(int)EquipmentManager.EquipmentType.ULTRAMODE].weight = end_effect_clock;
             }
         }
     }
@@ -67,6 +67,7 @@ public class UltraManager : EquipmentBase
     {
         // CamEffectObj.SetActive(true);
         // throw new System.NotImplementedException();
+        // Player.main.health.isUltra
     }
 
     public override void GamemodeEnd()

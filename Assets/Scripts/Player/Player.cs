@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using static UpgradesList;
 
 public class Player
 {
@@ -14,6 +15,7 @@ public class Player
     public int kills {get; private set;}
     public int kills_in_round {get; private set;}
     public float lightIntensity;
+    public SpecialUpgrades specialUpgrade;
 
     [SerializeField] private SpriteRenderer primaryGunGraphic, dualGunGraphic, playerSprite;
     [SerializeField] private ParticleSystem appearParticleAffect;
@@ -29,6 +31,7 @@ public class Player
         tf = obj.transform;
         rb = obj.GetComponent<Rigidbody2D>();
         movement = obj.GetComponent<TwoDPlayerController>();
+        specialUpgrade = SpecialUpgrades.NONE;
 
         primaryGunGraphic = primary;
         dualGunGraphic = secondary;
@@ -51,6 +54,10 @@ public class Player
 
     public void NewRound(){
         kills_in_round = 0;
+    }
+
+    public void SetSpecialUpgrade(SpecialUpgrades specialUpgrade){
+        this.specialUpgrade = specialUpgrade;
     }
 
     public void Dissapear()

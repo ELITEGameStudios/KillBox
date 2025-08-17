@@ -48,6 +48,7 @@ public class Spawn : MonoBehaviour
 
     public void GenerateDrops()
     {
+        if(KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE){ return; }
         
         int dropsThisRound = EconomyManager.instance.tokensThisRound;
         if (dropsThisRound == -1) return;
@@ -76,11 +77,13 @@ public class Spawn : MonoBehaviour
 
     public void UpdateRoundBasedVars()
     {
+        if (KillBox.currentGame.gamemode == Game.Gamemode.MAIN)
+        {
+            if (gameManager.LvlCount != 1) { instances = (int)((2.5 * Mathf.Sqrt(GameManager.main.Difficulty)) - 16f); }
+            spawnTime = (float)(1 / KillBox.currentGame.difficultyCoefficient) * Mathf.Pow(1.3f, (-KillBox.currentGame.round / 1.5f) + 4) + spawnTimeConstant;
+        }
 
-        if (gameManager.LvlCount != 1) { instances = (int)((2.5 * Mathf.Sqrt(GameManager.main.Difficulty)) - 16f); }
-        spawnTime = (float)(1 / KillBox.currentGame.difficultyCoefficient) * Mathf.Pow(1.3f, (-KillBox.currentGame.round / 1.5f) + 4) + spawnTimeConstant;
         ended = false;
-
         GenerateDrops();
 
         if (BossRoundManager.main.isBossRound) { RoundCompositionManager.main.AvoidComposition(); }

@@ -29,6 +29,11 @@ public class GridAnimationManager : MonoBehaviour
     public void DoEndRoundAnimation(){
         StartCoroutine(EndRoundCoroutine(PortalScript.main.transform.position, GameManager.main.GetCurrentMap(), portalBrightWallCol, defaultWallColor));
     } 
+    
+    public void DoBossRoundAnimation()
+    {
+        StartCoroutine(EndRoundCoroutine(PortalScript.main.transform.position, GameManager.main.GetCurrentMap(), Color.red, defaultWallColor));
+    } 
 
     public void DoIntroRoundAnimation(){
         // StartCoroutine(MapIntroRandomizedCoroutine(GameManager.main.GetCurrentMap(), worldGenBlue, defaultWallColor));

@@ -12,7 +12,7 @@ public class RuneClass : MonoBehaviour
     private Transform _portal;
     private float _distance;
 
-    [SerializeField] private bool isUpgradeRune;
+    [SerializeField] private bool isUpgradeRune, isSpecialUpgradeRune;
     [SerializeField] private int mode, upgradeInt;
 
 
@@ -47,9 +47,11 @@ public class RuneClass : MonoBehaviour
     }
 
     public void OnPortalInteraction(){
-        
-        _portal.gameObject.GetComponent<PortalScript>().SetMode(mode);
-        Destroy(gameObject);
+        if (!isSpecialUpgradeRune && !isUpgradeRune)
+        {
+            _portal.gameObject.GetComponent<PortalScript>().SetMode(mode);
+            Destroy(gameObject);
+        }
     }
 
     public void ClaimUpgradeRune(){
@@ -63,10 +65,24 @@ public class RuneClass : MonoBehaviour
 
         Destroy(gameObject, 1f);
     }
+    
+    public void ClaimSpecialUpgradeRune()
+    {
+
+        Player.main.SetSpecialUpgrade((UpgradesList.SpecialUpgrades)upgradeInt);
+
+        runeGraphicObject.enabled = false;
+        glowGraphicObject.SetActive(false);
+        idleParticleObject.SetActive(false);
+        claimParticleObject.SetActive(true);
+
+        Destroy(gameObject, 1f);
+    }
 
     void OnTriggerEnter2D(Collider2D collider){
         if (collider.tag == "Player"){
             if (isUpgradeRune) { ClaimUpgradeRune(); }
+            else if (isSpecialUpgradeRune) { ClaimSpecialUpgradeRune(); }
             else { states.SwitchState(_follow); }
         }
     }

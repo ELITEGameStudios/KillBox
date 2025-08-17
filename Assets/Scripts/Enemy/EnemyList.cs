@@ -87,39 +87,42 @@ public class EnemyList : MonoBehaviour
     }
 
     public void OnStart(){
-        boss_round_counter = 11;
-        int starting_boss_round = 12;
-        
-        if(KillBox.currentGame.difficultyIndex == 0) {
-            starting_boss_round = 14;
-            bossRounds.Add(starting_boss_round);
-            bossRounds.Add(21);
-            bossRounds.Add(27);
-            bossRounds.Add(35);
-            for (int i = 42; i < 254; i += Random.Range(5, 8)){
-                bossRounds.Add(i);
-            }    
-        }
+        if (KillBox.currentGame.gamemode == Game.Gamemode.MAIN)
+        {
+            boss_round_counter = 11;
+            int starting_boss_round = 12;
+            
+            if(KillBox.currentGame.difficultyIndex == 0) {
+                starting_boss_round = 14;
+                bossRounds.Add(starting_boss_round);
+                bossRounds.Add(21);
+                bossRounds.Add(27);
+                bossRounds.Add(35);
+                for (int i = 42; i < 254; i += Random.Range(5, 8)){
+                    bossRounds.Add(i);
+                }    
+            }
 
-        else if(KillBox.currentGame.difficultyIndex == 1) {
-            starting_boss_round = 12;
-            bossRounds.Add(starting_boss_round);
-            bossRounds.Add(19);
-            bossRounds.Add(24);
-            bossRounds.Add(30);
-            for (int i = 40; i < 150; i += Random.Range(5, 8)){
-                bossRounds.Add(i);
-            }    
-        }
+            else if(KillBox.currentGame.difficultyIndex == 1) {
+                starting_boss_round = 12;
+                bossRounds.Add(starting_boss_round);
+                bossRounds.Add(19);
+                bossRounds.Add(24);
+                bossRounds.Add(30);
+                for (int i = 40; i < 150; i += Random.Range(5, 8)){
+                    bossRounds.Add(i);
+                }    
+            }
 
-        else {starting_boss_round = 7;
-            bossRounds.Add(starting_boss_round);
-            bossRounds.Add(12);
-            bossRounds.Add(16);
-            bossRounds.Add(20);
-            for (int i = 25; i < 150; i += Random.Range(5, 8)){
-                bossRounds.Add(i);
-            }    
+            else {starting_boss_round = 7;
+                bossRounds.Add(starting_boss_round);
+                bossRounds.Add(12);
+                bossRounds.Add(16);
+                bossRounds.Add(20);
+                for (int i = 25; i < 150; i += Random.Range(5, 8)){
+                    bossRounds.Add(i);
+                }    
+            }
         }
 
         
@@ -146,7 +149,7 @@ public class EnemyList : MonoBehaviour
     {
         get
         {
-            float difficulty = manager.Difficulty;
+            float difficulty = GameManager.main.Difficulty;
             List<GameObject> result = new List<GameObject>();
 
             if(GameManager.main.LvlCount == 1){

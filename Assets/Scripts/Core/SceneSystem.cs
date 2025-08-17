@@ -8,7 +8,8 @@ public class SceneSystem : MonoBehaviour
 {
     [SerializeField] private List<Scene> scenes;
     [SerializeField] private Scene activeScene; 
-    [SerializeField] private string flexibleLoadingSceneName, gameSceneName, gameUIName, menusSceneName; 
+    [SerializeField] private string flexibleLoadingSceneName, gameUIName, menusSceneName; 
+    [SerializeField] private string[] gameSceneName; 
     [SerializeField] private float flexibleTransitionTime = 1.5f; 
     [SerializeField] private string[] mapSceneNames; 
     [SerializeField] private Scene loadingScene;
@@ -111,7 +112,7 @@ public class SceneSystem : MonoBehaviour
         yield return new WaitForSecondsRealtime(flexibleTransitionTime);
         
         yield return StartCoroutine(LoadAdditiveCoroutine(gameUIName)); 
-        yield return StartCoroutine(LoadAdditiveCoroutine(gameSceneName)); 
+        yield return StartCoroutine(LoadAdditiveCoroutine(gameSceneName[(int)KillBox.currentGame.gamemode])); 
         
         yield return null;
         GameplayUI.instance.Initialize();
@@ -121,7 +122,7 @@ public class SceneSystem : MonoBehaviour
         FadeManager.instance.SetTarget(false, flexibleTransitionTime);
 
         // currentMapScene = SceneManager.GetSceneByName(mapSceneNames[0]);
-        gameScene = SceneManager.GetSceneByName(gameSceneName);
+        gameScene = SceneManager.GetSceneByName(gameSceneName[(int)KillBox.currentGame.gamemode]);
         gameUI = SceneManager.GetSceneByName(gameUIName);
     }
     void FadeOut(){
@@ -140,7 +141,7 @@ public class SceneSystem : MonoBehaviour
         KillBox.currentGame.StartGame();
 
         // currentMapScene = SceneManager.GetSceneByName(mapSceneNames[0]);
-        gameScene = SceneManager.GetSceneByName(gameSceneName);
+        gameScene = SceneManager.GetSceneByName(gameSceneName[(int)KillBox.currentGame.gamemode]);
         gameUI = SceneManager.GetSceneByName(gameUIName);
     }
     
@@ -148,7 +149,7 @@ public class SceneSystem : MonoBehaviour
 
         sceneLoadOperation = SceneManager.LoadSceneAsync(gameUIName, LoadSceneMode.Additive);
         sceneLoadOperation.completed += (operation) => {
-            sceneLoadOperation = SceneManager.LoadSceneAsync(gameSceneName, LoadSceneMode.Additive); 
+            sceneLoadOperation = SceneManager.LoadSceneAsync(gameSceneName[(int)KillBox.currentGame.gamemode], LoadSceneMode.Additive); 
             sceneLoadOperation.completed += (operation) => {
                 Invoke(nameof(StartGame), 0.2f);
                 // yield return null;
