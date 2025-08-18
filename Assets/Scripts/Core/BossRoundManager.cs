@@ -19,7 +19,9 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
 
     [SerializeField] private EnemyList enemyList;
 
-    public enum BossType
+
+    
+    public enum BossType 
     {
         SHARD,
         CUTTER,
@@ -85,14 +87,16 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
         : enemyList.bossRounds.FindIndex(match => match == GameManager.main.LvlCount);
     }
 
-    public void SetBossRound(bool hasBoss){
+    public void SetBossRound(bool hasBoss, BossType? _bossType = null){
         isBossRound = hasBoss;
         if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
         {
             finishedBossRoundMainPhase = false;
+
             bossRoundTier = (int)(GameManager.main as BossChallengeGameManager).currentBoss;
             bossType = (GameManager.main as BossChallengeGameManager).currentBoss; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
             spawnSystem.SetBossSpawnList((int)bossType);
+            
             KillboxEventSystem.TriggerBossRoundChangeEvent();
 
             return;
@@ -100,11 +104,21 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
         }
         if(isBossRound){ 
             finishedBossRoundMainPhase = false;
+            if (_bossType == null)
+            {
+                bossRoundTier = enemyList.bossRounds.FindIndex(match => match == GameManager.main.LvlCount);
+                bossType = (BossType)bossRoundTier; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
+                spawnSystem.SetBossSpawnList(bossRoundTier % 5);
+            }
+            else
+            {
+                bossRoundTier = (int)_bossType;
+                bossType = (BossType)_bossType; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
+                spawnSystem.SetBossSpawnList((int)bossType);
+            }
 
-            bossRoundTier = enemyList.bossRounds.FindIndex(match => match == GameManager.main.LvlCount);
-            bossType = (BossType)bossRoundTier; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
 
-            spawnSystem.SetBossSpawnList(bossRoundTier % 5);
+                spawnSystem.SetBossSpawnList((int)bossType);
             KillboxEventSystem.TriggerBossRoundChangeEvent();
         }
         else{ finishedBossRoundMainPhase = true; }

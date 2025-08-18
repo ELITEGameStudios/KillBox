@@ -5,16 +5,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Pathfinding;
 using System.Threading.Tasks;
+using static BossRoundManager;
 
 public class PortalScript : MonoBehaviour
 {
-    public GameObject[] OnList;
-    public GameObject portal;
-    public Animator portalAnimator;
     public EnemyCounter enemyCounter;
     public LvlStarter lvlStarter;
-    public Spawn GetSpawn;
-    public string AnimName, opening_anim;
     public float Delay, dist;
     public int currentMapIndex {get; private set;}
 
@@ -22,15 +18,9 @@ public class PortalScript : MonoBehaviour
     private Animator portalAnim;
 
     [SerializeField]
-    private ShopScript shop;
-
-    [SerializeField]
     private EnemyList enemy_entry_list;
 
-    public bool loadingScene, loadedScene, portalIsUsable;
-
-    [SerializeField]
-    private MapEvolutionManager mapEvolutionManager;
+    public bool loadingScene, portalIsUsable;
 
     [SerializeField]
     private FloorColorScript floor_color;
@@ -39,23 +29,21 @@ public class PortalScript : MonoBehaviour
 
 
     [SerializeField]
-    private int _mode = 0, runic_map, prime_runic_map, prismatic_map; 
+    private int _mode = 0, runic_map, prime_runic_map; 
 
     [SerializeField]
     private SpriteRenderer renderer;
     [SerializeField]
     private UnityEngine.Rendering.Universal.Light2D light;
+
     [SerializeField]
     private ParticleSystem particles, secondaryParticles;
 
-    public Color[] mode_colors, map_styles, wall_styles;
-
+    public Color[] mode_colors, map_styles;
     public static PortalScript main {get; private set;}
+    public BossType? boss = null;
     public int Mode { get => _mode; private set => _mode = value; }
 
-
-    [SerializeField]
-    private QuestionInitiator escapeRoomInitiator;
 
     void OnEnable()
     {
@@ -127,216 +115,37 @@ public class PortalScript : MonoBehaviour
         LvlStarter.main.DisableInGameButtons();
     }
 
-    public void SetMode(int mode, bool open = true){
+    public void SetMode(int mode, bool open = true, BossType? bossType = null){
         Mode = mode;
 
         renderer.color = mode_colors[Mode];
         light.color = mode_colors[Mode];
         particles.startColor = mode_colors[Mode];
 
-        if(open){
+        if(bossType != null && mode == 1){ boss = bossType; }
+        if (open)
+        {
             portalAnim.Play("PortalAnim");
         }
     }
 
-    public void StartHubMap(){
-
-        SelectMap(17);
-        LoadMap();
-        SetPositions();
-    }
-
-    public void SetRound(){
-
-        // ChallengeFields.UpdateRound(gameManagerVar, gameManagerVar.isFireRound);
-        GameManager.main.InitNextRound();
-    }
-
-    void SelectMap(int next_map = -1){
-
-        // CurrentMap = 22;
-        // return;
-
-        if(next_map == -1){
-            // CurrentMap = 4;
-            if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
-            {
-                currentMapIndex = 100 + (int)(GameManager.main as BossChallengeGameManager).currentBoss;
-                return;
-            }
-
-            List<int> availableMaps = GameManager.main.GetAvailableMaps();
-            currentMapIndex = availableMaps[Random.Range(0, availableMaps.Count)];
-            
-
-            // if(CurrentMap == 1 && gameManagerVar.LvlCount >= 5)
-            
-            // { CurrentMap = 5; }
-
-            // else if(CurrentMap == 2 && gameManagerVar.LvlCount >= 5)
-           
-            // { CurrentMap++; }
-
-            // else if(CurrentMap == 9 && gameManagerVar.LvlCount < 20)
-            
-            // { CurrentMap = 8; }
-
-            // else if(CurrentMap == 15)
-            
-            // { CurrentMap = 18; }
-        }
-        else{ currentMapIndex = next_map; }
-    }
-
-    void LoadMap(){
-        GameManager.main.SetNewMap( GameManager.main.GetMapByID(currentMapIndex) );
-    }
-
-    public void UpdatePathfinding(){
-        AstarPath.active.UpdateGraphs(GameManager.main.GetMapByID(currentMapIndex).Obstacles.bounds);
-        Debug.Log("Pathfinding Updated");
-    } 
-
-    public void ManageSpawns(int map = -1){ // may be deprecated
-        if(map == -1){ map = currentMapIndex;}
-        GameManager.main.GetSpawn.Refresh();
-    }
-
-    void SetPositions(){
-        Player.main.tf.position = GameManager.main.GetMapByID(currentMapIndex).Player.position;
-        transform.position = GameManager.main.GetMapByID(currentMapIndex).Portal.position;
-        CameraMovvement.main.SetCameraPosition(Player.main.tf.position);
-
-        GameObject[] allies = GameObject.FindGameObjectsWithTag("Ally");
-
-        if(allies.Length > 0)
-        {
-            for(int i = 0; i < allies.Length; i++) 
-            
-            { allies[i].transform.position = Player.main.tf.position; }
-        }
-    }
-
-    void ToggleLists(){
-        for (int i = 0; i < OnList.Length; i++)
-            OnList[i].SetActive(true);
-    }
-
-    void RemainingTasks(){
-        //floor_color.ChangeColor(false);
-        ToggleChannelManager.main.ResetChannels();
-        enemy_entry_list.BossAppearanceCheck(currentMapIndex);
-        InventoryUIManager.Instance.UpdateUI();
-        UpgradesManager.Instance.ChooseUpgrade();
-        chestSystem.RefreshCheck();
-
-        BossRoundManager.main.UpdateCounters();
-        if(_mode != 3){ BossRoundManager.main.SetBossRound(false); }
-
-        if(BossRoundManager.main.timeUntilNextBoss == 1 || KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE){ SetMode(3); }
-        else{ SetMode(0); }
-
-    }
-
-    public void StartRoundCountdown()
-    {
-        if (BossRoundManager.main.isBossRound)
-        {
-            GridAnimationManager.instance.DoBossRoundAnimation();
-        }
-        else
-        {
-            GridAnimationManager.instance.DoIntroRoundAnimation();
-        }
-        lvlStarter.InitiatePreround(currentMapIndex, GameManager.main.GetMapByID(currentMapIndex).Player.position);
-        enemyCounter.Reset();
-        gameObject.SetActive(false);
-    }
-
-
     void InitNewRound(int next_map = -1){
-
-        if(GameManager.main.EscapeRoom()){
-            escapeRoomInitiator.EndGame();
-            return;
-        }
-
-        if(Mode == 0){
-
-            if(BossRoundManager.main.isBossRound){
-                MainAudioSystem.main.PlayMainLoop();
-                VolumeControl.main.SetSilentSnapshot(false, 2);
-            }
-
-            SetRound();
-            SelectMap();
-            LoadMap();
-            ManageSpawns();
-            SetPositions();
-            ToggleLists();
-            RemainingTasks();
-            
-            Player.main.NewRound();
-            MainAudioSystem.main.Rest();
-            GunHandler.Instance.SetUIStatus(true);
-            
-            
-            // foreach (Door door in Door.doors){ door.NextRound(); } 
-            StartRoundCountdown();
-        }
-        else{ 
-            
-            if(Mode == 1){
-
-                SelectMap(runic_map);
-                LoadMap();
-                SetPositions();
-                floor_color.ChangeActiveColor(map_styles[Mode], map_styles[Mode], true);
-            }
-            else if(Mode == 2){
-                SelectMap(prime_runic_map);
-                LoadMap();
-                SetPositions();
-                floor_color.ChangeActiveColor(map_styles[Mode], map_styles[Mode], false);
-            }
-            else if(Mode == 3){
-                int mapToSelect;
-
-                if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
+        switch (Mode)
+        {
+            case 0: { GameManager.main.InitNewRound(next_map); break; }
+            case 1: { GameManager.main.InitBossRound(boss); break; }   
+            case 3:
                 {
-                    SetRound();
-                    SelectMap();
-                }
-                else
-                {
-                    SetRound();
-                    if(GameManager.main.LvlCount == enemy_entry_list.bossRounds[0]){ mapToSelect = 101; }
-                    else if(GameManager.main.LvlCount == enemy_entry_list.bossRounds[1]){ mapToSelect = 102; }
-                    else if(GameManager.main.LvlCount == enemy_entry_list.bossRounds[2]){ mapToSelect = 103; }
-                    else { mapToSelect = 101; }
-                    SelectMap(mapToSelect);
-                }
-                
-                LoadMap();
-                ManageSpawns();
-                SetPositions();
-                ToggleLists();
-                RemainingTasks();
-                
-                Player.main.NewRound();
-                GunHandler.Instance.SetUIStatus(true);
-                BossRoundManager.main.SetBossRound(true);
-                
-                // foreach (Door door in Door.doors){ door.NextRound(); } 
-                floor_color.ChangeColor(Color.black, Color.white);
-                StartRoundCountdown();
-                // KillboxEventSystem.TriggerBossRoundStartEvent();
-            }
 
-            // overlay_anim.Play("Standard");
+                    GameManager.main.InitBossRound();
+                    break;
+                }   
+            
         }
-    
-        KillboxEventSystem.TriggerRoundChangeEvent();
+    }
+
+    void InitSpecialBossRound(BossType bossType){
+        GameManager.main.InitBossRound(bossType);
     }
 
 

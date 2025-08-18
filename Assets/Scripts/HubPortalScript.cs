@@ -19,7 +19,7 @@ public class HubPortalScript : MonoBehaviour
         dist = Vector3.Distance(Player.position, transform.position);
         if (dist < 0.75)
         {
-            manager.InitHubMap();
+            // manager.InitHubMap();
         }
     }
 }

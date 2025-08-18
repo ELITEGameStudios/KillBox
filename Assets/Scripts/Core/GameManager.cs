@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using static UpgradesList;
 using UnityEngine.Rendering;
-
+using static BossRoundManager;
 [DefaultExecutionOrder(-1001)]
 public class GameManager : MonoBehaviour, ISelfResListener
 {
@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
     public int ScoreCount, Dualindex, player_kills, ultra_kills, equipment_index;
     public int[] personalBests {get; private set;}
     public float time_played {get; private set;}
+    public int currentMapIndex {get; private set;}
     [SerializeField]
     private bool escapeRoom;
 
@@ -122,7 +123,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
             Destroy(tokens[i]);
         }
 
-        floor_color.SetColorFromGradient(LvlCount, false);
+        floor_color.SetColorFromGradient(_level, false);
 
         // Updates Pathfinding
         AstarPath.active.UpdateGraphs(currentMap.Obstacles.bounds);
@@ -362,7 +363,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
         Player.main.tf.position = GetMapByID(0).Player.position;
         PortalScript.main.transform.position = GetMapByID(0).Portal.position;
-        PortalScript.main.ManageSpawns(0);
+        ManageSpawns(0);
         
         gameplayHUD.SetActive(false);
         enemyList.OnStart();
@@ -374,7 +375,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         StartCoroutine(StartNumerator());
     }
 
-    public virtual void InitNextRound()
+    public virtual void SetRound()
     {
         KillBox.currentGame.AdvanceLevel();
         _level = KillBox.currentGame.round;
@@ -388,6 +389,138 @@ public class GameManager : MonoBehaviour, ISelfResListener
         // ScoreTxt.text = ScoreCount.ToString();
 
     }
+
+    public void InitBossRound(BossType? bossType = null) {
+        int mapToSelect;
+
+        if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
+        {
+            SetRound();
+            SelectMap();
+        }
+        else
+        {
+            SetRound();
+            if(_level == EnemyList.instance.bossRounds[0]){ mapToSelect = 101; }
+            else if(_level == EnemyList.instance.bossRounds[1]){ mapToSelect = 102; }
+            else if(_level == EnemyList.instance.bossRounds[2]){ mapToSelect = 103; }
+            else { mapToSelect = 101; }
+            SelectMap(mapToSelect);
+        }
+        
+        SetNewMap( GameManager.main.GetMapByID(currentMapIndex) );
+        ManageSpawns();
+        SetPositions();
+        RemainingTasks(true);
+        
+        Player.main.NewRound();
+        GunHandler.Instance.SetUIStatus(true);
+        BossRoundManager.main.SetBossRound(true, bossType);
+        
+        // foreach (Door door in Door.doors){ door.NextRound(); } 
+        floor_color.ChangeColor(Color.black, Color.white);
+        StartRoundCountdown();
+        // KillboxEventSystem.TriggerBossRoundStartEvent();
+    }
+
+    public void InitNewRound(int next_map = -1){
+        
+        if (BossRoundManager.main.isBossRound)
+        {
+            MainAudioSystem.main.PlayMainLoop();
+            VolumeControl.main.SetSilentSnapshot(false, 2);
+        }
+
+        SetRound();
+        SelectMap();
+        SetNewMap( GetMapByID(currentMapIndex) );
+        ManageSpawns();
+        SetPositions();
+        RemainingTasks();
+        
+        Player.main.NewRound();
+        MainAudioSystem.main.Rest();
+        GunHandler.Instance.SetUIStatus(true);
+        
+        
+        // foreach (Door door in Door.doors){ door.NextRound(); } 
+        StartRoundCountdown();
+        KillboxEventSystem.TriggerRoundChangeEvent();
+    }
+    void SelectMap(int next_map = -1){
+
+        if(next_map == -1){
+
+            if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
+            {
+                currentMapIndex = 100 + (int)(this as BossChallengeGameManager).currentBoss;
+                return;
+            }
+
+            List<int> availableMaps = GameManager.main.GetAvailableMaps();
+            currentMapIndex = availableMaps[Random.Range(0, availableMaps.Count)];
+            
+        }
+        else{ currentMapIndex = next_map; }
+    }
+
+    public void UpdatePathfinding(){
+        AstarPath.active.UpdateGraphs(GameManager.main.GetMapByID(currentMapIndex).Obstacles.bounds);
+        Debug.Log("Pathfinding Updated");
+    } 
+
+    public void ManageSpawns(int map = -1){ // may be deprecated
+        if(map == -1){ map = currentMapIndex;}
+        GameManager.main.GetSpawn.Refresh();
+    }
+
+    void SetPositions(){
+        Player.main.tf.position = GameManager.main.GetMapByID(currentMapIndex).Player.position;
+        transform.position = GameManager.main.GetMapByID(currentMapIndex).Portal.position;
+        CameraMovvement.main.SetCameraPosition(Player.main.tf.position);
+
+        GameObject[] allies = GameObject.FindGameObjectsWithTag("Ally");
+
+        if(allies.Length > 0)
+        {
+            for(int i = 0; i < allies.Length; i++) 
+            
+            { allies[i].transform.position = Player.main.tf.position; }
+        }
+    }
+
+    void RemainingTasks(bool bossLevel = false){
+        //floor_color.ChangeColor(false);
+        ToggleChannelManager.main.ResetChannels();
+        EnemyList.instance.BossAppearanceCheck(currentMapIndex);
+        InventoryUIManager.Instance.UpdateUI();
+        UpgradesManager.Instance.ChooseUpgrade();
+        // ChestSystemManager.instance.RefreshCheck();
+
+        BossRoundManager.main.UpdateCounters();
+        if(!bossLevel){ BossRoundManager.main.SetBossRound(false); }
+
+        if(BossRoundManager.main.timeUntilNextBoss == 1 || KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE){ PortalScript.main.SetMode(3); }
+        else{ PortalScript.main.SetMode(0); }
+
+    }
+
+    public void StartRoundCountdown()
+    {
+        if (BossRoundManager.main.isBossRound)
+        {
+            GridAnimationManager.instance.DoBossRoundAnimation();
+        }
+        else
+        {
+            GridAnimationManager.instance.DoIntroRoundAnimation();
+        }
+        LvlStarter.main.InitiatePreround(currentMapIndex, GameManager.main.GetMapByID(currentMapIndex).Player.position);
+        EnemyCounter.main.Reset();
+        gameObject.SetActive(false);
+    }
+
+
 
     public void CheckDamageless()
     {
@@ -405,10 +538,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
         else if(_level < 24){ maxTokensPerRound = 8; }
         else if(_level < 30){ maxTokensPerRound = 11; }
         else {maxTokensPerRound = 15;}
-    }
-
-    public void InitHubMap(){
-        portalScript.StartHubMap();
     }
 
     public void OnSelfResPrompt()

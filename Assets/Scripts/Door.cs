@@ -17,7 +17,7 @@ public class Door : MonoBehaviour, IMainRoundEventListener
     void Awake(){ doors.Add(this); open = open_by_default; ChangeState();}
     void Update(){
         if(updated_graph_call){
-            PortalScript.main.UpdatePathfinding();
+            GameManager.main.UpdatePathfinding();
             updated_graph_call = false;
         }
 
