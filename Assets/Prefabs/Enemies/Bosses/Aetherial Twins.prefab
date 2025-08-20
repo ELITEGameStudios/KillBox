@@ -2277,8 +2277,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08420aadc9348416a982a87b194792d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
-  CurrentHealth: 0
+  maxHealth: 35000
+  CurrentHealth: 35000
   a: 0
   manager: {fileID: 0}
   player: {fileID: 0}
@@ -2610,6 +2610,18 @@ MonoBehaviour:
     finished: 0
     bulletIndex: 0
   cometAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    bulletIndex: 0
+  enragedRetarget:
     name: 
     displaySprite: {fileID: 0}
     displayColor: {r: 0, g: 0, b: 0, a: 0}
@@ -3165,8 +3177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08420aadc9348416a982a87b194792d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
-  CurrentHealth: 0
+  maxHealth: 35000
+  CurrentHealth: 35000
   a: 0
   manager: {fileID: 0}
   player: {fileID: 0}
@@ -3493,6 +3505,18 @@ MonoBehaviour:
     transform: {fileID: 0}
     finished: 0
   gravAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    shootBullet: 0
+  enragedGravity:
     name: 
     displaySprite: {fileID: 0}
     displayColor: {r: 0, g: 0, b: 0, a: 0}

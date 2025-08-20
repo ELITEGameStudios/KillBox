@@ -4,7 +4,7 @@ using UnityEngine;
 public class DuskDashState : BossStateData
 {
     DuskBoss duskData;
-    private float maxSpeed, accel, returnSpeed, returnAccel, distance, returnDist;
+    private float maxSpeed, accel, returnSpeed, returnAccel, distance, returnDist, forceEnd;
     private Vector2 startPos, playerPos;
     public bool atPlayer, atStart;
 
@@ -20,6 +20,7 @@ public class DuskDashState : BossStateData
 
     public override void Start(){
         // Sets the start Position.
+        forceEnd = 0;
         playerPos = duskData.dawnScript.transform.position;
         duskData.rb_self.velocity = new Vector2(0, 0);
 
@@ -42,6 +43,10 @@ public class DuskDashState : BossStateData
 
     }
     public override void Update(){
+        forceEnd += Time.deltaTime;
+        if (forceEnd >= 5f){
+            End();
+        }
     }
     void DashUpdate(){
         duskData.transform.rotation = Quaternion.LookRotation(Vector3.forward, playerPos - (Vector2)duskData.transform.position);
