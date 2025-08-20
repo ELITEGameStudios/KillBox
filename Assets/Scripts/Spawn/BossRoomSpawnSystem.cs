@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static BossRoundManager;
 
 // This class is responsible for
 // Spawning enemies periodically into the scene
@@ -17,14 +18,18 @@ public class BossRoomSpawnSystem : MonoBehaviour
     
     // The current list of enemy prefabs the spawner will spawn in the game
     [SerializeField]
-    private List<GameObject> currentEnemyTable, currentBossTable;
+    private List<GameObject> currentEnemyTable;
    
     // The lists of enemy prefabs the spawner should spawn at set difficulties 
     [SerializeField]
     private List<GameObject> shardEnemyTable, cutterEnemyTable, alphaTriadEnemyTable, guardianEnemyTable, bossRushEnemyTable;
-    
+
+
+    [Header("Boss Spawn Prefab Tables")][SerializeField]
+    private List<GameObject> shardBossTable;
     [SerializeField]
-    private List<GameObject> shardBossTable, cutterBossTable, alphaTriadBossTable, guardianBossTable, bossRushBossTable;
+    private List<GameObject> cutterBossTable, alphaTriadBossTable, midasBossTable, twinsBossTable, prologueBossTable, guardianBossTable, bossRushBossTable, loopyBossTable;
+    private List<GameObject>[] bossPrefabTables;
     
     // The time offset between periodic spawning and the max enemies allowed on the map
     [SerializeField]
@@ -41,70 +46,73 @@ public class BossRoomSpawnSystem : MonoBehaviour
     [SerializeField]
     private int enemyIndex;
     public static BossRoomSpawnSystem main {get; private set;}
-    public List<GameObject> CurrentBossTable { get => currentBossTable; }
+    public List<GameObject> CurrentBossTable { get => bossPrefabTables[(int)BossRoundManager.main.bossType]; }
 
     public bool isSpawning {get; private set;}
 
     // Called before the first frame of the game
-    void Awake(){
+    void Awake()
+    {
 
-        if(main == null){
+        if (main == null)
+        {
             main = this;
         }
-        else if(main != this){
+        else if (main != this)
+        {
             Destroy(this);
         }
 
         // Sets the initial settings for the spawner
         SetBossSpawnList(0);
         enemyIndex = 0;
+
+        bossPrefabTables = new List<GameObject>[] {
+            shardBossTable,
+            cutterBossTable,
+            alphaTriadBossTable,
+            midasBossTable,
+            twinsBossTable,
+            prologueBossTable,
+            guardianBossTable,
+            bossRushBossTable,
+            loopyBossTable
+        };
     }
 
 
 
 
     // Adjusts the settings of the spawner given the difficulty of the game
-    public void SetBossSpawnList(int difficulty){
-        switch (difficulty){
+    public void SetBossSpawnList(BossType bossType){
+        switch (bossType)
+        {
             // Each case sets the corresponding enemy table depending on the difficulty
             // To the current enemy table
             // Also sets the unique spawnrate and enemy cap for each difficulty
-            
-            case 0:
+
+            case BossType.SHARD:
                 // Shard boss
                 currentEnemyTable = shardEnemyTable;
                 spawnRate = (BossRoundManager.main.bossRoundTier > 4 ? 0.5f : 1.25f) / GameManager.main.difficulty_coefficient;
                 enemyCap = 9;
                 bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 2 : Random.Range(10, 20);
                 bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 1 : 0;
-                currentBossTable = shardBossTable;
                 active_spawns = shardMapSpawns;
-                
+
                 break;
-            
-            case 1:
+
+            case BossType.CUTTER:
                 // Cutter Boss
                 currentEnemyTable = cutterEnemyTable;
                 spawnRate = 0.85f;
                 enemyCap = 25;
                 bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 3 : Random.Range(10, 21);
                 bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 4 : 0;
-                currentBossTable = cutterBossTable;
                 active_spawns = cutterMapSpawns;
                 break;
-            
-            case 2:
-                // Guardian Boss
-                currentEnemyTable = guardianEnemyTable;
-                spawnRate = 0.85f;
-                enemyCap = 4000;
-                bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 8 : Random.Range(12, 23);
-                bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 9 : Random.Range(20, 40);
-                currentBossTable = guardianBossTable;
-                active_spawns = guardianMapSpawns;
-                break;
 
-            case 3:
+            case BossType.ALPHATRIAD:
                 // Alpha Triad Boss
                 currentEnemyTable = alphaTriadEnemyTable;
                 spawnRate = 0.7f;
@@ -112,19 +120,39 @@ public class BossRoomSpawnSystem : MonoBehaviour
                 bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 5 : Random.Range(7, 16);
                 bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 7 : 0;
                 bossSpawnStep = Random.Range(10, 24);
-                currentBossTable = alphaTriadBossTable;
                 active_spawns = aTriadMapSpawns;
                 break;
-            
-            case 4:
+
+            case BossType.GUARDIANS:
+                // Guardian Boss
+                currentEnemyTable = guardianEnemyTable;
+                spawnRate = 0.85f;
+                enemyCap = 4000;
+                bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 8 : Random.Range(12, 23);
+                bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 9 : Random.Range(20, 40);
+                active_spawns = guardianMapSpawns;
+                break;
+
+
+            case BossType.BOSSRUSH:
                 // Boss Rush
                 spawnRate = 1f;
                 currentEnemyTable = bossRushEnemyTable;
                 enemyCap = 3000;
                 bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 1 : Random.Range(0, 5);
                 bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 3 : Random.Range(5, 10);
-                currentBossTable = bossRushBossTable;
                 active_spawns = bossRushMapSpawns;
+                break;
+                
+            default:
+                // Shard boss enemies as default
+                currentEnemyTable = shardEnemyTable;
+                spawnRate = (BossRoundManager.main.bossRoundTier > 4 ? 0.5f : 1.25f) / GameManager.main.difficulty_coefficient;
+                enemyCap = 9;
+                bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 2 : Random.Range(10, 20);
+                bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 1 : 0;
+                active_spawns = shardMapSpawns;
+
                 break;
                 
         }
@@ -133,11 +161,11 @@ public class BossRoomSpawnSystem : MonoBehaviour
             List<GameObject> prestigeBossTable = new List<GameObject>();
             
             for(int i = 0; i < 8 * (int)(BossRoundManager.main.bossRoundTier / 5); i++ ){
-                foreach (GameObject boss in currentBossTable){
+                foreach (GameObject boss in bossPrefabTables[(int)BossRoundManager.main.bossType]){
                     prestigeBossTable.Add(boss);
                 }
             }
-            currentBossTable = prestigeBossTable;
+            // currentBossTable = prestigeBossTable;
             // bossSpawnOffset = (int)(BossRoundManager.main.bossRoundTier / 5) + 1;
             // bossSpawnStep = (int)(BossRoundManager.main.bossRoundTier / 5) + 1;
         }
@@ -171,7 +199,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
         isSpawning = false;
         spawnsAfterBoss = 0;
         SetBossSpawnList(0);
-        currentBossTable = shardBossTable;
+// bossPrefabTables[(int)BossRoundManager.main.bossType]
     }
 
     // The main spawning coroutine the script operates on
@@ -211,7 +239,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
                     // For the first boss spawn
                     if(!spawnedOnce){
                         if(currentOffset == 0){
-                            Instantiate(currentBossTable[currentBossIndex], mainBossSpawner.position, mainBossSpawner.rotation);
+                            Instantiate(bossPrefabTables[(int)BossRoundManager.main.bossType][currentBossIndex], mainBossSpawner.position, mainBossSpawner.rotation);
                             spawnedOnce = true;
                             spawnsAfterBoss = 0;
                             currentBossIndex++;
@@ -220,9 +248,9 @@ public class BossRoomSpawnSystem : MonoBehaviour
                         else{ currentOffset--; }
                     }
 
-                    else if(currentBossIndex < currentBossTable.Count){
+                    else if(currentBossIndex < bossPrefabTables[(int)BossRoundManager.main.bossType].Count){
                         if(currentStep == 0){
-                            Instantiate(currentBossTable[currentBossIndex], mainBossSpawner.position, mainBossSpawner.rotation);
+                            Instantiate(bossPrefabTables[(int)BossRoundManager.main.bossType][currentBossIndex], mainBossSpawner.position, mainBossSpawner.rotation);
                             currentStep = bossSpawnOffset;
                             spawnsAfterBoss = 0;
                             currentBossIndex++;

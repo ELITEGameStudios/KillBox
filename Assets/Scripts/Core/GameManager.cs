@@ -396,19 +396,28 @@ public class GameManager : MonoBehaviour, ISelfResListener
         if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
         {
             SetRound();
-            SelectMap();
+            currentMapIndex = 100 + (int)(this as BossChallengeGameManager).currentBoss;
         }
         else
         {
             SetRound();
-            if(_level == EnemyList.instance.bossRounds[0]){ mapToSelect = 101; }
-            else if(_level == EnemyList.instance.bossRounds[1]){ mapToSelect = 102; }
-            else if(_level == EnemyList.instance.bossRounds[2]){ mapToSelect = 103; }
-            else { mapToSelect = 101; }
-            SelectMap(mapToSelect);
+            
+            if (bossType != null)
+            {
+                currentMapIndex = 100 + (int)bossType;
+            }
+            else
+            {
+
+                if (_level == EnemyList.instance.bossRounds[0]) { currentMapIndex = 101; }
+                else if (_level == EnemyList.instance.bossRounds[1]) { currentMapIndex = 102; }
+                else if (_level == EnemyList.instance.bossRounds[2]) { currentMapIndex = 103; }
+                else { currentMapIndex = 101; }
+            }
+
         }
         
-        SetNewMap( GameManager.main.GetMapByID(currentMapIndex) );
+        SetNewMap( GetMapByID(currentMapIndex) );
         ManageSpawns();
         SetPositions();
         RemainingTasks(true);
@@ -475,8 +484,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
     }
 
     void SetPositions(){
-        Player.main.tf.position = GameManager.main.GetMapByID(currentMapIndex).Player.position;
-        transform.position = GameManager.main.GetMapByID(currentMapIndex).Portal.position;
+        Player.main.tf.position = GetMapByID(currentMapIndex).Player.position;
+        PortalScript.main.transform.position = GetMapByID(currentMapIndex).Portal.position;
         CameraMovvement.main.SetCameraPosition(Player.main.tf.position);
 
         GameObject[] allies = GameObject.FindGameObjectsWithTag("Ally");
@@ -517,7 +526,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         }
         LvlStarter.main.InitiatePreround(currentMapIndex, GameManager.main.GetMapByID(currentMapIndex).Player.position);
         EnemyCounter.main.Reset();
-        gameObject.SetActive(false);
+        PortalScript.main.gameObject.SetActive(false);
     }
 
 

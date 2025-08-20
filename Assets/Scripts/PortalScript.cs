@@ -122,7 +122,12 @@ public class PortalScript : MonoBehaviour
         light.color = mode_colors[Mode];
         particles.startColor = mode_colors[Mode];
 
-        if(bossType != null && mode == 1){ boss = bossType; }
+        if (bossType != null && mode == 1)
+        {
+            boss = bossType;
+            portalAnim.Play("SpecialPortalAnim");
+        }
+
         if (open)
         {
             portalAnim.Play("PortalAnim");

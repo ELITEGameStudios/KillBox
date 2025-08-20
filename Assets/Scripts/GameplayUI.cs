@@ -77,7 +77,14 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private Animator lvlDisplayAnimator;
     public Animator GetLevelDisplayAnimator(){return lvlDisplayAnimator;}
 
-    public static GameplayUI instance {get; private set;}
+
+
+    [Header("Progress bar element")]
+    [SerializeField] private GameObject progressBarObject;
+    public GameObject GetProgressBarObject(){ return progressBarObject; }
+
+
+    public static GameplayUI instance { get; private set; }
 
     // Start is called before the first frame update
     void Awake(){

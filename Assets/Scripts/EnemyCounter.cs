@@ -83,39 +83,33 @@ public class EnemyCounter : MonoBehaviour
         // Gets current enemy count
         enemies = GameObject.FindGameObjectsWithTag(tag);
         enemiesInScene = enemyProfiles.Count;
-        
-        // Main condition for ending the round
-        if(enemies.Length == 0 && noLongerSpawning){
-            noEnemiesOrSpawns = true;
-            //AudioSystemMaster.main.PlayPreRound();
-        }
 
+        // Main condition for ending the round
+        noEnemiesOrSpawns = enemies.Length == 0 && noLongerSpawning;
+        
         // Detects if there are any spawns still to be executed
         if (GetSpawn.instances == 0 && GetSpawn.ended && starter.HasStarted ||
             BossRoundManager.main.isBossRound && BossRoundManager.main.finishedBossRoundMainPhase && starter.HasStarted)
-            {noLongerSpawning = true;}
+        { noLongerSpawning = true; }
 
         // End round event
-        if (noEnemiesOrSpawns && noLongerSpawning && !GameManager.main.EscapeRoom() && !Portal.activeInHierarchy && GameManager.main.roundState == GameManager.RoundState.MIDROUND)
-        {
+        if (noEnemiesOrSpawns && !Portal.activeInHierarchy && GameManager.main.roundState == GameManager.RoundState.MIDROUND){
             EndRound();
         }
  
 
-        if (enemies.Length > 0 && !GameManager.main.EscapeRoom())
+        if ( enemies.Length > 0  && GameManager.main.roundState != GameManager.RoundState.POSTROUND)
         {
-            noEnemiesOrSpawns = false;
-            Portal.SetActive(false);
-
+            // Portal.SetActive(false);
             if(!noLongerSpawning){ return; }
-            
+
+            // Clears rings at the end of the round
             float counter = 0;
             foreach(GameObject enemy in enemies) {
                 if(enemy.GetComponent<RingScript>() != null){
                     counter++; 
                 }
             }
-
 
             if(counter == enemiesInScene){
                 Debug.Log("Time to die");
@@ -163,12 +157,12 @@ public class EnemyCounter : MonoBehaviour
             VolumeControl.main.SetSilentSnapshot(true, 2);
             KillboxEventSystem.TriggerBossRoundEndEvent();
         }
-        else if (BossRoundManager.main.GetTierOfRound(GameManager.main.LvlCount + 1) != -1 && !end_of_main_round)
-        {
-            MainAudioSystem.main.PlayBossAmbience(
-                BossRoundManager.main.GetTierOfRound(GameManager.main.LvlCount + 1), true);
-            MainAudioSystem.main.Ambience();
-        }
+        // else if (BossRoundManager.main.GetTierOfRound(GameManager.main.LvlCount + 1) != -1 && !end_of_main_round)
+        // {
+        //     MainAudioSystem.main.PlayBossAmbience(
+        //         BossRoundManager.main.GetTierOfRound(GameManager.main.LvlCount + 1), true);
+        //     MainAudioSystem.main.Ambience();
+        // }
 
         // Portal animation
         // if (AnimAccept)
