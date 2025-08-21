@@ -84,7 +84,12 @@ public class MainMenuManager : MonoBehaviour
     public void OpenPlayPortal(){ OpenMenuViaState(MenuState.PLAY_PORTAL, crossFade: true); }
     public void OpenMyStuff(){ OpenMenuViaState(MenuState.MYSTUFF); }
     public void Return(){ OpenMenuViaState(lastState); }
-    public void Resume(){ OpenMenuViaState(MenuState.NONE); }
+    public void Resume()
+    {
+        // OpenMenuViaState(MenuState.NONE);
+        GameplayUI.instance.PauseGame(false);
+    }
+    public void Pause(){ OpenMenuViaState(MenuState.PAUSED); }
 
     public void TriggerGameStart(bool freeplay = false){ KillBox.StartNewGame(Game.Gamemode.MAIN, selectedDifficulty, freeplay); }
     public void TriggerBossChallengeGameStart(bool freeplay = false){ KillBox.StartNewGame(Game.Gamemode.BOSSCHALLENGE, selectedDifficulty, freeplay); }

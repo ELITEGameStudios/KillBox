@@ -45557,6 +45557,7 @@ RectTransform:
   - {fileID: 1675952739}
   - {fileID: 799030877}
   - {fileID: 1434434156}
+  - {fileID: 623378722}
   m_Father: {fileID: 1421526597}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -45577,7 +45578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
+  m_Color: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -45609,7 +45610,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 308147222}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
@@ -93141,11 +93142,11 @@ RectTransform:
   m_Children:
   - {fileID: 1007691587}
   - {fileID: 1546754708}
-  m_Father: {fileID: 1421526597}
+  m_Father: {fileID: 308147223}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 21.5, y: -52.1}
+  m_AnchoredPosition: {x: 8.271687, y: -42.099697}
   m_SizeDelta: {x: 182.7946, y: 20.8172}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &626257026
@@ -114466,8 +114467,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -6.2223, y: -0.4}
-  m_SizeDelta: {x: 9.3335, y: 24.8893}
+  m_AnchoredPosition: {x: -5.7057, y: -0.54}
+  m_SizeDelta: {x: 6.951, y: 22.2561}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &799030878
 MonoBehaviour:
@@ -203496,7 +203497,6 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 308147223}
-  - {fileID: 623378722}
   - {fileID: 613164908}
   - {fileID: 469125501}
   - {fileID: 3398491757758939601}
@@ -203583,6 +203583,7 @@ MonoBehaviour:
   upgradeTabs: {fileID: 0}
   selfResButton: {fileID: 0}
   lvlDisplayAnimator: {fileID: 613164911}
+  pauseButtonObject: {fileID: 308147222}
   progressBarObject: {fileID: 1291045407}
 --- !u!114 &1421526600
 MonoBehaviour:
@@ -205285,8 +205286,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6.2223, y: -0.39996964}
-  m_SizeDelta: {x: 9.3335, y: 24.8893}
+  m_AnchoredPosition: {x: 5.8057, y: -0.54}
+  m_SizeDelta: {x: 6.951, y: 22.2561}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1434434157
 MonoBehaviour:
@@ -238806,7 +238807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.78039217}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: -17, y: -100, z: -100, w: -10.64}
   m_Maskable: 1
@@ -238871,7 +238872,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 1}
+    m_NormalColor: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 1}
     m_HighlightedColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
     m_PressedColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
