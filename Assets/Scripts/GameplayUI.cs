@@ -77,7 +77,9 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private Animator lvlDisplayAnimator;
     public Animator GetLevelDisplayAnimator(){return lvlDisplayAnimator;}
 
-
+    [Header("Pause button")]
+    [SerializeField] private GameObject pauseButtonObject;
+    public GameObject GetPauseButton(){return pauseButtonObject;}
 
     [Header("Progress bar element")]
     [SerializeField] private GameObject progressBarObject;
@@ -152,8 +154,11 @@ public class GameplayUI : MonoBehaviour
         }
     }
 
-    public void PauseGame(bool pause){
-        GameManager.main.pauseHandler.PausePlay(pause?0:1);
+    public void PauseGame(bool pause)
+    {
+        GameManager.main.pauseHandler.PausePlay(pause ? 0 : 1);
+        MainMenuManager.instance.OpenMenuViaState(GameManager.main.pauseHandler.paused ? MainMenuManager.MenuState.PAUSED : MainMenuManager.MenuState.NONE);
+        pauseButtonObject.SetActive(!GameManager.main.pauseHandler.paused);
     }
     
     public void Initialize()

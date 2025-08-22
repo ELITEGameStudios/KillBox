@@ -107,12 +107,7 @@ public class shooterScript2D : MonoBehaviour
             return;
         }
 
-        if(GunHandler.Instance.in_ui){
-            is_in_ui = true;
-        }
-        else{
-            is_in_ui = false;
-        }
+        is_in_ui = GunHandler.Instance.in_ui || PauseHandler.main.paused;
 
         if(player_controller.mobile || DetectInputDevice.main.isController){
             if (player_controller.Rotating && CanShoot && !GunHandler.Instance.cooldown.cooling_down && shootInputIsPressed && !is_in_ui)

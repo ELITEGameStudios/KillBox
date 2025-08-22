@@ -31,21 +31,22 @@ public class PauseHandler : MonoBehaviour
             
             if(Time.timeScale == 0){
                 paused = true;
-                GunHandler.Instance.SetUIStatus(true);
+                // GunHandler.Instance.SetUIStatus(true);
             }
             else{
                 paused = false;
+                // GunHandler.Instance.SetUIStatus(false);
             }
 
-            pause_menu.SetActive(paused);
-            pauseButton.SetActive(!paused);
+            // pause_menu.SetActive(paused);
+            // pauseButton.SetActive(!paused);
             
             ChallengeSaveSystem.SaveChallenges();
         }
         else{
             paused = false;
-            pause_menu.SetActive(paused);
-            pauseButton.SetActive(!paused);
+            // pause_menu.SetActive(paused);
+            // pauseButton.SetActive(!paused);
         }
     }
 
