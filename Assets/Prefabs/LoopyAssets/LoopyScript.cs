@@ -68,10 +68,13 @@ public class LoopyScript : MonoBehaviour
 
         // anim.Play((int)state.pose);
         anim.SetFloat("Blend", 0.3f * (int)state.pose);
+        anim.SetBool("Active", true);
 
         image.color = poseColor[(int)state.pose];
         glow.color = Color.Lerp(Color.clear, poseColor[(int)state.pose], 0.66f);
         textElement.color = poseColor[(int)state.pose];
+
+        StopAllCoroutines();
 
         StartCoroutine(TextDisplayCoroutine());
         
@@ -156,7 +159,8 @@ public class LoopyScript : MonoBehaviour
     }
 
     public IEnumerator OutroStateCoroutine(){
-        anim.Play(outroAnimName);
+        anim.SetBool("Active", false);
+        // anim.Play(outroAnimName);
         yield return new WaitForSeconds(outroTime);
         ToggleElements(false);
     }
