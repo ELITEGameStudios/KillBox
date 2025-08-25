@@ -27,7 +27,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
 
     public int[] max_levels {get; private set;}
     
-    private bool can_purchase = false;
+    private bool can_purchase = false, activeMenu = false;
     public bool[] isPurchasable;
 
     // public bool purchasable {get; private set;}
@@ -58,12 +58,28 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
         }
     }
 
-    public void CheckUpgrade(int target, Text text, Button button, Image graphic, Color text_color){
-        Upgrade upgrade =  UpgradesList.GetUpgrade(target, Instance);
+    public void OpenMenu()
+    {
+        backgroundImage.gameObject.SetActive(true);
+        GetComponent<Animator>().SetTrigger("Open");
+        CancelInvoke(nameof(CloseMenuInvoke));
+        activeMenu = true;
+        Player.main.movement.OnOpenShop(0);
+    }
+
+    public void CloseMenuInvoke()
+    {
+        backgroundImage.gameObject.SetActive(false);
+    }
+
+    public void CheckUpgrade(int target, Text text, Button button, Image graphic, Color text_color)
+    {
+        Upgrade upgrade = UpgradesList.GetUpgrade(target, Instance);
         bool purchasable = upgrade.max_level > current_levels[target] ? upgrade.Compare(GameManager.main.ScoreCount, current_levels[target]) : false;
 
         // If the selected upgrade is maxed out
-        if(current_levels[target] >= upgrade.max_level){
+        if (current_levels[target] >= upgrade.max_level)
+        {
             button.interactable = false;
             //graphic.color = error;
             text.text = "This Is MAXED!";
@@ -75,7 +91,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
 
         isPurchasable[target] = purchasable;
         button.interactable = true;
-        
+
         // If the selected upgrade can be purchased
         if (purchasable)
         {
@@ -91,7 +107,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
         }
 
         // text.text = "Costs "+ upgrade.costs[current_levels[target]].ToString() + (upgrade.costs[current_levels[target]] > 1 ? "Tokens" : "Token");
-        
+
     }
 
     public void ChooseUpgrade(){
@@ -286,7 +302,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
 
 
 
-            if (CustomKeybinds.main.PressingInteract())
+            if (CustomKeybinds.main.PressingInteract() && activeMenu)
             {
                 // onPurchaseAttempt.Invoke();
                 BuyUpgrade();
@@ -316,11 +332,15 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
 
     public void OnBackButton(bool pressedThisFrame)
     {
-        if(pressedThisFrame && backgroundImage.gameObject.activeInHierarchy){
+        if (pressedThisFrame && backgroundImage.gameObject.activeInHierarchy)
+        {
             GameManager.main.SetInGameButtonHandlers(true);
+            GetComponent<Animator>().SetTrigger("Close");
             onBackButton.Invoke();
+            activeMenu = false;
             Player.main.movement.OnCloseShop();
             KillboxEventSystem.TriggeCloseShopEvent();
+            Invoke(nameof(CloseMenuInvoke), 0.25f);
         }
     }
 

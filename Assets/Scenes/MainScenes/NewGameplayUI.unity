@@ -9548,7 +9548,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1675905334339729162, guid: 9414308565d5dc54cb6ada267f12079b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 723.26965
+      value: 723.47437
       objectReference: {fileID: 0}
     - target: {fileID: 1675905334339729162, guid: 9414308565d5dc54cb6ada267f12079b, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -11439,6 +11439,7 @@ GameObject:
   - component: {fileID: 68679823}
   - component: {fileID: 68679824}
   - component: {fileID: 68679825}
+  - component: {fileID: 68679826}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -11546,19 +11547,7 @@ MonoBehaviour:
         m_CallState: 2
   onBackButton:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1782773832}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   firstFrame: 0
   uiInitialized: 0
   frText: {fileID: 2058545335}
@@ -11584,6 +11573,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedButton: {fileID: 0}
+--- !u!95 &68679826
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68679821}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 510b98fc825f05645afa6f2e401183f5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &68954447
 GameObject:
   m_ObjectHideFlags: 0
@@ -30450,7 +30460,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 328.46426, y: -56.8547}
+  m_AnchoredPosition: {x: 328.66904, y: -56.8547}
   m_SizeDelta: {x: 405.61072, y: 53.0246}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &216464875
@@ -67632,8 +67642,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 91.28296, y: -28.52125}
-  m_SizeDelta: {x: 182.56592, y: 58}
+  m_AnchoredPosition: {x: 109.98364, y: -28.52125}
+  m_SizeDelta: {x: 219.96729, y: 58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &470024530
 MonoBehaviour:
@@ -70953,8 +70963,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 91.28296, y: -43.5}
-  m_SizeDelta: {x: 182.56592, y: 29}
+  m_AnchoredPosition: {x: 109.98364, y: -43.5}
+  m_SizeDelta: {x: 219.96729, y: 29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &491882714
 MonoBehaviour:
@@ -104599,8 +104609,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 135.0709, y: -14.5}
-  m_SizeDelta: {x: 74.99003, y: 29}
+  m_AnchoredPosition: {x: 163.25073, y: -14.5}
+  m_SizeDelta: {x: 93.433136, y: 29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &699945887
 MonoBehaviour:
@@ -125944,8 +125954,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 48.787945, y: -14.5}
-  m_SizeDelta: {x: 77.57589, y: 29}
+  m_AnchoredPosition: {x: 58.26708, y: -14.5}
+  m_SizeDelta: {x: 96.53416, y: 29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &888534110
 MonoBehaviour:
@@ -191737,8 +191747,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 91.28296, y: -14.5}
-  m_SizeDelta: {x: 182.56592, y: 29}
+  m_AnchoredPosition: {x: 109.98364, y: -14.5}
+  m_SizeDelta: {x: 219.96729, y: 29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1332639054
 MonoBehaviour:
@@ -207086,8 +207096,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 48.787945, y: -14.5}
-  m_SizeDelta: {x: 77.57589, y: 29}
+  m_AnchoredPosition: {x: 58.26708, y: -14.5}
+  m_SizeDelta: {x: 96.53416, y: 29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1444220821
 MonoBehaviour:
@@ -239045,6 +239055,7 @@ GameObject:
   - component: {fileID: 1672731610}
   - component: {fileID: 1672731611}
   - component: {fileID: 1672731612}
+  - component: {fileID: 1672731613}
   m_Layer: 5
   m_Name: Upgrades
   m_TagString: Untagged
@@ -239075,8 +239086,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0009765625, y: 0}
-  m_SizeDelta: {x: -37.3605, y: -36.1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -36.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1672731611
 MonoBehaviour:
@@ -239166,19 +239177,28 @@ MonoBehaviour:
       m_Calls: []
   onBackButton:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1936344231}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!95 &1672731613
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672731609}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 510b98fc825f05645afa6f2e401183f5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1672752029
 GameObject:
   m_ObjectHideFlags: 0
@@ -255430,7 +255450,7 @@ GameObject:
   - component: {fileID: 1782773836}
   - component: {fileID: 1782773837}
   m_Layer: 5
-  m_Name: InventoryBg
+  m_Name: MenuPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -278630,7 +278650,7 @@ GameObject:
   - component: {fileID: 1936344234}
   - component: {fileID: 1936344233}
   m_Layer: 5
-  m_Name: UpgradesBg
+  m_Name: MenuPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -295596,8 +295616,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 135.0709, y: -14.5}
-  m_SizeDelta: {x: 74.99003, y: 29}
+  m_AnchoredPosition: {x: 163.25073, y: -14.5}
+  m_SizeDelta: {x: 93.433136, y: 29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2057133429
 MonoBehaviour:
@@ -310811,7 +310831,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1675905334339729162, guid: 9414308565d5dc54cb6ada267f12079b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 597.26965
+      value: 597.47437
       objectReference: {fileID: 0}
     - target: {fileID: 1675905334339729162, guid: 9414308565d5dc54cb6ada267f12079b, type: 3}
       propertyPath: m_AnchoredPosition.y

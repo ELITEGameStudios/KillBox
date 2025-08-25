@@ -39,7 +39,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     public InventoryUIElement primary_element, secondary_element, dual_element;
     
     [SerializeField] private UnityEvent onPurchaseAttempt, onBackButton;
-    [SerializeField] private bool firstFrame, uiInitialized;
+    [SerializeField] private bool firstFrame, uiInitialized, menuIsOpened;
 
     [Header("Weapon Stat Texts")]
     [SerializeField] private Text frText;
@@ -83,9 +83,24 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         }
     }
 
-    public void UpdateUI(){
-        if(target_item == null) return;
-        if(!uiInitialized){InitializeUI(); uiInitialized = true;}
+    public void OpenMenu()
+    {
+        background.gameObject.SetActive(true);
+        CancelInvoke(nameof(CloseMenuInvoke));
+        GetComponent<Animator>().SetTrigger("Open");
+        Player.main.movement.OnOpenShop(0);
+        activeMenu = true;
+    }
+
+    public void CloseMenuInvoke()
+    {
+        background.gameObject.SetActive(false);
+    }
+
+    public void UpdateUI()
+    {
+        if (target_item == null) return;
+        if (!uiInitialized) { InitializeUI(); uiInitialized = true; }
         OwnedCheck();
         TargetCheck();
     }
@@ -459,7 +474,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
 
             
 
-            if(CustomKeybinds.main.PressingInteract() && !firstFrame){
+            if(CustomKeybinds.main.PressingInteract() && !firstFrame && activeMenu){
                 Debug.Log("FAKEE");
                 onPurchaseAttempt.Invoke();
             }
@@ -474,12 +489,15 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     }
     public void OnBackButton(bool pressedThisFrame)
     {
-        if(pressedThisFrame && background.gameObject.activeInHierarchy){
+        if (pressedThisFrame && background.gameObject.activeInHierarchy)
+        {
             onBackButton.Invoke();
             GameManager.main.SetInGameButtonHandlers(true);
             Player.main.movement.OnCloseShop();
+            GetComponent<Animator>().SetTrigger("Close");
             KillboxEventSystem.TriggeCloseShopEvent();
             activeMenu = false;
+            Invoke(nameof(CloseMenuInvoke), 0.25f);
         }
     }
 
