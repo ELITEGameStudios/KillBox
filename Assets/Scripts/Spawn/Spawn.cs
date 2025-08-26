@@ -48,7 +48,8 @@ public class Spawn : MonoBehaviour
 
     public void GenerateDrops()
     {
-        if(KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE){ return; }
+        return;
+        if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE) { return; }
         
         int dropsThisRound = EconomyManager.instance.tokensThisRound;
         if (dropsThisRound == -1) return;
@@ -201,11 +202,11 @@ public class Spawn : MonoBehaviour
                     // Spawns the next enemy if this is not a normal spawner
                     if (spawns[ii].proximitySpawning != true)
                     {
-                        bool hasDrop = false;
-                        foreach (int item in enemyDropIndexes)
-                        {
-                            if (item == instances) { hasDrop = true; break; }
-                        }    
+                        bool hasDrop = Random.Range(0, GameManager.main.DropChance()) == 0;
+                        // foreach (int item in enemyDropIndexes)
+                        // {
+                        //     if (item == instances) { hasDrop = true; break; }
+                        // }    
                         spawns[ii].InstantSpawn(hasDrop);
 
                         instances--;

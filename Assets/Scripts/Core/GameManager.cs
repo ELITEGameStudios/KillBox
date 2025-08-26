@@ -676,6 +676,10 @@ public class GameManager : MonoBehaviour, ISelfResListener
         return escapeRoom;
     }
 
+    public int DropChance()
+    {
+        return 5;
+    }
     protected IEnumerator StartNumerator()
     {
         float timer = 0;
@@ -722,7 +726,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
             camera_tf.localEulerAngles = new Vector3(0, 0, 90f * (Mathf.Sin(1.5708f * Modifier - 1.5708f) + 1));
 
-            camera.orthographicSize = (camera_size * (2 - Modifier))/2;
+            camera.orthographicSize = (camera_size * (2 - Modifier)) / 2;
 
             timer -= Time.deltaTime;
             Modifier -= Time.deltaTime;
@@ -739,8 +743,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
             camera.orthographicSize = (camera_size * (2 - (Mathf.Sin(1.5708f * Modifier - 1.5708f) + 1))) / 2;
 
-            timer -= Time.deltaTime/2;
-            Modifier -= Time.deltaTime/2;
+            timer -= Time.deltaTime / 2;
+            Modifier -= Time.deltaTime / 2;
             yield return null;
         }
 
@@ -755,12 +759,12 @@ public class GameManager : MonoBehaviour, ISelfResListener
         Player.main.Appear();
         // GameObject effect = Instantiate(player_spawn_FX, Player.transform);
         // effect.transform.SetParent(null);
-        
+
         timer = 1;
         float pads = 200;
 
         Player.main.obj.GetComponent<TwoDPlayerController>().SetCanMove(true);
-        
+
         while (timer > 0)
         {
             pads = 200 * timer;
@@ -768,7 +772,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
             mask.softness = new Vector2Int((int)(400 * timer), (int)(400 * timer));
 
 
-            timer -= Time.deltaTime/2;
+            timer -= Time.deltaTime / 2;
             yield return null;
         }
 
