@@ -131,8 +131,11 @@ public class PlayerDamage : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            ultraManager = collision.gameObject.GetComponent<UltraManager>();
-            if (ultraManager.IsUltra && !ultra_immune)
+            if (
+                EquipmentManager.instance.equipmentType == EquipmentManager.EquipmentType.ULTRAMODE
+                && EquipmentManager.instance.usingEquipment
+                && !ultra_immune
+            )
                 healthScript.Die();
         }
     }
@@ -177,7 +180,11 @@ public class PlayerDamage : MonoBehaviour
         if (collider.gameObject.CompareTag("Player"))
         {
             ultraManager = collider.gameObject.GetComponent<UltraManager>();
-            if (ultraManager.IsUltra && !ultra_immune)
+            if (
+                EquipmentManager.instance.equipmentType == EquipmentManager.EquipmentType.ULTRAMODE
+                && EquipmentManager.instance.usingEquipment
+                && !ultra_immune
+            )
                 healthScript.Die();
         }
     }

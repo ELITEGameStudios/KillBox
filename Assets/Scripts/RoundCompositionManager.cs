@@ -52,7 +52,7 @@ public class RoundCompositionManager : MonoBehaviour
         hasComposition = false;
         if(BossRoundManager.main.isBossRound){return;}
 
-        int chance = Random.Range(0, 12);
+        int chance = Random.Range(0, 24);
 
         if(chance < compositions.Length && GameManager.main.LvlCount > 5 ){
 

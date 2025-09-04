@@ -139,10 +139,7 @@ public class HotkeyManager : MonoBehaviour
             if(GameManager.main != null){
                 
                 if(Input.GetKeyDown(CustomKeybinds.main.Ultramode) || equipment_pressed){
-
-                    if(GameManager.main.ultra_kills >= GameManager.main.ReqUltraKills){
-                        EquipmentManager.instance.ActivateEquipment();
-                    }
+                    EquipmentManager.instance.ActivateEquipment();
                 }   
 
                 if(GameManager.main.freeplay){

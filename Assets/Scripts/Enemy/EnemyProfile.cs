@@ -9,7 +9,15 @@ public class EnemyProfile : MonoBehaviour
     [SerializeField] private int maxHealth, damage, limit;
     [SerializeField] private float speed, acceleration;
     [SerializeField] private bool boss;
+    [SerializeField] private Animator animator;
+    [SerializeField] private EnemyHealth enemyHealth;
+    [SerializeField] private EnemyDamage enemyDamage;
+    [SerializeField] private PlayerDamage playerDamage;
+    [SerializeField] private AIPath pathfinding;
+    [SerializeField] private GameObject animationObject, tokenParticleObject;
+    [SerializeField] private Collider2D mainCollider;
     public bool hasDrop;
+    public bool animEnable;
 
 
     public string EnemyName { get => enemyName; private set => enemyName = value; }
@@ -25,18 +33,61 @@ public class EnemyProfile : MonoBehaviour
     void Awake()
     {
 
-        AIPath pathfinding = gameObject.GetComponent<AIPath>();
-        if(pathfinding != null){
+        pathfinding = gameObject.GetComponent<AIPath>();
+        animator = GetComponent<Animator>();
+        enemyHealth = GetComponent<EnemyHealth>();
+        playerDamage = GetComponent<PlayerDamage>();
+        enemyDamage = GetComponent<EnemyDamage>();
+
+        if (pathfinding != null)
+        {
             speed = pathfinding.maxSpeed;
             acceleration = pathfinding.maxAcceleration;
         }
 
-        if(boss){ EnemyCounter.main.AddBoss(this); }
-        
+        if (boss) { EnemyCounter.main.AddBoss(this); }
+
         EnemyCounter.main.AddEnemy(this);
+
+        if (animEnable)
+        {
+            DisableEnemy();
+            Invoke(nameof(EnableEnemy), 0.75f);
+        }
     }
 
-    public void Retire(){
+    public void Update()
+    {
+        if (animator != null)
+        {
+            animator.SetFloat("Blend", (float)enemyHealth.CurrentHealth / enemyHealth.maxHealth);
+        }
+        if (tokenParticleObject != null) { tokenParticleObject.SetActive(hasDrop); }
+
+    }
+
+    public void EnableEnemy()
+    {
+        animationObject.SetActive(false);
+        mainCollider.enabled = true;
+        enemyHealth.enabled = true;
+        enemyDamage.enabled = true;
+        playerDamage.enabled = true;
+        pathfinding.enabled = true;
+    }
+
+    public void DisableEnemy()
+    {
+        animationObject.SetActive(true);
+        mainCollider.enabled = false;
+        enemyHealth.enabled = false;
+        enemyDamage.enabled = false;
+        playerDamage.enabled = false;
+        pathfinding.enabled = false;
+    }
+
+    public void Retire()
+    {
         EnemyCounter.main.RemoveEnemy(this);
     }
     

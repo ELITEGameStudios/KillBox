@@ -80,17 +80,8 @@ public class QualityControl : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void ToggleVolumes()
-    {
-        for(int i = 0; i < PPR.Length; i++)
-        {
-            if (hqVolumeIndex == i)
-                PPR[i].SetActive(true);
-            else{
-                PPR[i].SetActive(false);
-            }
-
-        }
+    public void ToggleVolumes(){
+        PostProcessManager.instance.SetQuality(hqVolumeIndex == 1);
     }
 
     public void Quality(int QIndex)
