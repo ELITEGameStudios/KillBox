@@ -8,8 +8,7 @@ public class QualityManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameObject GetManager = GameObject.Find("Manager");
-        QualityControl qualityControl = GetManager.GetComponent<QualityControl>();
+        QualityControl qualityControl = QualityControl.main;
         if(qualityControl.hqVolumeIndex == 1)
         {
             for (int i = 0; i < HQGameObjects.Length; i++)

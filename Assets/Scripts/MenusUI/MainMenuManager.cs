@@ -92,6 +92,7 @@ public class MainMenuManager : MonoBehaviour
     public void Pause(){ OpenMenuViaState(MenuState.PAUSED); }
 
     public void TriggerGameStart(bool freeplay = false){ KillBox.StartNewGame(Game.Gamemode.MAIN, selectedDifficulty, freeplay); }
+    public void TriggerMainMenu(){ SceneSystem.Instance.LoadMainMenu(); }
     public void TriggerBossChallengeGameStart(bool freeplay = false){ KillBox.StartNewGame(Game.Gamemode.BOSSCHALLENGE, selectedDifficulty, freeplay); }
     
     public void OnGameSceneLoad()

@@ -16,6 +16,7 @@ public class PostProcessManager : MonoBehaviour
     [Header("Other")]
     [SerializeField] private Volume damageVolume;
     [SerializeField] private Volume bossVolume;
+    [SerializeField] public Volume DamageVolume {get { return damageVolume; }}
 
     public static PostProcessManager instance { get; private set; }
 
@@ -38,9 +39,10 @@ public class PostProcessManager : MonoBehaviour
     public void SetQuality(bool highQuality)
     {
         currentQualityVolume = highQuality ? highQualityVolume : lowQualityVolume;
-
         lowQualityVolume.enabled = !highQuality;
         highQualityVolume.enabled = highQuality;
+        bossVolume.enabled = QualityControl.main.bossShaderIndex == 1;
+        damageVolume.enabled = QualityControl.main.damageVolumeIndex == 1;
     }
     
 }

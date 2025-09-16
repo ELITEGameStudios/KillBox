@@ -110,6 +110,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         if (currentMap != null) currentMap.Root.SetActive(false);
         currentMap = map;
         currentMap.Root.SetActive(true);
+        currentMap.UpdateShadows();
 
         // Updates spawn system
         // GetSpawn.UpdateRoundBasedVars();
@@ -118,18 +119,12 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
         // Deletes uncollected tokens
         GameObject[] tokens = GameObject.FindGameObjectsWithTag("DroppedToken");
-        for (int i = tokens.Length - 1; i >= 0; i--)
-        {
-            Destroy(tokens[i]);
-        }
+        for (int i = tokens.Length - 1; i >= 0; i--) { Destroy(tokens[i]); }
 
         floor_color.SetColorFromGradient(_level, false);
 
         // Updates Pathfinding
         AstarPath.active.UpdateGraphs(currentMap.Obstacles.bounds);
-
-        // for (int i = 0; i < Maps.Count; i++)
-        // { Maps[i].Root.SetActive(false); }
     }
     
     public MapData GetMap(){return currentMap;}
@@ -516,15 +511,10 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
     public void StartRoundCountdown()
     {
-        if (BossRoundManager.main.isBossRound)
-        {
-            GridAnimationManager.instance.DoBossRoundAnimation();
-        }
-        else
-        {
-            GridAnimationManager.instance.DoIntroRoundAnimation();
-        }
-        LvlStarter.main.InitiatePreround(currentMapIndex, GameManager.main.GetMapByID(currentMapIndex).Player.position);
+        if (BossRoundManager.main.isBossRound) { GridAnimationManager.instance.DoBossRoundAnimation(); }
+        else { GridAnimationManager.instance.DoIntroRoundAnimation(); }
+
+        LvlStarter.main.InitiatePreround(currentMapIndex, GetMapByID(currentMapIndex).Player.position);
         EnemyCounter.main.Reset();
         PortalScript.main.gameObject.SetActive(false);
     }
@@ -700,21 +690,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
             ScoreCount = 9;
         }
 
-        for (int i = 0; i < OffList.Length; i++)
-        {
-            OffList[i].SetActive(false);
-        }
-
-        for (int i = 0; i < OnList.Length; i++)
-        {
-            OnList[i].SetActive(true);
-        }
-
-        // while (timer > 0)
-        // {
-        //     timer -= Time.deltaTime;
-        //     yield return null;
-        // }
+        for (int i = 0; i < OffList.Length; i++) { OffList[i].SetActive(false);}
+        for (int i = 0; i < OnList.Length; i++) { OnList[i].SetActive(true);}
 
         timer = 1;
 
@@ -725,7 +702,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
         {
 
             camera_tf.localEulerAngles = new Vector3(0, 0, 90f * (Mathf.Sin(1.5708f * Modifier - 1.5708f) + 1));
-
             camera.orthographicSize = (camera_size * (2 - Modifier)) / 2;
 
             timer -= Time.deltaTime;
@@ -749,7 +725,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
         }
 
         GameplayUI.instance.gameObject.SetActive(true);
-
         EnemyCounter.main.DestroyAllEnemies();
 
         camera_tf.localEulerAngles = new Vector3(0, 0, 0);

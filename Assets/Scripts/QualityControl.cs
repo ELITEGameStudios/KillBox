@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class QualityControl : MonoBehaviour
 {
-    public GameObject[] PPR, Shadow;
-    public GameObject LowVolume;
     public int ShadowIndex {get; private set;}
     public int hqVolumeIndex {get; private set;}
     public int bossShaderIndex {get; private set;}
+    public int csVolumeIndex {get; private set;}
+    public int damageVolumeIndex {get; private set;}
     
     [SerializeField] private Toggle shadowToggle, hqVolumeToggle, dmgVolumeToggle, csVolumeToggle, bossShaderVolume;
     [SerializeField] private Slider particleSlider;
@@ -24,102 +24,103 @@ public class QualityControl : MonoBehaviour
     // Start is called before the first frame update
 
 
+    void Awake()
+    {
+        if(main == null){ main = this; }
+        else if(main != this){ Destroy(this); }
+    }
     void Start()
     {
-        if(main == null){
-            main = this;
-        }
-        else if(main != this){
-            Destroy(this);
-        }
+        damageVolumeIndex = PlayerPrefs.GetInt("dmg_volume", 1);
         ShadowIndex = PlayerPrefs.GetInt("Shadows", 1);
         hqVolumeIndex = PlayerPrefs.GetInt("quality_index", 1);
         bossShaderIndex = PlayerPrefs.GetInt("boss_shader_index", 1);
-        
-        // if(hqVolumeIndex == 0) {HqVolumeToggle.isOn = false;}
-        // else {HqVolumeToggle.isOn = true;}
+        csVolumeIndex = PlayerPrefs.GetInt("camera_shake", 1);
 
-        // if(bossShaderIndex == 0) {bossShaderVolume.isOn = false;}
-        // else {bossShaderVolume.isOn = true;}
+        hqVolumeToggle.isOn = hqVolumeIndex == 1;
+        bossShaderVolume.isOn = bossShaderIndex == 1;
+        csVolumeToggle.isOn = csVolumeIndex == 1;
 
         ToggleVolumes();
-
-        if (ShadowIndex == 1)
-        {
-            for(int i = 0; i < Shadow.Length; i++)
-            {
-                Shadow[i].SetActive(true);
-            }
-        }
-        else{
-            for(int i = 0; i < Shadow.Length; i++)
-            {
-                Shadow[i].SetActive(false);
-            }
-        }
+        Shadows(ShadowIndex == 1);
     }
 
-    public void ChangeVolumeQuality(){
-        if(HqVolumeToggle.isOn){hqVolumeIndex = 1;}
-        else{hqVolumeIndex = 0;}
+    public void ToggleCameraShake(bool inputBool){
+        csVolumeIndex = inputBool ? 1 : 0;
+        PlayerPrefs.SetInt("camera_shake", csVolumeIndex);
+        PlayerPrefs.Save();
+    }
+
+    public void ChangeVolumeQuality(bool inputBool) {
+        hqVolumeIndex = HqVolumeToggle.isOn ? 1 : 0;
         PlayerPrefs.SetInt("quality_index", hqVolumeIndex);
         ToggleVolumes();
     }
 
     public void ChangeShadowQuality(){
-        if(ShadowToggle.isOn){ShadowIndex = 1;}
-        else{ShadowIndex = 0;}
-        PlayerPrefs.SetInt("Shadows", ShadowIndex);
         Shadows(ShadowToggle.isOn);
     }
 
-    public void ChangeBossShaderQuality(){
-        if(bossShaderVolume.isOn){bossShaderIndex = 1;}
-        else{bossShaderIndex = 0;}
+    public void ChangeBossShaderQuality()
+    {
+        bossShaderIndex = bossShaderVolume.isOn ? 1 : 0;
         PlayerPrefs.SetInt("boss_shader_index", bossShaderIndex);
+        ToggleVolumes();
     }
 
     // Update is called once per frame
-    public void ToggleVolumes(){
+    public void ToggleVolumes()
+    {
         PostProcessManager.instance.SetQuality(hqVolumeIndex == 1);
     }
 
+    public void ToggleDmgVolume(bool inputBool)
+    {
+        damageVolumeIndex = inputBool ? 1 : 0;
+        PlayerPrefs.SetInt("dmg_volume", damageVolumeIndex);
+        PlayerPrefs.Save();
+        ToggleVolumes();
+    }
     public void Quality(int QIndex)
     {
-        switch (QIndex){
+        switch (QIndex)
+        {
             case 0:
                 HqVolumeToggle.isOn = true;
+                ChangeVolumeQuality(true);
+
                 ShadowToggle.isOn = true;
                 DmgVolumeToggle.isOn = true;
                 CsVolumeToggle.isOn = true;
                 bossShaderVolume.isOn = true;
                 particleSlider.value = 60;
                 ChangeShadowQuality();
-                ChangeVolumeQuality();
                 ChangeBossShaderQuality();
                 break;
 
             case 1:
                 HqVolumeToggle.isOn = true;
+                ChangeVolumeQuality(true);
+
                 ShadowToggle.isOn = false;
                 DmgVolumeToggle.isOn = true;
                 bossShaderVolume.isOn = true;
                 CsVolumeToggle.isOn = true;
                 particleSlider.value = 30;
                 ChangeShadowQuality();
-                ChangeVolumeQuality();
                 ChangeBossShaderQuality();
                 break;
-                
+
             case 2:
                 HqVolumeToggle.isOn = false;
+                ChangeVolumeQuality(false);
+
                 ShadowToggle.isOn = false;
                 bossShaderVolume.isOn = false;
                 DmgVolumeToggle.isOn = true;
                 CsVolumeToggle.isOn = false;
                 particleSlider.value = 15;
                 ChangeShadowQuality();
-                ChangeVolumeQuality();
                 ChangeBossShaderQuality();
                 break;
         }
@@ -131,19 +132,9 @@ public class QualityControl : MonoBehaviour
 
     public void Shadows(bool inputBool)
     {
-        for(int i = 0; i < Shadow.Length; i++)
-        {
-            Shadow[i].SetActive(inputBool);
-            Debug.Log("SHADOWOWOWOWOWOWOWOWOWOWOWOWOWOWOWO");
-        }
-
-        if(inputBool){
-            PlayerPrefs.SetInt("Shadows", 1);
-        }
-        else{
-            PlayerPrefs.SetInt("Shadows", 0);
-        }
-        
+        ShadowIndex = inputBool ? 1 : 0;
+        PlayerPrefs.SetInt("Shadows", ShadowIndex);
         PlayerPrefs.Save();
+        GameManager.main.GetCurrentMap().UpdateShadows();
     }
 }

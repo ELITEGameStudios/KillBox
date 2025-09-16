@@ -9,7 +9,7 @@ public class MapData : MonoBehaviour
     private int index, debutRound, retireRound;
 
     [SerializeField]
-    private GameObject root;
+    private GameObject root, shadows;
 
     [SerializeField]
     private Collider2D obstacles;
@@ -29,20 +29,27 @@ public class MapData : MonoBehaviour
         
     }
 
+    public void UpdateShadows(){
+        shadows.SetActive(QualityControl.main.ShadowIndex == 1);
+    }
 
-    public void SetTileData(){
+
+    public void SetTileData()
+    {
         BoundsInt wallBounds = wallTiles.cellBounds;
         BoundsInt floorBounds = floorTiles.cellBounds;
 
         List<Vector3Int> wallPositions = new();
         List<Vector3Int> floorPositions = new();
-        
-        foreach (Vector3Int point in wallBounds.allPositionsWithin){
-            if(wallTiles.HasTile(point)){wallPositions.Add(point);}
+
+        foreach (Vector3Int point in wallBounds.allPositionsWithin)
+        {
+            if (wallTiles.HasTile(point)) { wallPositions.Add(point); }
         }
 
-        foreach (Vector3Int point in floorBounds.allPositionsWithin){
-            if(floorTiles.HasTile(point)){floorPositions.Add(point);}
+        foreach (Vector3Int point in floorBounds.allPositionsWithin)
+        {
+            if (floorTiles.HasTile(point)) { floorPositions.Add(point); }
         }
 
         this.wallPositions = wallPositions.ToArray();

@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
 
 public class OverdriveManager : EquipmentBase
 {
@@ -13,7 +9,7 @@ public class OverdriveManager : EquipmentBase
         CamEffectObj.SetActive(false);
     }
 
-    void Update(){ GunHandler.Instance.cooldown.ResetCooldown(); }
+    public override void ActiveUpdate(){ GunHandler.Instance.cooldown.ResetCooldown(); }
 
     public override void GamemodeStart() {}
 }

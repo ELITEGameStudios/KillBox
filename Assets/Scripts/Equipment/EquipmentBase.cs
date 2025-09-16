@@ -9,5 +9,6 @@ public abstract class EquipmentBase : MonoBehaviour
     public float time;
     [SerializeField] private Color color;
     public abstract void GamemodeStart();
+    public virtual void ActiveUpdate(){}
     public virtual void GamemodeEnd(){}
 }

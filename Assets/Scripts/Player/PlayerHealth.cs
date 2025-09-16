@@ -57,32 +57,12 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
 
     [SerializeField]
     private Toggle dmgVolumeToggle;
-    private Toggle cameraShakeToggle;
     public int[] defaultHealth;
 
     public bool isMaxHealth {get { return CurrentHealth == netMaxHealth; }}
     public bool hasHealthDebuff {get { return DebuffedHealth > 0; }}
 
     void Start(){
-        dmgVolumeToggle = QualityControl.main.DmgVolumeToggle;
-        cameraShakeToggle = QualityControl.main.CsVolumeToggle;
-
-        int triggerDamageVolumeIndex = PlayerPrefs.GetInt("dmg_volume", 1);
-        int triggerCameraShakeIndex = PlayerPrefs.GetInt("camera_shake", 1);
-        
-        if(triggerDamageVolumeIndex == 1){ triggerDamageVolume = true; }
-        else{triggerDamageVolume = false;} 
-        if(dmgVolumeToggle != null){
-            dmgVolumeToggle.isOn = triggerDamageVolume;
-        }
-        
-
-        if(triggerCameraShakeIndex == 1){ triggerCameraShake = true; }
-        else{triggerCameraShake = false;} 
-        if(cameraShakeToggle != null){
-            cameraShakeToggle.isOn = triggerCameraShake;
-        }
-
         hitVolumeCoefficient = 1;
 
         MaxHealth = 150;
@@ -90,45 +70,18 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
         CurrentHealth = MaxHealth;
     }
 
-    public void ToggleDmgVolume(){
-        triggerDamageVolume = dmgVolumeToggle.isOn;
-        if(triggerDamageVolume){
-            PlayerPrefs.SetInt("dmg_volume", 1);
-        }
-        else{
-            PlayerPrefs.SetInt("dmg_volume", 0);
-            hit_volume_on = false;
-            if(hit_volume.weight > 0){hit_volume.weight = 0;}
-        }
-        PlayerPrefs.Save();
-    }
 
-    public void ToggleCameraShake(){
-        triggerCameraShake = cameraShakeToggle.isOn;
-        if(triggerCameraShake){
-            PlayerPrefs.SetInt("camera_shake", 1);
-        }
-        else{
-            PlayerPrefs.SetInt("camera_shake", 0);
-        }
-        PlayerPrefs.Save();
-    }
+
+
 
     // Update is called once per frame
     void Update()
     {
-        if(dmgVolumeToggle != null){
-            if(dmgVolumeToggle.isOn != triggerDamageVolume)
-            {ToggleDmgVolume();}
-        }
 
-        if(cameraShakeToggle != null){
-            if(cameraShakeToggle.isOn != triggerCameraShake)
-            {ToggleCameraShake();}
-        }
+        triggerCameraShake = QualityControl.main.csVolumeIndex == 1;
+        triggerDamageVolume = QualityControl.main.DmgVolumeToggle.isOn;
 
-
-        normalized_weight_inv = (float)(MaxHealth - CurrentHealth)/ (float)MaxHealth;
+        normalized_weight_inv = (float)(MaxHealth - CurrentHealth) / (float)MaxHealth;
         //MaxHealth = manager.HealthCount;
 
         if (IsPlayer)
@@ -136,9 +89,9 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
             GameplayUI.instance.GetHealthSlider().maxValue = netMaxHealth;
             GameplayUI.instance.GetHealthSlider().value = CurrentHealth;
         }
-        
+
         if (CurrentHealth >= netMaxHealth)
-        {   
+        {
             // If the max possible current health is reached (fully regenerated)
             regen = false;
             CurrentHealth = netMaxHealth;
@@ -151,20 +104,25 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
             regenToggle = true;
             currentRegenTime -= Time.deltaTime;
         }
-        else{
+        else
+        {
             // If the timer until regen is elapsed
-            if(!regen && regenToggle){
+            if (!regen && regenToggle)
+            {
                 regen = true;
                 regenToggle = false;
             }
         }
 
-        if(currentImmunityTime > 0){
+        if (currentImmunityTime > 0)
+        {
             immune = true;
             currentImmunityTime -= Time.deltaTime;
         }
-        if(currentImmunityTime <= 0){
-            if(immune){
+        if (currentImmunityTime <= 0)
+        {
+            if (immune)
+            {
                 immune = false;
             }
         }
@@ -173,31 +131,36 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
         {
             // Only if the player has a debuff
             debuffHealthRegenTime += Time.deltaTime;
-            DebuffedHealth -= debuffHealthRegenRate.Evaluate(debuffHealthRegenTime) * Time.deltaTime;    
+            DebuffedHealth -= debuffHealthRegenRate.Evaluate(debuffHealthRegenTime) * Time.deltaTime;
         }
 
         GameplayUI.instance.GetHealthAnimator().SetBool("regen", regen);
-        GameplayUI.instance.GetHealthAnimator().SetBool("hurt", (float)CurrentHealth/MaxHealth <= 0.34f);
+        GameplayUI.instance.GetHealthAnimator().SetBool("hurt", (float)CurrentHealth / MaxHealth <= 0.34f);
         // GameplayUI.instance.GetHealthAnimator().SetBool("hurt", false);
 
         //if(CurrentHealth / MaxHealth <= 0.15f && stage_txt.can_hurt_message){
         //    stage_txt.HurtDialogue();
         //}
 
-        if (hit_volume.weight != normalized_weight_inv && hit_volume_on)
+        // Volume control
+        if (hit_volume != null)
         {
-            if (hit_volume.weight - Time.deltaTime < normalized_weight_inv)
+            if (hit_volume.weight != normalized_weight_inv && hit_volume_on)
             {
-                hit_volume.weight = normalized_weight_inv;
+                if (hit_volume.weight - Time.deltaTime < normalized_weight_inv)
+                {
+                    hit_volume.weight = normalized_weight_inv;
+                }
+                else
+                    hit_volume.weight -= Time.deltaTime;
             }
-            else
-                hit_volume.weight -= Time.deltaTime;
+            else if (!triggerDamageVolume)
+            {
+                hit_volume_on = false;
+                hit_volume.weight = 0;
+            }
         }
-        else if (!triggerDamageVolume)
-        {
-            hit_volume_on = false;
-            hit_volume.weight = 0;
-        }
+        else { hit_volume = PostProcessManager.instance.DamageVolume; }
         
     }
     void FixedUpdate()
@@ -234,42 +197,34 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
             immune = true;
             isDamageless = false;
 
-            if (immunity_time == 0)
-            {
-                currentImmunityTime = immunityTime;
-            }
-            else
-            {
-                currentImmunityTime = immunity_time;
-            }
+            if (immunity_time == 0) { currentImmunityTime = immunityTime; }
+            else { currentImmunityTime = immunity_time; }
 
             currentRegenTime = RegenTime;
             regen = false;
 
-            if (triggerDamageVolume)
+            // Post process
+            if (hit_volume != null)
             {
-                hit_volume.weight = (float)((MaxHealth - CurrentHealth) * 1.5f / (float)MaxHealth) * hitVolumeCoefficient;
-                hit_volume_on = true;
+                if (triggerDamageVolume)
+                {
+                    hit_volume.weight = (float)((MaxHealth - CurrentHealth) * 1.5f / (float)MaxHealth) * hitVolumeCoefficient;
+                    hit_volume_on = true;
+                }
+                else
+                {
+                    hit_volume.weight = 0;
+                }
             }
-            else
-            {
-                hit_volume.weight = 0;
-            }
+            else { hit_volume = PostProcessManager.instance.DamageVolume; }
 
             GameplayUI.instance.GetHealthAnimator().Play("hit");
             //audio.clip = clips[0];
             //audio.pitch = Random.Range(0.9f, 1.2f);
             //audio.Play();
 
-            if (CurrentHealth <= 0)
-            {
-                AttemptExtraLife();
-            }
-
-            if (triggerCameraShake)
-            {
-                StartCoroutine(CameraShake(camera_shake_duration, camera_magnitude));
-            }
+            if (CurrentHealth <= 0){ AttemptExtraLife(); }
+            if (triggerCameraShake){ StartCoroutine(CameraShake(camera_shake_duration, camera_magnitude)); }
         }
     }
 
@@ -281,33 +236,27 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
             CurrentHealth -= (Dmg);
             immune = true;
 
-            if (immunity_time == 0)
-            {
-                currentImmunityTime = immunityTime;
-            }
-            else
-            {
-                currentImmunityTime = immunity_time;
-            }
+            if (immunity_time == 0) { currentImmunityTime = immunityTime; }
+            else { currentImmunityTime = immunity_time; }
 
             GameplayUI.instance.GetHealthAnimator().Play("hit");
             currentRegenTime = RegenTime;
             regen = false;
-            hit_volume.weight = (float)((MaxHealth - CurrentHealth) / (float)MaxHealth) * hitVolumeCoefficient;
-            hit_volume_on = true;
+
+            // Volume
+            if (hit_volume != null)
+            {
+                hit_volume.weight = (float)((MaxHealth - CurrentHealth) / (float)MaxHealth) * hitVolumeCoefficient;
+                hit_volume_on = true;
+            }
+            else { hit_volume = PostProcessManager.instance.DamageVolume; }
 
             //audio.clip = clips[0];
             //audio.pitch = Random.Range(0.9f, 1.2f);
             //audio.Play();
 
-            //if(!camera_is_shaking){
-            if (CurrentHealth <= 0)
-            {
-                AttemptExtraLife();
-            }
-
-            StartCoroutine(CameraShake(camera_shake_duration, camera_magnitude));
-            //}
+            if (CurrentHealth <= 0) { AttemptExtraLife(); }
+            if (triggerCameraShake) { StartCoroutine(CameraShake(camera_shake_duration, camera_magnitude)); }
         }
     }
 

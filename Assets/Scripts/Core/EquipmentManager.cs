@@ -96,6 +96,7 @@ public class EquipmentManager : MonoBehaviour
             }
             else
             {
+                equipment.ActiveUpdate();
                 timer -= Time.deltaTime;
                 equipment_slider.value = timer;
             }
