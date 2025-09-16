@@ -108,6 +108,7 @@ public class TabSystemMaster : MonoBehaviour, IBackButtonListener
     {
         if(pressedThisFrame && closeOnBackKeybind && !passThisFrame){
             CloseTabs();
+            CustomKeybinds.main.performedBackFunctionThisFrame = true;
         }
     }
 }

@@ -25,6 +25,8 @@ public class CustomKeybinds : MonoBehaviour
 
     private int gamepadBackPressedFrameCounter = 0;
     private bool gamepadBackPressedLastFrame = false;
+    public bool performedBackButtonThisFrame = false;
+    public bool performedBackFunctionThisFrame = false;
 
     public bool ControllerInteract() { return DetectInputDevice.main.gamepad != null ? DetectInputDevice.main.gamepad.yButton.isPressed : false; }
     public bool ControllerDash() { return DetectInputDevice.main.gamepad != null ? DetectInputDevice.main.gamepad.rightShoulder.IsPressed() : false; }
@@ -38,15 +40,28 @@ public class CustomKeybinds : MonoBehaviour
     [SerializeField] private HotkeyManager hotkeyManager;
 
     void Awake(){
-        if(main == null){
-            main = this;
-        }
-        else{
-            Destroy(this);
-        }
+        if(main == null){ main = this; }
+        else{ Destroy(this); }
         
         LoadKeybinds();
         // DetectInputDevice.main.gamepad.GetChildControl<ButtonControl>("right_shoulder");
+    }
+
+    public void SetHotkeyManager(HotkeyManager hotkeyManager) { 
+        if(this.hotkeyManager == null) {this.hotkeyManager = hotkeyManager;}
+    }
+
+    public string GetKeybindString(KeyCode inputKeybind){
+        string keybind = inputKeybind.ToString();
+        switch (keybind)
+        {   
+            case "Mouse0": keybind = "Left Mouse"; break;
+            case "Mouse1": keybind = "Right Mouse"; break;
+            case "Mouse2": keybind = "Middle Mouse"; break;
+            case "Escape": keybind = "ESC" ; break;
+        }
+
+        return keybind.ToUpper();
     }
 
     void SetDefaults(){
@@ -116,10 +131,10 @@ public class CustomKeybinds : MonoBehaviour
 
             return ControllerInteract() ||
             Input.GetKey(Interact); 
+            
         }
         else{
-            return (ControllerInteract() && !gamepadInteractPressedLastFrame) ||
-            Input.GetKeyDown(Interact); 
+            return (ControllerInteract() && !gamepadInteractPressedLastFrame) || Input.GetKeyDown(Interact);
         }
     }
 
@@ -131,23 +146,26 @@ public class CustomKeybinds : MonoBehaviour
         }
         else{
             return (ControllerBack() && !gamepadInteractPressedLastFrame) ||
-            Input.GetKeyDown(Pause); 
+                Input.GetKeyDown(Pause);
         }
     }
 
-    public KeyCode GetInput(){
+    public KeyCode GetInput()
+    {
 
-        foreach(KeyCode kcode in Enum.GetValues(typeof(KeyCode)))
+        foreach (KeyCode kcode in Enum.GetValues(typeof(KeyCode)))
         {
-            if (Input.GetKey(kcode)){
+            if (Input.GetKey(kcode))
+            {
                 Debug.Log("KeyCode down: " + kcode);
 
                 return kcode;
             }
-        }   
+        }
 
         return KeyCode.None;
     }
+
 
     public void Cancel(){
         editing_key = false;
@@ -178,7 +196,7 @@ public class CustomKeybinds : MonoBehaviour
         // }
 
         if(PressingBack()){
-            hotkeyManager.PauseCheck();
+            // hotkeyManager.PauseCheck();
             KillboxEventSystem.TriggerBackButtonEvent(true);
         }
         else if(PressingBack(true)){

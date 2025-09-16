@@ -11550,6 +11550,7 @@ MonoBehaviour:
       m_Calls: []
   firstFrame: 0
   uiInitialized: 0
+  menuIsOpened: 0
   frText: {fileID: 2058545335}
   rangeText: {fileID: 2090528847}
   capacityText: {fileID: 1433191148}
@@ -204227,11 +204228,13 @@ MonoBehaviour:
   primaryAnimator: {fileID: 1524899775}
   secondaryAnimator: {fileID: 1679306961}
   dashElement: {fileID: 2085130954}
-  upgradeTabs: {fileID: 0}
   selfResButton: {fileID: 0}
   lvlDisplayAnimator: {fileID: 613164911}
   pauseButtonObject: {fileID: 308147222}
   progressBarObject: {fileID: 1291045407}
+  upgradesManager: {fileID: 1672731612}
+  inventoryUIManager: {fileID: 68679824}
+  pauseMenuShortcutSignifier: {fileID: 1546754709}
 --- !u!114 &1421526600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300295,6 +300298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seconds: 5
+  hotkeyText: {fileID: 1916433960}
   animator: {fileID: 2085130955}
   arrows:
   - {fileID: 205048638}

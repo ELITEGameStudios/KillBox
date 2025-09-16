@@ -341,6 +341,8 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
             Player.main.movement.OnCloseShop();
             KillboxEventSystem.TriggeCloseShopEvent();
             Invoke(nameof(CloseMenuInvoke), 0.25f);
+            
+            CustomKeybinds.main.performedBackFunctionThisFrame = true;
         }
     }
 

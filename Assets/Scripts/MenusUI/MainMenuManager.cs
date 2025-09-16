@@ -21,10 +21,12 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Scene activeScene; 
 
     [SerializeField] private GameObject menusComponents; 
-    [SerializeField] private GameObject[] menuCameras; 
-    [SerializeField] private MenuState state, lastState; 
-    private bool InMenu {get { return state != MenuState.NONE ;} }
+    [SerializeField] private GameObject[] menuCameras;
+    [SerializeField] private MenuState state, lastState;
 
+
+    private bool InMenu {get { return state != MenuState.NONE ;} }
+    
 
     public enum MenuState{
         MAIN,
@@ -65,6 +67,8 @@ public class MainMenuManager : MonoBehaviour
     }
 
     void Update(){
+
+        
         // if(CustomKeybinds.main.){
         //     OpenMenuViaState( InMenu ? MenuState.NONE : MenuState.PAUSED);
         // }
@@ -89,7 +93,10 @@ public class MainMenuManager : MonoBehaviour
         // OpenMenuViaState(MenuState.NONE);
         GameplayUI.instance.PauseGame(false);
     }
-    public void Pause(){ OpenMenuViaState(MenuState.PAUSED); }
+    public void Pause(){ 
+        GameplayUI.instance.PauseGame(true);
+        // OpenMenuViaState(MenuState.PAUSED); 
+    }
 
     public void TriggerGameStart(bool freeplay = false){ KillBox.StartNewGame(Game.Gamemode.MAIN, selectedDifficulty, freeplay); }
     public void TriggerMainMenu(){ SceneSystem.Instance.LoadMainMenu(); }
@@ -109,12 +116,17 @@ public class MainMenuManager : MonoBehaviour
     }
     
     
-    public void OpenMenuViaState(MenuState newState, bool doCoroutine = true, bool crossFade = false, float customFadeOut = -1){
+    public void OpenMenuViaState(MenuState newState, bool doCoroutine = true, bool crossFade = false, float customFadeOut = -1, bool immediate = false){
         if(switchingMenus) {return;}
         lastState = state;
         state = newState;
-        if(doCoroutine){
+        if (doCoroutine)
+        {
             StartCoroutine(SwitchMenuCoroutine(crossFade, customFadeOut));
+        }
+        else if (immediate)
+        {
+            InstantSwitch();
         }
 
         // try{

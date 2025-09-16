@@ -341,11 +341,14 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         }
         else if (
             (!KillBox.currentGame.hasUpgradedArsenal && target_item.tier > 1 && target_item.tier < 4) ||
-            ( Player.main.specialUpgrade != UpgradesList.SpecialUpgrades.MASTERY && target_item.tier == 4 )
-        ) { return; }
-        else {
+            (Player.main.specialUpgrade != UpgradesList.SpecialUpgrades.MASTERY && target_item.tier == 4)
+        ) 
+        {}
+        // { return; }
+        // else
+        // {
             GameManager.main.shopScript.PurchaseGun(target_key);
-        }
+        // }
         OwnedCheck();
         TargetCheck();
 
@@ -491,13 +494,16 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
     {
         if (pressedThisFrame && background.gameObject.activeInHierarchy)
         {
-            onBackButton.Invoke();
+            
             GameManager.main.SetInGameButtonHandlers(true);
-            Player.main.movement.OnCloseShop();
             GetComponent<Animator>().SetTrigger("Close");
-            KillboxEventSystem.TriggeCloseShopEvent();
+            onBackButton.Invoke();
             activeMenu = false;
+            Player.main.movement.OnCloseShop();
+            KillboxEventSystem.TriggeCloseShopEvent();
             Invoke(nameof(CloseMenuInvoke), 0.25f);
+
+            CustomKeybinds.main.performedBackFunctionThisFrame = true;
         }
     }
 

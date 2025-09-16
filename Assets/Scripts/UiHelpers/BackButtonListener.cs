@@ -11,6 +11,7 @@ public class BackButtonListener : MonoBehaviour, IBackButtonListener
     {
         if(pressedThisFrame != notPressedThisFrame && gameObject.activeInHierarchy){
             unityEvent.Invoke();
+            CustomKeybinds.main.performedBackFunctionThisFrame = true;
         }
     }
 

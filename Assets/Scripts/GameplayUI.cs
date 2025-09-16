@@ -63,10 +63,6 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private DashElementScript dashElement;
     public DashElementScript GetDashUI(){return dashElement;}
 
-    [Header("Weapon and Stat Upgrade Tabs")]
-    [SerializeField] private TabSystemMaster upgradeTabs;
-    public TabSystemMaster GetUpgradeTabMaster(){return upgradeTabs;}
-
 
     [Header("Death UI")]
     [SerializeField] private GameObject selfResButton;
@@ -85,6 +81,13 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private GameObject progressBarObject;
     public GameObject GetProgressBarObject(){ return progressBarObject; }
 
+    [Header("Shop Menus")]
+    [SerializeField] private UpgradesManager upgradesManager;
+    [SerializeField] private InventoryUIManager inventoryUIManager;
+    [SerializeField] private Text pauseMenuShortcutSignifier;
+    public bool anyShopMenuOpen{  get {
+        return upgradesManager.GetBackground().gameObject.activeInHierarchy ||
+               inventoryUIManager.GetBackground().gameObject.activeInHierarchy; } }
 
     public static GameplayUI instance { get; private set; }
 
@@ -112,6 +115,8 @@ public class GameplayUI : MonoBehaviour
                 }
 
                 enemiesLeftText.text = EnemyCounter.main.enemiesInScene.ToString();
+                pauseMenuShortcutSignifier.text = CustomKeybinds.main.GetKeybindString(CustomKeybinds.main.Pause);
+
 
                 // Legacy Dash Code
                 // if(Player.main.movement.canDash){
@@ -157,7 +162,7 @@ public class GameplayUI : MonoBehaviour
     public void PauseGame(bool pause)
     {
         GameManager.main.pauseHandler.PausePlay(pause ? 0 : 1);
-        MainMenuManager.instance.OpenMenuViaState(GameManager.main.pauseHandler.paused ? MainMenuManager.MenuState.PAUSED : MainMenuManager.MenuState.NONE);
+        MainMenuManager.instance.OpenMenuViaState(pause ? MainMenuManager.MenuState.PAUSED : MainMenuManager.MenuState.NONE, doCoroutine: false, immediate: true);
         pauseButtonObject.SetActive(!GameManager.main.pauseHandler.paused);
     }
     

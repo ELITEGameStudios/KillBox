@@ -135,6 +135,7 @@ public class QualityControl : MonoBehaviour
         ShadowIndex = inputBool ? 1 : 0;
         PlayerPrefs.SetInt("Shadows", ShadowIndex);
         PlayerPrefs.Save();
-        GameManager.main.GetCurrentMap().UpdateShadows();
+        
+        if(GameManager.main != null) GameManager.main.GetCurrentMap().UpdateShadows();
     }
 }

@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class DashElementScript : MonoBehaviour
 {
     [SerializeField] float seconds = 5;
+    [SerializeField] Text hotkeyText;
     [SerializeField] Animator animator;
     [SerializeField] Image[] arrows;
     [SerializeField] float timer;
     [SerializeField] Color mainColor, inactiveColor;
 
-    // Start is called before the first frame update
     public void UpdateDisplay(float seconds)
     {
         this.seconds = seconds;
@@ -26,5 +26,6 @@ public class DashElementScript : MonoBehaviour
         for (int i = arrows.Length-1; i >= 0; i--) { arrows[i].color = i <= timer ? inactiveColor: mainColor; }
 
         animator.SetBool("Ready", timer <= 0);
+        hotkeyText.text = CustomKeybinds.main.GetKeybindString(CustomKeybinds.main.Dash);
     }
 }

@@ -139,6 +139,17 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""action"": ""pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8266f14c-c255-48db-a458-f2b3a0205d4d"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }

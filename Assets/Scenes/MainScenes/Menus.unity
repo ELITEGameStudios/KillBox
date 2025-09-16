@@ -53396,7 +53396,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.2397461, y: -6.0135803}
+  m_AnchoredPosition: {x: -0.2397461, y: -6.01355}
   m_SizeDelta: {x: -0.4796753, y: -161.78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &308982735
@@ -103971,6 +103971,21 @@ MonoBehaviour:
   upgrades_bt: {fileID: 0}
   pause_bg: {fileID: 0}
   pause_bt: {fileID: 0}
+  equipment_pressed: 0
+  switch_weapon_pressed: 0
+  upgrades_pressed: 0
+  weapons_pressed: 0
+  pause_pressed: 0
+  equipment_lock: 0
+  switch_weapon_lock: 0
+  upgrades_lock: 0
+  weapons_lock: 0
+  pause_lock: 0
+  equipment_float: 0
+  switch_weapon_float: 0
+  upgrades_float: 0
+  weapons_float: 0
+  pause_float: 0
 --- !u!1 &558127316
 GameObject:
   m_ObjectHideFlags: 0
@@ -171387,7 +171402,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.2397461, y: -6.0135803}
+  m_AnchoredPosition: {x: -0.2397461, y: -6.01355}
   m_SizeDelta: {x: -0.4796753, y: -161.78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &874448938
@@ -172473,7 +172488,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.2397461, y: -6.0135803}
+  m_AnchoredPosition: {x: -0.2397461, y: -6.01355}
   m_SizeDelta: {x: -0.4796753, y: -161.78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &879624212
@@ -257505,7 +257520,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.4790039, y: -13.299225}
+  m_AnchoredPosition: {x: -0.4790039, y: -13.299194}
   m_SizeDelta: {x: -20.0006, y: -28.8644}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1370322072
@@ -282400,7 +282415,7 @@ MonoBehaviour:
   pause_txt: {fileID: 1205611312}
   interact_txt: {fileID: 1871887046}
   switch_txt: {fileID: 1984359249}
-  hotkeyManager: {fileID: 0}
+  hotkeyManager: {fileID: 557934033}
 --- !u!4 &1530302380
 Transform:
   m_ObjectHideFlags: 0
@@ -334953,7 +334968,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.2397461, y: -6.0135803}
+  m_AnchoredPosition: {x: -0.2397461, y: -6.01355}
   m_SizeDelta: {x: -0.4796753, y: -161.78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1871112566
