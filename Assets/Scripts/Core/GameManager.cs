@@ -6,12 +6,16 @@ using UnityEngine.Events;
 using static UpgradesList;
 using UnityEngine.Rendering;
 using static BossRoundManager;
+
+
 [DefaultExecutionOrder(-1001)]
 public class GameManager : MonoBehaviour, ISelfResListener
 {
     [SerializeField]
     protected int _level;
     public int ScoreCount, Dualindex, player_kills, ultra_kills, equipment_index;
+    public int portalInterval = 4;
+
     public int[] personalBests {get; private set;}
     public float time_played {get; private set;}
     public int currentMapIndex {get; private set;}

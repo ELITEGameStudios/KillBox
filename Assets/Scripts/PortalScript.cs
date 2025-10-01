@@ -104,7 +104,7 @@ public class PortalScript : MonoBehaviour
         //Debug.Log(Maps.Count);
     }
 
-    void NextLvl()
+    public void NextLvl()
     {
         portalIsUsable = false;
         print("Entering next level");

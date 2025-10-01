@@ -124,6 +124,9 @@ public class EnemyCounter : MonoBehaviour
     public void EndRound()
     {
         Portal.SetActive(true);
+        if(GameManager.main.LvlCount  % GameManager.main.portalInterval != 0 && !(BossRoundManager.main.timeUntilNextBoss <= 1)){
+            PortalScript.main.NextLvl();
+        }
         print("Round has finished");
 
 
