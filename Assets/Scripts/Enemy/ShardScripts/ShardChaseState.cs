@@ -50,13 +50,13 @@ public class ShardChaseState : BossStateData
 
         if (currentChaseTime > 0)
         {
-            Debug.Log("chase phase update");
+            // Debug.Log("chase phase update");
             currentChaseTime -= Time.deltaTime;
         }
         else
         {
             End();
-            Debug.Log("Ended chase phase");
+            // Debug.Log("Ended chase phase");
         }
     }
     

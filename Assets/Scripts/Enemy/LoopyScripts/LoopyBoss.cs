@@ -44,8 +44,8 @@ public class LoopyBoss : BossBase
         //Initialize attacks here
         delta1 = new BeginnerLoopyAttack(this, new GameObject[] { goldDelta }, quantity: 12, iterationInterval: 0.3f, startDistance: 1.25f);
         delta2 = new BeginnerLoopyAttack(this, new GameObject[] { goldDelta }, quantity: 24, iterationInterval: 0.2f, startDistance: 1.25f, offset: 0.25f);
-        shard1= new BeginnerLoopyAttack(this, new GameObject[] { shard }, quantity: 6, iterations: 1, spawningInterval: 0.2f, startDistance: 5f, maxDuration: 10, destroySpawnedEnemies: true);
-        shardDelta = new BeginnerLoopyAttack(this, new GameObject[] { shard, preAngledGoldDelta }, quantity: 8, iterations: 100, spawningInterval: 0.1f, startDistance: 5f, offset: 0.25f, maxDuration: 10, destroySpawnedEnemies: true);
+        shard1= new BeginnerLoopyAttack(this, new GameObject[] { shard }, quantity: 4, iterations: 1, spawningInterval: 0.2f, startDistance: 5f, maxDuration: 10, destroySpawnedEnemies: true);
+        shardDelta = new BeginnerLoopyAttack(this, new GameObject[] { shard, preAngledGoldDelta }, quantity: 5, iterations: 100, spawningInterval: 0.1f, startDistance: 5f, offset: 0.25f, maxDuration: 10, destroySpawnedEnemies: true);
         polaroid1= new BeginnerLoopyAttack(this, new GameObject[] { goldPolaroid }, quantity: 6, iterations: 5, spawningInterval: 0f, startDistance: 20f);
 
         //Initialize phases here
