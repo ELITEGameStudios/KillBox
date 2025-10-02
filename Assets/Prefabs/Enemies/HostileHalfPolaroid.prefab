@@ -5257,6 +5257,7 @@ MonoBehaviour:
   triggerDeathEvent: 0
   preventDefaultDeath: 0
   immortal: 0
+  ignoresDamage: 0
   profile: {fileID: 8395165016730157890}
   onTakeDamage:
     m_PersistentCalls:

@@ -832,7 +832,7 @@ MonoBehaviour:
   ExplosionOnDeath: {fileID: 7029634076664512277, guid: 910d8b988f87a4007bed6f4290a2317b, type: 3}
   color_easter_egg_portal: {fileID: 6708033527536035730, guid: 8d90fc0071569402dbb9cc1a7bc39ee3, type: 3}
   InsObject: {fileID: 0}
-  DpdItemClone: {fileID: 0}
+  tokenClone: {fileID: 0}
   main_player: {fileID: 0}
   key_item: {fileID: 7939964675840844463, guid: e0bf6bba259b2b34687150584439fd03, type: 3}
   guaranteed_drop_item: {fileID: 8739768844396423761, guid: 447aa0e621a49ec408c744ca484a8ee0, type: 3}
@@ -851,6 +851,9 @@ MonoBehaviour:
   key_drops: 0
   guaranteed_drop_bool: 1
   triggerDeathEvent: 0
+  preventDefaultDeath: 0
+  immortal: 0
+  ignoresDamage: 0
   profile: {fileID: 987719025233917754}
   onTakeDamage:
     m_PersistentCalls:
@@ -1313,7 +1316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f288d357025b3cc4795451a5295b9dfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: SHAARD
+  name: SHARD
   displaySprite: {fileID: 21300000, guid: 420caf93035bea840a4ef82b5d112554, type: 3}
   displayColor: {r: 1, g: 0.9584457, b: 0, a: 1}
   transform: {fileID: 6813785317433982714}
@@ -1326,6 +1329,8 @@ MonoBehaviour:
   currentPhase:
     minHealth: 0
   nextStateIndex: 0
+  dontInstantlySetState: 1
+  preventDefaultDeath: 0
   shoot_sources:
   - {fileID: 5102053157571067317}
   - {fileID: 5102053157003238479}
@@ -1361,6 +1366,9 @@ MonoBehaviour:
     animator: {fileID: 0}
     transform: {fileID: 0}
     finished: 0
+    shoot_sources: []
+    fireRate: 0
+    currentFireInterval: 0
   agroChaseState:
     name: 
     displaySprite: {fileID: 0}
@@ -1372,6 +1380,9 @@ MonoBehaviour:
     animator: {fileID: 0}
     transform: {fileID: 0}
     finished: 0
+    shoot_sources: []
+    fireRate: 0
+    currentFireInterval: 0
   spiralState:
     name: 
     displaySprite: {fileID: 0}
@@ -1385,6 +1396,17 @@ MonoBehaviour:
     finished: 0
     shoot_sources: []
   leaveState:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+  agroLeaveState:
     name: 
     displaySprite: {fileID: 0}
     displayColor: {r: 0, g: 0, b: 0, a: 0}
@@ -1424,6 +1446,79 @@ MonoBehaviour:
     exitTime: 0
     state: 0
     timeInState: 0
+  agroSphereAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    shoot_sources: []
+    angularSpeed: 0
+    maxDist: 0
+    minDist: 0
+    distance: 0
+    enterCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    enterTime: 0
+    fireTime: 0
+    fireInterval: 0
+    currentFireInterval: 0
+    exitTime: 0
+    state: 0
+    timeInState: 0
+  dashAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    shoot_sources: []
+    startPos: {x: 0, y: 0}
+    targetPos: {x: 0, y: 0}
+    dashTime: 0
+    distance: 0
+    iterations: 0
+    currentIterations: 0
+    vertical: 0
+    fireRate: 0
+    currentFireInterval: 0
+    timeInDash: 0
+  agroDashAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    shoot_sources: []
+    startPos: {x: 0, y: 0}
+    targetPos: {x: 0, y: 0}
+    dashTime: 0
+    distance: 0
+    iterations: 0
+    currentIterations: 0
+    vertical: 0
+    fireRate: 0
+    currentFireInterval: 0
+    timeInDash: 0
   firstPhase:
     minHealth: 0
   lastPhase:
@@ -1489,7 +1584,16 @@ MonoBehaviour:
   speed: 3
   acceleration: 0
   boss: 1
+  animator: {fileID: 0}
+  enemyHealth: {fileID: 0}
+  enemyDamage: {fileID: 0}
+  playerDamage: {fileID: 0}
+  pathfinding: {fileID: 0}
+  animationObject: {fileID: 0}
+  tokenParticleObject: {fileID: 0}
+  mainCollider: {fileID: 0}
   hasDrop: 0
+  animEnable: 0
 --- !u!1 &6813785317823682139
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ public class DeltaTriad : MonoBehaviour
     private float start_velocity;
     [SerializeField] private TrailRenderer trail; 
     [SerializeField] private Vector3 scale_mod; 
-    [SerializeField] private bool out_of_time;
+    [SerializeField] private bool out_of_time, doNotComputeAngle;
     [SerializeField] private EnemyMod mod;
 
     // Start is called before the first frame update
@@ -19,8 +19,12 @@ public class DeltaTriad : MonoBehaviour
         Player = GameObject.FindWithTag("Player");
 
         Vector3 relative = transform.InverseTransformPoint(Player.transform.position);
-        float angle = Mathf.Atan2(relative.x, relative.y) * Mathf.Rad2Deg;
-        transform.Rotate(0,0, -angle + Random.Range(-angle_randomizer, angle_randomizer));
+
+        if (!doNotComputeAngle)
+        {
+            float angle = Mathf.Atan2(relative.x, relative.y) * Mathf.Rad2Deg;
+            transform.Rotate(0,0, -angle + Random.Range(-angle_randomizer, angle_randomizer));
+        }
         
         gameObject.GetComponent<Rigidbody2D>().AddForce( transform.up * (start_velocity));
     }

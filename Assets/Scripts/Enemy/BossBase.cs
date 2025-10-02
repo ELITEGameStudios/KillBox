@@ -30,6 +30,7 @@ public class BossBase : MonoBehaviour, IDeathHandler
     public Phase currentPhase;
     public BossStateData currentState;
     public int nextStateIndex;
+    public bool dontInstantlySetState;
 
 
     [System.Serializable]
@@ -56,10 +57,11 @@ public class BossBase : MonoBehaviour, IDeathHandler
         {
             SetPhase(phases[0]);
             PhaseCheck();
-            SetState(currentPhase.statesInPhase[nextStateIndex]);
+            if(!dontInstantlySetState) ChooseNextState();
+            // SetState(currentPhase.statesInPhase[nextStateIndex], nextStateIndex+1);
         }
 
-        health.SetDeathHandler(this);
+        
         BossBarManager.Instance.AddToQueue(gameObject, name, displayColor, displaySprite);
         OnStart();
     }
@@ -73,9 +75,9 @@ public class BossBase : MonoBehaviour, IDeathHandler
         OnSetPhase();
     }
 
-    void SetState(BossStateData state)
+    protected void SetState(BossStateData state, int nextIndex)
     {
-        nextStateIndex++;
+        nextStateIndex = nextIndex;
         if (nextStateIndex >= statesInPhase.Length) { nextStateIndex = 0; }
 
         currentState = state;
@@ -91,7 +93,7 @@ public class BossBase : MonoBehaviour, IDeathHandler
         }
         else
         {
-            SetState(currentPhase.statesInPhase[nextStateIndex]);
+            ChooseNextState();
         }
     }
 
@@ -131,8 +133,14 @@ public class BossBase : MonoBehaviour, IDeathHandler
         OnFixedUpdate();
     }
     protected virtual void OnSetPhase(){}
+
+    protected virtual void ChooseNextState()
+    {
+        SetState(currentPhase.statesInPhase[nextStateIndex], nextStateIndex+1);
+    }
     
-    protected virtual void OnLateUpdate(){}
+
+    protected virtual void OnLateUpdate() { }
     protected virtual void OnUpdate(){}
     protected virtual void OnStart(){}
     protected virtual void OnFixedUpdate(){}

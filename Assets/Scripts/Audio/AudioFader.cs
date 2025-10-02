@@ -83,7 +83,7 @@ public class AudioFader : MonoBehaviour
     }
 
     public void CheckVolume(){
-        other_source.volume = 0 *  (VolumeControl.main.music_value / 100);
-        active_source.volume = 1 *  (VolumeControl.main.music_value / 100);
+        if (other_source != null) other_source.volume = 0 *  (VolumeControl.main.music_value / 100); 
+        if (active_source != null) active_source.volume = 1 *  (VolumeControl.main.music_value / 100);
     }
 }

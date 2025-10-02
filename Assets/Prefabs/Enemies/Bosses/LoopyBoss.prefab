@@ -5246,6 +5246,7 @@ GameObject:
   - component: {fileID: 6813785317433982719}
   - component: {fileID: 6813785317433982718}
   - component: {fileID: 6813785317433982689}
+  - component: {fileID: 741088618240052032}
   - component: {fileID: 6813785317433982688}
   - component: {fileID: 6813785317433982691}
   - component: {fileID: 6813785317433982690}
@@ -5392,6 +5393,136 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &741088618240052032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6813785317433982693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ec579d783067864bad1b1eb3ae083b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: LOOPY
+  displaySprite: {fileID: 21300000, guid: 4608e94f0d707f04d9c198d6b47e7f43, type: 3}
+  displayColor: {r: 0.97972727, g: 1, b: 0, a: 1}
+  transform: {fileID: 6813785317433982714}
+  movement_script: {fileID: 6813785317433982719}
+  rb_self: {fileID: 0}
+  self_collider: {fileID: 0}
+  health: {fileID: 6813785317433982690}
+  animator: {fileID: 1917422917277911437}
+  phases:
+  - minHealth: 0
+  currentPhase:
+    minHealth: 0
+  nextStateIndex: 0
+  dontInstantlySetState: 0
+  preventDefaultDeath: 0
+  maxSpeed: 0
+  phase1:
+    minHealth: 0
+  delta1:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    loopyBoss: {fileID: 0}
+    prefabs: []
+    spawnedEnemies: []
+    iterations: 0
+    quantity: 0
+    offset: 0
+    spawningInterval: 0
+    iterationInterval: 0
+    startDistance: 0
+    duration: 0
+    timer: 0
+    destroySpawnedEnemies: 0
+  delta2:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    loopyBoss: {fileID: 0}
+    prefabs: []
+    spawnedEnemies: []
+    iterations: 0
+    quantity: 0
+    offset: 0
+    spawningInterval: 0
+    iterationInterval: 0
+    startDistance: 0
+    duration: 0
+    timer: 0
+    destroySpawnedEnemies: 0
+  shard1:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    loopyBoss: {fileID: 0}
+    prefabs: []
+    spawnedEnemies: []
+    iterations: 0
+    quantity: 0
+    offset: 0
+    spawningInterval: 0
+    iterationInterval: 0
+    startDistance: 0
+    duration: 0
+    timer: 0
+    destroySpawnedEnemies: 0
+  shardDelta:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    loopyBoss: {fileID: 0}
+    prefabs: []
+    spawnedEnemies: []
+    iterations: 0
+    quantity: 0
+    offset: 0
+    spawningInterval: 0
+    iterationInterval: 0
+    startDistance: 0
+    duration: 0
+    timer: 0
+    destroySpawnedEnemies: 0
+  goldDelta: {fileID: 8913873377623868711, guid: f7ee9f2e124e10041b1e158e9ce4c7f5, type: 3}
+  preAngledGoldDelta: {fileID: 8913873377623868711, guid: dcee8b70f70483e45b50f7a929ebf2a6, type: 3}
+  goldPolaroid: {fileID: 6813785317433982693, guid: 49b781422b24f354089104ce9fc1ff4f, type: 3}
+  goldTriad: {fileID: 0}
+  shard: {fileID: 6813785317433982693, guid: ca9d5eaafa7dd714d911c724b777641e, type: 3}
+  sweepingIndicator: {fileID: 0}
+  debugFloat: 0
 --- !u!114 &6813785317433982688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5498,6 +5629,7 @@ MonoBehaviour:
   triggerDeathEvent: 0
   preventDefaultDeath: 0
   immortal: 0
+  ignoresDamage: 0
   profile: {fileID: 987719025233917754}
   onTakeDamage:
     m_PersistentCalls:
@@ -5904,20 +6036,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: LOOPY
-  maxHealth: 1000
-  damage: 150
+  maxHealth: 1000000
+  damage: 250
   limit: 1
-  speed: 3
+  speed: 1
   acceleration: 0
   boss: 1
-  animator: {fileID: 0}
-  enemyHealth: {fileID: 0}
-  enemyDamage: {fileID: 0}
-  playerDamage: {fileID: 0}
-  pathfinding: {fileID: 0}
+  animator: {fileID: 1917422917277911437}
+  enemyHealth: {fileID: 6813785317433982690}
+  enemyDamage: {fileID: 6813785317433982688}
+  playerDamage: {fileID: 6813785317433982691}
+  pathfinding: {fileID: 6813785317433982719}
   animationObject: {fileID: 0}
   tokenParticleObject: {fileID: 0}
-  mainCollider: {fileID: 0}
+  mainCollider: {fileID: 9075273824472276881}
   hasDrop: 0
   animEnable: 0
 --- !u!61 &9075273824472276881
@@ -5975,7 +6107,7 @@ Animator:
   m_GameObject: {fileID: 6813785317433982693}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c63dbbc96f448c248afe524fb1074e44, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -6088,7 +6220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1009368548336708708
 Transform:
   m_ObjectHideFlags: 0

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ShardBoss : BossBase
 {
+    public static List<ShardBoss> bosses;
+    public bool multipleBosses {get { return bosses.Count > 0; }}
 
 
     public AIShooterScript[] shoot_sources;
@@ -12,12 +14,13 @@ public class ShardBoss : BossBase
     public Vector3 locked_rotation;
     public FixedRotator rotator;
 
+
     public ShardChaseState chaseState, agroChaseState;
     public ShardSpiralAttackState spiralState;
     public ShardLeaveState leaveState, agroLeaveState;
     public ShardSphericalAttack sphereAttack, agroSphereAttack;
     public ShardDashAttack dashAttack, agroDashAttack;
-    
+
     public Phase firstPhase, lastPhase;
 
     public AnimationCurve enterCurve;
@@ -26,6 +29,7 @@ public class ShardBoss : BossBase
     // Start is called before the first frame update
     void Awake()
     {
+        if(bosses == null){ bosses = new List<ShardBoss>(); }
         chaseState = new ShardChaseState(this, 12, 12, 8, Adrag[0], Rspeed[0]);
         agroChaseState = new ShardChaseState(this, 8, 3.5f, 7, Adrag[2], Rspeed[2], fires: true);
 
@@ -41,14 +45,53 @@ public class ShardBoss : BossBase
         agroDashAttack = new ShardDashAttack(this, 5, 25, 0.3f, 4);
 
 
-        firstPhase.statesInPhase = new BossStateData[] { chaseState, leaveState, dashAttack, sphereAttack, chaseState, spiralState};
+
+        firstPhase.statesInPhase = new BossStateData[] { chaseState, leaveState, dashAttack, chaseState, spiralState };
         firstPhase.minHealth = 0.5f;
 
-        lastPhase.statesInPhase = new BossStateData[] { agroChaseState, spiralState, agroLeaveState, agroSphereAttack, agroDashAttack};
+        lastPhase.statesInPhase = new BossStateData[] { agroChaseState, spiralState, agroLeaveState, agroDashAttack };
         lastPhase.minHealth = 0f;
 
         phases = new Phase[2] { firstPhase, lastPhase };
+        SetPhase(phases[0]);
+
         //BossAudio.Instance.OnShardSpawn(gameObject);
 
+        bosses.Add(this);
+    }
+
+    void Start(){
+        ChooseNextState();
+        health.SetDeathHandler(this);
+    }
+
+    protected override void ChooseNextState()
+    {
+        if (!multipleBosses) { base.ChooseNextState(); return; }
+
+        // bool chaserExists = false;
+        bool dasherExists = false;
+        bool spiralExists = false;
+
+        for (int i = 0; i < bosses.Count; i++)
+        {
+            ShardBoss boss = bosses[i];
+            if (boss == this) { continue; }
+
+            if (boss.currentState ==  boss.dashAttack || boss.currentState == boss.agroDashAttack) { dasherExists = true; }
+            if (boss.currentState == boss.spiralState) { spiralExists = true; }
+        }
+
+        if (!spiralExists) { SetState(spiralState, 0); return; }
+        if (!dasherExists) { SetState(currentPhase.statesInPhase == firstPhase.statesInPhase ? dashAttack : agroDashAttack, 0); return; }
+        SetState(currentPhase.statesInPhase == firstPhase.statesInPhase ? chaseState : agroChaseState, 0);
+        // SetState(chaseState, 0);
+    }
+
+    public override void DeathEvent(bool to_player = false)
+    {
+        bosses.Remove(this);
+        Debug.Log("Shard Removed");
+        base.DeathEvent(to_player);
     }
 }

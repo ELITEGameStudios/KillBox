@@ -16,7 +16,7 @@ public class EnemyHealth : MonoBehaviour
     public AudioClip death, hit;
     public bool can_drop_lvl_4, destructive_immune, no_drops, key_drops, guaranteed_drop_bool, triggerDeathEvent;
     public bool in_fortress {get; private set;}
-    [SerializeField] private bool preventDefaultDeath, immortal;
+    [SerializeField] private bool preventDefaultDeath, immortal, ignoresDamage;
     [SerializeField] private EnemyProfile profile; 
     [SerializeField] private UnityEvent onTakeDamage, onDie; 
     [SerializeField] private IDeathHandler deathHandler;
@@ -66,6 +66,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDmg(int Dmg)
     {
+        if (ignoresDamage) return;
         CurrentHealth -= Dmg;
         onTakeDamage.Invoke();
 
@@ -78,38 +79,39 @@ public class EnemyHealth : MonoBehaviour
     {
 
         a = Random.Range(1, 6);
-        if (profile.hasDrop || (KillBox.currentGame.round > 45 && a == 1))
+        if (profile != null)
         {
-            if (!BossRoundManager.main.isBossRound && to_player)
+            if (profile.hasDrop || (KillBox.currentGame.round > 45 && a == 1))
             {
-                // Instantiates a token drop
-                if (objectPool[0].GetPooledObject() != null)
+                if (!BossRoundManager.main.isBossRound && to_player)
                 {
-                    tokenClone = objectPool[0].GetPooledObject();
-                    tokenClone.transform.SetParent(null);
-                    tokenClone.GetComponent<sine_movement>().ROOT = transform.position;
-                    tokenClone.transform.position = transform.position;
-                    tokenClone.gameObject.SetActive(true);
-
-
-                    Transform grid = GameObject.Find("Grid").transform;
-
-                    for (int i = 0; i < grid.childCount; i++)
+                    // Instantiates a token drop
+                    if (objectPool[0].GetPooledObject() != null)
                     {
-                        if (grid.GetChild(i).gameObject.activeInHierarchy)
+                        tokenClone = objectPool[0].GetPooledObject();
+                        tokenClone.transform.SetParent(null);
+                        tokenClone.GetComponent<sine_movement>().ROOT = transform.position;
+                        tokenClone.transform.position = transform.position;
+                        tokenClone.gameObject.SetActive(true);
+
+
+                        Transform grid = GameObject.Find("Grid").transform;
+
+                        for (int i = 0; i < grid.childCount; i++)
                         {
-                            tokenClone.transform.SetParent(grid.GetChild(i));
-                            tokenClone.transform.localEulerAngles = new Vector3(0, 0, 0);
-                            tokenClone.transform.position = transform.position;
-                            tokenClone.transform.rotation = transform.rotation;
-                            break;
+                            if (grid.GetChild(i).gameObject.activeInHierarchy)
+                            {
+                                tokenClone.transform.SetParent(grid.GetChild(i));
+                                tokenClone.transform.localEulerAngles = new Vector3(0, 0, 0);
+                                tokenClone.transform.position = transform.position;
+                                tokenClone.transform.rotation = transform.rotation;
+                                break;
+                            }
                         }
                     }
                 }
             }
         }
-        
-
 
         try
         {
@@ -171,18 +173,18 @@ public class EnemyHealth : MonoBehaviour
             {
                 manager = GameObject.Find("Manager").GetComponent<GameManager>();
             }
-            manager.player_kills++;
-            ChallengeFields.UpdateKills(this);
-            manager.ultra_kills++;
+            if (to_player)
+            {
+                manager.player_kills++;
+                ChallengeFields.UpdateKills(this);
+                manager.ultra_kills++;
+             
+                Player.main.AddKill();
+            }
 
             if (in_fortress)
             {
                 GameObject.FindGameObjectWithTag("fortress_rune").GetComponent<RuneFortressClass>().AddKill(this);
-            }
-
-            if (to_player)
-            {
-                Player.main.AddKill();
             }
         }
         catch{
@@ -198,7 +200,7 @@ public class EnemyHealth : MonoBehaviour
         }
         if(preventDefaultDeath) { return; }
 
-        profile.Retire();
+        if(profile != null) profile.Retire();
         Destroy(gameObject);
     }
 

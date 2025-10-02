@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7976177038441959256}
   - component: {fileID: 7976177038441959255}
   m_Layer: 0
-  m_Name: PolaroidBeam
+  m_Name: GoldPolaroidBeam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +56,8 @@ MonoBehaviour:
   timer: 0
   beam_obj: {fileID: 7976177039339457013}
   end_pos: {x: 0, y: -100, z: 0}
-  warningColor: {r: 1, g: 0.09470583, b: 0, a: 0.6392157}
+  warningColor: {r: 1, g: 0.826598, b: 0, a: 0.6392157}
+  targetColor: {r: 1, g: 0.9626852, b: 0, a: 1}
 --- !u!1 &7976177039339457014
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,7 +135,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 592fa9533c66d450aaed2c952ebdcb0b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.96612626, g: 1, b: 0.36320752, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -186,7 +187,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   playerHealthScript: {fileID: 0}
   playerRigidBody: {fileID: 0}
-  damage: 20
+  damage: 75
   _ignite_intensity: 0
   hitKb: 0
   HitCooldown: 0.1

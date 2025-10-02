@@ -23,20 +23,21 @@ public class PolaroidBeamObject : MonoBehaviour
     private Vector3 end_pos = new Vector3(0, -100, 0);
 
     private EnemyDamage enemyDamage;
-    [SerializeField] private Color warningColor;
+    [SerializeField] private Color warningColor, targetColor = Color.white;
 
     // Start is called before the first frame update
     void Awake()
     {
         enemyDamage = transform.GetChild(0).gameObject.GetComponent<EnemyDamage>();
+        // targetColor = renderer.color;
     }
 
     void OnEnable(){
         beam_obj.transform.localScale = new Vector3(0, 200, 1);
         //collider.enabled = false;
         enemyDamage.enabled = false;
-        renderer.color = new Color(255f, 255f, 255f, 0f);
-
+        // renderer.color = new Color(255f, 255f, 255f, 0f);
+        renderer.color = targetColor;
         player = Player.main.obj;
     }
 
@@ -83,7 +84,7 @@ public class PolaroidBeamObject : MonoBehaviour
                 }
 
                 else{ 
-                    renderer.color = Color.white;
+                    renderer.color = targetColor;
                     beam_obj.transform.localScale = new Vector3(width, 200, 1);
                     //collider.enabled = true;
                     enemyDamage.enabled = true;

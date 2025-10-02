@@ -81,11 +81,11 @@ public class LeaderboardManager : MonoBehaviour
 
     public async Task GetBestScores(){
 
-        Debug.Log("Getting scores");
+        // Debug.Log("Getting scores");
 
         var scoresResponse = await LeaderboardsService.Instance.GetScoresAsync(displayId);
 
-        Debug.Log(scoresResponse.Results.Count);
+        // Debug.Log(scoresResponse.Results.Count);
 
         if(scoresResponse.Results != null){
             
@@ -121,11 +121,11 @@ public class LeaderboardManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log("got scores");
+        // Debug.Log("got scores");
     }
     public async Task GetRemoteScores(){
 
-        Debug.Log("Getting scores");
+        // Debug.Log("Getting scores");
 
         var scoresResponse = await LeaderboardsService.Instance.GetScoresAsync(displayId,new GetScoresOptions{Offset = top_pos, Limit = 10});
 
@@ -178,7 +178,7 @@ public class LeaderboardManager : MonoBehaviour
             }
             else{
 
-                Debug.Log("Getting player scores");
+                // Debug.Log("Getting player scores");
 
                 var scoresResponse = await LeaderboardsService.Instance.GetPlayerRangeAsync(displayId, new GetPlayerRangeOptions{ RangeLimit = 5 });
 
@@ -218,7 +218,7 @@ public class LeaderboardManager : MonoBehaviour
                     }
                 }
             }
-            Debug.Log("got scores");
+            // Debug.Log("got scores");
         }
     }
 
@@ -240,7 +240,7 @@ public class LeaderboardManager : MonoBehaviour
         bool signed_in = AuthenticationService.Instance.IsSignedIn;
 
         AuthenticationService.Instance.SignedIn += () => { 
-            Debug.Log("Signed in as: " + AuthenticationService.Instance.PlayerId);
+            // Debug.Log("Signed in as: " + AuthenticationService.Instance.PlayerId);
             signed_in = true;
         };
 
