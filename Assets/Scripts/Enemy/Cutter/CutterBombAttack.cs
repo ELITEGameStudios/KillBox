@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 [System.Serializable]
@@ -53,6 +52,6 @@ public class CutterBombAttack : BossStateData
 
     public override void End(bool interrupted = false) // Called once the state declares it is finished its task
     {
-        base.End();
+        base.End(interrupted);
     }
 }

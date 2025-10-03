@@ -5420,6 +5420,7 @@ MonoBehaviour:
     minHealth: 0
   nextStateIndex: 0
   dontInstantlySetState: 0
+  startedAttacks: 0
   preventDefaultDeath: 0
   maxSpeed: 0
   phase1:
@@ -5516,11 +5517,58 @@ MonoBehaviour:
     duration: 0
     timer: 0
     destroySpawnedEnemies: 0
+  polaroid1:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    loopyBoss: {fileID: 0}
+    prefabs: []
+    spawnedEnemies: []
+    iterations: 0
+    quantity: 0
+    offset: 0
+    spawningInterval: 0
+    iterationInterval: 0
+    startDistance: 0
+    duration: 0
+    timer: 0
+    destroySpawnedEnemies: 0
+  dualCutter:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    finished: 0
+    loopyBoss: {fileID: 0}
+    prefabs: []
+    spawnedEnemies: []
+    iterations: 0
+    quantity: 0
+    offset: 0
+    spawningInterval: 0
+    iterationInterval: 0
+    startDistance: 0
+    duration: 0
+    timer: 0
+    destroySpawnedEnemies: 0
   goldDelta: {fileID: 8913873377623868711, guid: f7ee9f2e124e10041b1e158e9ce4c7f5, type: 3}
   preAngledGoldDelta: {fileID: 8913873377623868711, guid: dcee8b70f70483e45b50f7a929ebf2a6, type: 3}
   goldPolaroid: {fileID: 6813785317433982693, guid: 49b781422b24f354089104ce9fc1ff4f, type: 3}
   goldTriad: {fileID: 0}
   shard: {fileID: 6813785317433982693, guid: ca9d5eaafa7dd714d911c724b777641e, type: 3}
+  goldCutter: {fileID: 5310180238275447515, guid: b5fe93bf9483f094cafe38d0c1c73212, type: 3}
   sweepingIndicator: {fileID: 0}
   debugFloat: 0
 --- !u!114 &6813785317433982688

@@ -42,11 +42,13 @@ public class CutterChaseAttack : BossStateData
     // Called When the state object becomes active
     public override void Start()
     {
+        movement_script.enabled = true;
         movement_script.maxSpeed = moveSpeed;
         movement_script.enableRotation = false;
+        
         // timer = time;
 
-        if(bombIterations > 0)
+        if (bombIterations > 0)
         {
             cutterBoss.StartCoroutine(nameof(ChaseWithBombNumerator));
         }
@@ -87,5 +89,6 @@ public class CutterChaseAttack : BossStateData
             QuickBomb();
             yield return new WaitForSeconds(interval);
         }
+        if(!timeBased){ End(); }
     }
 }

@@ -29,12 +29,6 @@ public class CutterDashAction : BossStateData
         cutterBoss.dashParticlesB.SetActive(false);
         movement_script.maxSpeed = 0.5f;
 
-
-        // if(health.CurrentHealth / (float)health.maxHealth < 0.4f && !cutterBoss.chaining && chainCooldown == 0){
-        //     chaining = true;
-        //     chainCount = Random.Range(2, 5);
-        // }
-
         cutterBoss.StartCoroutine(nameof(DashAttackNumerator));
     }
 
@@ -47,10 +41,7 @@ public class CutterDashAction : BossStateData
     // Called When the state object becomes active
     public override void Start()
     {
-
-        movement_script.maxSpeed = 5f;
-        movement_script.enableRotation = false;
-
+        Dash();
     }
 
     // Called every frame while the object is active
@@ -59,9 +50,9 @@ public class CutterDashAction : BossStateData
     public override void End(bool interrupted = false) // Called once the state declares it is finished its task
     {
         cutterBoss.StopCoroutine(nameof(DashAttackNumerator));
-        base.End();
+        base.End(interrupted);
     }
-    
+
     public IEnumerator DashAttackNumerator()
     {
         SpriteRenderer renderer = cutterBoss.renderer;
@@ -72,7 +63,7 @@ public class CutterDashAction : BossStateData
         for (int i = 0; i < iterations; i++)
         {
 
-            Vector2 targetPos = DashLocationManager.cutterMap.getClosestValidPosition(false, 5).position;
+            Vector2 targetPos = DashLocationManager.getValidPosition(false, 5);
             renderer.color = Color.white;
             yield return new WaitForSeconds(0.1f);
             renderer.color = Color.clear;
@@ -107,17 +98,20 @@ public class CutterDashAction : BossStateData
             transform.position = targetPos;
             dashParticlesB.transform.position = transform.position;
 
-            
+
             float timer = 1f;
-            while (timer > 0 && !instantDash){
+            while (timer > 0 && !instantDash)
+            {
                 timer -= Time.deltaTime;
                 renderer.color = Color.Lerp(cutterBoss.defaultColor, Color.white, timer);
                 yield return null;
             }
 
             renderer.color = cutterBoss.defaultColor;
-            
+
             yield return new WaitForSeconds(interval);
         }
+
+        End();
     }
 }

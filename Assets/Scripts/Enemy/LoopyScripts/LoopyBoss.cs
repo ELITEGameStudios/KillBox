@@ -16,6 +16,7 @@ public class LoopyBoss : BossBase
     public BeginnerLoopyAttack shard1;
     public BeginnerLoopyAttack shardDelta;
     public BeginnerLoopyAttack polaroid1;
+    public BeginnerLoopyAttack dualCutter;
     // public BeginnerLoopyAttack delta3;
 
 
@@ -27,29 +28,31 @@ public class LoopyBoss : BossBase
     public GameObject goldPolaroid;
     public GameObject goldTriad;
     public GameObject shard;
+    public GameObject goldCutter;
     public SweepingIndicator sweepingIndicator;
 
     public IEnumerator SpawnEnemies() { if (currentState is BeginnerLoopyAttack) { yield return (currentState as BeginnerLoopyAttack).SpawnEnemies(); } }
     public void StopSpawnEnemiesCoroutine() { StopCoroutine(nameof(SpawnEnemies)); }
 
-    public float debugFloat;
     // [Header("Animation Curves")]
 
     // [Header("Debug")]
+    // public float debugFloat;
 
 
     // Start is called before the first frame update
     void Awake()
     {
         //Initialize attacks here
-        delta1 = new BeginnerLoopyAttack(this, new GameObject[] { goldDelta }, quantity: 12, iterationInterval: 0.3f, startDistance: 1.25f);
-        delta2 = new BeginnerLoopyAttack(this, new GameObject[] { goldDelta }, quantity: 24, iterationInterval: 0.2f, startDistance: 1.25f, offset: 0.25f);
-        shard1= new BeginnerLoopyAttack(this, new GameObject[] { shard }, quantity: 4, iterations: 1, spawningInterval: 0.2f, startDistance: 5f, maxDuration: 10, destroySpawnedEnemies: true);
-        shardDelta = new BeginnerLoopyAttack(this, new GameObject[] { shard, preAngledGoldDelta }, quantity: 5, iterations: 100, spawningInterval: 0.1f, startDistance: 5f, offset: 0.25f, maxDuration: 10, destroySpawnedEnemies: true);
-        polaroid1= new BeginnerLoopyAttack(this, new GameObject[] { goldPolaroid }, quantity: 6, iterations: 5, spawningInterval: 0f, startDistance: 20f);
-
+        delta1 = new BeginnerLoopyAttack(this, new GameObject[] { goldDelta }, quantity: 12, iterationInterval: 0.3f, startDistance: 1.25f, iterations: 12);
+        delta2 = new BeginnerLoopyAttack(this, new GameObject[] { goldDelta }, quantity: 24, iterationInterval: 0.2f, startDistance: 1.25f, offset: 0.25f, iterations: 24);
+        shard1= new BeginnerLoopyAttack(this, new GameObject[] { shard }, quantity: 4, iterations: 1, spawningInterval: 1f, startDistance: 3.5f, maxDuration: 10, destroySpawnedEnemies: true, introWaitTime: 1);
+        shardDelta = new BeginnerLoopyAttack(this, new GameObject[] { shard, preAngledGoldDelta }, quantity: 3, iterations: 100, spawningInterval: 0.1f, startDistance: 3.5f, offset: 0.25f, maxDuration: 10, destroySpawnedEnemies: true, introWaitTime: 1);
+        polaroid1= new BeginnerLoopyAttack(this, new GameObject[] { goldPolaroid }, quantity: 3, iterations: 5, spawningInterval: 0f, startDistance: 20f);
+        dualCutter= new BeginnerLoopyAttack(this, new GameObject[] { goldCutter }, quantity: 2, iterations: 1, spawningInterval: 0.2f, startDistance: 2f, maxDuration: 20, destroySpawnedEnemies: true, introWaitTime: 1.5f);
+        
         //Initialize phases here
-        phase1.statesInPhase = new BossStateData[] { delta1, shard1, polaroid1, delta2, shardDelta, polaroid1 };
+        phase1.statesInPhase = new BossStateData[] { delta1, shard1, polaroid1, delta2, shardDelta, polaroid1, dualCutter};
 
         phases = new Phase[] { phase1 };
         movement_script.enabled = false;

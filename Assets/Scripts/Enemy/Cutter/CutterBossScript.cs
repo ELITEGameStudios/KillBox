@@ -277,7 +277,7 @@ public class CutterBossScript : MonoBehaviour
     {
 
 
-        Vector2 targetPos = DashLocationManager.cutterMap.getClosestValidPosition(false, 5).position;
+        Vector2 targetPos = DashLocationManager.getValidPosition(false, 5);
         renderer.color = Color.white;
         yield return new WaitForSeconds(0.1f);
         renderer.color = Color.clear;

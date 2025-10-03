@@ -30,7 +30,8 @@ public class BossBase : MonoBehaviour, IDeathHandler
     public Phase currentPhase;
     public BossStateData currentState;
     public int nextStateIndex;
-    public bool dontInstantlySetState;
+    public bool dontInstantlySetState, startedAttacks;
+    public float stallTimer, introStallTimer;
 
 
     [System.Serializable]
@@ -75,29 +76,56 @@ public class BossBase : MonoBehaviour, IDeathHandler
         OnSetPhase();
     }
 
-    protected void SetState(BossStateData state, int nextIndex)
+    protected void SetState(BossStateData state, int nextIndex, bool ignoreStall = false)
     {
         nextStateIndex = nextIndex;
         if (nextStateIndex >= statesInPhase.Length) { nextStateIndex = 0; }
 
         currentState = state;
         currentState.OnReset();
-        currentState.Start();
+        
+        
+        if (currentState.introWaitTime > 0 && !ignoreStall)
+        {
+            stallTimer = currentState.introWaitTime;
+        }
+        else
+        {
+            currentState.Start();
+            startedAttacks = true;
+        }
     }
 
     void StateCheck()
     {
         if (currentState != null && !currentState.finished)
         {
-            currentState.Update();
+            if (!currentState.started)
+            {
+                // If there is some intro stall time before the state is actually active
+                if (stallTimer <= 0)
+                {
+                    currentState.Start();
+                    startedAttacks = true;
+                    currentState.started = true;
+                }
+                else { stallTimer -= Time.deltaTime; }
+            }
+            else
+            {
+                // If the state is active and started
+                currentState.Update();
+            }
         }
         else
         {
-            ChooseNextState();
+            // If the state is finished
+            if (stallTimer <= 0){ ChooseNextState(); }
+            else{ stallTimer -= Time.deltaTime; }
         }
     }
 
-    void PhaseCheck()
+    protected void PhaseCheck()
     {
         if (currentPhase.minHealth >= normalizedHealth)
         { // Detects wether a new phase should be chosen

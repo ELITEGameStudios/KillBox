@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class DashLocationManager : MonoBehaviour
 {
@@ -22,8 +23,48 @@ public class DashLocationManager : MonoBehaviour
 
     // Update is called once per frame
     void Update(){}
+    public static Vector3 getValidPosition(bool lineOfSight, float minDistance)
+    {
 
-    public Transform getClosestValidPosition(bool lineOfSight, float minDistance){
+        if (cutterMap != null) { return cutterMap.getClosestValidPosition(lineOfSight, minDistance); } // Default
+        else
+        {
+            List<Vector2> positions = new List<Vector2>();
+            // Fallback
+            for (int i = 0; i < 16; i++)
+            {
+                float angle = 360 / 16 * i;
+                Vector2 unitCircleVector = new Vector2(
+                    Mathf.Cos(angle * Mathf.Deg2Rad),
+                    Mathf.Sin(angle * Mathf.Deg2Rad)
+                );
+                Vector2 targetPos = (Vector2)Player.main.tf.position + unitCircleVector * minDistance;
+                RaycastHit2D hit = Physics2D.Raycast(targetPos, unitCircleVector * -1, minDistance);
+
+                if ((hit.collider.gameObject != Player.main.obj && hit.collider.gameObject != null)) { continue; }
+                positions.Add(targetPos);
+            }
+
+            if (positions.Count > 0)
+            {
+                Vector2 winningPos = positions[0];
+                float winningDifference = Vector2.Angle(winningPos.normalized, Player.main.rb.velocity.normalized);
+                foreach (Vector2 position in positions)
+                {
+                    float diff = Vector2.Angle(position.normalized, Player.main.rb.velocity.normalized);
+                    if (diff < winningDifference){ winningPos = position; }
+                }   
+
+                return winningPos;
+            }
+            else
+            {
+                return Player.main.tf.position;
+            }
+        }
+    }
+
+    public Vector3 getClosestValidPosition(bool lineOfSight, float minDistance){
         List<Transform> filteredPositions = new List<Transform>();
 
         
@@ -62,6 +103,6 @@ public class DashLocationManager : MonoBehaviour
         }
 
         Debug.Log("Point chosen: " + targetTf.position.x + " , " + targetTf.position.y );
-        return targetTf;
+        return targetTf.position;
     }
 }

@@ -21,7 +21,7 @@ public class BeginnerLoopyAttack : BossStateData
     public bool endsByDuration {get { return duration > 0; }}
     public bool destroySpawnedEnemies; 
 
-    public BeginnerLoopyAttack(LoopyBoss bossBase, GameObject[] prefabs, int quantity = 12, int iterations = 8, float startDistance = 0, float spawningInterval = 0, float iterationInterval = 1, float offset = 0.5f, float maxDuration = -1, bool destroySpawnedEnemies = false) : base(bossBase) // Always include super(bossBase) in any child class constructors
+    public BeginnerLoopyAttack(LoopyBoss bossBase, GameObject[] prefabs, int quantity = 12, int iterations = 8, float startDistance = 0, float spawningInterval = 0, float iterationInterval = 1, float offset = 0.5f, float maxDuration = -1, bool destroySpawnedEnemies = false, float introWaitTime = 0f, float outroWaitTime = 0f) : base(bossBase) // Always include super(bossBase) in any child class constructors
     {
         loopyBoss = bossBase;
 
@@ -33,6 +33,8 @@ public class BeginnerLoopyAttack : BossStateData
         this.spawningInterval = spawningInterval;
         this.iterationInterval = iterationInterval;
         this.destroySpawnedEnemies = destroySpawnedEnemies;
+        this.introWaitTime = introWaitTime;
+        this.outroWaitTime = outroWaitTime;
 
         duration = maxDuration;
         timer = 0;

@@ -9915,7 +9915,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 0.069517374, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.9903238, b: 0.36320752, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -15223,7 +15223,7 @@ SpriteRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 85ed772d5c3e82b49bc7693a699aeb6d, type: 3}
-  m_Color: {r: 0.028571606, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.9450602, g: 1, b: 0.25943398, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -15360,7 +15360,7 @@ GameObject:
   - component: {fileID: -1621411586802404942}
   - component: {fileID: -800950594435819325}
   m_Layer: 9
-  m_Name: HostileCutterBoss
+  m_Name: HostileLoopyCutterBoss
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15591,7 +15591,7 @@ MonoBehaviour:
   death: {fileID: 8300000, guid: 9515cb53acd214ea1a878193d32e5c10, type: 3}
   hit: {fileID: 8300000, guid: c5b4fdf98f1cf43dba8c528d6f22a6c2, type: 3}
   can_drop_lvl_4: 0
-  destructive_immune: 0
+  destructive_immune: 1
   no_drops: 0
   key_drops: 0
   guaranteed_drop_bool: 1
@@ -15656,7 +15656,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: CUTTER
   displaySprite: {fileID: 21300000, guid: 85ed772d5c3e82b49bc7693a699aeb6d, type: 3}
-  displayColor: {r: 0.02745098, g: 1, b: 0, a: 1}
+  displayColor: {r: 0.9062743, g: 1, b: 0, a: 1}
   transform: {fileID: 5310180238275447516}
   movement_script: {fileID: 5310180238275447504}
   rb_self: {fileID: 5310180238275447519}
@@ -15668,9 +15668,13 @@ MonoBehaviour:
     minHealth: 0
   nextStateIndex: 0
   dontInstantlySetState: 0
+  startedAttacks: 0
+  stallTimer: 0
+  introStallTimer: 0
   preventDefaultDeath: 0
+  forMultiple: 1
   renderer: {fileID: 5310180237631168411}
-  defaultColor: {r: 0.02745098, g: 1, b: 0, a: 1}
+  defaultColor: {r: 0.94708157, g: 1, b: 0, a: 1}
   laser: {fileID: 2844031333757694950}
   bomb_prefab: {fileID: 77858864175733212, guid: daeb3178ba80b424599eea3cf3e103ea, type: 3}
   beam_indicator_prefab: {fileID: 5793766690336064884}
@@ -15682,6 +15686,8 @@ MonoBehaviour:
     minHealth: 0
   phase3:
     minHealth: 0
+  multiplayerPhase:
+    minHealth: 0
   chase:
     name: 
     displaySprite: {fileID: 0}
@@ -15692,7 +15698,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     bombIterations: 0
     bombsPerBurst: 0
@@ -15713,7 +15722,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     bombIterations: 0
     bombsPerBurst: 0
@@ -15734,7 +15746,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     iterations: 0
     interval: 0
@@ -15749,7 +15764,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     iterations: 0
     interval: 0
@@ -15764,7 +15782,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     iterations: 0
     interval: 0
@@ -15779,7 +15800,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     laser: {fileID: 0}
     beam_indicator_prefab: {fileID: 0}
@@ -15798,7 +15822,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     laser: {fileID: 0}
     beam_indicator_prefab: {fileID: 0}
@@ -15817,7 +15844,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     laser: {fileID: 0}
     beam_indicator_prefab: {fileID: 0}
@@ -15825,6 +15855,52 @@ MonoBehaviour:
     time: 0
     timer: 0
     quantity: 0
+  multiplayerLaserAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
+    finished: 0
+    started: 0
+    cutterBoss: {fileID: 0}
+    laser: {fileID: 0}
+    beam_indicator_prefab: {fileID: 0}
+    locked_rotation: {x: 0, y: 0, z: 0}
+    lazer_size: 0
+    laserWindupTime: 0
+    laserDiminishTime: 0
+    iterations: 0
+  multiplayerChaseAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
+    finished: 0
+    started: 0
+    cutterBoss: {fileID: 0}
+    bombIterations: 0
+    bombsPerBurst: 0
+    interval: 0
+    time: 0
+    timer: 0
+    bombSpawnRadius: 0
+    predictor_coefficient: 0
+    moveSpeed: 0
+    bombsPrefab: {fileID: 0}
   clip: {fileID: 8300000, guid: 3ba85409ff303cf4eadb57645d83d725, type: 3}
   audio: {fileID: 6428480845840962987}
   dashAudio: {fileID: 5756234432826495841}

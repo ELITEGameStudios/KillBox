@@ -19,8 +19,8 @@ public abstract class BossStateData
     public Animator animator;
     public Transform transform;
     public float normalizedHealth { get { return (float)health.CurrentHealth / health.maxHealth; } }
-
-    public bool finished;
+    public float outroWaitTime, introWaitTime;
+    public bool finished, started;
 
     public BossStateData(BossBase bossBase) // Always include super(bossBase) in any child class constructors
     {
@@ -44,6 +44,7 @@ public abstract class BossStateData
     public virtual void OnReset() // Called When the state object is first created and when resetting the state to be used again. Put all reset code here
     {
         finished = false;
+        started = false;
     }
 
     public abstract void Start(); // Called When the state object becomes active
@@ -56,5 +57,6 @@ public abstract class BossStateData
     {
         // if(finished){ return; }
         finished = true;
+        if(!interrupted) host.stallTimer = outroWaitTime;
     }
 }
