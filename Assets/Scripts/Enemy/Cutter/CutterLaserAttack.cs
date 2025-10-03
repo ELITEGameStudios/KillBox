@@ -6,16 +6,18 @@ public class CutterLaserAttack : BossStateData
 {
     public CutterBoss cutterBoss;
     public GameObject laser, beam_indicator_prefab;
+    public Vector3 locked_rotation;
     public float lazer_size, laser_time;
 
-    public CutterLaserAttack(CutterBoss bossBase) : base(bossBase) // Always include super(bossBase) in any child class constructors 
+    public CutterLaserAttack(CutterBoss bossBase, float lazer_size = 20, float laserTime = 1.3f) : base(bossBase) // Always include super(bossBase) in any child class constructors 
     {
         // IMPORTANT - THIS IS NOT USED TO REINITIALIZE OR RESET THE ATTACK FOR MULTIPLE USES. USE OnReset() TO REASSIGN DEFAULT VALUES ON STARTUP! (example: timers, counters, end conditions, etc.)
         cutterBoss = bossBase;
 
         laser = bossBase.laser;
         beam_indicator_prefab = bossBase.beam_indicator_prefab;
-
+        this.lazer_size = lazer_size;
+        this.laser_time = laserTime;
 
         OnReset();
     }
@@ -34,25 +36,27 @@ public class CutterLaserAttack : BossStateData
         movement_script.enableRotation = false;
         cutterBoss.StartCoroutine(nameof(LaserAttackNumerator));
 
-        if(health.CurrentHealth / (float)health.maxHealth< 0.35f && !cutterBoss.chaining && cutterBoss.chainCooldown == 0){
-            cutterBoss.chaining = true;
-            cutterBoss.chainCount = Random.Range(1, 3);
-        }
+        // if(health.CurrentHealth / (float)health.maxHealth< 0.35f && !cutterBoss.chaining && cutterBoss.chainCooldown == 0){
+        //     cutterBoss.chaining = true;
+        //     cutterBoss.chainCount = Random.Range(1, 3);
+        // }
 
         var dir = Player.main.tf.position - transform.position;
         var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
-        cutterBoss.locked_rotation = transform.localEulerAngles;
+        locked_rotation = transform.localEulerAngles;
     }
 
     // Called every frame while the object is active
     public override void Update()
     {
-
+        transform.localEulerAngles = locked_rotation;
     }
 
     public override void End(bool interrupted = false) // Called once the state declares it is finished its task
     {
+
+        cutterBoss.StopCoroutine(nameof(LaserAttackNumerator));
         base.End();
     }
     
@@ -62,7 +66,7 @@ public class CutterLaserAttack : BossStateData
         float normalized_timer = timer/laser_time;
         Vector3 target_position = new Vector3(0, 200, 0);
         Vector3 initial_position = new Vector3(0, -200, 0);
-        Vector3 indicator_position;
+        // Vector3 indicator_position;
 
         beam_indicator_prefab.SetActive(true);
         beam_indicator_prefab.transform.localPosition =  new Vector3(0, 0, 0); 
@@ -97,19 +101,5 @@ public class CutterLaserAttack : BossStateData
         laser.SetActive(false);
 
         cutterBoss.audio.Stop();
-        
-        if(cutterBoss.CheckChain()){
-            // PickState(1);
-        }
-        else{
-            if(health.CurrentHealth / (float)health.maxHealth < 0.4f){
-
-                // PickState(Random.Range(3, 5));
-            }
-            else{
-
-                // PickState(health.CurrentHealth / (float)health.maxHealth < 0.65f ? 4 : 0);
-            }
-        }
     }
 }

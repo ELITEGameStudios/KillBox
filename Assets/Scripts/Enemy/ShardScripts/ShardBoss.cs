@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShardBoss : BossBase
 {
     public static List<ShardBoss> bosses;
-    public bool multipleBosses {get { return bosses.Count > 0; }}
+    public bool multipleBosses {get { return bosses.Count > 1; }}
 
 
     public AIShooterScript[] shoot_sources;
