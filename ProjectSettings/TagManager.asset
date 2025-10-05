@@ -72,11 +72,11 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Walls
-    uniqueID: 1933118289
-    locked: 0
   - name: Floor
     uniqueID: 4234375095
+    locked: 0
+  - name: Walls
+    uniqueID: 1933118289
     locked: 0
   - name: Player
     uniqueID: 1934316087
