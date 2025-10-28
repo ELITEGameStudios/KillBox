@@ -60,7 +60,7 @@ public class ShardBoss : BossBase
         bosses.Add(this);
     }
 
-    void Start(){
+    protected override void OnStart(){
         ChooseNextState();
         health.SetDeathHandler(this);
     }

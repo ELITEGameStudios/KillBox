@@ -107,16 +107,20 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
             finishedBossRoundMainPhase = false;
             if (_bossType == null)
             {
-                int forcedBossRoundIndex = enemyList.bossRounds.FindIndex(match => match == GameManager.main.LvlCount) % 4;
+                int forcedBossRoundIndex = (enemyList.bossRounds.FindIndex(match => match == GameManager.main.LvlCount) % 4);
+                Debug.Log(forcedBossRoundIndex + " ----- BOSS INDEX, "+ (BossType)forcedBossRoundIndex);
                 switch (forcedBossRoundIndex)
                 {
                     case 2: bossType = BossType.GUARDIANS; break;
                     case 3: bossType = BossType.LOOPY; break;
                     default:
                         bossType = (BossType)(forcedBossRoundIndex);
+                        Debug.Log("WELLOD");
                         break; 
                 }
-                bossType = (BossType)bossRoundTier;
+                // bossType = (BossType)bossRoundTier;
+                // bossType = (BossType)_bossType; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
+                bossRoundTier = (int)bossType;
             }
             else
             {

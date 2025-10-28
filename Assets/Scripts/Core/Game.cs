@@ -66,6 +66,10 @@ public class Game
         round++;
     }
 
+    public void SyncLevel(){
+        round = GameManager.main.LvlCount;
+    }
+
     public void AddToken(int tokens){
         this.score++;
         scoreCollectedOverall++;

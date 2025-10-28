@@ -408,10 +408,10 @@ public class GameManager : MonoBehaviour, ISelfResListener
             else
             {
 
-                if (_level == EnemyList.instance.bossRounds[0]) { currentMapIndex = 101; }
-                else if (_level == EnemyList.instance.bossRounds[1]) { currentMapIndex = 102; }
-                else if (_level == EnemyList.instance.bossRounds[2]) { currentMapIndex = 103; }
-                else { currentMapIndex = 101; }
+                if (_level == EnemyList.instance.bossRounds[0]) { currentMapIndex = 100; }
+                else if (_level == EnemyList.instance.bossRounds[1]) { currentMapIndex = 101; }
+                else if (_level == EnemyList.instance.bossRounds[2]) { currentMapIndex = 102; }
+                else { currentMapIndex = 100; }
             }
 
         }
@@ -461,7 +461,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
             if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
             {
-                currentMapIndex = 100 + (int)(this as BossChallengeGameManager).currentBoss;
+                currentMapIndex = 100 + (int)(this as BossChallengeGameManager).currentBoss - 1;
+                Debug.Log("CURRENTLY LOADING MAP INDEX: " + currentMapIndex);
                 return;
             }
 
@@ -567,6 +568,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
     public void UpdateDifficulty() { difficulty = constant + 100f * (float)Mathf.Pow(LvlCount, 2f) / 30 * difficulty_coefficient; /*+ 25f * ((playerHealth.GetMaxHealth() / 50) - 3); */ }
 
     public void AddRound(int value = 1){ //for freeplay
+        Debug.Log("Freeplay Status: " + freeplay);
         if(freeplay){
             if(BossRoundManager.main.isBossRound){return;}
             if(BossRoundManager.main.timeUntilNextBoss == value)
@@ -576,6 +578,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
             
             else
             { _level += value; }
+            KillBox.currentGame.SyncLevel();
         }
         BossRoundManager.main.UpdateCounters();
     }
