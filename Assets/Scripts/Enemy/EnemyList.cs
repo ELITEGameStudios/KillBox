@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,17 +8,11 @@ public class EnemyList : MonoBehaviour
 
     [SerializeField]
     private Spawn spawn; 
-
     [SerializeField]
-    private float[] debut_dif, retire_dif, boss_dif, fire_boss_dif;
-    [SerializeField]
-    private GameObject[] enemy_types, mini_boss_types, fire_enemy_types, fire_mini_bosses;
+    private GameObject[] fire_enemy_types, fire_mini_bosses;
+    public EnemyEntry[] enemyEntries;
 
     private bool[] has_appeared_prior, has_appeared_this_round, map_compatible;
-    private bool[][] map_compatibility_tables;
-
-    [SerializeField]
-    private int[] mini_boss_allowed, boss_spawn_cooldown, boss_cooldown;
     public List<int> bossRounds;// {get; private set;}
     
     [SerializeField]
@@ -30,11 +23,21 @@ public class EnemyList : MonoBehaviour
     private int boss_round_counter = 11;
     public static EnemyList instance { get; private set; }
 
-    void Awake(){
+    [System.Serializable]
+    public struct EnemyEntry
+    {
+        public int debutDif;
+        public int retireDif;
+        public int spawnTickets;
+        public GameObject enemyObject;
+    }
 
-        if(instance == null){instance = this;}
-        else if(instance != this){Destroy(this);}
-        
+    void Awake()
+    {
+
+        if (instance == null) { instance = this; }
+        else if (instance != this) { Destroy(this); }
+
         map_compatible = new bool[5]{
             false,
             false,
@@ -51,35 +54,10 @@ public class EnemyList : MonoBehaviour
             false,
             false
         };
-        map_compatibility_tables = new bool[][]{
-
-            new bool[] {false, false, false},
-            new bool[] {false, false, false},
-            new bool[] {false, false, false},
-            new bool[] {true, true, true},
-
-            new bool[] {true, true, true},
-            new bool[] {true, true, true},
-            new bool[] {true, true, true},
-            new bool[] {true, true, true},
-
-            new bool[] {true, true, true},
-            new bool[] {true, true, true},
-            new bool[] {true, false, false},
-            new bool[] {true, true, true},
-
-            new bool[] {true, true, true},
-            new bool[] {true, false, true},
-            new bool[] {true, true, true},
-            new bool[] {true, false, false},
-            
-            new bool[] {true, true, true}, // the hub...
-            new bool[] {true, true, true}, // runic
-            new bool[] {true, true, true} // runic
-        };
 
         bossRounds = new List<int>();
     }
+    
 
     public void Restart(){
         bossRounds.Clear();
@@ -147,21 +125,23 @@ public class EnemyList : MonoBehaviour
 
     public List<GameObject> UpdatedList
     {
-        get
+        get // New Implementation
         {
             float difficulty = GameManager.main.Difficulty;
             List<GameObject> result = new List<GameObject>();
 
-            if(GameManager.main.LvlCount == 1){
-                result.Add(enemy_types[0]);
-                return result; 
+            if (GameManager.main.LvlCount == 1)
+            {
+                result.Add(enemyEntries[0].enemyObject);
+                return result;
             }
 
-            for(int i = 0; i < enemy_types.Length; i++)
+            for (int i = 0; i < enemyEntries.Length; i++)
             {
-                if(debut_dif[i] <= difficulty && (retire_dif[i] >= difficulty || retire_dif[i] == -1))
+                EnemyEntry candaditeEntry = enemyEntries[i];
+                if (candaditeEntry.debutDif <= difficulty && (candaditeEntry.retireDif >= difficulty || candaditeEntry.retireDif == -1))
                 {
-                    result.Add(enemy_types[i]);
+                    for(int j = 0; j < candaditeEntry.spawnTickets; j++) result.Add(candaditeEntry.enemyObject);
                 }
             }
             return result;
