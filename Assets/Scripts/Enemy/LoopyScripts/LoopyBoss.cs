@@ -39,6 +39,12 @@ public class LoopyBoss : BossBase
     // [Header("Debug")]
     // public float debugFloat;
 
+    public struct BeamMaskObjects{
+        public GameObject rect;
+        public GameObject triangleRight;
+        public GameObject triangleLeft;
+    }
+
 
     // Start is called before the first frame update
     void Awake()
