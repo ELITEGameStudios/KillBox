@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
     public int selectedDifficulty;
+    public Gamemode selectedGamemode;
     public static MainMenuManager instance {get; private set;}
 
 
@@ -20,15 +21,17 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private List<Scene> scenes;
     [SerializeField] private Scene activeScene; 
 
+    [SerializeField] private PlayPortalUI playPortalUI; 
     [SerializeField] private GameObject menusComponents; 
     [SerializeField] private GameObject[] menuCameras;
     [SerializeField] private MenuState state, lastState;
 
 
     private bool InMenu {get { return state != MenuState.NONE ;} }
-    
 
-    public enum MenuState{
+
+    public enum MenuState
+    {
         MAIN,
         PLAY_PORTAL,
         SETTINGS,
@@ -41,6 +44,13 @@ public class MainMenuManager : MonoBehaviour
         PAUSED,
         SPLASH,
         NONE
+    }
+
+    public enum Gamemode
+    {
+        KILLBOX,
+        FREEPLAY,
+        BOSSRUSH
     }
 
 
@@ -216,6 +226,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void SelectDifficulty(int difficulty){
         selectedDifficulty = difficulty;
+        playPortalUI.SetGraphics();
     }
 
     // IEnumerator SwitchToMainScene(){
