@@ -49,7 +49,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
     public List<GameObject> CurrentBossTable { get => bossPrefabTables[(int)BossRoundManager.main.bossType]; }
 
     public bool isSpawning {get; private set;}
-    public bool stopAfterSpawnOnce;
+    public bool stopAfterSpawnBosses;
 
     // Called before the first frame of the game
     void Awake()
@@ -111,7 +111,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
                 bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 3 : Random.Range(10, 21);
                 bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 4 : 0;
                 active_spawns = cutterMapSpawns;
-                stopAfterSpawnOnce = true;
+                stopAfterSpawnBosses = true;
                 break;
 
             case BossType.ALPHATRIAD:
@@ -133,7 +133,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
                 bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 8 : Random.Range(12, 23);
                 bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 9 : Random.Range(20, 40);
                 active_spawns = guardianMapSpawns;
-                stopAfterSpawnOnce = false;
+                stopAfterSpawnBosses = false;
                 break;
 
 
@@ -145,7 +145,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
                 bossSpawnOffset = BossRoundManager.main.bossRoundTier > 4 ? 1 : Random.Range(0, 5);
                 bossSpawnStep = BossRoundManager.main.bossRoundTier > 4 ? 3 : Random.Range(5, 10);
                 active_spawns = bossRushMapSpawns;
-                stopAfterSpawnOnce = false;
+                stopAfterSpawnBosses = false;
                 break;
                 
             default:
@@ -248,7 +248,6 @@ public class BossRoomSpawnSystem : MonoBehaviour
                             spawnsAfterBoss = 0;
                             currentBossIndex++;
                             KillboxEventSystem.TriggerBossSpawnEvent();
-                            if(stopAfterSpawnOnce){ break; }
                         }
                         else{ currentOffset--; }
                     }
@@ -264,6 +263,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
                         else{currentStep--;}
                     }
                     else{
+                        if(stopAfterSpawnBosses){ StopSpawning(); }
                         spawnsAfterBoss ++;
                     }
 

@@ -57,29 +57,35 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
         // if(spawnSystem.isSpawning){ Debug.Log("the spawn system is in fact spawning.");}
         // if(LvlStarter.main.HasStarted){ Debug.Log("the level has in fact started.");}
         // if(finishedBossRoundMainPhase){ Debug.Log("the main phase has in fact finished.");}
-
-        // Detects if all bosses have died
-        if (
-            EnemyCounter.main.bossProfiles.Count == 0 &&
-            LvlStarter.main.HasStarted &&
-            spawnSystem.currentBossIndex == spawnSystem.CurrentBossTable.Count &&
-            spawnSystem.isSpawning &&
-            spawnSystem.spawnsAfterBoss >= 10)
-
+        if (isBossRound)
         {
-            spawnSystem.StopSpawning();
-            finishedBossRoundMainPhase = true;
-
-            if (GameManager.main.GetType() == typeof(BossChallengeGameManager))
+            // Detects if all bosses have died
+            if (
+                EnemyCounter.main.bossProfiles.Count == 0 &&
+                LvlStarter.main.HasStarted &&
+                spawnSystem.currentBossIndex == spawnSystem.CurrentBossTable.Count 
+                && (spawnSystem.stopAfterSpawnBosses ? true : spawnSystem.spawnsAfterBoss >= 10)
+            )
             {
-                BossChallengeGameManager manager = GameManager.main as BossChallengeGameManager;
-                manager.UpdateCurrentBoss();
+                spawnSystem.StopSpawning();
+                finishedBossRoundMainPhase = true;
+                
+                if (GameManager.main.GetType() == typeof(BossChallengeGameManager))
+                {
+                    BossChallengeGameManager manager = GameManager.main as BossChallengeGameManager;
+                    manager.UpdateCurrentBoss();
+                }
+
+                // Giving bonus
+                int bonus = EconomyManager.instance.GetBossBonus();
+                GameManager.main.OnPickupToken(bonus, false);
+                BonusesUIManager.instance.ActivateBonus(bossType.ToString().ToLower(), bonus, 10);
             }
 
-            // Giving bonus
-            int bonus = EconomyManager.instance.GetBossBonus();
-            GameManager.main.OnPickupToken(bonus, false);
-            BonusesUIManager.instance.ActivateBonus(bossType.ToString().ToLower(), bonus, 10);
+            // if(finishedBossRoundMainPhase)
+            // {
+
+            // }
         }
     }
     // public int GetTierOfRound(int round){
