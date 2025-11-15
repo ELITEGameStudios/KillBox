@@ -1330,6 +1330,9 @@ MonoBehaviour:
     minHealth: 0
   nextStateIndex: 0
   dontInstantlySetState: 1
+  startedAttacks: 0
+  stallTimer: 0
+  introStallTimer: 0
   preventDefaultDeath: 0
   shoot_sources:
   - {fileID: 5102053157571067317}
@@ -1365,7 +1368,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     shoot_sources: []
     fireRate: 0
     currentFireInterval: 0
@@ -1379,7 +1385,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     shoot_sources: []
     fireRate: 0
     currentFireInterval: 0
@@ -1393,7 +1402,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     shoot_sources: []
   leaveState:
     name: 
@@ -1405,7 +1417,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
   agroLeaveState:
     name: 
     displaySprite: {fileID: 0}
@@ -1416,7 +1431,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
   sphereAttack:
     name: 
     displaySprite: {fileID: 0}
@@ -1427,7 +1445,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     shoot_sources: []
     angularSpeed: 0
     maxDist: 0
@@ -1456,7 +1477,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     shoot_sources: []
     angularSpeed: 0
     maxDist: 0
@@ -1485,7 +1509,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     shoot_sources: []
     startPos: {x: 0, y: 0}
     targetPos: {x: 0, y: 0}
@@ -1507,7 +1534,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     shoot_sources: []
     startPos: {x: 0, y: 0}
     targetPos: {x: 0, y: 0}
@@ -1578,7 +1608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: SHARD
-  maxHealth: 7500
+  maxHealth: 4500
   damage: 100
   limit: -1
   speed: 3
