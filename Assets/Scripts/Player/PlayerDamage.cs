@@ -124,7 +124,7 @@ public class PlayerDamage : MonoBehaviour
                 DmgTxt.SetActive(true);
                 DmgTxt.GetComponent<BulletDestroy>().RestartTimer();
             }
-            collision.gameObject.GetComponent<BulletDestroy>().ResetRangeCallWhenHit();
+            collision.gameObject.GetComponent<BulletDestroy>().DisableBullet();
             //}
         }
 
@@ -171,7 +171,7 @@ public class PlayerDamage : MonoBehaviour
             DmgTxt.GetComponent<BulletDestroy>().RestartTimer();
 
             if(!bulletScript.isTrigger){
-                collider.gameObject.GetComponent<BulletDestroy>().ResetRangeCallWhenHit();
+                collider.gameObject.GetComponent<BulletDestroy>().DisableBullet();
             }
             //}
         }

@@ -245,7 +245,7 @@ public class shooterScript2D : MonoBehaviour
                 clone_sprite = clone.gameObject.transform.GetChild(0).gameObject;
                 clone_particle = clone_sprite.GetComponent<ParticleSystem>();
                 trails = clone_particle.trails;
-                clone_sprite.GetComponent<SpriteRenderer>().color = bullet_color;
+                // clone_sprite.GetComponent<SpriteRenderer>().color = bullet_color;
             }
 
             if (weapon.is_support)
@@ -260,9 +260,9 @@ public class shooterScript2D : MonoBehaviour
 
             if (!misc_gun)
             {
-                clone_particle.startColor = particle_color;
-                trails.colorOverLifetime = particle_color;
-                trails.colorOverTrail = particle_color;
+                // clone_particle.startColor = particle_color;
+                // trails.colorOverLifetime = particle_color;
+                // trails.colorOverTrail = particle_color;
             }
 
             //AddingForces
@@ -366,12 +366,12 @@ public class shooterScript2D : MonoBehaviour
 
     void Themify(){
         if(themed && manager.Theme != 0){
-            bullet_color = manager.ColorThemes[manager.Theme];
-            particle_color = manager.ColorThemes[manager.Theme];
+            //bullet_color = manager.ColorThemes[manager.Theme];
+            //particle_color = manager.ColorThemes[manager.Theme];
         }
         else{
-            bullet_color = default_color;
-            particle_color = default_color;
+            //bullet_color = default_color;
+            //particle_color = default_color;
         }
     }
 

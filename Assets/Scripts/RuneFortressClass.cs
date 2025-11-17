@@ -163,7 +163,7 @@ public class RuneFortressClass : MonoBehaviour
             if (playerInRange && !activated)
             {
                 currentBulletHits++;
-                col.gameObject.GetComponent<BulletDestroy>().ResetRangeCallWhenHit();
+                col.gameObject.GetComponent<BulletDestroy>().DisableBullet();
                 animator.SetTrigger("Hit");
                 if (requiredBulletHits <= currentBulletHits) { Activate(); }
             }

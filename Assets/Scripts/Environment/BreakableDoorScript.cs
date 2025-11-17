@@ -34,7 +34,7 @@ public class BreakableDoorScript : MonoBehaviour
         {
             BulletClass bulletScript = collision.gameObject.GetComponent<BulletClass>();
             current_hp -= bulletScript.damage;
-            collision.gameObject.GetComponent<BulletDestroy>().ResetRangeCallWhenHit();
+            collision.gameObject.GetComponent<BulletDestroy>().DisableBullet();
 
             if(current_hp <= 0 && !broken){
                 Break();

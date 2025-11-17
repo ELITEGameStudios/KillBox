@@ -4055,9 +4055,9 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    minVertexDistance: 0.2
+    minVertexDistance: 0.1
     textureMode: 0
-    textureScale: {x: 1, y: 1}
+    textureScale: {x: 2, y: 1}
     ribbonCount: 1
     shadowBias: 0.5
     worldSpace: 1
@@ -4143,7 +4143,7 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 1
+          value: 0.58797264
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -4927,8 +4927,8 @@ Transform:
   m_GameObject: {fileID: 7075375582979792073}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.61, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.35, y: 0.35, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4937649740108857542}
