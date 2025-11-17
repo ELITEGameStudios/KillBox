@@ -34,27 +34,28 @@ public class BulletDestroy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!ignore_timer){
-            if(current_range > 0){
-                current_range -= Time.deltaTime;
-                if(current_range <= 0){
-                    if (has_particles)
-                    {
-                        StartCoroutine(particle.GetComponent<BulletParticle>().PlayAnim());
-                        particle.transform.SetParent(null);
-                    }
-                    gameObject.SetActive(false);
+        if(!ignore_timer && current_range > 0){
+            current_range -= Time.deltaTime;
+
+            if(current_range <= 0){
+
+                if (has_particles)
+                {
+                    StartCoroutine(particle.GetComponent<BulletParticle>().PlayAnim());
+                    particle.transform.SetParent(null);
                 }
-                //int OffCounter = 0;
-                //for(int i = 0; i < objectPool.amountToPool; i++){
-                //    if(objectPool.pooledObjects[i].activeInHierarchy){
-                //        OffCounter++;
-                //        if(OffCounter == objectPool.amountToPool-1 && i == objectPool.amountToPool-1){
-                //            gameObject.SetActive(false);
-                //        }
-                //    }
-                //}
+
+                gameObject.SetActive(false);
             }
+            //int OffCounter = 0;
+            //for(int i = 0; i < objectPool.amountToPool; i++){
+            //    if(objectPool.pooledObjects[i].activeInHierarchy){
+            //        OffCounter++;
+            //        if(OffCounter == objectPool.amountToPool-1 && i == objectPool.amountToPool-1){
+            //            gameObject.SetActive(false);
+            //        }
+            //    }
+            //}
         }
     }
 
@@ -74,7 +75,7 @@ public class BulletDestroy : MonoBehaviour
     {
         if (destroy_on_any_collision)
         {
-            ResetRangeCallWhenHit();
+            DisableBullet();
         }
     }
 
@@ -83,7 +84,7 @@ public class BulletDestroy : MonoBehaviour
     {
         if (destroy_on_shard_trigger && col.gameObject.GetComponent<ShardBossScript>()!= null)
         {
-            ResetRangeCallWhenHit();
+            DisableBullet();
         }
     }
 
@@ -99,32 +100,26 @@ public class BulletDestroy : MonoBehaviour
     public void StartRangeCall(){
         StartCoroutine(RangeCall);
     }
-    public void ResetRangeCall(){
-        StopCoroutine(RangeCall);
-        RangeCall = Range();
 
-        if (has_particles)
-        {
-            //particle.transform.position = new Vector3(0, 0, 0);
-            StartCoroutine(particle.GetComponent<BulletParticle>().PlayAnim());
-            particle.transform.SetParent(null);
-        }
-
-        gameObject.SetActive(false);
-    }
-
-    public void ResetRangeCallWhenHit()
+    public void DisableBullet(bool hitObject = true)
     {
         StopCoroutine(RangeCall);
         RangeCall = Range();
 
         if (has_particles && gameObject.activeInHierarchy)
         {
-            //hit_particle.transform.position = new Vector3(0, 0, 0);
-            StartCoroutine(hit_particle.GetComponent<BulletParticle>().PlayAnim());
-            hit_particle.transform.SetParent(null);
-
+            if (hitObject)
+            {
+                StartCoroutine(hit_particle.GetComponent<BulletParticle>().PlayAnim());
+                hit_particle.transform.SetParent(null);    
+            }
+            else
+            {
+                StartCoroutine(particle.GetComponent<BulletParticle>().PlayAnim());
+                particle.transform.SetParent(null);
+            }
         }
+
         gameObject.SetActive(false);
     }
 
@@ -139,6 +134,6 @@ public class BulletDestroy : MonoBehaviour
         //}
 
         yield return new WaitForSeconds(rangeForFloat);
-        ResetRangeCall();
+        DisableBullet();
     }
 }

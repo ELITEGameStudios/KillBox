@@ -29,7 +29,7 @@ public class PoolManager : MonoBehaviour
         }
     }
     public void destroyObj(GameObject obj){
-        obj.GetComponent<BulletDestroy>().ResetRangeCall();
+        obj.GetComponent<BulletDestroy>().DisableBullet();
         obj.SetActive(false);
         Debug.Log("Pooled object is false.");
     }
