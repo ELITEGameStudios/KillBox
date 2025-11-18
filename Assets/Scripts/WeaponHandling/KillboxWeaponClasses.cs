@@ -103,22 +103,22 @@ namespace KillboxWeaponClasses
 
         // Green Chest Exclusives: Notes are on the Doc.
         public static readonly Weapon junkPistol = new Weapon(0.3f, 3, 100, 25, 1, 20, knockbackForce: 2.5f);
-        public static readonly Weapon lightCarbine = new Weapon(0.13f, 10, 150, 5, 1, 35, recoilForce: 0.1f);
+        public static readonly Weapon lightCarbine = new Weapon(0.15f, 10, 150, 5, 1, 35, recoilForce: 0.1f);
         public static readonly Weapon twinNozzle = new Weapon(0.6f, 7, 200, 20, 0.5f, 40, bps:2, recoilForce: 5f);
         public static readonly Weapon boomerangLauncher = new Weapon(0.4f, 6, 150, 5, 1, 50, penetration_input: 1, pool_input: 49, knockbackForce: 0);
         public static readonly Weapon needleCannon = new Weapon(0.3f, 6, 5, 15, 4, 35, pool_input: 50, penetration_input: 1);
 
         // Blue Chest Exclusives: Notes are on the Doc.
-        public static readonly Weapon tacticalCarbine = new Weapon(0.12f, 2.5f, 150, 5, 1.5f, 65, recoilForce: 0.1f);
-        public static readonly Weapon rgb = new Weapon(0.15f, 1.5f, 200, 15, 1, 75, pool_input: 51, penetration_input: 10);
+        public static readonly Weapon sprayGun = new Weapon(0.03f, 0.75f, 150, 0, 0.13f, 8, recoilForce: 0f, knockbackForce: 0f,pool_input: 54);
+        public static readonly Weapon tacticalCarbine = new Weapon(0.12f, 2.5f, 150, 5, 1.5f, 60, recoilForce: 0.1f);
+        public static readonly Weapon rgb = new Weapon(0.15f, 2.5f, 150, 15, 1, 60, pool_input: 51, penetration_input: 10);
         public static readonly Weapon headwind = new Weapon(0.5f, 10, 80, 0, 1f, 15, knockbackForce: 5, knockbackTime: 1.2f, penetration_input: 5, pool_input: 52);
         public static readonly Weapon lighter = new Weapon(0.06f, 2f, 50, 30, 0.4f, 10, recoilForce: 1.5f, penetration_input: 1, pool_input: 53);
 
         // Pink Chest Exclusives: Notes are on the Doc.
-        public static readonly Weapon highCapacity = new Weapon(0.2f, 1, 150, 10, 1.2f, 85);
+        public static readonly Weapon highCapacity = new Weapon(0.2f, 1, 150, 10, 1.2f, 45);
         public static readonly Weapon heavyCarbine = new Weapon(0.16f, 3.2f, 180, 5, 1.5f, 100, recoilForce: 0.25f);
         public static readonly Weapon wildShot = new Weapon(0.6f, 15, 150, 360, 1f, 200, recoilForce: 5);
-        public static readonly Weapon waterGun = new Weapon(0.03f, 0.6f, 150, 0, 0.1f, 10, recoilForce: 0f, knockbackForce: 0f,pool_input: 54);
         public static readonly Weapon needleSwarm = new Weapon(0.2f, 1, 5, 15, 4, 35, bps: 10, pool_input: 50, penetration_input: 1);
         public static readonly Weapon timeBomb = new Weapon(1, 50, 2, 40, 5, 300, knockbackForce: 10);
         public static readonly Weapon blaster = new Weapon(1.2f, 35, 100, 10, 1, 100, recoilForce: 10, recoilTime: 0.5f, pool_input: 10);
@@ -127,9 +127,9 @@ namespace KillboxWeaponClasses
         public static readonly Weapon lightningRevolver = new Weapon(0.08f, 13, 200, 22, 1.1f, 250, penetration_input: 2);
         public static readonly Weapon combatCarbine = new Weapon(0.12f, 1.8f, 200, 5, 1.5f, 125, recoilForce: 0.1f);
         public static readonly Weapon doubleBarrelShotgun = new Weapon(0.55f, 8, 200, 20, 0.6f, 100, bps:2, recoilForce: 5f, knockbackForce: 5, penetration_input: 4);
-        public static readonly Weapon cymk = new Weapon(0.13f, 1f, 200, 15, 1, 150, pool_input: 55, penetration_input: 10);
-        public static readonly Weapon demolisher = new Weapon(0.4f, 2f, 150, 40, 1, 200, bps: 5, knockbackForce: 7, pool_input: 10);
-        public static readonly Weapon hurricane = new Weapon(0.17f, 3, 150, 0, 1f, 30, knockbackForce: 6, knockbackTime: 1.5f, penetration_input: 6, pool_input: 52);
+        public static readonly Weapon cymk = new Weapon(0.13f, 1f, 225, 15, 1, 150, pool_input: 55, penetration_input: 10);
+        public static readonly Weapon demolisher = new Weapon(0.4f, 2f, 80, 40, 1, 200, bps: 5, knockbackForce: 7, pool_input: 10);
+        public static readonly Weapon hurricane = new Weapon(0.17f, 3, 100, 0, 1f, 30, knockbackForce: 6, knockbackTime: 1.5f, penetration_input: 6, pool_input: 52);
         public static readonly Weapon flamethrower = new Weapon(0.01f, 0.5f, 40, 15, 0.9f, 20, recoilForce: 0.7f, penetration_input: 1, pool_input: 53);
 
     }
