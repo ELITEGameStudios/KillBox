@@ -139,8 +139,8 @@ namespace KillboxWeaponClasses
         //These weapons will get their own class type to account for cooldown, projectile, etc
 
         //Stats displayed are irrelavent
-        public static readonly Weapon slow_field_small = new Weapon(10f, 5f, 25, 30, 10f, 1, _is_support: true, _support_type: 0); //CALM, slows enemies within 10f radius by * 0.5f
-        public static readonly Weapon slow_field_large = new Weapon(0.1f, 500f, 100, 0, 2f, 5, _is_support: true, _support_type: 0, _cooldown_time: 10f); //SERENITY, slows enemies within 20f radius by * 0.2f
+        public static readonly Weapon calm = new Weapon(10f, 5f, 25, 30, 10f, 1, _is_support: true, _support_type: 0); //CALM, slows enemies within 10f radius by * 0.5f
+        public static readonly Weapon serenity = new Weapon(0.1f, 500f, 100, 0, 2f, 5, _is_support: true, _support_type: 0, _cooldown_time: 10f); //SERENITY, slows enemies within 20f radius by * 0.2f
 
         public static readonly Weapon health_pulse_small = new Weapon(10f, 5f, 25, 30, 10f, 0, _is_support: true, _support_type: 0); //HELPING_HAND, heals 200hp for the player in a 5f area every second for 8 pulses
         public static readonly Weapon health_pulse_large = new Weapon(10f, 5f, 25, 30, 10f, 0, _is_support: true, _support_type: 0); //LIFE_SUPPORT, heals 200hp for the player in a 5f area every second for 8 pulses
@@ -160,10 +160,10 @@ namespace KillboxWeaponClasses
 
     class SpecialistLibrary
     {
-        //Will also get its own unique class, seperate from weapon class entirely
+        // Gold Chest Exclusives
 
-        //Stats displayed are irrelavent
-        public static readonly Weapon chaos = new Weapon(10f, 5f, 25, 30, 10f, 0, pool_input: 9); //CHAOS, cool black hole
+        // Stats displayed are irrelavent
+        // public static readonly Weapon chaos = new Weapon(10f, 5f, 25, 30, 10f, 0, pool_input: 9); //CHAOS, cool black hole
         public static readonly Weapon kunais = new Weapon(0.75f, 5f, 75, 75, 0.75f, 0, bps:5,  pool_input: 13, _uniform: true, _misc: true, penetration_input: 5); //KUNAIS, 3 functions. trapper function, throwable, boomerang piercer
         public static readonly Weapon kunais_2 = new Weapon(0.33f, 0f, 25, 0, 2f, 0,  pool_input: 14, _misc: true, penetration_input: 5); //KUNAIS, 3 functions. trapper function, throwable, boomerang piercer
         public static readonly Weapon runic_gun = new Weapon(10f, 5f, 25, 30, 10f, 0, pool_input: 9); //RUNIC GUN, random runes do different things
