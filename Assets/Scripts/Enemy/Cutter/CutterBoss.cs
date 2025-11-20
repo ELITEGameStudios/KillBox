@@ -48,6 +48,8 @@ public class CutterBoss : BossBase
     {
         if(bosses == null){ bosses = new List<CutterBoss>(); }
 
+        bossType = BossRoundManager.BossType.CUTTER;
+
 
         chase = new CutterChaseAttack(this, 6, time: 5, bombIterations: 0);
         bombChase = new CutterChaseAttack(this, 5);
@@ -185,6 +187,7 @@ public class CutterBoss : BossBase
     {
         bosses.Remove(this);
         Debug.Log("Cutter Removed");
+        
         base.DeathEvent(to_player);
     }
 

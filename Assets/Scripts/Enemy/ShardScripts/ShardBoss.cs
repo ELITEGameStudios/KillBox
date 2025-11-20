@@ -29,6 +29,8 @@ public class ShardBoss : BossBase
     // Start is called before the first frame update
     void Awake()
     {
+        bossType = BossRoundManager.BossType.SHARD;
+
         if(bosses == null){ bosses = new List<ShardBoss>(); }
         chaseState = new ShardChaseState(this, 12, 12, 8, Adrag[0], Rspeed[0]);
         agroChaseState = new ShardChaseState(this, 8, 3.5f, 7, Adrag[2], Rspeed[2], fires: true);

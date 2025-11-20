@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 {
     [SerializeField]
     protected int _level;
-    public int ScoreCount, Dualindex, player_kills, ultra_kills, equipment_index;
+    public int ScoreCount, Dualindex, player_kills, ultra_kills;
     public int portalInterval = 4;
 
     public int[] personalBests {get; private set;}
@@ -28,73 +28,45 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
     [SerializeField]
     private EnemyList enemyList;
-    
-    // [SerializeField]
-    protected PortalScript portalScript;
-
     [SerializeField]
     protected int boss_round_start;
-
-
-    public string online_username, pb_run_id;
-    public bool player_is_ultra, player_is_overdrive, player_has_hotshot, player_has_ally, started_game;
+    public bool started_game;
     [SerializeField] private Transform head_start_transform, camera_tf;
 
     [SerializeField] private bool has_key, head_start, can_continue_game, _is_fire_round;
 
-    [SerializeField] private int req_equipment_kills = 30, theme_index = 0, legacyPB;
+    [SerializeField] private int req_equipment_kills = 30, theme_index = 0;
     [SerializeField]
-    private GameObject use_equipment_button, tutorial_panel, gameplayHUD;
+    private GameObject use_equipment_button, gameplayHUD;
 
     [SerializeField]
     private Camera camera;
 
-    [SerializeField]
-    private GameObject[] use_equipment_button_list, equipment_list, equippedEquipmentDisplay;
-    public Volume[] equipmentVolumes;
-
     public bool[] completed_challenges; 
-    public Text LvlTxt, ScoreTxt, ScoreTxt2, LvlText2;
-    public Text[] PBTxt, ScoreTxtArray;
     public PlayerHealth playerHealth;
     public ShopScript shopScript;
-    public Animator FadeAnimator;
-    public GameObject[] OffList, OnList, ultramode_unlocked_objects, grenade_launcher_objects;
+    public GameObject[] OffList, OnList;
     //public Vector3 min_size, max_size; // for joystick ui
 
     public Spawn GetSpawn;
-    // public EscapeRoomSpawnSystem escapeRoomSpawnSystem;
-    public UnityEvent onPlayerDeath;
     public PauseHandler pauseHandler;
-    public SceneManagerScript sceneManager;
-
-    public Slider equipment_slider, joystick_size;
-    public Slider[] equipment_slider_list, joystick_sliders;
-
-    [SerializeField]
-    FloorColorScript map_colors;
-
-    private float ultra_recharge_tick_timer;
-    [SerializeField]
-    private BuffsManager buffsManager;
-
-    [SerializeField]
-    private SpriteRenderer player_render, gun_renderer;
 
     [SerializeField]
     private FloorColorScript floor_color;
 
     [SerializeField]
+    [Header("Difficulty Variables")]
     private float difficulty;
     public float difficulty_coefficient;
-
-    public int constant;
+    public int difficultyConstant;
 
     [SerializeField]
+    [Header("Map Data and variables")]
     private List<MapData> Maps;
     public List<MapData> GetMaps {get {return Maps;}} 
     [SerializeField] private MapData currentMap;
     public MapData GetCurrentMap(){ return currentMap; }
+    public bool[] hasAcquiredKey;
 
     [SerializeField] private List<InGameButtonHandler> inGameButtonHandlers;
     public enum RoundState
@@ -150,6 +122,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         if(main == null){ main = this; }
         else if(main != this){ Destroy(this); }
         game = KillBox.currentGame;
+        hasAcquiredKey = new bool[5];
         difficulty_coefficient = game.difficultyCoefficient;
         inGameButtonHandlers = new();
         freeplay = game.freeplay;
@@ -162,20 +135,18 @@ public class GameManager : MonoBehaviour, ISelfResListener
         difficulty = 50 * KillBox.currentGame.difficultyCoefficient;
         switch(KillBox.currentGame.difficultyIndex){
             case (0):
-                constant = 51;
+                difficultyConstant = 51;
                 break; 
             case (1):
-                constant = 51;
+                difficultyConstant = 51;
                 break; 
             case (2):
-                constant = 150;
+                difficultyConstant = 150;
                 break; 
             default:
-                constant = 51;
+                difficultyConstant = 51;
                 break; 
         }
-
-        player_render = Player.main.tf.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
         
         foreach (MapData map in Maps){
             map.SetTileData();
@@ -565,7 +536,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         pauseHandler.PausePlay(0);
     }
 
-    public void UpdateDifficulty() { difficulty = constant + 100f * (float)Mathf.Pow(LvlCount, 2f) / 30 * difficulty_coefficient; /*+ 25f * ((playerHealth.GetMaxHealth() / 50) - 3); */ }
+    public void UpdateDifficulty() { difficulty = difficultyConstant + 100f * (float)Mathf.Pow(LvlCount, 2f) / 30 * difficulty_coefficient; /*+ 25f * ((playerHealth.GetMaxHealth() / 50) - 3); */ }
 
     public void AddRound(int value = 1){ //for freeplay
         Debug.Log("Freeplay Status: " + freeplay);

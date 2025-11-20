@@ -21,6 +21,9 @@ public class MidasBoss : BossBase
     public Phase firstPhase, secondPhase, thirdPhase, finalPhase;
 
     void Awake(){
+        
+        bossType = BossRoundManager.BossType.MIDAS;
+
         // this,  stateTime,  speed,  force, distance, fireRate, init
         crownShoot = new MidasShootState(this, 7f, 3f, 3000f, 5f, 1f, 1.5f);
         nerfedShoot = new MidasShootState(this, 10f, 2f, 3000f, 5f, 1.4f, 2f);

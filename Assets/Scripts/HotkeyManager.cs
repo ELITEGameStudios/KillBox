@@ -19,12 +19,15 @@ public class HotkeyManager : MonoBehaviour
         else if (instance != this) { Destroy(this); }
         hotkeys = new InputManager();
 
-        hotkeys.Gameplay.equipment.started += ctx => equipment_pressed = true;
-        hotkeys.Gameplay.equipment.canceled += ctx => equipment_pressed = false;
+        // hotkeys.Gameplay.equipment.started += ctx => equipment_pressed = true;
+        // hotkeys.Gameplay.equipment.canceled += ctx => equipment_pressed = false;
 
-        hotkeys.Gameplay._switch.started += ctx => switch_weapon_pressed = true;
-        hotkeys.Gameplay._switch.canceled += ctx => switch_weapon_pressed = false;
+        // hotkeys.Gameplay._switch.started += ctx => switch_weapon_pressed = true;
+        // hotkeys.Gameplay._switch.canceled += ctx => switch_weapon_pressed = false;
 
+        hotkeys.Gameplay.equipment.performed += EquipmentInputCall;
+        hotkeys.Gameplay._switch.performed += SwitchWeaponInputCall;
+        
         // hotkeys.Gameplay.pause.performed += ctx => PauseCheck();
         // hotkeys.Gameplay.pause.started += ctx => PauseCheck();
         // hotkeys.Gameplay.pause.canceled += ctx => pause_pressed = false;
@@ -33,6 +36,19 @@ public class HotkeyManager : MonoBehaviour
 
     void OnEnable() { hotkeys.Gameplay.Enable(); }
     void OnDisable() { hotkeys.Gameplay.Disable(); }
+
+    public void EquipmentInputCall(InputAction.CallbackContext ctx)
+    {
+                EquipmentManager.instance.ActivateEquipment();
+        
+    }
+    public void SwitchWeaponInputCall(InputAction.CallbackContext ctx)
+    {
+        if(GunHandler.Instance.backup_weapon != null)
+        {
+            GunHandler.Instance.EquipWeapon(backup: GunHandler.Instance.current_is_primary); 
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -58,24 +74,20 @@ public class HotkeyManager : MonoBehaviour
             PauseCheck();
         }
 
-        if (Input.GetKeyDown(CustomKeybinds.main.SwitchWeapon) || switch_weapon_pressed)
-        {
-            GunHandler.Instance.EquipWeapon(backup: GunHandler.Instance.current_is_primary); 
-        }
+        // OLD INPUT SYSTEM SWAP WEAPON
+        // if (Input.GetKeyDown(CustomKeybinds.main.SwitchWeapon) || switch_weapon_pressed)
+        // {
+        // }
 
-
-        // if(Input.GetKeyDown("p")){
-        //     p_control.controller = !p_control.controller;
-        // }   
 
         // FOR FREEPLAY MODE ONLY
         if (GameManager.main != null)
         {
-
-            if (Input.GetKeyDown(CustomKeybinds.main.Ultramode) || equipment_pressed)
-            {
-                EquipmentManager.instance.ActivateEquipment();
-            }
+            // OLD INPUT SYSTEM EQUIPMENT
+            // if (Input.GetKeyDown(CustomKeybinds.main.Ultramode) || equipment_pressed)
+            // {
+            //     EquipmentManager.instance.ActivateEquipment();
+            // }
 
             if (GameManager.main.freeplay)
             {

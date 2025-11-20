@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static BossRoundManager;
 
 public class EconomyManager : MonoBehaviour
 {
@@ -79,14 +80,20 @@ public class EconomyManager : MonoBehaviour
     {
         if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
         {
-
             return 25;
         }
-        List<int> bossRounds = EnemyList.instance.bossRounds;
-        int round = KillBox.currentGame.round;
-        for (int i = 0; i < finishedRoundBonus.Length; i++)
+        try
         {
-            if (round < bossRounds[i]) { return finishedRoundBonus[i]; }
+            List<int> bossRounds = EnemyList.instance.bossRounds;
+            int round = KillBox.currentGame.round;
+            for (int i = 0; i < finishedRoundBonus.Length; i++)
+            {
+                if (round < bossRounds[i]) { return finishedRoundBonus[i]; }
+            }
+        }
+        catch
+        {
+            Debug.LogAssertion("Sum bullshit is goin on in the finished round bonus section. Check that out bruh");
         }
 
         return 0;
@@ -100,6 +107,18 @@ public class EconomyManager : MonoBehaviour
         for (int i = 0; i < bossRewardTokens.Length; i++)
         {
             if ((int)BossRoundManager.main.bossType == i) { return bossRewardTokens[i]; }
+        }
+
+        return 0;
+    }
+
+    public int GetBossBonus(BossType bossType)
+    {
+
+        // List<int> bossRounds = EnemyList.instance.bossRounds;
+        // int round = KillBox.currentGame.round;
+        for (int i = 0; i < bossRewardTokens.Length; i++){
+            if ((int)bossType == i) { return bossRewardTokens[i]; }
         }
 
         return 0;

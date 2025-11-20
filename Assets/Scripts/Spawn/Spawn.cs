@@ -5,21 +5,23 @@ using UnityEngine;
 
 public class Spawn : MonoBehaviour
 {
-    public bool allow, instant, boss_round, boss_allowed, enemiesReachedCap, ended;
-    public GameManager gameManager;
+    public bool allow, instant, boss_round, boss_allowed, ended;
+    public static Spawn instance {get; private set;}
     public List <Spawn2> spawns {get; private set;}
-    public List<Spawn2> active_spawns;
-    public float[] SpawnTimeStart, Step, StartStep;
-    public float InstancesFloat, stepRate, SpawnRound, InstancesRound, SRTS, IRTS, EndRate, SVTime, spawnTime, spawnTimeConstant;
-    public int instances, InstancesCap, boss_chance, guaranteed_boss_instance;
-
+    public float[] SpawnTimeStart, Step;
+    public float spawnTime, spawnTimeConstant;
+    public int instances, InstancesCap;
     public int[] enemyDropIndexes; // list of instances with drops
+
     [SerializeField] private EnemyCounter enemyCounter;
     [SerializeField] public List<GameObject> Entries {get; private set;}
     [SerializeField] private EnemyList enemyList;
 
 
     void Awake(){
+        if(instance == null){instance = this;}
+        else if(instance != this){Destroy(this);}
+
         spawns = new List<Spawn2>();
         // init();
     }
@@ -34,7 +36,7 @@ public class Spawn : MonoBehaviour
     //}
 
     public void OnFireRound(){
-        instances = (int) Mathf.Pow(1.1f, gameManager.LvlCount);
+        instances = (int) Mathf.Pow(1.1f, GameManager.main.LvlCount);
     }
 
 
@@ -80,7 +82,7 @@ public class Spawn : MonoBehaviour
     {
         if (KillBox.currentGame.gamemode == Game.Gamemode.MAIN)
         {
-            if (gameManager.LvlCount != 1) { instances = (int)((2.5 * Mathf.Sqrt(GameManager.main.Difficulty)) - 16f); }
+            if (GameManager.main.LvlCount != 1) { instances = (int)((2.5 * Mathf.Sqrt(GameManager.main.Difficulty)) - 16f); }
             spawnTime = (float)(1 / KillBox.currentGame.difficultyCoefficient) * Mathf.Pow(1.3f, (-KillBox.currentGame.round / 1.5f) + 4) + spawnTimeConstant;
         }
 

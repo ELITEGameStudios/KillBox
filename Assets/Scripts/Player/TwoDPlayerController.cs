@@ -59,6 +59,9 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
 
         controls.Gameplay.shoot.performed += ctx => rotation_value = ctx.ReadValue<Vector2>();
         controls.Gameplay.shoot.canceled += ctx => rotation_value = Vector2.zero;
+
+        controls.Gameplay.dash.performed += DashInputCall;
+        
         canDash = true;
         dashParticleObject.SetActive(true);
     }
@@ -127,6 +130,7 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
         dashTimer = dashDuration;
         dashCooldownTimer = dashCooldown;
         dashVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        dashVector = movement;
         dashVector.Normalize();
         customForces.Clear(); // Clears all other forces acting on this player
         
@@ -186,12 +190,19 @@ public class TwoDPlayerController : MonoBehaviour, IShopUIEventListener
         customForces.Add(force);
     }
 
+    public void DashInputCall(InputAction.CallbackContext ctx)
+    {
+        if(canDash && canMove){
+            Dash();
+        }
+    }
+
     void FixedUpdate()
     {
         // rotation_value.Normalize();
         // movement.Normalize();
         
-        if (canDash && canMove && (Input.GetKeyDown(CustomKeybinds.main.Shoot2) || CustomKeybinds.main.ControllerDash())) { Dash(); }
+        // if (canDash && canMove && (Input.GetKeyDown(CustomKeybinds.main.Shoot2) || CustomKeybinds.main.ControllerDash())) { Dash(); }
         CheckDashTimers();
 
         if(!canMove){

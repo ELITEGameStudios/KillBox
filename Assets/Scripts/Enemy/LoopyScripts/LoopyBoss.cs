@@ -49,6 +49,8 @@ public class LoopyBoss : BossBase
     // Start is called before the first frame update
     void Awake()
     {
+        bossType = BossRoundManager.BossType.LOOPY;
+        
         //Initialize attacks here
         delta1 = new BeginnerLoopyAttack(this, new GameObject[] { goldDelta }, quantity: 12, iterationInterval: 0.3f, startDistance: 1.25f, iterations: 12);
         delta2 = new BeginnerLoopyAttack(this, new GameObject[] { goldDelta }, quantity: 24, iterationInterval: 0.2f, startDistance: 1.25f, offset: 0.25f, iterations: 24);
