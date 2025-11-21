@@ -29,6 +29,8 @@ public class DawnBoss : BossBase
     // Start is called before the first frame update
     void Awake()
     {
+        bossType = BossRoundManager.BossType.TWINS;
+
         // this,  stateTime,  speed,  force, distance, fireRate, init
         mainAttack = new DawnMainAttackState(this, 8f, 5f, 1500f, 7.5f, 1.8f, 2f);
         gravAttack = new DawnGravityState(this, 10f, 4.5f, 1000f, 6f, 2.5f, 2.3f, 1.5f);
@@ -63,6 +65,8 @@ public class DawnBoss : BossBase
             duskScript.isSolo = true;
             duskScript.SetPhase(duskScript.enragedPhase);
         }
+
+        base.DeathEvent(to_player);
     }
     protected override void OnSetPhase(){
         phaseInt ++;

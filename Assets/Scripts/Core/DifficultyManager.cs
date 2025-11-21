@@ -60,7 +60,7 @@ public class DifficultyManager : MonoBehaviour
         spawn.InstancesCap = 13;
         // manager.difficulty_coefficient = 0.65f;
         manager.BossRoundStart = 35;
-        manager.constant = 51;
+        manager.difficultyConstant = 51;
 
         defaultHealth = 250;
 
@@ -80,7 +80,7 @@ public class DifficultyManager : MonoBehaviour
         spawn.SpawnTimeStart[1] = 1.5f;
         spawn.InstancesCap = 13;
         // manager.difficulty_coefficient = 1f;
-        manager.constant = 51;
+        manager.difficultyConstant = 51;
 
         manager.BossRoundStart = 2;
 
@@ -100,7 +100,7 @@ public class DifficultyManager : MonoBehaviour
         spawn.SpawnTimeStart[1] = 2;
         spawn.InstancesCap = 13;
         // manager.difficulty_coefficient = 2f;
-        manager.constant = 150;
+        manager.difficultyConstant = 150;
 
         manager.BossRoundStart = 12;
 

@@ -4946,7 +4946,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7104916297304562773}
   - {fileID: 3517510126668532527}
@@ -5074,6 +5074,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossType: 0
+  inRangeDistance: 5
   area_prefab: {fileID: 7489729413373232824, guid: 76c426735a44da54eaf2cf545d252541, type: 3}
   area: {fileID: 0}
   ui_element_root: {fileID: 0}
@@ -5081,6 +5082,7 @@ MonoBehaviour:
   mode: 0
   requiredBulletHits: 10
   currentBulletHits: 0
+  linkedSpawner: {fileID: 0}
 --- !u!1 &8039394902690671990
 GameObject:
   m_ObjectHideFlags: 0

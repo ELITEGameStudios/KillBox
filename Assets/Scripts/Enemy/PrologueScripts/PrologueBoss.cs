@@ -78,6 +78,8 @@ public class PrologueBoss : BossBase
     // Start is called before the first frame update
     void Awake()
     {
+        bossType = BossRoundManager.BossType.PROLOGUE;
+        
         healthDrain = new PrologueDrainAttack(this, 9, DebuffType.HEALTH);
         speedDrain = new PrologueDrainAttack(this, 9, DebuffType.SPEED);
         shootAttack = new PrologueShootAttack(this, 10, 0.33f, 3, 12);

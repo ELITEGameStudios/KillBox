@@ -58,7 +58,7 @@ public class WeaponItemList : MonoBehaviour
         // Support Weapons
 
         //new WeaponItem("Calm", SupportLibrary.slow_field_small, tier_input: 4, attain_desc: "Found in Chests"),
-        new WeaponItem("Serenity", SupportLibrary.slow_field_large, tier_input: 4, attain_desc: "Found in Chests"),
+        new WeaponItem("Serenity", SupportLibrary.serenity, tier_input: 4, attain_desc: "Found in Chests"),
         // Reward Endgame Item
         //new WeaponItem("XOBLIX", WeaponLibrary.xoblix, tier_input: 5, attain_desc: "Only for the ELITE...")
         new WeaponItem("Golden Pistol", WeaponLibrary.goldenPistol, tier_input: 4, attain_desc: "Found in Chests"),

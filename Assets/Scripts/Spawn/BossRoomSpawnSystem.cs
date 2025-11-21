@@ -50,6 +50,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
 
     public bool isSpawning {get; private set;}
     public bool stopAfterSpawnBosses;
+    public bool bossHasSpawned;
 
     // Called before the first frame of the game
     void Awake()
@@ -215,7 +216,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
         int currentStep = bossSpawnStep;
         int currentOffset = bossSpawnOffset;
         currentBossIndex = 0;
-        bool spawnedOnce = false;
+        bossHasSpawned = false;
 
         while(true) {
 
@@ -241,10 +242,10 @@ public class BossRoomSpawnSystem : MonoBehaviour
 
                     /* Boss Spawning */
                     // For the first boss spawn
-                    if(!spawnedOnce){
+                    if(!bossHasSpawned){
                         if(currentOffset == 0){
                             Instantiate(bossPrefabTables[(int)BossRoundManager.main.bossType][currentBossIndex], mainBossSpawner.position, mainBossSpawner.rotation);
-                            spawnedOnce = true;
+                            bossHasSpawned = true;
                             spawnsAfterBoss = 0;
                             currentBossIndex++;
                             KillboxEventSystem.TriggerBossSpawnEvent();

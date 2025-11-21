@@ -113,7 +113,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""name"": ""equipment"",
                     ""type"": ""Button"",
                     ""id"": ""9c8db9a7-d24d-4512-9c7f-79024bc289bf"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -122,7 +122,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""name"": ""_switch"",
                     ""type"": ""Button"",
                     ""id"": ""b80fae3d-fdb8-4551-a084-0b91547f7498"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -131,7 +131,16 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""name"": ""pause"",
                     ""type"": ""Button"",
                     ""id"": ""e7766f36-b8ce-4237-a5ef-4d387c9c658f"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""c0574f7e-4277-4505-836a-9e25a5e22529"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -173,6 +182,17 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""918ddc41-ca3b-4a60-b227-836aea483a10"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""equipment"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""a9791e49-f424-4a26-a2ed-d1d2209f9301"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
@@ -186,6 +206,17 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""728d0622-2972-477e-a1a1-74cca8e1fab7"",
                     ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""_switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0ce614b2-dd7e-4f3a-b470-1d24b1a1d21e"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -214,6 +245,39 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""action"": ""pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e5e7f641-c052-481d-9116-8e2ffe4bd34c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dfd7b363-92d8-40d3-b0bd-85181b742d4a"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc20de15-41ac-4764-9b3c-3c2b4c61dd95"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -233,6 +297,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         m_Gameplay_equipment = m_Gameplay.FindAction("equipment", throwIfNotFound: true);
         m_Gameplay__switch = m_Gameplay.FindAction("_switch", throwIfNotFound: true);
         m_Gameplay_pause = m_Gameplay.FindAction("pause", throwIfNotFound: true);
+        m_Gameplay_dash = m_Gameplay.FindAction("dash", throwIfNotFound: true);
     }
 
     ~@InputManager()
@@ -318,6 +383,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_equipment;
     private readonly InputAction m_Gameplay__switch;
     private readonly InputAction m_Gameplay_pause;
+    private readonly InputAction m_Gameplay_dash;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -349,6 +415,10 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/pause".
         /// </summary>
         public InputAction @pause => m_Wrapper.m_Gameplay_pause;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/dash".
+        /// </summary>
+        public InputAction @dash => m_Wrapper.m_Gameplay_dash;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -390,6 +460,9 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             @pause.started += instance.OnPause;
             @pause.performed += instance.OnPause;
             @pause.canceled += instance.OnPause;
+            @dash.started += instance.OnDash;
+            @dash.performed += instance.OnDash;
+            @dash.canceled += instance.OnDash;
         }
 
         /// <summary>
@@ -416,6 +489,9 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             @pause.started -= instance.OnPause;
             @pause.performed -= instance.OnPause;
             @pause.canceled -= instance.OnPause;
+            @dash.started -= instance.OnDash;
+            @dash.performed -= instance.OnDash;
+            @dash.canceled -= instance.OnDash;
         }
 
         /// <summary>
@@ -504,5 +580,12 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPause(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "dash" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDash(InputAction.CallbackContext context);
     }
 }

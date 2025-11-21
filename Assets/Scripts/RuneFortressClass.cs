@@ -61,6 +61,7 @@ public class RuneFortressClass : MonoBehaviour
     {
         // states.Update();
         _distance = Vector3.Distance(transform.position, player.position);
+        animator.SetBool("InRange", playerInRange);
         animator.SetFloat("Blend", _distance);
 
         if(!playerInRange){ currentBulletHits = 0; }
@@ -84,6 +85,7 @@ public class RuneFortressClass : MonoBehaviour
     }
     void FindBar()
     {
+        return;
 
         if (GameplayUI.instance.GetProgressBarObject() == null)
         {
@@ -102,7 +104,8 @@ public class RuneFortressClass : MonoBehaviour
     {
         activated = true;
         linkedSpawner.enabled = true;
-        animator.Play("Sleep");
+        // animator.Play("Sleep");
+        animator.SetTrigger("OnTrialActivate");
         GetComponent<Collider2D>().enabled = false;
 
         area = Instantiate(area_prefab, transform.position, transform.rotation);
@@ -120,6 +123,7 @@ public class RuneFortressClass : MonoBehaviour
     void Finish()
     {
         linkedSpawner.enabled = false;
+        animator.SetTrigger("OnTrialSucceed");
 
         ParticleSystem[] children = new ParticleSystem[] {
             area.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>(),
@@ -139,9 +143,11 @@ public class RuneFortressClass : MonoBehaviour
 
         EnemyCounter.main.DestroyAllEnemies();
 
-        PortalScript.main.gameObject.SetActive(true);
-        PortalScript.main.SetMode(1, bossType: bossType);
-        PortalScript.main.transform.position = transform.position;
+        GameManager.main.hasAcquiredKey[(int)bossType-2] = true; 
+
+        // PortalScript.main.gameObject.SetActive(true);
+        // PortalScript.main.SetMode(1, bossType: bossType);
+        // PortalScript.main.transform.position = transform.position;
 
         // states.SwitchState(_follow);
 

@@ -64,6 +64,7 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
                 EnemyCounter.main.bossProfiles.Count == 0 &&
                 LvlStarter.main.HasStarted &&
                 spawnSystem.currentBossIndex == spawnSystem.CurrentBossTable.Count 
+                && spawnSystem.bossHasSpawned
                 && (spawnSystem.stopAfterSpawnBosses ? true : spawnSystem.spawnsAfterBoss >= 10)
             )
             {
@@ -77,9 +78,10 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
                 }
 
                 // Giving bonus
-                int bonus = EconomyManager.instance.GetBossBonus();
-                GameManager.main.OnPickupToken(bonus, false);
-                BonusesUIManager.instance.ActivateBonus(bossType.ToString().ToLower(), bonus, 10);
+                // int bonus = EconomyManager.instance.GetBossBonus();
+                // GameManager.main.OnPickupToken(bonus, false);
+                // BonusesUIManager.instance.ActivateBonus(bossType.ToString().ToLower(), bonus, 10);
+
             }
 
             // if(finishedBossRoundMainPhase)

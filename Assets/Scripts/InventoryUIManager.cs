@@ -194,7 +194,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
             if(target_item.weapon.pool == 10){
                 piercingText.text = "Explodes on Collision";
             }
-            else if(target_item.weapon == SupportLibrary.slow_field_large){
+            else if(target_item.weapon == SupportLibrary.serenity){
                 piercingText.text = "Slows Enemies in a Large Area";
             }
             else if(target_item.weapon == SpecialistLibrary.kunais_2){
