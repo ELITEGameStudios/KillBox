@@ -70,8 +70,10 @@ public class BossBase : MonoBehaviour, IDeathHandler
             // SetState(currentPhase.statesInPhase[nextStateIndex], nextStateIndex+1);
         }
 
-        
-        BossBarManager.Instance.AddToQueue(gameObject, name, displayColor, displaySprite);
+        if(bossType != null)
+        {
+            BossBarManager.Instance.AddToQueue(gameObject, name, displayColor, displaySprite);
+        }
         OnStart();
     }
 

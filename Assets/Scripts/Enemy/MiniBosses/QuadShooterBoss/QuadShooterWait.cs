@@ -5,7 +5,7 @@ using UnityEngine;
 public class QuadShooterWait : BossStateData
 {
 
-    QuadShooter quadData;
+    public QuadShooter quadData;
     private float time, currentTime;
     private float maxSpeed;
 
@@ -23,12 +23,7 @@ public class QuadShooterWait : BossStateData
     }
     
     public override void Update() // Called every frame while the object is active
-    {
-        if (bullets <= 0){
-            End();
-            return;
-        }
-        
+    {   
 
         if (currentTime > 0)
         {

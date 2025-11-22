@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
-    public static List<ObjectPool> objectPools {get; private set;}
     [SerializeField] private List<GameObject> pooledObjects;
     public GameObject objectToPool;
     public int amountToPool;
 
-    void Awake(){
-        if(objectPools == null){
-            objectPools = new List<ObjectPool>();
-        }
-
-        objectPools.Add(this);
-    
+    void Awake()
+    {
+        
     }
  
     void Start(){
@@ -27,7 +22,7 @@ public class ObjectPool : MonoBehaviour
         //    pooledObjects.Add(tmp);
         //}
     }
-    void ClearPool(){
+    public void ClearPool(){
         pooledObjects = new List<GameObject>();
     }
 
@@ -110,17 +105,5 @@ public class ObjectPool : MonoBehaviour
         }
 
         return result;
-    }
-
-    public static void ResetAllPools(){
-        foreach (ObjectPool pool in objectPools){
-            foreach(GameObject obj in pool.AllPooledObjects()){
-                if(obj != null){
-                    Destroy(obj);
-                }
-                // obj.SetActive(false);
-            }
-            pool.ClearPool();
-        }
     }
 }
