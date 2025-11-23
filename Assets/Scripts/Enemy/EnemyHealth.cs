@@ -8,13 +8,13 @@ public class EnemyHealth : MonoBehaviour
 {
     public int maxHealth, CurrentHealth, a;
     public GameManager manager;
-    public GameObject player, DroppedItem, ExplosionOnDeath, color_easter_egg_portal, InsObject, tokenClone, main_player, key_item, guaranteed_drop_item;
-    public GameObject[] lvl_4_prefabs;
+    public GameObject guaranteedDrop;
     public ObjectPool[] objectPool;
     public Color explosionColor;
     public AudioSource audio;
     public AudioClip death, hit;
-    public bool can_drop_lvl_4, destructive_immune, no_drops, key_drops, guaranteed_drop_bool, triggerDeathEvent;
+    public bool destructive_immune, no_drops, triggerDeathEvent;
+    public bool guaranteedDropCondition => guaranteedDrop != null;
     public bool in_fortress {get; private set;}
     [SerializeField] private bool preventDefaultDeath, immortal, ignoresDamage;
     [SerializeField] private EnemyProfile profile; 
@@ -41,8 +41,6 @@ public class EnemyHealth : MonoBehaviour
         objectPool[0] = GameObject.Find("BulletPool5").GetComponent<ObjectPool>();
         objectPool[1] = GameObject.Find("BulletPool6").GetComponent<ObjectPool>();
         audio = gameObject.GetComponent<AudioSource>();
-
-        main_player = GameObject.FindWithTag("Player");
     }
 
     void OnTriggerEnter2D(Collider2D trigger){
@@ -86,13 +84,14 @@ public class EnemyHealth : MonoBehaviour
                 if (!BossRoundManager.main.isBossRound && to_player)
                 {
                     // Instantiates a token drop
-                    if (objectPool[0].GetPooledObject() != null)
+                    if (ObjectPoolManager.instance.tokenPrefab != null)
                     {
-                        tokenClone = objectPool[0].GetPooledObject();
-                        tokenClone.transform.SetParent(null);
-                        tokenClone.GetComponent<sine_movement>().ROOT = transform.position;
-                        tokenClone.transform.position = transform.position;
-                        tokenClone.gameObject.SetActive(true);
+                        // GameObject tokenClone;
+                        GameObject token = ObjectPoolManager.GetObjectFromPool(ObjectPoolManager.instance.tokenPrefab);
+                        token.transform.SetParent(null);
+                        token.GetComponent<sine_movement>().ROOT = transform.position;
+                        token.transform.position = transform.position;
+                        token.gameObject.SetActive(true);
 
 
                         Transform grid = GameObject.Find("Grid").transform;
@@ -101,10 +100,10 @@ public class EnemyHealth : MonoBehaviour
                         {
                             if (grid.GetChild(i).gameObject.activeInHierarchy)
                             {
-                                tokenClone.transform.SetParent(grid.GetChild(i));
-                                tokenClone.transform.localEulerAngles = new Vector3(0, 0, 0);
-                                tokenClone.transform.position = transform.position;
-                                tokenClone.transform.rotation = transform.rotation;
+                                token.transform.SetParent(grid.GetChild(i));
+                                token.transform.localEulerAngles = new Vector3(0, 0, 0);
+                                token.transform.position = transform.position;
+                                token.transform.rotation = transform.rotation;
                                 break;
                             }
                         }
@@ -115,40 +114,17 @@ public class EnemyHealth : MonoBehaviour
 
         try
         {
-            if (objectPool[1].GetPooledObject() != null)
-            {
-                InsObject = objectPool[1].GetPooledObject();
-                InsObject.transform.position = gameObject.transform.position;
-                InsObject.transform.rotation = gameObject.transform.rotation;
-                InsObject.gameObject.SetActive(true);
-                InsObject.GetComponent<ParticleSystem>().startColor = explosionColor;
-                InsObject.GetComponent<ParticleSystem>().Play();
-                InsObject.GetComponent<BulletDestroy>().RestartTimer();
-                //InsObject = Instantiate(ExplosionOnDeath, transform);
-                InsObject.transform.SetParent(null);
-                InsObject.transform.localEulerAngles = new Vector3(0, 0, 0);
-            }
+            GameObject explosionEffect = ObjectPoolManager.instance.InstantiateFromPool(ObjectPoolManager.instance.explosionObject, transform.position, transform.rotation);
+            explosionEffect.GetComponent<ParticleSystem>().startColor = explosionColor;
+            explosionEffect.GetComponent<ParticleSystem>().Play();
+            explosionEffect.GetComponent<BulletDestroy>().RestartTimer();
+            //InsObject = Instantiate(ExplosionOnDeath, transform);
+            explosionEffect.transform.SetParent(null);
+            explosionEffect.transform.localEulerAngles = new Vector3(0, 0, 0);
 
-            if (key_drops)
+            if (guaranteedDropCondition)
             {
-                GameObject item = Instantiate(key_item, transform);
-                Transform grid = GameObject.Find("Grid").transform;
-
-                for (int i = 0; i < grid.childCount; i++)
-                {
-                    if (grid.GetChild(i).gameObject.activeInHierarchy)
-                    {
-                        item.transform.SetParent(grid.GetChild(i));
-                        item.transform.localEulerAngles = new Vector3(0, 0, 0);
-                        item.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
-                        break;
-                    }
-                }
-            }
-
-            if (guaranteed_drop_bool)
-            {
-                GameObject item = Instantiate(guaranteed_drop_item, transform);
+                GameObject item = Instantiate(guaranteedDrop, transform);
                 Transform grid = GameObject.Find("Grid").transform;
 
                 for (int i = 0; i < grid.childCount; i++)
@@ -162,8 +138,6 @@ public class EnemyHealth : MonoBehaviour
                     }
                 }
             }
-
-
             if (UpgradesManager.Instance.current_levels[3] != 0 && to_player && !Player.main.health.isMaxHealth)
             {
                 Player.main.health.CurrentHealth += (int)UpgradesList.lifesteal.values[0][UpgradesManager.Instance.current_levels[3] - 1];
@@ -181,7 +155,6 @@ public class EnemyHealth : MonoBehaviour
              
                 Player.main.AddKill();
             }
-
             if (in_fortress)
             {
                 GameObject.FindGameObjectWithTag("fortress_rune").GetComponent<RuneFortressClass>().AddKill(this);

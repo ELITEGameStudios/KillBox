@@ -12,7 +12,7 @@ public class BossBase : MonoBehaviour, IDeathHandler
     public string name;
     public Sprite displaySprite;
     public Color displayColor;
-    public BossType bossType;
+    public BossType? bossType;
 
 
     [Header("Base Functional Information")]
@@ -50,11 +50,12 @@ public class BossBase : MonoBehaviour, IDeathHandler
     public virtual void DeathEvent(bool to_player = false)
     {
         Debug.Log(name + " Has Died");
-        
-        // Giving bonus
-        int bonus = EconomyManager.instance.GetBossBonus(bossType);
-        GameManager.main.OnPickupToken(bonus, false);
-        BonusesUIManager.instance.ActivateBonus(bossType.ToString().ToLower(), bonus, 10);
+        if(bossType != null){
+            // Giving bonus
+            int bonus = EconomyManager.instance.GetBossBonus((BossType)bossType);
+            GameManager.main.OnPickupToken(bonus, false);
+            BonusesUIManager.instance.ActivateBonus(bossType.ToString().ToLower(), bonus, 10);
+        }
     }
 
     // Start is called before the first frame update
@@ -69,8 +70,10 @@ public class BossBase : MonoBehaviour, IDeathHandler
             // SetState(currentPhase.statesInPhase[nextStateIndex], nextStateIndex+1);
         }
 
-        
-        BossBarManager.Instance.AddToQueue(gameObject, name, displayColor, displaySprite);
+        if(bossType != null)
+        {
+            BossBarManager.Instance.AddToQueue(gameObject, name, displayColor, displaySprite);
+        }
         OnStart();
     }
 

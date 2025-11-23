@@ -67,6 +67,9 @@ public class GameManager : MonoBehaviour, ISelfResListener
     [SerializeField] private MapData currentMap;
     public MapData GetCurrentMap(){ return currentMap; }
     public bool[] hasAcquiredKey;
+    
+
+
 
     [SerializeField] private List<InGameButtonHandler> inGameButtonHandlers;
     public enum RoundState
@@ -315,7 +318,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         EnemyCounter.main.DestroyAllEnemies();
         EnemyCounter.main.Reset();
         LvlStarter.main.ManualStopLvl();
-        ObjectPool.ResetAllPools();
+        ObjectPoolManager.ResetAllPools();
         ToggleChannelManager.main.ResetChannels(true);
         SetMaxTokenCount();
         DifficultyManager.main.SetDifficulty(KillBox.currentGame.difficultyIndex);
