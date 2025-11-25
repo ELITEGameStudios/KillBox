@@ -7,14 +7,11 @@ public class AIShooterScript : MonoBehaviour
     public GameObject bullet;
     public Transform playerTf, Spawn, Enemytf;
     public float Velocity, spread;
-    public Rigidbody2D bulletRb, clone;
+    public Rigidbody2D clone;
     public Vector3 SpawnRot;
     public bool CanShoot, sees_player, FAS, boss, spray, has_audio, dontAutoShoot;
     public int BulletsPerShot, poolIndex, damage_boss_field;
     public float FR, AimProxim;
-    public Camera cam;
-    public PrefabToGameObjectHostile GetPrefabToGameObject;
-    public ObjectPool objectPool;
 
     public AudioSource audio;
 
@@ -28,7 +25,7 @@ public class AIShooterScript : MonoBehaviour
     {
         CanShoot = !dontAutoShoot;
         SpawnRot = Spawn.localEulerAngles;
-        objectPool = GameObject.Find("BulletPool"+poolIndex.ToString()).GetComponent<ObjectPool>();
+        // objectPool = ObjectPoolManager.GetPool(""+poolIndex.ToString);
 
         if(range == 0){
             range = 0.5f;
@@ -69,26 +66,26 @@ public class AIShooterScript : MonoBehaviour
         for(int i = 0; i < BulletsPerShot; i++)
         {
             Spawn.localEulerAngles += new Vector3(0, 0, Random.Range(-spread, spread));
-            if(objectPool.GetPooledObject() != null){
-                clone = objectPool.GetPooledObject().GetComponent<Rigidbody2D>();
-                clone.gameObject.transform.position = Spawn.position;
-                clone.gameObject.transform.rotation = Spawn.rotation;
+            if(bullet == null)
+            {clone = ObjectPoolManager.instance.InstantiateFromPool("EnemyBullet", Spawn.position, Spawn.rotation).GetComponent<Rigidbody2D>();}
+            
+            else
+            {clone = ObjectPoolManager.instance.InstantiateFromPool(bullet, Spawn.position, Spawn.rotation).GetComponent<Rigidbody2D>();}
+            
+            clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
 
-                clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
-                clone.gameObject.SetActive(true);
-
-                //for boss
-                if(boss){
-                    clone.gameObject.GetComponent<EnemyDamage>().damage = damage_boss_field;
-                }
-
-                clone.AddForce(Spawn.up * Velocity);
-                Spawn.localEulerAngles = SpawnRot;
+            //for boss
+            if(boss){
+                clone.gameObject.GetComponent<EnemyDamage>().damage = damage_boss_field;
             }
-            else{
-                Spawn.localEulerAngles = SpawnRot;
-                break;
-            }
+
+            clone.AddForce(Spawn.up * Velocity);
+            Spawn.localEulerAngles = SpawnRot;
+            // }
+            // else{
+            //     Spawn.localEulerAngles = SpawnRot;
+            //     break;
+            // }
 
             Spawn.localEulerAngles = SpawnRot;
         }

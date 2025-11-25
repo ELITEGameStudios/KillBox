@@ -107,17 +107,8 @@ public class HelpfulAIShooterScript : MonoBehaviour
             Spawn.localEulerAngles += new Vector3(0, 0, Random.Range(-spread, spread));
             if (!misc_gun)
             {
-                if (objectPool[0].GetPooledObject() != null)
-                    clone = objectPool[0].GetPooledObject().GetComponent<Rigidbody2D>();
-                else
-                {
-                    clone = GameObject.FindWithTag("Bullet").GetComponent<Rigidbody2D>();
-                }
-                clone.gameObject.transform.position = Spawn.position;
-                clone.gameObject.transform.rotation = Spawn.rotation;
+                clone = ObjectPoolManager.instance.InstantiateFromPool(ObjectPoolManager.instance.playerBullet, Spawn.position, Spawn.rotation).GetComponent<Rigidbody2D>();
                 clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
-                clone.gameObject.SetActive(true);
-
                 clone.gameObject.GetComponent<BulletClass>().SetBullet(bulletName, bulletDamage);
                 //clone.gameObject.GetComponent<BulletClass>().SetPenetration(buffsManager);
             }

@@ -27,7 +27,7 @@ public class PlayerDamage : MonoBehaviour
     void Start()
     {
         UIcanvas = GameObject.FindWithTag("WorldCanvas");
-        objectPool = GameObject.Find("BulletPool2").GetComponent<ObjectPool>();
+        objectPool = ObjectPoolManager.GetPool("BulletHit");
         healthScript = gameObject.GetComponent<EnemyHealth>();
     }
     void Update()

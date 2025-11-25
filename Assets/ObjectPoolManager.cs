@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ObjectPoolManager : MonoBehaviour
@@ -8,10 +9,9 @@ public class ObjectPoolManager : MonoBehaviour
     public static ObjectPoolManager instance {get; private set;}
 
     [Header("Global Objects (Use if callers dont have a reference)")]
-    public GameObject tokenPrefab;
+    
     public GameObject explosionObject;
-
-
+    public GameObject playerBullet;
 
 
 
@@ -30,6 +30,21 @@ public class ObjectPoolManager : MonoBehaviour
     {
         if(instance == null){instance = this;}
         else if(instance != this){Destroy(this);}
+
+        if(objectPools == null){objectPools = new();}
+        else
+        {
+            // Not sure why i have to do this but apparently the language doesnt like common sense
+            PoolData[] array = objectPools.ToArray();
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i].pool = InitObjectPool(objectPools[i]);
+            }
+
+            // Not sure why i have to do this but apparently the language doesnt like common sense
+            objectPools = array.ToList();
+        }
     }
 
     public GameObject InstantiateFromPool(GameObject gameObject, Transform transform)
@@ -44,6 +59,17 @@ public class ObjectPoolManager : MonoBehaviour
     }
 
     public GameObject InstantiateFromPool(GameObject gameObject, Vector3 position, Quaternion rotation)
+    {
+        GameObject newObject = GetObjectFromPool(gameObject);
+
+        newObject.transform.SetParent(null);
+        newObject.transform.position = position;
+        newObject.transform.rotation = rotation;
+
+        return newObject;
+    }
+
+    public GameObject InstantiateFromPool(string gameObject, Vector3 position, Quaternion rotation)
     {
         GameObject newObject = GetObjectFromPool(gameObject);
 
@@ -75,6 +101,25 @@ public class ObjectPoolManager : MonoBehaviour
         return retrievedObject;
     }
 
+    public static GameObject GetObjectFromPool(string requestedGameobject)
+    {
+        GameObject retrievedObject;
+        
+        for (int i = 0; i < instance.objectPools.Count; i++)
+        {
+            if(instance.objectPools[i].name == requestedGameobject)
+            {
+                // Return from existing pool if pool exists
+                retrievedObject = instance.objectPools[i].pool.GetPooledObject();
+                retrievedObject.SetActive(true);
+                return retrievedObject;
+            }
+        }
+
+        // Otherwise return null. This method should only be used on pre-initialized pools since this cant create a new pool
+        return null;
+    }
+
     public static List<GameObject> GetObjectsFromPool(GameObject requestedGameobject, int amount)
     {
         for (int i = 0; i < instance.objectPools.Count; i++)
@@ -93,13 +138,40 @@ public class ObjectPoolManager : MonoBehaviour
     public PoolData CreatePool(GameObject newObject, int amountToPool = -1)
     {
         PoolData newPool;
-        newPool.pool = gameObject.AddComponent<ObjectPool>();
         newPool.instancedObject = newObject;
         newPool.amountToPool = amountToPool;
         newPool.name = gameObject.name;
+        
+        newPool.pool = gameObject.AddComponent<ObjectPool>();
+        newPool.pool.objectToPool = newObject;
+        newPool.pool.amountToPool = amountToPool;
+        newPool.pool.InitPool();
 
         objectPools.Add(newPool);
         return newPool;
+    }
+
+    public ObjectPool InitObjectPool(PoolData data)
+    {
+        ObjectPool pool = gameObject.AddComponent<ObjectPool>();
+        pool.amountToPool = data.amountToPool;
+        pool.objectToPool = data.instancedObject;
+        pool.InitPool();
+        return pool;
+    }
+
+    public static ObjectPool GetPool(string poolName) // Please only use if the pool is initialized in the unity inspector
+    {
+        for (int i = 0; i < instance.objectPools.Count; i++)
+        {
+            if(instance.objectPools[i].name == poolName)
+            {
+                // Return from existing pool if pool exists
+                return instance.objectPools[i].pool;
+            }
+        }
+        
+        return null;
     }
 
     public static bool PoolExists(string name)
