@@ -8,7 +8,7 @@ public class FixedRotator : MonoBehaviour
     public float speed;
 
     [SerializeField] private float initialSpeed, targetSpeed, timer, targetTime;
-    [SerializeField] private bool inTransition;
+    [SerializeField] private bool inTransition, parentIndependant;
 
     // Start is called before the first frame update
     void Start()
@@ -30,11 +30,21 @@ public class FixedRotator : MonoBehaviour
             }
         }
 
-        
-        gameObject.transform.localEulerAngles += new Vector3(0, 0, speed * Time.deltaTime);
+        if (!parentIndependant)
+        {
+            gameObject.transform.localEulerAngles += new Vector3(0, 0, speed * Time.deltaTime);
 
-        if(gameObject.transform.localEulerAngles.z == 360)
-            gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+            if(gameObject.transform.localEulerAngles.z == 360)
+                gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+            
+        }
+        else
+        {
+            gameObject.transform.eulerAngles += new Vector3(0, 0, speed * Time.deltaTime);
+
+            if(gameObject.transform.eulerAngles.z == 360)
+                gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+        }
 
     }
 
