@@ -9,7 +9,7 @@ public class QuadShooterMainAttack : BossStateData
     public QuadShooter quadData;
     public float fireRate => 1 -quadData.fireRateCurve.Evaluate(quadData.normalizedHealth);
     public int bullets, currentBullets;
-    public float currentFireInterval, Kp = 0.03f;
+    public float currentFireInterval, Kp = 0.1f;
     private bool inCoroutine;
 
     public QuadShooterMainAttack(QuadShooter bossBase) : base(bossBase) // need to test if this auto-calls the super constructor
@@ -28,7 +28,7 @@ public class QuadShooterMainAttack : BossStateData
         // fireRate = 
         currentFireInterval = fireRate;
         currentBullets = bullets;
-        if(quadData.guns[0].transform.parent == null)
+        if(quadData.guns[0].transform.parent == transform)
         {
             for (int i = 0; i < quadData.guns.Length; i++){
                 quadData.guns[i].transform.SetParent(quadData.mainGunPositions[i]);

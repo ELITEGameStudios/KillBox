@@ -22,7 +22,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         public ObjectPool pool;
         public GameObject instancedObject;
-        public string name;
+        public string poolName;
         public int amountToPool;
     }
 
@@ -86,7 +86,7 @@ public class ObjectPoolManager : MonoBehaviour
         
         for (int i = 0; i < instance.objectPools.Count; i++)
         {
-            if(instance.objectPools[i].name == requestedGameobject.name)
+            if(instance.objectPools[i].poolName == requestedGameobject.name)
             {
                 // Return from existing pool if pool exists
                 retrievedObject = instance.objectPools[i].pool.GetPooledObject();
@@ -107,7 +107,7 @@ public class ObjectPoolManager : MonoBehaviour
         
         for (int i = 0; i < instance.objectPools.Count; i++)
         {
-            if(instance.objectPools[i].name == requestedGameobject)
+            if(instance.objectPools[i].poolName == requestedGameobject)
             {
                 // Return from existing pool if pool exists
                 retrievedObject = instance.objectPools[i].pool.GetPooledObject();
@@ -124,7 +124,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         for (int i = 0; i < instance.objectPools.Count; i++)
         {
-            if(instance.objectPools[i].name == requestedGameobject.name)
+            if(instance.objectPools[i].poolName == requestedGameobject.name)
             {
                 // Return from existing pool if pool exists
                 return instance.objectPools[i].pool.GetPooledObjects(amount);
@@ -140,7 +140,7 @@ public class ObjectPoolManager : MonoBehaviour
         PoolData newPool;
         newPool.instancedObject = newObject;
         newPool.amountToPool = amountToPool;
-        newPool.name = gameObject.name;
+        newPool.poolName = newObject.name;
         
         newPool.pool = gameObject.AddComponent<ObjectPool>();
         newPool.pool.objectToPool = newObject;
@@ -164,7 +164,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         for (int i = 0; i < instance.objectPools.Count; i++)
         {
-            if(instance.objectPools[i].name == poolName)
+            if(instance.objectPools[i].poolName == poolName)
             {
                 // Return from existing pool if pool exists
                 return instance.objectPools[i].pool;
@@ -178,7 +178,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         for (int i = 0; i < instance.objectPools.Count; i++)
         {
-            if(instance.objectPools[i].name == name)
+            if(instance.objectPools[i].poolName == name)
             {
                 return true;
             }

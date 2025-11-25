@@ -7,10 +7,10 @@ public class QuadShooterSecondAttack : BossStateData
 {
 
     public QuadShooter quadData;
-    public float fireRate = 1f, gunDistance, Kp = 0.01f;
+    public float fireRate = 0.2f, gunDistance, Kp = 0.1f;
     public int bullets, currentBullets;
     public float currentFireInterval, maxSpread, timeActive;
-    private bool inCoroutine;
+    public float playerAngle;
 
     public Vector2[] positions;
 
@@ -18,6 +18,7 @@ public class QuadShooterSecondAttack : BossStateData
     {
         quadData = bossBase;
         this.maxSpread = maxSpread;
+        gunDistance = 2;
 
         // this.maxSpeed = ;
         bullets = 16;
@@ -46,24 +47,25 @@ public class QuadShooterSecondAttack : BossStateData
     {
 
         float spreadInterval = maxSpread/positions.Length;
-        float startPoint = -(float)positions.Length/2;
+        // float startPoint = (float)positions.Length/-2;
+        float startPoint = -45;
         
-        Vector2 playerDir = (Player.main.tf.position - transform.position).normalized;
-        float playerAngle = Vector2.SignedAngle(Vector2.up, playerDir);
+        Vector2 playerDir = ((Vector2)Player.main.tf.position - (Vector2)transform.position).normalized;
+        playerAngle = Vector2.SignedAngle(Vector2.up, playerDir);
 
         float startAngle = playerAngle - startPoint;
-
         for (int i = 0; i < positions.Length; i++)
         {
             Vector2 direction = 
                 new Vector2(
-                    Mathf.Cos((startAngle + spreadInterval * i )* Mathf.Rad2Deg),
-                    Mathf.Sin((startAngle + spreadInterval * i )* Mathf.Rad2Deg)
-                );
+                    Mathf.Cos( (startAngle + spreadInterval * i )* Mathf.Deg2Rad),
+                    Mathf.Sin( (startAngle + spreadInterval * i )* Mathf.Deg2Rad)
+                ).normalized;
+
             positions[i] = (Vector2)transform.position + direction * gunDistance;
 
             quadData.guns[i].transform.position = Vector2.Lerp(quadData.guns[i].transform.position, positions[i], Kp);
-            quadData.guns[i].transform.rotation = Quaternion.Slerp(quadData.guns[i].transform.rotation, Quaternion.LookRotation(direction, Vector3.forward), Kp);
+            quadData.guns[i].transform.rotation = Quaternion.Slerp(quadData.guns[i].transform.rotation, Quaternion.LookRotation(Vector3.forward, direction), Kp);
         }
 
 
@@ -74,34 +76,21 @@ public class QuadShooterSecondAttack : BossStateData
 
         if(timeActive > 1) FiringUpdate();
 
-        foreach (QuadShooter.GunObject source in quadData.guns){
-            source.transform.LookAt(Player.main.tf);
-            Vector2 target = (Player.main.tf.position - source.transform.position).normalized;
-            source.transform.rotation = Quaternion.LookRotation(Vector3.forward, target);
-        }
-
         timeActive += Time.deltaTime;
     }
     
     void FiringUpdate() {
-        if (currentFireInterval <= 0 && !inCoroutine){
-            quadData.StartCoroutine(FireCoroutine());
-            currentFireInterval = fireRate;
-            inCoroutine = true;
+        if (currentFireInterval <= 0){
             
+            foreach (QuadShooter.GunObject source in quadData.guns){
+                source.shooterScript.Shoot();
+            }
+            
+            currentBullets--;
+            currentFireInterval = fireRate;
             return;
         }
         currentFireInterval -= Time.deltaTime;
     }
 
-    IEnumerator FireCoroutine(){
-        foreach (QuadShooter.GunObject source in quadData.guns)
-        {
-            source.shooterScript.Shoot();
-            Debug.Log("Yeieileding");
-            yield return new WaitForSeconds(fireRate/4);
-        }
-        currentBullets--;
-        inCoroutine = false;
-    }
 }

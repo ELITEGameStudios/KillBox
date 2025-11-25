@@ -48,7 +48,7 @@ public class QuadShooter : BossBase
         waitState = new QuadShooterWait(this, 3.5f, 4);
         secondState = new QuadShooterSecondAttack(this, 120);
 
-        mainPhase.statesInPhase = new BossStateData[] { waitState, mainAttack };
+        mainPhase.statesInPhase = new BossStateData[] { secondState, waitState, mainAttack };
         mainPhase.minHealth = 0.5f;
 
         secondPhase.statesInPhase = new BossStateData[] { secondState, mainAttack };
