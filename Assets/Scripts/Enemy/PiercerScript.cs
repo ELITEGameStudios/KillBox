@@ -6,12 +6,11 @@ using UnityEngine;
 public class PiercerScript : MonoBehaviour
 {
 
-    [SerializeField] private GameObject beam_indicator_prefab;
+    [SerializeField] private GameObject beam_indicator_prefab, piercerBullet;
     [SerializeField] private Rigidbody2D bullet;
     [SerializeField] private Transform spawn;
     [SerializeField] private float spread, range, fireRate, poolIndex, waitTime;
     [SerializeField] private int bulletsPerShot, velocity, warningFlashes, shots, currentState;
-    [SerializeField] private ObjectPool objectPool;
     [SerializeField] private Vector3 spawnRot;
     [SerializeField] private bool has_audio;
     [SerializeField] private AudioSource audio;
@@ -24,7 +23,7 @@ public class PiercerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        objectPool = GameObject.Find("BulletPool"+poolIndex.ToString()).GetComponent<ObjectPool>();
+        // objectPool = GameObject.Find("BulletPool"+poolIndex.ToString()).GetComponent<ObjectPool>();
         waitTime = Random.Range(3, 6);
         CanShoot = true;
         TransitionState(0);
@@ -59,22 +58,16 @@ public class PiercerScript : MonoBehaviour
         {
             spawn.localEulerAngles += new Vector3(0, 0, Random.Range(-spread, spread));
             
-            if(objectPool.GetPooledObject() != null){
-                bullet = objectPool.GetPooledObject().GetComponent<Rigidbody2D>();
-                bullet.gameObject.transform.position = spawn.position;
-                bullet.gameObject.transform.rotation = spawn.rotation;
-
-                bullet.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
-                bullet.gameObject.SetActive(true);
+            bullet = ObjectPoolManager.instance.InstantiateFromPool(piercerBullet, spawn.position, spawn.rotation).GetComponent<Rigidbody2D>();
+            bullet.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
+            bullet.AddForce(spawn.up * velocity);
+            spawn.localEulerAngles = spawnRot;
 
 
-                bullet.AddForce(spawn.up * velocity);
-                spawn.localEulerAngles = spawnRot;
-            }
-            else{
-                spawn.localEulerAngles = spawnRot;
-                break;
-            }
+            // else{
+            //     spawn.localEulerAngles = spawnRot;
+            //     break;
+            // }
 
             spawn.localEulerAngles = spawnRot;
         }

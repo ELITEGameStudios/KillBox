@@ -37,7 +37,7 @@ public class KunaiScript : MonoBehaviour
     void Awake()
     {
         player = GameObject.FindWithTag("Player");
-        objectPool = GameObject.Find("KunaiExpPool").GetComponent<ObjectPool>();
+        objectPool = ObjectPoolManager.GetPool("KunaiExpPool");
     }
 
     void OnEnable(){

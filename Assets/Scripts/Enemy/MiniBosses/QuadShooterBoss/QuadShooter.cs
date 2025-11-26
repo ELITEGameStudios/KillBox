@@ -14,8 +14,9 @@ public class QuadShooter : BossBase
     public GunObject[] guns;
 
     [Header("State Info")]
-    public Phase mainPhase;
+    public Phase mainPhase, secondPhase;
     public QuadShooterMainAttack mainAttack;
+    public QuadShooterSecondAttack secondState;
     public QuadShooterWait waitState;
 
     [Header("Spawner prefabs")]
@@ -45,11 +46,15 @@ public class QuadShooter : BossBase
 
         mainAttack = new QuadShooterMainAttack(this);
         waitState = new QuadShooterWait(this, 3.5f, 4);
+        secondState = new QuadShooterSecondAttack(this, 120);
 
-        mainPhase.statesInPhase = new BossStateData[] { mainAttack, waitState };
-        mainPhase.minHealth = 0f;
+        mainPhase.statesInPhase = new BossStateData[] { secondState, waitState, mainAttack };
+        mainPhase.minHealth = 0.5f;
 
-        phases = new Phase[1] { mainPhase };
+        secondPhase.statesInPhase = new BossStateData[] { secondState, mainAttack };
+        secondPhase.minHealth = 0f;
+
+        phases = new Phase[2] { mainPhase, secondPhase };
         // movement_script.enabled = false;
     }
 

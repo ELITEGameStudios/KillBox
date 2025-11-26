@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class BulletDestroy : MonoBehaviour
 {
-    [SerializeField] private GameObject Bullet, particle, hit_particle;
-    public PoolManager poolManager;
+    [SerializeField] private GameObject particle, hit_particle;
     public GameManager gameManager;
-    public int PoolIndex;
     private float current_range;
     public float rangeForFloat, range;
     private IEnumerator RangeCall;
@@ -22,11 +20,11 @@ public class BulletDestroy : MonoBehaviour
 
 
         gameManager = GameObject.Find("Manager").GetComponent<GameManager>();
-        poolManager = GameObject.Find("Manager").GetComponent<PoolManager>();
-        if(PoolIndex == 0)
-            objectPool = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
-        else
-            objectPool = GameObject.Find("BulletPool"+PoolIndex.ToString()).GetComponent<ObjectPool>();
+        // poolManager = GameObject.Find("Manager").GetComponent<PoolManager>();
+        // if(PoolIndex == 0)
+        //     objectPool = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
+        // else
+        //     objectPool = GameObject.Find("BulletPool"+PoolIndex.ToString()).GetComponent<ObjectPool>();
         RangeCall = Range();
         //StartCoroutine(RangeCall);
     }

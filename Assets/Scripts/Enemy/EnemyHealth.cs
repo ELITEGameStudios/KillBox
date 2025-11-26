@@ -9,7 +9,6 @@ public class EnemyHealth : MonoBehaviour
     public int maxHealth, CurrentHealth, a;
     public GameManager manager;
     public GameObject guaranteedDrop;
-    public ObjectPool[] objectPool;
     public Color explosionColor;
     public AudioSource audio;
     public AudioClip death, hit;
@@ -38,8 +37,6 @@ public class EnemyHealth : MonoBehaviour
     void Start()
     {
         CurrentHealth = maxHealth;
-        objectPool[0] = GameObject.Find("BulletPool5").GetComponent<ObjectPool>();
-        objectPool[1] = GameObject.Find("BulletPool6").GetComponent<ObjectPool>();
         audio = gameObject.GetComponent<AudioSource>();
     }
 
@@ -84,28 +81,25 @@ public class EnemyHealth : MonoBehaviour
                 if (!BossRoundManager.main.isBossRound && to_player)
                 {
                     // Instantiates a token drop
-                    if (ObjectPoolManager.instance.tokenPrefab != null)
+                    
+                    GameObject token = ObjectPoolManager.GetObjectFromPool("Token");
+                    // token.transform.SetParent(null);
+                    token.GetComponent<sine_movement>().ROOT = transform.position;
+                    token.transform.position = transform.position;
+                    // token.gameObject.SetActive(true);
+
+
+                    Transform grid = GameObject.Find("Grid").transform;
+
+                    for (int i = 0; i < grid.childCount; i++)
                     {
-                        // GameObject tokenClone;
-                        GameObject token = ObjectPoolManager.GetObjectFromPool(ObjectPoolManager.instance.tokenPrefab);
-                        token.transform.SetParent(null);
-                        token.GetComponent<sine_movement>().ROOT = transform.position;
-                        token.transform.position = transform.position;
-                        token.gameObject.SetActive(true);
-
-
-                        Transform grid = GameObject.Find("Grid").transform;
-
-                        for (int i = 0; i < grid.childCount; i++)
+                        if (grid.GetChild(i).gameObject.activeInHierarchy)
                         {
-                            if (grid.GetChild(i).gameObject.activeInHierarchy)
-                            {
-                                token.transform.SetParent(grid.GetChild(i));
-                                token.transform.localEulerAngles = new Vector3(0, 0, 0);
-                                token.transform.position = transform.position;
-                                token.transform.rotation = transform.rotation;
-                                break;
-                            }
+                            token.transform.SetParent(grid.GetChild(i));
+                            token.transform.localEulerAngles = new Vector3(0, 0, 0);
+                            token.transform.position = transform.position;
+                            token.transform.rotation = transform.rotation;
+                            break;
                         }
                     }
                 }
@@ -114,7 +108,7 @@ public class EnemyHealth : MonoBehaviour
 
         try
         {
-            GameObject explosionEffect = ObjectPoolManager.instance.InstantiateFromPool(ObjectPoolManager.instance.explosionObject, transform.position, transform.rotation);
+            GameObject explosionEffect = ObjectPoolManager.instance.InstantiateFromPool("Explosion", transform.position, transform.rotation);
             explosionEffect.GetComponent<ParticleSystem>().startColor = explosionColor;
             explosionEffect.GetComponent<ParticleSystem>().Play();
             explosionEffect.GetComponent<BulletDestroy>().RestartTimer();

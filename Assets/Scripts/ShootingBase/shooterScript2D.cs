@@ -9,18 +9,17 @@ public class shooterScript2D : MonoBehaviour
 
     public float cooldown_units, burst_quantity;
     public string bulletName;
-    public GameObject bullet, ShootGraphic, GraphicClone;
-    public Transform playerTf, Spawn;
+    public GameObject GraphicClone;
+    public BulletClass bullet;
+    public Transform Spawn;
     public float Velocity, spread, range, burst_interval, recoilForce;
-    public Rigidbody2D bulletRb, clone;
+    public Rigidbody2D clone;
     public Vector3 SpawnRot;
     public bool shootInputIsPressed, is_dual, misc_gun, uniform_spread, is_in_ui;
-    public int bulletsPerShot, poolIndex, graphicPoolIndex, penetration;
+    public int bulletsPerShot, penetration;
     public float FR;
-    public Camera cam;
     public Joystick shootJoystick;
     public AudioSource audio;
-    public ObjectPool[] objectPool;
 
     public Color bullet_color, particle_color, default_color;
 
@@ -74,8 +73,8 @@ public class shooterScript2D : MonoBehaviour
     {
         // CanShoot = true;
         SpawnRot = Spawn.localEulerAngles;
-        objectPool[0] = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
-        objectPool[1] = GameObject.Find("BulletPool1").GetComponent<ObjectPool>();
+        // objectPool[0] = ObjectPoolManager.GetPool("BulletPool");
+        // objectPool[1] = ObjectPoolManager.GetPool("Flash");
         buffsManager = GameObject.FindWithTag("Player").GetComponent<BuffsManager>();
         manager = GameObject.Find("Manager").GetComponent<GameManager>();
 
@@ -200,43 +199,25 @@ public class shooterScript2D : MonoBehaviour
         // For each bullet operation
         for (int i = 0; i < bulletsPerShot; i++)
         {
-            if (!uniform_spread)
-            {
-                Spawn.localEulerAngles += new Vector3(0, 0, Random.Range(-spread, spread));
-            }
-            else
-            {
-                Spawn.localEulerAngles += new Vector3(0, 0, uniform_directions[i]);
-            }
+            if (!uniform_spread) { Spawn.localEulerAngles += new Vector3(0, 0, Random.Range(-spread, spread)); }
+            else { Spawn.localEulerAngles += new Vector3(0, 0, uniform_directions[i]); }
 
 
             if (!misc_gun)
             {
-                clone = objectPool[0].GetPooledObject().GetComponent<Rigidbody2D>();
-
-                clone.gameObject.transform.position = Spawn.position;
-                clone.gameObject.transform.rotation = Spawn.rotation;
-                clone.gameObject.SetActive(true);
+                clone = ObjectPoolManager.instance.InstantiateFromPool(bullet == null ? ObjectPoolManager.instance.playerBullet : bullet.gameObject, Spawn.position, Spawn.rotation).GetComponent<Rigidbody2D>();
                 clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
-
-
                 clone.gameObject.GetComponent<BulletClass>().SetBullet(bulletName, bulletDamage, penetration_input: penetration, _range: range, knockbackForce: knockbackForce, knockbackTime: knockbackTime, startingVel: weapon.velocity);
             }
             else
             {
-                GameObject misc_bullet = objectPool[0].GetPooledObject();
+                clone = ObjectPoolManager.instance.InstantiateFromPool(bullet == null ? ObjectPoolManager.instance.playerBullet : bullet.gameObject, Spawn.position, Spawn.rotation).GetComponent<Rigidbody2D>();
+                clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
+                clone.gameObject.GetComponent<BulletClass>().SetBullet(bulletName, bulletDamage, penetration_input: penetration, _range: range, knockbackForce: knockbackForce, knockbackTime: knockbackTime, startingVel: weapon.velocity);
 
-                clone = misc_bullet.GetComponent<Rigidbody2D>();
-                clone.gameObject.transform.position = Spawn.position;
-                clone.gameObject.transform.rotation = Spawn.rotation;
-                clone.gameObject.SetActive(true);
-
-                if (clone.gameObject.GetComponent<BulletDestroy>() != null)
-                {
+                if (clone.gameObject.GetComponent<BulletDestroy>() != null){
                     clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
                 }
-
-                clone.gameObject.transform.SetParent(null);
             }
 
             //setting color
@@ -288,18 +269,13 @@ public class shooterScript2D : MonoBehaviour
             new CustomForce(-Spawn.up.normalized * recoilForce, time: recoilTime)
         );
         
-        //GraphicClone = Instantiate(ShootGraphic, Spawn.position, Spawn.rotation);
-        if(objectPool[1].GetPooledObject() != null){
-            GraphicClone = objectPool[1].GetPooledObject();
-            GraphicClone.gameObject.transform.position = Spawn.position;
-            GraphicClone.gameObject.transform.rotation = Spawn.rotation;
-            GraphicClone.gameObject.GetComponent<BulletDestroy>().RestartTimer();
-            GraphicClone.gameObject.SetActive(true);
-            
-            ParticleSystem flash_particle = GraphicClone.GetComponent<ParticleSystem>();
-            flash_particle.startColor = particle_color;
-            flash_particle.Play();
-        }
+        // do muzzle flash particle effect
+        GraphicClone = ObjectPoolManager.instance.InstantiateFromPool("Flash", Spawn.position, Spawn.rotation);
+        GraphicClone.gameObject.GetComponent<BulletDestroy>().RestartTimer();
+        
+        ParticleSystem flash_particle = GraphicClone.GetComponent<ParticleSystem>();
+        flash_particle.startColor = particle_color;
+        flash_particle.Play();
         
         // CanShoot = false;
         burst_rounds++;
@@ -345,18 +321,18 @@ public class shooterScript2D : MonoBehaviour
         knockbackForce = weapon.knockbackForce;
         knockbackTime = weapon.knockbackTime;
 
-        if (weapon.pool != 0)
-        {
-            objectPool[0] = GameObject.Find("BulletPool" + weapon.pool.ToString()).GetComponent<ObjectPool>();
-        }
-        else if (weapon.is_support)
-        {
-            objectPool[0] = GameObject.Find("BulletPool" + 12.ToString()).GetComponent<ObjectPool>();
-        }
-        else
-        {
-            objectPool[0] = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
-        }
+        // if (weapon.pool != 0)
+        // {
+        //     objectPool[0] = GameObject.Find("BulletPool" + weapon.pool.ToString()).GetComponent<ObjectPool>();
+        // }
+        // else if (weapon.is_support)
+        // {
+        //     objectPool[0] = GameObject.Find("BulletPool" + 12.ToString()).GetComponent<ObjectPool>();
+        // }
+        // else
+        // {
+        //     objectPool[0] = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
+        // }
 
         misc_gun = weapon.misc;
 

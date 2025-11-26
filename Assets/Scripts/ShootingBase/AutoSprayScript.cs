@@ -10,7 +10,7 @@ public class AutoSprayScript : MonoBehaviour
     public GameObject bullet, GraphicClone;
     public Transform Spawn;
     public float Velocity, spread, range;
-    public Rigidbody2D bulletRb, clone;
+    public Rigidbody2D bulletRb, bulletClone;
     public Vector3 SpawnRot;
     public bool CanShoot, FullAuto, FAS, is_dual, misc_gun, display_flash;
     public int BulletsPerShot, poolIndex, graphicPoolIndex;
@@ -26,8 +26,8 @@ public class AutoSprayScript : MonoBehaviour
     {
         CanShoot = true;
         SpawnRot = Spawn.localEulerAngles;
-        objectPool[0] = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
-        objectPool[1] = GameObject.Find("BulletPool1").GetComponent<ObjectPool>();
+        objectPool[0] = ObjectPoolManager.GetPool("BulletPool");
+        objectPool[1] = ObjectPoolManager.GetPool("Flash");
         //poolManager = GameObject.Find("Manager").GetComponent<PoolManager>();
     }
     // Update is called once per frame
@@ -45,30 +45,31 @@ public class AutoSprayScript : MonoBehaviour
         {
             Spawn.localEulerAngles += new Vector3(0, 0, Random.Range(-spread, spread));
             if(!misc_gun){
-                if(objectPool[0].GetPooledObject() != null)
-                    clone = objectPool[0].GetPooledObject().GetComponent<Rigidbody2D>();
+                GameObject cloneObj = objectPool[0].GetPooledObject();
+                if(cloneObj != null)
+                    bulletClone = cloneObj.GetComponent<Rigidbody2D>();
                 else{
-                    clone = GameObject.FindWithTag("Bullet").GetComponent<Rigidbody2D>();
+                    bulletClone = GameObject.FindWithTag("Bullet").GetComponent<Rigidbody2D>();
                 }
-                clone.gameObject.transform.position = Spawn.position;
-                clone.gameObject.transform.rotation = Spawn.rotation;
-                clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
-                clone.gameObject.SetActive(true);
+                bulletClone.gameObject.transform.position = Spawn.position;
+                bulletClone.gameObject.transform.rotation = Spawn.rotation;
+                bulletClone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
+                bulletClone.gameObject.SetActive(true);
 
-                clone.gameObject.GetComponent<BulletClass>().SetDmg(bulletDamage);
-                clone.gameObject.GetComponent<BulletClass>().SetName(bulletName);
+                bulletClone.gameObject.GetComponent<BulletClass>().SetDmg(bulletDamage);
+                bulletClone.gameObject.GetComponent<BulletClass>().SetName(bulletName);
             }
             else
             {
                 GameObject misc_bullet = Instantiate(bullet, Spawn.transform);
-                clone = misc_bullet.GetComponent<Rigidbody2D>();
-                clone.gameObject.transform.position = Spawn.position;
-                clone.gameObject.transform.rotation = Spawn.rotation;
-                clone.gameObject.transform.SetParent(null);
+                bulletClone = misc_bullet.GetComponent<Rigidbody2D>();
+                bulletClone.gameObject.transform.position = Spawn.position;
+                bulletClone.gameObject.transform.rotation = Spawn.rotation;
+                bulletClone.gameObject.transform.SetParent(null);
             }
 
             //setting color
-            GameObject clone_sprite = clone.gameObject.transform.GetChild(0).gameObject;
+            GameObject clone_sprite = bulletClone.gameObject.transform.GetChild(0).gameObject;
             ParticleSystem clone_particle = clone_sprite.GetComponent<ParticleSystem>();
             var trails = clone_particle.trails;
 
@@ -78,7 +79,7 @@ public class AutoSprayScript : MonoBehaviour
             trails.colorOverTrail = particle_color;
 
             //AddingForces
-            clone.AddForce(Spawn.up * Velocity);
+            bulletClone.AddForce(Spawn.up * Velocity);
             Spawn.localEulerAngles = SpawnRot;
             audio.pitch = Random.Range(0.9f, 1.1f);
             audio.Play();

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class ObjectPool : MonoBehaviour
 {
     [SerializeField] private List<GameObject> pooledObjects;
@@ -10,11 +11,11 @@ public class ObjectPool : MonoBehaviour
 
     void Awake()
     {
-        
+        if(pooledObjects == null) pooledObjects = new();
     }
  
     void Start(){
-        pooledObjects = new List<GameObject>();
+        // pooledObjects = new List<GameObject>();
         //GameObject tmp;
         //for(int i = 0; i < amountToPool; i++){
         //    tmp = Instantiate(objectToPool);
@@ -22,12 +23,18 @@ public class ObjectPool : MonoBehaviour
         //    pooledObjects.Add(tmp);
         //}
     }
+    public void InitPool()
+    {
+        pooledObjects = new();
+    }
+    
     public void ClearPool(){
         pooledObjects = new List<GameObject>();
     }
 
     public GameObject GetPooledObject()
     {
+        ClearMissingOrNull();
 
         //Check if one is found
         for(int i = 0; i < pooledObjects.Count; i++){
@@ -59,9 +66,24 @@ public class ObjectPool : MonoBehaviour
             return tmp;
     }
 
-    public List<GameObject> AllPooledObjects(){return pooledObjects;}
+    public void ClearMissingOrNull()
+    {
+        for (int i = pooledObjects.Count-1; i >= 0; i--){
+            try{
+                if(pooledObjects[i] != null){continue;}
+                pooledObjects.RemoveAt(i); // Object was null
+            }
+            catch (MissingReferenceException){
+                pooledObjects.RemoveAt(i); // Object was missing
+            }
+        }
+    }
+
+    public List<GameObject> AllPooledObjects(){ClearMissingOrNull(); return pooledObjects;}
     public List<GameObject> GetPooledObjects(int count = 1)
     {
+        ClearMissingOrNull();
+
         bool found = false;
 
         List<GameObject> result = new List<GameObject>();
