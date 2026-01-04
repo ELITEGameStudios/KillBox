@@ -31,7 +31,7 @@ public class BossChallengeGameManager : GameManager
         // FadeAnimator.Play("FadeAnim");
         // enemyList.OnStart();
         SetNewMap(GetMapByID(0));
-        BossRoundManager.main.SetBossRound(true);
+        // BossRoundManager.main.SetBossRound(true);
         StartCoroutine(StartNumerator());
     }
 

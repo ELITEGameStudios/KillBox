@@ -82,7 +82,7 @@ public class LvlStarter : MonoBehaviour
         }
         else
         {
-            MainAudioSystem.main.TriggerBossMusic(KillBox.currentGame.gamemode == Game.Gamemode.MAIN ? BossRoundManager.main.bossRoundTier : (int)(GameManager.main as BossChallengeGameManager).currentBoss);
+            MainAudioSystem.main.TriggerBossMusic(KillBox.currentGame.gamemode == Game.Gamemode.MAIN ? (int)BossRoundManager.main.bossType : (int)(GameManager.main as BossChallengeGameManager).currentBoss);
             VolumeControl.main.SetSilentSnapshot(false, 0);
             BossRoomSpawnSystem.main.StartSpawnSequence();
             KillboxEventSystem.TriggerBossRoundStartEvent();

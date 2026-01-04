@@ -10,9 +10,6 @@ public class VolumeControl : MonoBehaviour
     public float music_value, sfx_value;
 
     [SerializeField]
-    private PlayerHealth p_health;
-
-    [SerializeField]
     private AudioMixerSnapshot[] snapshots;
 
     [SerializeField] private AudioMixer m_mixer;
@@ -21,7 +18,7 @@ public class VolumeControl : MonoBehaviour
     private int active_snapshot = 0;
 
     [SerializeField]
-    private float time = 1, threshold = 0.35f, normalized_health, c_health, m_health;
+    private float time = 1, threshold = 0.35f, normalized_health, currentHp, maxHp;
 
     public static VolumeControl main {get; private set;}
 
@@ -63,12 +60,12 @@ public class VolumeControl : MonoBehaviour
         music_value = VolumeSlider.value;
         sfx_value = SFXSlider.value;
 
-        if(p_health != null && active_snapshot != 2){
+        if(Player.main.health != null && active_snapshot != 2){
 
-            c_health = p_health.CurrentHealth;
-            m_health = p_health.GetMaxHealth();
+            currentHp = Player.main.health.CurrentHealth;
+            maxHp = Player.main.health.GetMaxHealth();
 
-            normalized_health = c_health / m_health;
+            normalized_health = currentHp / maxHp;
 
             //if(active_snapshot )
             // Will implement snapshot code for resting action (pre round);

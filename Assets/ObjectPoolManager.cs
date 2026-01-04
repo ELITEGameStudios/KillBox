@@ -135,6 +135,21 @@ public class ObjectPoolManager : MonoBehaviour
         return instance.CreatePool(requestedGameobject).pool.GetPooledObjects(amount);
     }
 
+    public static List<GameObject> GetObjectsFromPool(string requestedName, int amount)
+    {
+        for (int i = 0; i < instance.objectPools.Count; i++)
+        {
+            if(instance.objectPools[i].poolName == requestedName)
+            {
+                // Return from existing pool if pool exists
+                return instance.objectPools[i].pool.GetPooledObjects(amount);
+            }
+        }
+
+        // Otherwise return null. This method should only be used on pre-initialized pools since this cant create a new pool
+        return null;
+    }
+
     public PoolData CreatePool(GameObject newObject, int amountToPool = -1)
     {
         PoolData newPool;

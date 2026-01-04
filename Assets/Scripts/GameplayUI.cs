@@ -9,10 +9,12 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private Text[] scorekeepers;
     [SerializeField] private Text[] roundKeepers, pbKeepers;
     [SerializeField] private Text enemiesLeftText;
+    [SerializeField] private Text phaseText;
     public Text GetEnemiesLeftText(){return enemiesLeftText;}
+    public void SetPhaseText(int phase = 0){ phaseText.text = "PHASE  " + (phase == 0 ? GameManager.main.GetPhase().ToString() : phase.ToString()); }
 
     [Header("Health")]
-    [SerializeField] private Text healthText;
+    [SerializeField] private Text healthText, shieldText;
     [SerializeField] private Slider healthSlider;
     [SerializeField] private Animator healthAnimator;
     public Slider GetHealthSlider(){return healthSlider;}
@@ -50,11 +52,13 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private GameObject[] weapon_ui_overlays;
     [SerializeField] private Animator primaryAnimator;
     [SerializeField] private Animator secondaryAnimator;
+    [SerializeField] private Animator dualAnimator;
 
     public Button GetPrimaryWeaponButton(){return primaryWeaponButton;}
     public Button GetBackupWeaponButton(){return backupWeaponButton;}
     public Animator GetPrimaryAnimator(){return primaryAnimator;}
     public Animator GetSecondaryAnimator(){return secondaryAnimator;}
+    public Animator GetDualAnimator(){return dualAnimator;}
     
     [Header("Dash indicator")]
     // [SerializeField] private Text dashTimerText;
@@ -85,6 +89,8 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private UpgradesManager upgradesManager;
     [SerializeField] private InventoryUIManager inventoryUIManager;
     [SerializeField] private Text pauseMenuShortcutSignifier;
+    [SerializeField] private SpecialUpgradeButton[] specialUpgradeDisplays;
+    public SpecialUpgradeButton[] GetSpecialUpgradeButtons() { return specialUpgradeDisplays; }
     public bool anyShopMenuOpen{  get {
         return upgradesManager.GetBackground().gameObject.activeInHierarchy ||
                inventoryUIManager.GetBackground().gameObject.activeInHierarchy; } }
@@ -107,11 +113,14 @@ public class GameplayUI : MonoBehaviour
                 SetAllText(roundKeepers, KillBox.currentGame.round.ToString());
                 SetAllText(scorekeepers, GameManager.main.ScoreCount.ToString());
                 SetAllText(pbKeepers, KillBox.main.PBInt.ToString());
+                SetPhaseText();
 
                 if (Player.main.health != null)
                 {
                     healthSlider.value = Player.main.health.CurrentHealth;
                     healthText.text = Player.main.health.CurrentHealth.ToString();
+                    shieldText.text = "| + " + Player.main.health.currentShieldHP.ToString();
+                    healthAnimator.SetBool("Shield", Player.main.health.hasShield && Player.main.health.currentShieldHP > 0);
                 }
 
                 enemiesLeftText.text = EnemyCounter.main.enemiesInScene.ToString();
@@ -149,9 +158,11 @@ public class GameplayUI : MonoBehaviour
 
         primaryAnimator.SetBool("Active", handler.current_is_primary);
         secondaryAnimator.SetBool("Active", !handler.current_is_primary);
+        dualAnimator.SetBool("Active", handler.owns_dual);
 
         primaryAnimator.GetComponent<InventoryUIElement>().EquipDisplay();
         secondaryAnimator.GetComponent<InventoryUIElement>().EquipDisplay();
+        dualAnimator.GetComponent<InventoryUIElement>().EquipDisplay();
 
         for (int i = 0; i < InventoryUIManager.Instance.main_buttons.Count; i++)
         {

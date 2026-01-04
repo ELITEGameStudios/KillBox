@@ -18,8 +18,6 @@ public class PolaroidScript : MonoBehaviour
     [SerializeField]
     private int beams_count;
 
-    private ObjectPool pool;
-
     [SerializeField]
     private AIPath path;
 
@@ -38,13 +36,12 @@ public class PolaroidScript : MonoBehaviour
         follow_time /= 100;
 
         transform.localEulerAngles = new Vector3(0, 0, 0);
-        
-        pool = GameObject.Find("polaroid_beam_pool").GetComponent<ObjectPool>();
 
 
         beam_objects = new List<GameObject>();
 
         //List<GameObject> objects_to_add = pool.GetPooledObjects(4);
+        ObjectPoolManager.GetObjectsFromPool("PolaroidBeam", 4);
 
         for (int i = 0; i < beams_count; i++)
         {
@@ -53,7 +50,6 @@ public class PolaroidScript : MonoBehaviour
 
         foreach (GameObject beam in beam_objects)
         {
-            beam.SetActive(true);
             beam.transform.SetParent(transform);
             beam.transform.localPosition = Vector3.zero;
             beam.GetComponent<PolaroidBeamObject>().BeginSequence(beam_width, spin_time);

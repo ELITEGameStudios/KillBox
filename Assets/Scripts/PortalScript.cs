@@ -43,11 +43,20 @@ public class PortalScript : MonoBehaviour
     public static PortalScript main {get; private set;}
     public BossType? boss = null;
     public int Mode { get => _mode; private set => _mode = value; }
+    public PortalType portalType;
+    public BossType portalOptionalBossType;
+
+    public enum PortalType // Assign a boss in BossType? boss if this is a bosstrial. otherwise set a custom map (still in the works)
+    {
+        MAIN,
+        BOSSTRIAL,
+        CUSTOM
+    }
 
 
     void OnEnable()
     {
-        if (Mode == 3)
+        if (Mode == 3 && main == this)
         {
             BossRoundCounterUI.main.UpdateDisplay(true);
         }
@@ -69,10 +78,15 @@ public class PortalScript : MonoBehaviour
 
     void Awake(){
         if(main == null){
-            main = this;
+            if(portalType == PortalType.MAIN) {main = this;}
         }
-        else{
-            Destroy(this);
+        else if(main != this){
+            SetMode(1);
+            if(portalType == PortalType.BOSSTRIAL)
+            {
+                boss = portalOptionalBossType;
+            }
+            // Destroy(this);
         }
     }
 
@@ -91,14 +105,17 @@ public class PortalScript : MonoBehaviour
         if (dist < 0.5 && portalIsUsable)
         { NextLvl(); }
 
-        if(BossRoundManager.main.timeUntilNextBoss == 1 || KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE){
-            
-            if(Mode != 3){
-                SetMode(3);
+        if(main == this)
+        {
+            if(BossRoundManager.main.timeUntilNextBoss == 1 || KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE){
+                
+                if(Mode != 3){
+                    SetMode(3);
+                }
             }
-        }
-        else if(Mode == 3){
-            SetMode(0);
+            else if(Mode == 3){
+                SetMode(0);
+            }
         }
 
         //Debug.Log(Maps.Count);
@@ -113,6 +130,7 @@ public class PortalScript : MonoBehaviour
         Player.main.Dissapear();
         Player.main.movement.SetCanMove(false);
         LvlStarter.main.DisableInGameButtons();
+        // PulseEffectManager.instance.AddEffect(transform.position, expandRate: 0.5f, strength:0.03f);
     }
 
     public void SetMode(int mode, bool open = true, BossType? bossType = null){
@@ -132,19 +150,28 @@ public class PortalScript : MonoBehaviour
         {
             portalAnim.Play("PortalAnim");
         }
+
+        if(mode == 3)
+        {
+            if(BossRoundManager.main.GetNextBossRoundEntry() != null)
+            {
+                boss = ((BossRoundEntry)BossRoundManager.main.GetNextBossRoundEntry()).bossType;
+            }
+            else
+            {
+                // Something Must be done here, only happens when the player has passed all set boss rounds OR in boss challenge
+            }
+            
+            PulseEffectManager.instance.AddEffect(transform.position, expandRate: 0.25f, strength:-0.025f);
+        }
     }
 
     void InitNewRound(int next_map = -1){
         switch (Mode)
         {
             case 0: { GameManager.main.InitNewRound(next_map); break; }
-            case 1: { GameManager.main.InitBossRound(boss); break; }   
-            case 3:
-                {
-
-                    GameManager.main.InitBossRound();
-                    break;
-                }   
+            case 1: { GameManager.main.InitBossRound((BossType)boss); break; }   
+            case 3: { GameManager.main.InitBossRound((BossType)boss); break; }   
             
         }
     }
@@ -184,5 +211,6 @@ public class PortalScript : MonoBehaviour
         loadingScene = false;
         Player.main.Appear();
         Player.main.movement.SetCanMove(true);
+        
     }
 }

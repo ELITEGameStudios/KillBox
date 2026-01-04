@@ -117,6 +117,79 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         }
     }
 
+    public bool PurchasableCheck()
+    {
+        if(target_item == null){return false;}
+        purchaseCostDisplay.text = target_item.price.ToString();
+
+        // Unlocked the appropriate arsenal upgrade
+        switch (target_item.tier)
+        {
+            // Tier 1 weapons
+            case 0:
+                break;
+            case 1: // Optional, allows or disallows blue weapons pre-shard
+                break;
+
+            // Golden weapons
+            case 4:
+                if(Player.main.specialUpgradeEnum == UpgradesList.SpecialUpgradeEnum.GOLDEN){break;}
+
+                // costsText.text = "?";
+                purchase_display.text = Player.main.specialUpgradeEnum == UpgradesList.SpecialUpgradeEnum.NONE ? "Defeat MIDAS to purchase this weapon..." : "You chose your path...";    
+                costsText.text = target_item.price.ToString();
+                costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
+                return false;
+
+            // Other post-shard weapons
+            default:
+                if (Player.main.defeatedBossesList.Contains(BossRoundManager.BossType.SHARD))
+                { break; }
+                
+                // costsText.text = "?";
+                purchase_display.text = "Defeat SHARD to purchase this weapon...";
+                costsText.text = target_item.price.ToString();
+                costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
+
+                return false;
+                
+        }
+
+        // Unpurchasable due to money
+
+        if(!target_item.Compare(GameManager.main.ScoreCount)){
+            
+            purchase_display.text = "You Don't Have Enough Tokens For " + target_item.name;
+            if(target_item.price == -1){ costsText.text = "?"; purchaseCostDisplay.text = "?";}
+            else{ costsText.text = target_item.price.ToString(); }
+            
+            costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
+
+            if(target_item.non_purchase_desc != "Unpurchasable"){
+                purchase_display.text = target_item.non_purchase_desc;
+            }
+
+            return false;
+        }
+
+        // Purchasable
+
+        // Keybind displays
+        if(DetectInputDevice.main.isKBM) {
+            purchase_display.text = "Press " + CustomKeybinds.main.Interact.ToString() + " to Purchase "+ target_item.name;
+        }
+        else if(DetectInputDevice.main.isController) {
+            purchase_display.text = "Press Y to Purchase "+ target_item.name;
+        }
+
+        // Main displays
+        // purchase_display.text = "Purchase "+ target_item.name;
+        costsText.text = target_item.price.ToString();
+        costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
+        return true;
+
+    }
+
     void TargetCheck()
     {
         equippedPrimary.SetActive(false);
@@ -128,67 +201,15 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         primary_element.GetAnimator().SetBool("Equippable", false);
         secondary_element.GetAnimator().SetBool("Equippable", false);
         dual_element.GetAnimator().SetBool("Equippable", false);
-
-        is_purchasable = target_item.Compare(GameManager.main.ScoreCount);
+       
 
         if(target_item != null && !isOwned){
-            bool needsBaseUpgrade = target_item.tier > 1 && target_item.tier < 4;
-
-            if (!KillBox.currentGame.hasUpgradedArsenal && needsBaseUpgrade)
-            {
-                // Locked high tier weapons before SHARD
-                purchase_button.interactable = false;
-                purchase_display.text = "Defeat SHARD to purchase this weapon...";
-                // costsText.text = "?";
-                costsText.text = target_item.price.ToString();
-                costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
-                return;
-            }
-
-            if( Player.main.specialUpgrade != UpgradesList.SpecialUpgrades.GOLDEN && target_item.tier == 4 ){
-                // Locked gold weapon without midas special
-                purchase_display.text = Player.main.specialUpgrade == UpgradesList.SpecialUpgrades.NONE ? "Defeat MIDAS to purchase this weapon..." : "You chose your path...";
-                purchase_button.interactable = false;
-                // costsText.text = "?";
-                costsText.text = target_item.price.ToString();
-                costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
-                return;
-            }
+            
+            // Purchasable check
+            is_purchasable = PurchasableCheck();
+            purchase_button.interactable = is_purchasable;
 
             tokenGraphicObject.SetActive(true);
-            purchaseCostDisplay.text = target_item.price.ToString();
-
-            if(is_purchasable){
-                purchase_button.interactable = true;
-                //purchase_button_graphic.color = purchasable;
-                
-                if(DetectInputDevice.main.isKBM) {
-                    purchase_display.text = "Press " + CustomKeybinds.main.Interact.ToString() + " to Purchase "+ target_item.name;
-                }
-                else if(DetectInputDevice.main.isController) {
-                    purchase_display.text = "Press Y to Purchase "+ target_item.name;
-                }
-
-                // purchase_display.text = "Purchase "+ target_item.name;
-                costsText.text = target_item.price.ToString();
-                costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
-            }
-
-            else if(!isOwned){
-
-                purchase_button.interactable = false;
-                //purchase_button_graphic.color = error;
-
-                purchase_display.text = "You Don't Have Enough Tokens For " + target_item.name;
-                if(target_item.price == -1){ costsText.text = "?"; }
-                else{ costsText.text = target_item.price.ToString(); }
-                costsText.color = Color.Lerp(Color.white, tier_colors[target_item.tier], 0.8f);
-
-                if(target_item.non_purchase_desc != "Unpurchasable"){
-                    purchase_display.text = target_item.non_purchase_desc;
-                }
-            }
-
             name_display.text = target_key;
             background.color = backgroundTierColors[target_item.tier];
             if(target_item.weapon.pool == 10){
@@ -341,7 +362,7 @@ public class InventoryUIManager : MonoBehaviour, IBackButtonListener, IShopUIEve
         }
         else if (
             (!KillBox.currentGame.hasUpgradedArsenal && target_item.tier > 1 && target_item.tier < 4) ||
-            (Player.main.specialUpgrade != UpgradesList.SpecialUpgrades.MASTERY && target_item.tier == 4)
+            (Player.main.specialUpgradeEnum != UpgradesList.SpecialUpgradeEnum.MASTERY && target_item.tier == 4)
         ) 
         {}
         // { return; }

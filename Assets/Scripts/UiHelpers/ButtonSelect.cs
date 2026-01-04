@@ -40,20 +40,20 @@ public class ButtonSelect : MonoBehaviour
     }
 
     void Update(){
-        if(reselect && EventSystem.current.currentSelectedGameObject == null){
-            if (useList)
-            {
-                foreach (Button button in buttonList)
-                {
-                    if (button.interactable)
-                    {
-                        EventSystem.current.SetSelectedGameObject(button.gameObject);
-                        return;
-                    }
-                }
-            }
+        // if(reselect && EventSystem.current.currentSelectedGameObject == null){
+        //     if (useList)
+        //     {
+        //         foreach (Button button in buttonList)
+        //         {
+        //             if (button.interactable)
+        //             {
+        //                 EventSystem.current.SetSelectedGameObject(button.gameObject);
+        //                 return;
+        //             }
+        //         }
+        //     }
 
-            EventSystem.current.SetSelectedGameObject(this.gameObject);
-        }
+        //     EventSystem.current.SetSelectedGameObject(this.gameObject);
+        // }
     }
 }

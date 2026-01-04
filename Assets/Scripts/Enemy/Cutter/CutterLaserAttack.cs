@@ -77,6 +77,8 @@ public class CutterLaserAttack : BossStateData
             beam_indicator_prefab.transform.localPosition = new Vector3(0, 0, 0);
             beam_indicator_prefab.transform.localEulerAngles = new Vector3(0, 0, 0);
 
+            PulseEffectManager.instance.AddEffect(transform.position, 0.1f, 1, 0.12f);
+
             while (timer > 0)
             {
                 normalized_timer = timer / laserWindupTime;

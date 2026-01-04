@@ -88,6 +88,7 @@ public class EnemyProfile : MonoBehaviour
 
     public void Retire()
     {
+        PulseEffectManager.instance.AddEffect(transform.position, strength: 0.01f, widthFactor: 0.12f);
         EnemyCounter.main.RemoveEnemy(this);
     }
     

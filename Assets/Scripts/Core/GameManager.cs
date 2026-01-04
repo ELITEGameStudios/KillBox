@@ -67,7 +67,19 @@ public class GameManager : MonoBehaviour, ISelfResListener
     [SerializeField] private MapData currentMap;
     public MapData GetCurrentMap(){ return currentMap; }
     public bool[] hasAcquiredKey;
+    [SerializeField] private Material gridMat;
     
+
+
+    [System.Serializable]
+    public struct AetherRuneSpawnData
+    {
+        public GameObject runePrefab;
+        public Transform[] spawnTransforms; 
+    }
+
+    [Header("Aether Rune Location Variables")]
+    [SerializeField] private AetherRuneSpawnData[] currentRuneSpawnData;
 
 
 
@@ -202,6 +214,15 @@ public class GameManager : MonoBehaviour, ISelfResListener
     }
     public virtual List<int> GetAvailableMaps(){
         List<int> availableIndexes = new List<int>(); 
+
+        if(
+            // _level > 24 &&
+            _level % 4 == 0
+        ){
+            availableIndexes.Add(99);
+            return availableIndexes;
+        }
+
         foreach (MapData map in Maps)
         { 
             if(
@@ -268,6 +289,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
             PlayerPrefs.SetFloat("joystick_size", 0.6f);//joystick_size.value);
         */
+
+        gridMat.SetVector("_PlayerPos", Player.main.tf.position);
         time_played += Time.deltaTime;
     }
 
@@ -279,15 +302,32 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
         if (freeplay){ req_equipment_kills = 0;}
 
-        enemyList.OnStart();
         if (escapeRoom) { AstarPath.active.UpdateGraphs(GetMapByID(20).Obstacles.bounds); }
         else
         {
             SetNewMap(GetMapByID(0));
+            SetRunePositions();
             // SetNewMap(Maps[0]);
             // AstarPath.active.UpdateGraphs(GetMapByID(0).Obstacles.bounds); 
+            BossRoundManager.main.InitializeEntries();
         }
         StartCoroutine(StartNumerator());
+    }
+
+    void SetRunePositions()
+    {
+        List<Transform> chosenTransforms = new();
+        
+        foreach (AetherRuneSpawnData rune in currentRuneSpawnData)
+        {
+            Transform selectedTf = null;
+            while (selectedTf == null || chosenTransforms.Contains(selectedTf))
+            {
+                selectedTf = rune.spawnTransforms[Random.Range(0, rune.spawnTransforms.Length - 1)];
+            } 
+            GameObject newRune = Instantiate(rune.runePrefab, selectedTf);
+            chosenTransforms.Add(selectedTf);
+        }
     }
 
     public void EndGame(){
@@ -339,7 +379,6 @@ public class GameManager : MonoBehaviour, ISelfResListener
         ManageSpawns(0);
         
         gameplayHUD.SetActive(false);
-        enemyList.OnStart();
 
         if(escapeRoom){ AstarPath.active.UpdateGraphs(GetMapByID(20).Obstacles.bounds); }
         else{ 
@@ -363,7 +402,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
 
     }
 
-    public void InitBossRound(BossType? bossType = null) {
+    public void InitBossRound(BossType bossType) {
         int mapToSelect;
 
         if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
@@ -381,11 +420,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
             }
             else
             {
-
-                if (_level == EnemyList.instance.bossRounds[0]) { currentMapIndex = 100; }
-                else if (_level == EnemyList.instance.bossRounds[1]) { currentMapIndex = 101; }
-                else if (_level == EnemyList.instance.bossRounds[2]) { currentMapIndex = 102; }
-                else { currentMapIndex = 100; }
+                currentMapIndex = 100;
             }
 
         }
@@ -397,7 +432,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         
         Player.main.NewRound();
         GunHandler.Instance.SetUIStatus(true);
-        BossRoundManager.main.SetBossRound(true, bossType);
+        BossRoundManager.main.SetupBossRound(bossType);
         
         // foreach (Door door in Door.doors){ door.NextRound(); } 
         floor_color.ChangeColor(Color.black, Color.white);
@@ -423,7 +458,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
         Player.main.NewRound();
         MainAudioSystem.main.Rest();
         GunHandler.Instance.SetUIStatus(true);
-        
+        // BossRoundManager.main.EndBossRound()
         
         // foreach (Door door in Door.doors){ door.NextRound(); } 
         StartRoundCountdown();
@@ -475,15 +510,16 @@ public class GameManager : MonoBehaviour, ISelfResListener
     void RemainingTasks(bool bossLevel = false){
         //floor_color.ChangeColor(false);
         ToggleChannelManager.main.ResetChannels();
-        EnemyList.instance.BossAppearanceCheck(currentMapIndex);
         InventoryUIManager.Instance.UpdateUI();
         UpgradesManager.Instance.ChooseUpgrade();
         // ChestSystemManager.instance.RefreshCheck();
 
         BossRoundManager.main.UpdateCounters();
-        if(!bossLevel){ BossRoundManager.main.SetBossRound(false); }
+        // if(!bossLevel){ BossRoundManager.main.SetBossRound(false); }
 
-        if(BossRoundManager.main.timeUntilNextBoss == 1 || KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE){ PortalScript.main.SetMode(3); }
+        if(BossRoundManager.main.timeUntilNextBoss == 1 || KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE){ 
+            PortalScript.main.SetMode(3); 
+        }
         else{ PortalScript.main.SetMode(0); }
 
     }
@@ -547,7 +583,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
             if(BossRoundManager.main.isBossRound){return;}
             if(BossRoundManager.main.timeUntilNextBoss == value)
             { _level += 2; }
-            else if(BossRoundManager.main.timeSinceLastBoss == -value)
+            else if(BossRoundManager.main.roundsBeyondLastBoss == -value)
             { _level -= 2; }
             
             else
@@ -580,6 +616,25 @@ public class GameManager : MonoBehaviour, ISelfResListener
         KillBox.currentGame.AddToken(tokens);
         if (isToken) { tokensThisRound++; }
         TokenUI.main.InitPickupAnimation(tokens);
+    }
+
+    public int GetPhase()
+    {
+        return ((_level-1) / 4) + 1;
+    }
+
+    public int GetFirstRoundInPhase(int phase)
+    {
+        return (phase * 4) - 3;
+    }
+    public int GetLastRoundInPhase(int phase)
+    {
+        return (phase * 4);
+    }
+
+    public int GetCurrentRoundInPhase()
+    {
+        return 4 - (LvlCount % 4);
     }
 
     public float Difficulty

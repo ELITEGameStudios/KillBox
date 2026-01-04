@@ -4929,7 +4929,7 @@ GameObject:
   - component: {fileID: 8515885924523210622}
   - component: {fileID: 3517510127204108749}
   m_Layer: 0
-  m_Name: fortress_rune
+  m_Name: fortress_rune 1
   m_TagString: fortress_rune
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5073,10 +5073,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c65ecbb0e4470d4eb88ae99a36cdfb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossType: 0
+  bossType: 5
   inRangeDistance: 5
-  area_prefab: {fileID: 7489729413373232824, guid: 76c426735a44da54eaf2cf545d252541, type: 3}
-  area: {fileID: 0}
+  area_prefab: {fileID: 172803866762992229, guid: 1de1523ac3c5c7348bb8b8531cad9352, type: 3}
+  runeEnemy: {fileID: 0}
   ui_element_root: {fileID: 0}
   animator: {fileID: 3517510127204108338}
   mode: 0

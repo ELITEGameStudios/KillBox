@@ -84,12 +84,13 @@ public class EconomyManager : MonoBehaviour
         }
         try
         {
-            List<int> bossRounds = EnemyList.instance.bossRounds;
             int round = KillBox.currentGame.round;
-            for (int i = 0; i < finishedRoundBonus.Length; i++)
+            BossType[] bossTypes = new BossType[]{BossType.SHARD, BossType.CUTTER, BossType.GUARDIANS};
+            for (int i = bossTypes.Length-1; i >= 0; i--)
             {
-                if (round < bossRounds[i]) { return finishedRoundBonus[i]; }
+                if (Player.main.defeatedBossesList.Contains(bossTypes[i])) { return finishedRoundBonus[i]; }
             }
+            return 1;
         }
         catch
         {
@@ -101,9 +102,6 @@ public class EconomyManager : MonoBehaviour
 
     public int GetBossBonus()
     {
-
-        List<int> bossRounds = EnemyList.instance.bossRounds;
-        int round = KillBox.currentGame.round;
         for (int i = 0; i < bossRewardTokens.Length; i++)
         {
             if ((int)BossRoundManager.main.bossType == i) { return bossRewardTokens[i]; }
@@ -115,8 +113,6 @@ public class EconomyManager : MonoBehaviour
     public int GetBossBonus(BossType bossType)
     {
 
-        // List<int> bossRounds = EnemyList.instance.bossRounds;
-        // int round = KillBox.currentGame.round;
         for (int i = 0; i < bossRewardTokens.Length; i++){
             if ((int)bossType == i) { return bossRewardTokens[i]; }
         }
@@ -124,19 +120,19 @@ public class EconomyManager : MonoBehaviour
         return 0;
     }
 
-    public int GetDamagelessBonus()
-    {
-        List<int> bossRounds = EnemyList.instance.bossRounds;
-        int round = KillBox.currentGame.round;
-        for (int i = 0; i < damagelessBonusValues.Length; i++)
-        {
-            if (round < bossRounds[i]) { return damagelessBonusValues[i]; }
-        }
+    // public int GetDamagelessBonus()
+    // {
+    //     List<int> bossRounds = EnemyList.instance.bossRounds;
+    //     int round = KillBox.currentGame.round;
+    //     for (int i = 0; i < damagelessBonusValues.Length; i++)
+    //     {
+    //         if (round < bossRounds[i]) { return damagelessBonusValues[i]; }
+    //     }
 
-        return 0;
-    }
+    //     return 0;
+    // }
 
-    public int Get5RoundBonus()
+    public int Get4RoundBonus()
     {
         // List<int> bossRounds = EnemyList.instance.bossRounds;
         // int round = KillBox.currentGame.round;
@@ -145,6 +141,6 @@ public class EconomyManager : MonoBehaviour
         //     if (round < bossRounds[i]) { return finishedRoundBonus[i]; }
         // }
 
-        return 5;
+        return 4;
     }
 }

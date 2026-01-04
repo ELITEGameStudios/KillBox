@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Game;
 
 public class BossRoundManager : MonoBehaviour, IRestartListener
 {
@@ -12,12 +13,20 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
     public BossRoomSpawnSystem spawnSystem {get; private set;}
     public bool isBossRound {get; private set;}
     public bool finishedBossRoundMainPhase {get; private set;}
-    public int bossRoundTier {get; private set;}
     public int timeUntilNextBoss{get; private set;}
-    public int timeSinceLastBoss{get; private set;}
-    public BossType bossType;
+    public int roundsBeyondLastBoss => 
+        GetPreviousBossRoundEntry() == null ? 
+        999 : 
+        GameManager.main.LvlCount - GameManager.main.GetLastRoundInPhase(((BossRoundEntry)GetPreviousBossRoundEntry()).phase);
 
+    public BossType bossType;
     [SerializeField] private EnemyList enemyList;
+
+    public List<BossRoundEntry> activeBossRoundEntries;
+
+    public List<BossRoundEntry> easyBossRoundEntries;
+    public List<BossRoundEntry> standardBossRoundEntries;
+    public List<BossRoundEntry> extremeBossRoundEntries;
 
 
     
@@ -34,6 +43,14 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
         LOOPY
     }
 
+    [System.Serializable]
+    public struct BossRoundEntry
+    {
+        public BossType bossType;
+        public int phase;
+    }
+    
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -45,8 +62,32 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
         }
     }
 
+    public void InitializeEntries()
+    {
+        switch (KillBox.currentGame.difficulty)
+        {
+            case Difficulty.EASY:
+                activeBossRoundEntries = easyBossRoundEntries;
+                break;
+            
+            case Difficulty.STANDARD:
+                activeBossRoundEntries = standardBossRoundEntries;
+                break;
+
+            case Difficulty.EXTREME:
+                activeBossRoundEntries = extremeBossRoundEntries;
+                break;
+        }
+    }
+
     void Start(){
         spawnSystem = BossRoomSpawnSystem.main;
+    }
+
+    public void EndBossRound()
+    {
+        isBossRound = false;
+        UpdateCounters();
     }
 
     // Update is called once per frame
@@ -96,51 +137,46 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
     //     : enemyList.bossRounds.FindIndex(match => match == GameManager.main.LvlCount);
     // }
 
-    public void SetBossRound(bool hasBoss, BossType? _bossType = null){
-        isBossRound = hasBoss;
-        if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
+    public void SetupBossRound(BossType _bossType){
+        
+        isBossRound = true;
+        finishedBossRoundMainPhase = false;
+
+        // bossRoundTier = (int)_bossType;
+        bossType = _bossType; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
+
+        spawnSystem.SetBossSpawnList(bossType);
+        KillboxEventSystem.TriggerBossRoundChangeEvent();
+
+        // if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
+        // {
+        //     finishedBossRoundMainPhase = false;
+        //     bossRoundTier = (int)(GameManager.main as BossChallengeGameManager).currentBoss;
+        //     bossType = (GameManager.main as BossChallengeGameManager).currentBoss; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
+        //     spawnSystem.SetBossSpawnList(bossType);
+        //     KillboxEventSystem.TriggerBossRoundChangeEvent();         
+    }
+
+    public BossRoundEntry? GetNextBossRoundEntry()
+    {
+        for (int i = 0; i < activeBossRoundEntries.Count; i++)
         {
-            finishedBossRoundMainPhase = false;
-
-            bossRoundTier = (int)(GameManager.main as BossChallengeGameManager).currentBoss;
-            bossType = (GameManager.main as BossChallengeGameManager).currentBoss; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
-            spawnSystem.SetBossSpawnList(bossType);
-            
-            KillboxEventSystem.TriggerBossRoundChangeEvent();
-
-            return;
-
+            if(activeBossRoundEntries[i].phase < GameManager.main.GetPhase()){ continue; }
+            return activeBossRoundEntries[i];
         }
-        if(isBossRound){ 
-            finishedBossRoundMainPhase = false;
-            if (_bossType == null)
-            {
-                int forcedBossRoundIndex = (enemyList.bossRounds.FindIndex(match => match == GameManager.main.LvlCount) % 4);
-                Debug.Log(forcedBossRoundIndex + " ----- BOSS INDEX, "+ (BossType)forcedBossRoundIndex);
-                switch (forcedBossRoundIndex)
-                {
-                    case 2: bossType = BossType.GUARDIANS; break;
-                    case 3: bossType = BossType.LOOPY; break;
-                    default:
-                        bossType = (BossType)(forcedBossRoundIndex);
-                        Debug.Log("WELLOD");
-                        break; 
-                }
-                // bossType = (BossType)bossRoundTier;
-                // bossType = (BossType)_bossType; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
-                bossRoundTier = (int)bossType;
-            }
-            else
-            {
-                bossRoundTier = (int)_bossType;
-                bossType = (BossType)_bossType; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
-            }
 
+        return null;
+    }
 
-            spawnSystem.SetBossSpawnList(bossType);
-            KillboxEventSystem.TriggerBossRoundChangeEvent();
+    public BossRoundEntry? GetPreviousBossRoundEntry()
+    {
+        for (int i = activeBossRoundEntries.Count-1 ; i >= 0; i--)
+        {
+            if(activeBossRoundEntries[i].phase >= GameManager.main.GetPhase()){ continue; }
+            return activeBossRoundEntries[i];
         }
-        else{ finishedBossRoundMainPhase = true; }
+
+        return null;
     }
 
     public void UpdateCounters(){
@@ -148,59 +184,20 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
         if (KillBox.currentGame.gamemode == Game.Gamemode.BOSSCHALLENGE)
         {
             timeUntilNextBoss = 0;
-            timeSinceLastBoss = 0;
-            // finishedBossRoundMainPhase = false; ;
             return;
         }
 
+        // Updating when the next boss round will happen
         int round = GameManager.main.LvlCount;
-        int targetRound = GameManager.main.LvlCount;
-
-        while(!enemyList.HasBoss(targetRound)){
-            targetRound++;
-            if(targetRound > 150){
-                targetRound = -1;
-                break;
-            }
-        }
-
-        // for (int i = 0; i < enemyList.bossRounds.Count && (i > 0 ? enemyList.bossRounds[i - 1] : 0) < GameManager.main.LvlCount; i++){
-        //     if(enemyList.bossRounds[i] >= GameManager.main.LvlCount){
-        //         targetRound = enemyList.bossRounds[i];
-        //         Debug.Log(targetRound + "target");
-        //         Debug.Log(enemyList.bossRounds[i] + "current round");
-        //         break;
-        //     }
-        // }
-
-        timeUntilNextBoss = targetRound - GameManager.main.LvlCount;
-        Debug.Log(timeUntilNextBoss + "boss time");
-
-        targetRound = GameManager.main.LvlCount;
+        int targetRound;
         
-        while(!enemyList.HasBoss(targetRound)){
-            targetRound--;
-            if(targetRound < 0){
-                targetRound = -1;
-                break;
-            }
-        }
-        
-        // foreach(int rounds in reversedRounds){
-        //     if(rounds <= GameManager.main.LvlCount){
-        //         targetRound = rounds;
-        //         break;
-        //     }
-        // }
-
-        timeSinceLastBoss = GameManager.main.LvlCount - targetRound;
-
-        if(timeSinceLastBoss > 0){
-            BossRoundCounterUI.main.UpdateDisplay(false);
-        }
+        if(GetNextBossRoundEntry() == null){ timeUntilNextBoss = 999; } // Must be finished later, will only occur when there are no set bosses left
         else{
-            BossRoundCounterUI.main.UpdateDisplay(true);
+            targetRound = GameManager.main.GetLastRoundInPhase( ((BossRoundEntry)GetNextBossRoundEntry()).phase );
+            timeUntilNextBoss = targetRound - GameManager.main.LvlCount;            
         }
+
+        BossRoundCounterUI.main.UpdateDisplay(roundsBeyondLastBoss <= 0);
     }
 
     public void OnRestartGame()

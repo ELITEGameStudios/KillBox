@@ -23,11 +23,19 @@ public class AudioProfile : MonoBehaviour
         if(coefficient == 0){
             coefficient = 1;
         }
+
+        if(MainAudioSystem.main == null) {enabled = false;}
+        else{ 
+            manager = MainAudioSystem.main.GetVolumeControl(); 
+            if (SFX && !in_transition)
+            {
+                source.volume = manager.SFXSlider.value * coefficient / 100;
+                volume = manager.SFXSlider.value * coefficient / 100;
+            }
+        };
     }
 
     void Start(){
-        if(MainAudioSystem.main == null) {enabled = false;}
-        manager = MainAudioSystem.main.GetVolumeControl();
     }
 
     // Update is called once per frame
@@ -36,8 +44,8 @@ public class AudioProfile : MonoBehaviour
 
         if (SFX && !in_transition)
         {
-            // source.volume = manager.SFXSlider.value * coefficient / 100;
-            // volume = manager.SFXSlider.value * coefficient / 100;
+            source.volume = manager.SFXSlider.value * coefficient / 100;
+            volume = manager.SFXSlider.value * coefficient / 100;
         }
         else if(!in_transition)
         {

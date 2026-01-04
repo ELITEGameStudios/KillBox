@@ -172,13 +172,15 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
                     gun_img.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.dual_weapon.tier];
                     gun_img.sprite = GunHandler.Instance.dual_weapon.graphic;
                     if(equipOverlay != null) equipOverlay.color = InventoryUIManager.Instance.tier_colors[GunHandler.Instance.dual_weapon.tier];
+                    if(auraImg != null) auraImg.color = Color.Lerp(Color.clear, gun_img.color, 0.5f);
                 }
                 else if(UpgradesManager.Instance.current_levels[4] != 1){
                     main_img.color = Color.black;
                     gun_img.color = Color.black;
-
+                    if(auraImg != null) auraImg.color = Color.clear;
                 }
                 else{
+                    if(auraImg != null) auraImg.color = Color.clear;
                     main_img.color = Color.white;
                     gun_img.color = Color.white;
                 }
@@ -208,9 +210,9 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
 
         return false;
     }
-    public void ShootAnimation(){
-        animator.Play("Shoot");
-    }
+    // public void ShootAnimation(){
+    //     animator.Play("Shoot");
+    // }
     public void StartCooldown(){
         StartCoroutine("CooldownAnim");
     }
@@ -227,7 +229,7 @@ public class InventoryUIElement : MonoBehaviour, IRestartListener
                 else{dimLevel = 0.15f;}
             }
             else{ // Gold weapons
-                if(Player.main.specialUpgrade == UpgradesList.SpecialUpgrades.GOLDEN){dimLevel = 1;}
+                if(Player.main.specialUpgradeEnum == UpgradesList.SpecialUpgradeEnum.GOLDEN){dimLevel = 1;}
                 else{dimLevel = 0.15f;}
             }
         }

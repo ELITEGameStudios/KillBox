@@ -54,8 +54,7 @@ public class LoopyScript : MonoBehaviour
             AddState(
                 new LoopyState(
                     LoopyPose.HAPPY, 
-                    "Hello There, Welcome to the KillBox!\nI'm LOOPY, and I am here to help you on your way!",
-                    4)
+                    "Hello There, Welcome to the KillBox!\nI'm LOOPY, and I am here to help you on your way!", 2)
                 );
             
         }
@@ -150,9 +149,11 @@ public class LoopyScript : MonoBehaviour
         anim.SetFloat("Blend", 0.3f * (int)newState.pose);
 
         // Plays intro 
-
         ToggleElements(true);
-        anim.Play(introAnimName);
+        
+        anim.SetBool("Active", true);
+        anim.SetTrigger("Intro");
+        
         yield return new WaitForSeconds(introTime);
         // anim.StopPlayback();
         SetState(newState);
