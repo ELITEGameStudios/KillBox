@@ -24,8 +24,7 @@ public class DuskWaveState : BossStateData
         currentStateTime = stateTime;
         atTarget = false;
 
-        bodyTarget = new Vector2(Player.main.tf.position.x - distance, Player.main.tf.position.y);
-
+        bodyTarget = new Vector2(Player.main.tf.position.x, Player.main.tf.position.y- distance);
         currentFireInterval = fireRate;
     }
     public override void FixedUpdate(){
@@ -43,7 +42,7 @@ public class DuskWaveState : BossStateData
                 duskData.rb_self.velocity = duskData.rb_self.velocity.normalized*maxSpeed;
             }
             if (Vector2.Distance((Vector2)duskData.transform.position, bodyTarget) <= 0.5f){
-            duskData.rb_self.velocity = new Vector2(0, 0);
+            
             atTarget = true;
         }
         }
@@ -51,9 +50,10 @@ public class DuskWaveState : BossStateData
     }
     public override void Update(){
         if (atTarget){
+            duskData.rb_self.velocity = new Vector2(0, 0);
             FiringUpdate();
-
-            // The Timer until the next phase.
+        }
+        // The Timer until the next phase.
             if (currentStateTime > 0){
                 currentStateTime -= Time.deltaTime;
             }
@@ -61,13 +61,12 @@ public class DuskWaveState : BossStateData
                 duskData.rotator.speed = 0;
                 End();
             }
-        }
 
     }
     void FiringUpdate(){
         if (currentFireInterval <= 0)
         {
-            duskData.mainShootSources[6].Shoot();
+            duskData.mainShootSources[4].Shoot();
             currentFireInterval = fireRate;
         }
         else{

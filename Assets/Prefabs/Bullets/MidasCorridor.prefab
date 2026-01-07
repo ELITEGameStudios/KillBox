@@ -50,7 +50,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 200
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -65,9 +64,6 @@ MonoBehaviour:
   damage_boss_field: 0
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 8
 --- !u!1 &1003649845200097008
@@ -120,7 +116,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 200
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -135,9 +130,6 @@ MonoBehaviour:
   damage_boss_field: 0
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 8
 --- !u!1 &1110654376393097505
@@ -275,7 +267,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 200
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -290,9 +281,6 @@ MonoBehaviour:
   damage_boss_field: 0
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 8
 --- !u!1 &2843551293797359558
@@ -5296,7 +5284,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 200
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -5311,9 +5298,6 @@ MonoBehaviour:
   damage_boss_field: 0
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 8
 --- !u!1 &4330009518217069791
@@ -5366,7 +5350,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 200
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -5381,9 +5364,6 @@ MonoBehaviour:
   damage_boss_field: 0
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 8
 --- !u!1 &4390256515955518689
@@ -5436,7 +5416,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 200
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -5451,9 +5430,6 @@ MonoBehaviour:
   damage_boss_field: 0
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 8
 --- !u!1 &4763028008304899845
@@ -5506,7 +5482,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 200
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -5521,9 +5496,6 @@ MonoBehaviour:
   damage_boss_field: 0
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 8
 --- !u!1 &5428109724893047114
@@ -5576,7 +5548,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 200
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -5591,9 +5562,6 @@ MonoBehaviour:
   damage_boss_field: 0
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 8
 --- !u!1 &5540467781540774035
@@ -10512,7 +10480,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 200
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -10527,9 +10494,6 @@ MonoBehaviour:
   damage_boss_field: 0
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 8
 --- !u!1 &7121833408757043669
@@ -10562,7 +10526,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5723281447890629480}
@@ -10773,7 +10737,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 200
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 509c87251ca2087439c56fbe8fef7b07, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -10788,8 +10751,5 @@ MonoBehaviour:
   damage_boss_field: 0
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 8

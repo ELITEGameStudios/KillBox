@@ -9,7 +9,7 @@ public class BulletCluster : MonoBehaviour
     [SerializeField]
     private GameObject bullet;
     [SerializeField]
-    private float distance, angle, colorChange, timeElapsed;
+    private float distance, angle, colorChange, timeElapsed, xPos, yPos;
     [SerializeField]
     private Color startColor, endColor;
     [SerializeField]
@@ -18,9 +18,11 @@ public class BulletCluster : MonoBehaviour
         starSprite.color = startColor;
         timeElapsed = 0;
         angle = Random.Range(0f, 6.28f);
-        transform.position = new Vector2(Player.main.tf.position.x + distance*Mathf.Cos(angle), Player.main.tf.position.y + distance*Mathf.Sin(angle));
+        xPos = Player.main.tf.position.x + distance*Mathf.Cos(angle);
+        yPos = Player.main.tf.position.y + distance*Mathf.Sin(angle);
     }
     void Update(){
+        transform.position = new Vector2(xPos, yPos);
         timeElapsed = timeElapsed + Time.deltaTime;
         starSprite.color = Color.Lerp(startColor, endColor, timeElapsed * colorChange);
         if (starSprite.color == endColor){

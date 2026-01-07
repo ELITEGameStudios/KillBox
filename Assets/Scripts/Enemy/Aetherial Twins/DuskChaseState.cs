@@ -1,34 +1,25 @@
 using UnityEngine;
 
 [System.Serializable]
-public class DuskCannonState : BossStateData
+public class DuskChaseState : BossStateData
 {
     DuskBoss duskData;
     private float stateTime, currentStateTime;
-    private float maxSpeed, accel, distance;
-    private float fireRate, currentFireInterval, initFire, multiply, cap;
+    private float maxSpeed, accel;
     private Vector2 bodyTarget, staffTarget;
 
-    public DuskCannonState(DuskBoss bossBase, float time, float speed, float force, float dist, float fr, float init, float mult, float cap) : base(bossBase){
+    public DuskChaseState(DuskBoss bossBase, float time, float speed, float force) : base(bossBase){
         duskData = bossBase;
         this.stateTime = time;
         this.maxSpeed = speed; 
         this.accel = force;
-        this.distance = dist;
-        this.fireRate = fr;
-        this.initFire = init;
-        this.multiply = mult;
-        this.cap = cap;
     }
 
     public override void Start(){
         currentStateTime = stateTime;
 
-        bodyTarget = new Vector2(Player.main.tf.position.x - distance, Player.main.tf.position.y);
+        bodyTarget = new Vector2(Player.main.tf.position.x, Player.main.tf.position.y);
         staffTarget = Player.main.tf.position;
-
-        fireRate = initFire;
-        currentFireInterval = fireRate;
     }
     public override void FixedUpdate(){
         // Staff Pathfinding
@@ -40,7 +31,7 @@ public class DuskCannonState : BossStateData
 
 
         // Main Pathfinding.
-        bodyTarget = new Vector2(Player.main.tf.position.x - distance, Player.main.tf.position.y);
+        bodyTarget = new Vector2(Player.main.tf.position.x, Player.main.tf.position.y);
         duskData.transform.rotation = Quaternion.LookRotation(Vector3.forward, bodyTarget - (Vector2)duskData.transform.position);
 
         duskData.rb_self.AddForce(transform.up * accel * Time.fixedDeltaTime);
@@ -50,8 +41,6 @@ public class DuskCannonState : BossStateData
 
     }
     public override void Update(){
-        FiringUpdate();
-
         // The Timer until the next phase.
         if (currentStateTime > 0){
             currentStateTime -= Time.deltaTime;
@@ -59,22 +48,6 @@ public class DuskCannonState : BossStateData
         else{
             End();
         }
-
-    }
-    void FiringUpdate(){
-        if (currentFireInterval <= 0)
-        {
-            duskData.mainShootSources[3].Shoot();
-            fireRate = fireRate * multiply;
-            if (fireRate <= cap){
-                fireRate = cap;
-            }
-            currentFireInterval = fireRate;
-        }
-        else{
-            currentFireInterval -= Time.deltaTime;
-        }
-
 
     }
 }

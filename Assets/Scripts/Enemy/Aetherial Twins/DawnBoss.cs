@@ -25,6 +25,7 @@ public class DawnBoss : BossBase
     public DawnMainAttackState mainAttack, halfHpAttack, enragedMain;
     public DawnGravityState gravAttack, enragedGravity;
     public DawnOtherAttackState burstAttack, clusterAttack, trailAttack, meteorAttack, rainAttack, meteorAttackLong;
+    public DawnBoxState boxAttack;
     public Phase firstPhase, secondPhase, enragedPhase;
     // Start is called before the first frame update
     void Awake()
@@ -33,23 +34,23 @@ public class DawnBoss : BossBase
 
         // this,  stateTime,  speed,  force, distance, fireRate, init
         mainAttack = new DawnMainAttackState(this, 8f, 5f, 1500f, 7.5f, 1.8f, 2f);
-        gravAttack = new DawnGravityState(this, 10f, 4.5f, 1000f, 6f, 2.5f, 2.3f, 1.5f);
-        burstAttack = new DawnOtherAttackState(this, 7.5f, 5f, 1500f, 8f, 3f, 1f, 0);
-        clusterAttack = new DawnOtherAttackState(this, 8f, 3f, 1000f, 7.5f, 1.5f, 1.3f, 1);
-        trailAttack = new DawnOtherAttackState(this, 8.5f, 3f, 1500f, 8f, 2.2f, 1f, 2);
+        gravAttack = new DawnGravityState(this, 10f, 5f, 2000f, 6f, 1.2f, 1.5f);
+        clusterAttack = new DawnOtherAttackState(this, 9f, 3f, 1000f, 7.5f, 1.4f, 1.1f, 0);
+        trailAttack = new DawnOtherAttackState(this, 10f, 3f, 1500f, 8f, 2.2f, 1f, 1);
+
+        boxAttack = new DawnBoxState(this, 9f, 0.17f, 1.2f);
 
         halfHpAttack = new DawnMainAttackState(this, 8f, 7f, 1500f, 8.5f, 1.55f, 2f);
-        meteorAttack = new DawnOtherAttackState(this, 6f, 5f, 1500f, 8.5f, 2.5f, 1f, 3);
-        meteorAttackLong = new DawnOtherAttackState(this, 10f, 5f, 1500f, 8.5f, 2.5f, 1f, 3);
-        rainAttack = new DawnOtherAttackState(this, 10f, 3f, 1000f, 7.5f, 0.5f, 0.9f, 4);
+        meteorAttack = new DawnOtherAttackState(this, 6f, 5f, 1500f, 8.5f, 2.5f, 1f, 2);
+        meteorAttackLong = new DawnOtherAttackState(this, 12f, 5f, 1500f, 8.5f, 2.5f, 1f, 2);
 
         enragedMain = new DawnMainAttackState(this, 8f, 9f, 1500f, 8.5f, 0.3f, 0.1f);
-        enragedGravity = new DawnGravityState(this, 10f, 9f, 1500f, 6f, 3f, 0.7f, 0.1f);
+        enragedGravity = new DawnGravityState(this, 10f, 5f, 2500f, 6f, 0.5f, 0.1f);
 
-        firstPhase.statesInPhase = new BossStateData[] {mainAttack, gravAttack, mainAttack, burstAttack, clusterAttack, trailAttack};
+        firstPhase.statesInPhase = new BossStateData[] {mainAttack, boxAttack, clusterAttack, gravAttack};
         firstPhase.minHealth = 0.5f;
 
-        secondPhase.statesInPhase = new BossStateData[] {meteorAttack, halfHpAttack, rainAttack, gravAttack, burstAttack, meteorAttackLong, halfHpAttack, trailAttack, clusterAttack};
+        secondPhase.statesInPhase = new BossStateData[] {meteorAttack, trailAttack, halfHpAttack, gravAttack, meteorAttackLong, boxAttack, clusterAttack};
         secondPhase.minHealth = -0.5f;
 
         enragedPhase.statesInPhase = new BossStateData[] {enragedMain, enragedGravity};

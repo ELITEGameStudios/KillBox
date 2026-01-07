@@ -28,6 +28,8 @@ public class DuskBoss : BossBase
     public DuskDashState dashAttack;
     public DuskCannonState cannonAttack, cannonAttackLong;
     public DuskWaveState waveAttack;
+    public DuskBoxState boxAttack;
+    public DuskChaseState chaseAttack;
     public Phase firstPhase, secondPhase, enragedPhase;
     // Start is called before the first frame update
     void Awake()
@@ -37,23 +39,21 @@ public class DuskBoss : BossBase
         // this,  stateTime,  speed,  force, distance, fireRate, init
         mainAttack = new DuskMainAttackState(this, 8f, 5f, 1000f, 7.5f, 1.55f, 1.8f);
         retargetAttack = new DuskOtherAttackState(this, 9f, 3f, 1000f, 8f, 1.7f, 2f, 2);
-        barrageAttack = new DuskOtherAttackState(this, 3f, 5f, 1000f, 7.5f, 2f, 2f, 3);
-        cometAttack = new DuskOtherAttackState(this, 7.5f, 7f, 1500f, 8.5f, 1.3f, 1.5f, 4);
-        dashAttack = new DuskDashState(this, 12f, 2000f, 8f, 8000f, 0.2f, 1.7f);
+        boxAttack = new DuskBoxState(this, 9f, 0.1f, 1.2f);
+        waveAttack = new DuskWaveState(this, 10f, 12f, 5000f, 9f, 0.15f);
 
         halfHpAttack = new DuskMainAttackState(this, 8f, 7f, 1500f, 8.5f, 1.3f, 1.8f);
-        cannonAttack = new DuskCannonState(this, 7f, 3f, 1000f, 9f, 1.8f, 1.8f, 0.95f, 0.45f);
+        cannonAttack = new DuskCannonState(this, 6f, 3f, 1000f, 9f, 1.8f, 1.8f, 0.95f, 0.45f);
         cannonAttackLong = new DuskCannonState(this, 12f, 3f, 1000f, 9f, 1.8f, 1.8f, 0.95f, 0.45f);
-        waveAttack = new DuskWaveState(this, 2f, 8f, 3000f, 9f, 0.08f);
+        chaseAttack = new DuskChaseState(this, 10f, 8f, 4000f);
 
         enragedMain = new DuskMainAttackState(this, 8f, 9f, 1500f, 8.5f, 0.2f, 0.15f);
-        enragedRetarget = new DuskOtherAttackState(this, 9f, 9f, 1500f, 8f, 0.35f, 0.1f, 2);
+        enragedRetarget = new DuskOtherAttackState(this, 10f, 9f, 1500f, 8f, 0.35f, 0.1f, 2);
 
-        firstPhase.statesInPhase = new BossStateData[] {mainAttack, dashAttack, dashAttack, retargetAttack, cometAttack, barrageAttack};
+        firstPhase.statesInPhase = new BossStateData[] {mainAttack, boxAttack, retargetAttack, waveAttack};
         firstPhase.minHealth = 0.5f;
 
-        secondPhase.statesInPhase = new BossStateData[] {cannonAttack, halfHpAttack, waveAttack, waveAttack, retargetAttack,  barrageAttack, cometAttack, cannonAttackLong,
-        dashAttack, dashAttack, dashAttack, waveAttack, waveAttack, waveAttack, retargetAttack};
+        secondPhase.statesInPhase = new BossStateData[] {cannonAttack, chaseAttack, halfHpAttack, waveAttack, cannonAttackLong, boxAttack, retargetAttack};
         secondPhase.minHealth = -0.5f;
 
         enragedPhase.statesInPhase = new BossStateData[] {enragedMain, enragedRetarget};

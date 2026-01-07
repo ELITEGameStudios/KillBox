@@ -9835,7 +9835,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4147284260696222601}
@@ -9952,12 +9952,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f214a9315b1c46a7a7fad574a982fd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bullet: {fileID: 5001199621994018729}
   particle: {fileID: 4320284209076648720}
   hit_particle: {fileID: 3728154297814334968}
-  poolManager: {fileID: 0}
   gameManager: {fileID: 0}
-  PoolIndex: 0
   rangeForFloat: 0
   range: 5
   objectPool: {fileID: 0}
@@ -10083,6 +10080,7 @@ MonoBehaviour:
   timer: 0
   targetTime: 0
   inTransition: 0
+  parentIndependant: 0
 --- !u!1 &7358041322102825216
 GameObject:
   m_ObjectHideFlags: 0
