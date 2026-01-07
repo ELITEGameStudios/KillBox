@@ -40,7 +40,7 @@ public class DuskBoss : BossBase
         mainAttack = new DuskMainAttackState(this, 8f, 5f, 1000f, 7.5f, 1.55f, 1.8f);
         retargetAttack = new DuskOtherAttackState(this, 9f, 3f, 1000f, 8f, 1.7f, 2f, 2);
         boxAttack = new DuskBoxState(this, 9f, 0.1f, 1.2f);
-        waveAttack = new DuskWaveState(this, 10f, 12f, 5000f, 9f, 0.15f);
+        waveAttack = new DuskWaveState(this, 10f, 12f, 5000f, 4f, 0.15f);
 
         halfHpAttack = new DuskMainAttackState(this, 8f, 7f, 1500f, 8.5f, 1.3f, 1.8f);
         cannonAttack = new DuskCannonState(this, 6f, 3f, 1000f, 9f, 1.8f, 1.8f, 0.95f, 0.45f);

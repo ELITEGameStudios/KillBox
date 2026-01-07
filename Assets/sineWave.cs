@@ -9,7 +9,7 @@ public class sineWave : MonoBehaviour
     [SerializeField]
     private Transform mainTf;
     // Start is called before the first frame update
-    void OnEnable()
+    void Awake()
     {
         timeElasped = 0f;
         initPos = mainTf.position.x;

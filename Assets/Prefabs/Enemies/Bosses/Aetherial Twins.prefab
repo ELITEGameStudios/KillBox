@@ -1960,7 +1960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: DUSK
-  maxHealth: 35000
+  maxHealth: 25000
   damage: 125
   limit: 0
   speed: 0
@@ -2308,6 +2308,20 @@ MonoBehaviour:
     finished: 0
     started: 0
   boxAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
+    finished: 0
+    started: 0
+  chaseAttack:
     name: 
     displaySprite: {fileID: 0}
     displayColor: {r: 0, g: 0, b: 0, a: 0}
@@ -2677,7 +2691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: DAWN
-  maxHealth: 35000
+  maxHealth: 25000
   damage: 125
   limit: 0
   speed: 0
