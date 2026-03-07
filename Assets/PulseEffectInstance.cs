@@ -19,12 +19,12 @@ public class PulseEffectInstance : MonoBehaviour
     
     public bool active;
     public Material mainMaterial;
+    public Material thisMaterial;
 
 
 
     void Awake()
     {
-        
         // RenderPipelineManager.endContextRendering += OnEndContextRendering;
     }
 
@@ -36,6 +36,15 @@ public class PulseEffectInstance : MonoBehaviour
 
     public void Feed(Vector2 worldCoordinates, float strength = 0.05f, float expandRate = 1f, float widthFactor = 0.1f, float targetTime = 5)
     {
+        if(thisMaterial == null){thisMaterial = new Material(mainMaterial);}
+        else
+        {
+            if( PulseEffectManager.instance.mainRenderer.sampleMaterial.Contains(thisMaterial))
+            {
+                PulseEffectManager.instance.mainRenderer.sampleMaterial.Remove(thisMaterial);
+            }
+        }
+        // thisMaterial = new Material(mainMaterial);
         coordinates = Camera.main.WorldToScreenPoint(worldCoordinates);
         coordinates.x /= Camera.main.pixelWidth;
         coordinates.y /= Camera.main.pixelHeight;
@@ -50,7 +59,7 @@ public class PulseEffectInstance : MonoBehaviour
         time = 0;
         targetDistance = 0;
         active = true;
-        PulseEffectManager.instance.mainRenderer.AddMaterial(mainMaterial);
+        PulseEffectManager.instance.mainRenderer.AddMaterial(thisMaterial);
 
         // commandBuffer = new CommandBuffer();
         // commandBuffer.name = "PulseDistortionBuffer";
@@ -65,22 +74,24 @@ public class PulseEffectInstance : MonoBehaviour
 
     void Update()
     {
-        if(time >= targetTime){End();}
-
-        if (active)
+        if(time >= targetTime && active){End();}
+        if(thisMaterial != null)
         {
-            mainMaterial.SetFloat("_strength", strength);
-            mainMaterial.SetFloat("_TargetDist", targetDistance);
-            mainMaterial.SetFloat("_distRange", width);
-            mainMaterial.SetVector("_LocalCoords", (Vector2)coordinates);
+            if (active )
+            {
+                thisMaterial.SetFloat("_strength", strength);
+                thisMaterial.SetFloat("_TargetDist", targetDistance);
+                thisMaterial.SetFloat("_distRange", width);
+                thisMaterial.SetVector("_LocalCoords", (Vector2)coordinates);
 
 
-            time += Time.deltaTime;
-            targetDistance = time * rate;
-        }
-        else
-        {
-            mainMaterial.SetFloat("_strength", 0);
+                time += Time.deltaTime;
+                targetDistance = time * rate;
+            }
+            else
+            {
+                thisMaterial.SetFloat("_strength", 0);
+            }
         }
 
     }
@@ -88,7 +99,7 @@ public class PulseEffectInstance : MonoBehaviour
     public void End()
     {
         active = false;
-        mainMaterial.SetFloat("_strength", 0);
+        thisMaterial.SetFloat("_strength", 0);
         PulseEffectManager.instance.mainRenderer.RemoveMaterial(mainMaterial);
         // PulseEffectManager.instance.effectPool.Remove(this);
         // // Camera.main.RemoveCommandBuffer(CameraEvent.BeforeImageEffectsOpaque, commandBuffer);

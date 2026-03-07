@@ -84,8 +84,14 @@ public class EnemyCounter : MonoBehaviour
         enemies = GameObject.FindGameObjectsWithTag(tag);
         enemiesInScene = enemyProfiles.Count;
 
+        bool enemiesAreAllNecro = true;
+        foreach (EnemyProfile enemyProfile in enemyProfiles)
+        {
+            if(!enemyProfile.isNecro){enemiesAreAllNecro = false; break;}
+        }
+
         // Main condition for ending the round
-        noEnemiesOrSpawns = enemies.Length == 0 && bossProfiles.Count == 0 && noLongerSpawning;
+        noEnemiesOrSpawns = (enemies.Length == 0 || enemiesAreAllNecro ) && bossProfiles.Count == 0 && noLongerSpawning;
         
         // Detects if there are any spawns still to be executed
         if (GetSpawn.instances == 0 && GetSpawn.ended && starter.HasStarted ||
@@ -123,6 +129,7 @@ public class EnemyCounter : MonoBehaviour
     }
     public void EndRound()
     {
+        if(enemyProfiles.Count > 0){DestroyAllEnemies();}
         Portal.SetActive(true);
         if(GameManager.main.LvlCount  % GameManager.main.portalInterval != 0 && !(BossRoundManager.main.timeUntilNextBoss <= 1)){
             PortalScript.main.NextLvl();
@@ -162,7 +169,7 @@ public class EnemyCounter : MonoBehaviour
         KillboxEventSystem.TriggerRoundEndEvent();
 
         // Audio
-        if (BossRoundManager.main.isBossRound && end_of_main_round)
+        if (BossRoundManager.main.isBossRound)
         {
             // MainAudioSystem.main.PlayMainLoop();
             VolumeControl.main.SetSilentSnapshot(true, 2);

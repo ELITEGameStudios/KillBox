@@ -5,11 +5,14 @@ using UnityEngine;
 
 public class EnemyProfile : MonoBehaviour
 {
+    private static float necroSelfDamageMultiplier = 2f;
+
     [SerializeField] private string enemyName;
     [SerializeField] private int maxHealth, damage, limit;
-    [SerializeField] private float speed, acceleration;
+    [SerializeField] private float speed, acceleration, necroHitInterval = 0.5f, currentNecroHitTimer;
     [SerializeField] private bool boss;
     [SerializeField] private Animator animator;
+    [SerializeField] private AIDestinationSetter destinationSetter;
     [SerializeField] private EnemyHealth enemyHealth;
     [SerializeField] private EnemyDamage enemyDamage;
     [SerializeField] private PlayerDamage playerDamage;
@@ -19,6 +22,9 @@ public class EnemyProfile : MonoBehaviour
     public bool hasDrop;
     public bool animEnable;
 
+    public bool canBeNecro => destinationSetter != null && !bypassNecro && !boss;
+    public bool bypassNecro, isNecro;
+    public bool canHitAsNecro => isNecro && currentNecroHitTimer <= 0;
 
     public string EnemyName { get => enemyName; private set => enemyName = value; }
     public int MaxHealth { get => maxHealth; private set => maxHealth = value; }
@@ -41,6 +47,7 @@ public class EnemyProfile : MonoBehaviour
 
         if (pathfinding != null)
         {
+            destinationSetter = GetComponent<AIDestinationSetter>();
             speed = pathfinding.maxSpeed;
             acceleration = pathfinding.maxAcceleration;
         }
@@ -64,6 +71,11 @@ public class EnemyProfile : MonoBehaviour
         }
         if (tokenParticleObject != null) { tokenParticleObject.SetActive(hasDrop); }
 
+        if (isNecro)
+        {
+            NecroUpdate();
+        }
+
     }
 
     public void EnableEnemy()
@@ -74,6 +86,49 @@ public class EnemyProfile : MonoBehaviour
         enemyDamage.enabled = true;
         playerDamage.enabled = true;
         pathfinding.enabled = true;
+    }
+
+    public void SetAsNecro()
+    {
+        if(!canBeNecro){return;}
+        isNecro = true;
+        enemyHealth.CurrentHealth = enemyHealth.maxHealth;
+    }
+
+    public void NecroUpdate()
+    {
+        if(currentNecroHitTimer > 0){currentNecroHitTimer -= Time.deltaTime;}
+
+        // Find closest enemy
+        if(EnemyCounter.main.enemyProfiles.Count == 0){return;}
+        EnemyProfile targetEnemy = EnemyCounter.main.enemyProfiles[0];
+        float distance = Vector2.Distance(targetEnemy.transform.position, transform.position);
+        for (int i = 1; i < EnemyCounter.main.enemyProfiles.Count; i++)
+        {
+            EnemyProfile obj = EnemyCounter.main.enemyProfiles[i];
+            if(obj == gameObject){continue;}
+
+            float newDist = Vector2.Distance(obj.transform.position, transform.position);
+            if (distance < newDist)
+            {
+                targetEnemy = obj;
+                distance = newDist;
+            }
+        }
+
+        // Pathfind to closest enemy
+        destinationSetter.target = targetEnemy.transform;
+    }
+
+    public void HitAsNecro(EnemyProfile otherProfile)
+    {
+        currentNecroHitTimer = necroHitInterval;
+        otherProfile.enemyHealth.TakeDmg(enemyDamage.damage);
+        if(enemyDamage.destroyOnHit){enemyHealth.Die();}
+        else
+        {
+            enemyHealth.TakeDmg((int)(enemyDamage.damage * necroSelfDamageMultiplier));
+        }
     }
 
     public void DisableEnemy()
@@ -95,5 +150,17 @@ public class EnemyProfile : MonoBehaviour
     public void AddDrop()
     {
         hasDrop = true;
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        EnemyProfile otherProfile = collision.gameObject.GetComponent<EnemyProfile>();
+        if(otherProfile != null)
+        {
+            if (canHitAsNecro)
+            {
+                HitAsNecro(otherProfile);
+            }
+        }
     }
 }

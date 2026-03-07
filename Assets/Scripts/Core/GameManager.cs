@@ -512,6 +512,9 @@ public class GameManager : MonoBehaviour, ISelfResListener
         ToggleChannelManager.main.ResetChannels();
         InventoryUIManager.Instance.UpdateUI();
         UpgradesManager.Instance.ChooseUpgrade();
+        
+
+        VolumeControl.main.SetSilentSnapshot(false, 2);
         // ChestSystemManager.instance.RefreshCheck();
 
         BossRoundManager.main.UpdateCounters();

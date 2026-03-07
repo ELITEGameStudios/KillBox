@@ -87,6 +87,7 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
     public void EndBossRound()
     {
         isBossRound = false;
+        MainAudioSystem.main.PlayMainLoop();
         UpdateCounters();
     }
 
@@ -144,7 +145,7 @@ public class BossRoundManager : MonoBehaviour, IRestartListener
 
         // bossRoundTier = (int)_bossType;
         bossType = _bossType; // Must fix implementation with old boss implementation. Bug exists because of the spawn rule below
-
+        spawnSystem.ResetSpawning(false);
         spawnSystem.SetBossSpawnList(bossType);
         KillboxEventSystem.TriggerBossRoundChangeEvent();
 

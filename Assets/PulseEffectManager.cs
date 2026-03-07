@@ -44,6 +44,7 @@ public class PulseEffectManager : MonoBehaviour
         {
             if(!effectPool[i].active){targetInstance = effectPool[i]; break;}
         }
+        
         if(targetInstance == null)
         {
             float highestElapsed = effectPool[0].time;
@@ -63,6 +64,7 @@ public class PulseEffectManager : MonoBehaviour
     {
         renderTexCam.orthographicSize = Camera.main.orthographicSize;
         renderTexCam.backgroundColor = Camera.main.backgroundColor;
+        renderTexCam.ResetAspect();
         // Only for testing
         // time += Time.deltaTime;
         // float distancea = 5;

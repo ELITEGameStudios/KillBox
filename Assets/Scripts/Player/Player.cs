@@ -120,7 +120,7 @@ public class Player
         primaryGunGraphic.enabled = true;
         dualGunGraphic.enabled = true;
 
-        PulseEffectManager.instance.AddEffect(tf.position, expandRate: 0.5f, strength:-0.015f);
+        PulseEffectManager.instance.AddEffect(tf.position, expandRate: 1f, strength:-0.005f);
         tf.GetChild(0).GetComponent<Light2D>().intensity = lightIntensity;
         appearParticleAffect.Play();
     }

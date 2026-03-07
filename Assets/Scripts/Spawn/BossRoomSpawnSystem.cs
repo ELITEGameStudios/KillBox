@@ -184,10 +184,11 @@ public class BossRoomSpawnSystem : MonoBehaviour
         isSpawning = false;
     }
 
-    public void ResetSpawning(){
+    public void ResetSpawning(bool withSpawnList = true){
         // StopCoroutine(spawning());
         enemyIndex = 0;
         isSpawning = false;
+        bossHasSpawned = false;
         spawnsAfterBoss = 0;
         SetBossSpawnList(0);
     }

@@ -7,13 +7,11 @@ public class NecroSpecial : MonoBehaviour, SpecialUpgrade
 
     public void OnInit()
     {
-        GunHandler.Instance.SetDual(true);
-        Player.main.specialUpgradeEnum = UpgradesList.SpecialUpgradeEnum.DUAL_WIELD;
+        Player.main.specialUpgradeEnum = UpgradesList.SpecialUpgradeEnum.NECRO;
     }
 
     public void OnDeactivate()
     {
-        GunHandler.Instance.SetDual(false);
         Player.main.specialUpgradeEnum = UpgradesList.SpecialUpgradeEnum.NONE;
     }
 

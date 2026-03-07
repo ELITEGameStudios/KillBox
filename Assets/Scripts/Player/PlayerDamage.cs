@@ -32,6 +32,8 @@ public class PlayerDamage : MonoBehaviour
     }
     void Update()
     {
+        if(healthScript.hostProfile.isNecro){return;}
+
         ClosestExplosion = GameObject.FindWithTag("Explosion");
         if (ClosestExplosion != null)
         {
@@ -91,8 +93,15 @@ public class PlayerDamage : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if(healthScript.hostProfile.isNecro){return;}
+        
         if (collision.gameObject.CompareTag("Bullet"))
         {
+
+            if (healthScript.hostProfile.canBeNecro && Player.main.specialUpgradeEnum == UpgradesList.SpecialUpgradeEnum.NECRO){
+                if(Random.Range(0, 40) == 1){healthScript.hostProfile.SetAsNecro(); return;}
+            }
+
             BulletClass bulletScript = collision.gameObject.GetComponent<BulletClass>();
             healthScript.TakeDmg(bulletScript.damage);
 
@@ -142,8 +151,14 @@ public class PlayerDamage : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
+        if(healthScript.hostProfile.isNecro){return;}
+        
         if (collider.gameObject.CompareTag("Bullet"))
         {
+            if (healthScript.hostProfile.canBeNecro && Player.main.specialUpgradeEnum == UpgradesList.SpecialUpgradeEnum.NECRO){
+                if(Random.Range(0, 40) == 1){healthScript.hostProfile.SetAsNecro(); return;}
+            }
+
             BulletClass bulletScript = collider.gameObject.GetComponent<BulletClass>();
             healthScript.TakeDmg(bulletScript.damage);
 

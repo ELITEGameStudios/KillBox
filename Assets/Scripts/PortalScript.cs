@@ -162,7 +162,7 @@ public class PortalScript : MonoBehaviour
                 // Something Must be done here, only happens when the player has passed all set boss rounds OR in boss challenge
             }
             
-            PulseEffectManager.instance.AddEffect(transform.position, expandRate: 0.25f, strength:-0.025f);
+            // PulseEffectManager.instance.AddEffect(transform.position, expandRate: 0.25f, strength:-0.025f);
         }
     }
 

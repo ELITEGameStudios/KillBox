@@ -28,6 +28,7 @@ public class EnemyDamage : MonoBehaviour
 
     [SerializeField]
     private bool destruct_on_harm;
+    public  bool destroyOnHit => destruct_on_harm;
     //private float HitTimer, AttackCDTimer;
     
     [SerializeField]
