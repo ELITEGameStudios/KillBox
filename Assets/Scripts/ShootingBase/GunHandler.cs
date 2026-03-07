@@ -107,10 +107,17 @@ public class GunHandler : MonoBehaviour
         in_ui = _status;
     }
 
-    public void PurchaseDual(){
-        dual_gameObject.SetActive(true);
-        owns_dual = true;
-        EquipWeapon(key: "Pistol", dual: true);
+    public void SetDual(bool dual){
+        dual_gameObject.SetActive(dual);
+        owns_dual = dual;
+        if(dual) {
+            EquipWeapon(key: "Pistol", dual: true);
+            dual_shooter_script.enabled = true;    
+        }
+        else
+        {
+            dual_weapon = null;
+        };
     }
 
     public void SetCooldown(int id, CooldownScript instance){
@@ -308,22 +315,22 @@ public class GunHandler : MonoBehaviour
         UIRefresh();
     }
 
-    private void UIRefresh(){
+    public void UIRefresh(){
         GameplayUI.instance.WeaponsUIRefresh(this);
     }
 
-    public void OnShoot(){
-        if(current_is_primary){
-            InventoryUIManager.Instance.primary_element.ShootAnimation();
-        }
-        else{
-            InventoryUIManager.Instance.secondary_element.ShootAnimation();
-        }
+    // public void OnShoot(){
+    //     if(current_is_primary){
+    //         InventoryUIManager.Instance.primary_element.ShootAnimation();
+    //     }
+    //     else{
+    //         InventoryUIManager.Instance.secondary_element.ShootAnimation();
+    //     }
 
-        if(has_dual){
-            InventoryUIManager.Instance.dual_element.ShootAnimation();
-        }
-    }
+    //     if(has_dual){
+    //         InventoryUIManager.Instance.dual_element.ShootAnimation();
+    //     }
+    // }
     
     void Update(){
         if(cooldown != null){

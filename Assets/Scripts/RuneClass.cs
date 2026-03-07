@@ -69,7 +69,7 @@ public class RuneClass : MonoBehaviour
     public void ClaimSpecialUpgradeRune()
     {
 
-        Player.main.SetSpecialUpgrade((UpgradesList.SpecialUpgrades)upgradeInt);
+        Player.main.AddSpecialUpgrade((UpgradesList.SpecialUpgradeEnum)upgradeInt);
 
         runeGraphicObject.enabled = false;
         glowGraphicObject.SetActive(false);

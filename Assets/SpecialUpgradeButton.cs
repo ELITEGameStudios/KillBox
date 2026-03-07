@@ -10,7 +10,7 @@ public class SpecialUpgradeButton : MonoBehaviour
     public Image runeImage;
     public Animator anim;
     public bool unlocked;
-    public SpecialUpgrades targetUpgrade;
+    public SpecialUpgradeEnum targetUpgrade;
 
     public void SetLocked()
     {

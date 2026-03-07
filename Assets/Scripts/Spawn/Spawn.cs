@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Spawn : MonoBehaviour
 {
-    public bool allow, instant, boss_round, boss_allowed, ended;
+    public bool allow, instant, boss_allowed, ended;
     public static Spawn instance {get; private set;}
     public List <Spawn2> spawns {get; private set;}
     public float[] SpawnTimeStart, Step;
@@ -114,10 +114,6 @@ public class Spawn : MonoBehaviour
         {
             spawn.RefreshEntries();
         }
-    }
-
-    public void InitBossRound(bool is_round){
-        boss_round = is_round;
     }
 
     public void StartSpawnSequence()

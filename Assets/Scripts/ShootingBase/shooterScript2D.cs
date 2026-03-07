@@ -280,7 +280,7 @@ public class shooterScript2D : MonoBehaviour
         // CanShoot = false;
         burst_rounds++;
         graphicRecoilTime = initGraphicRecoilTime;
-        GunHandler.Instance.OnShoot();
+        // GunHandler.Instance.OnShoot();
         // KillboxEventSystem.TriggerFireWeaponEvent(new WeaponEventData(weaponItem, GunHandler.Instance.current_is_primary, GunHandler.Instance.has_dual));
 
         

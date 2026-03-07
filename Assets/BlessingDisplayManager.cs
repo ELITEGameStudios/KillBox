@@ -5,17 +5,69 @@ using UnityEngine;
 public class BlessingDisplayManager : MonoBehaviour
 {
     // public FadeManager shardGraphics, cutterGraphics, aetherGraphics, guardianGraphics;
-    public GameManager shardGraphics, cutterGraphics, aetherGraphics, guardianGraphics;
+    public Animator animator;
+    public BlessingType currentType;
+    public GameObject bgObject;
+    public FlipbookUISystem[] flipbooks;
+    public string introAnimTrigger, outroAnimTrigger;
+    public float introTime = 1, outroTime = 1;
+    
+    public static BlessingDisplayManager instance {get; private set;}
 
-    // Start is called before the first frame update
-    void Start()
+    public enum BlessingType
     {
-        
+        SHARD,
+        CUTTER,
+        SPECIAL,
+        GUARDIANS,
+        FINAL,
+        NONE,
     }
 
-    // Update is called once per frame
-    void Update()
+    void Awake()
     {
-        
+        if(instance == null){instance = this;}
+        else if(instance != this){Destroy(this);}
     }
+
+    public void BeginBlessingSequence(BlessingType blessingType)
+    {
+        bgObject.SetActive(true);
+        currentType = blessingType;
+        
+        if(animator != null)
+        {
+            animator.SetTrigger(introAnimTrigger);
+        }
+
+        if(currentType != BlessingType.NONE)
+        {
+            flipbooks[(int)blessingType].gameObject.SetActive(true);
+        }
+
+        Invoke(nameof(OnIntroTime), introTime);
+    }
+
+    public void OnIntroTime()
+    {
+        flipbooks[(int)currentType].Begin();
+    }
+    public void OnOutroTime()
+    {
+        flipbooks[(int)currentType].gameObject.SetActive(false);
+        currentType = BlessingType.NONE;
+
+        bgObject.SetActive(false);
+    }
+
+    public void EndBlessingSequence()
+    {
+        if(animator != null)
+        {
+            animator.SetTrigger(outroAnimTrigger);
+        }
+
+        Invoke(nameof(OnOutroTime), outroTime);
+    }
+
 }

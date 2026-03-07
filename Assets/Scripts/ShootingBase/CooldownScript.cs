@@ -165,7 +165,16 @@ public class CooldownScript : MonoBehaviour, IRestartListener
     public void AddCount(shooterScript2D caller, float value){
         count += value;
         time_since_last_shot = 0;
-        // animator.Play("Shot");
+        if(GunHandler.Instance.current_is_primary){
+            GameplayUI.instance.GetPrimaryAnimator().SetTrigger("Shoot");
+        }
+        else{
+            GameplayUI.instance.GetSecondaryAnimator().SetTrigger("Shoot");
+        }
+        if(Player.main.currentSpecialUpgrade is DualWieldSpecial)
+        {
+            GameplayUI.instance.GetDualAnimator().SetTrigger("Shoot");
+        }
 
         if(!shot){
             shot = true;

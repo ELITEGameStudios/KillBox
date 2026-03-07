@@ -15,7 +15,8 @@ public class Game
     
     public bool freeplay;
     public int difficultyIndex;
-    public string difficulty;
+    public Difficulty difficulty => (Difficulty)difficultyIndex;
+    public string difficultyName;
     public float difficultyCoefficient;
     public int round;
     public int[] upgradesPurchased; // Indexed in order of upgrade type sorted in Upgrade Manager scripts
@@ -24,13 +25,14 @@ public class Game
     public int score;
     public Lifetime lifetime;
     public Gamemode gamemode;
+
     public bool started {get {return lifetime == Lifetime.STARTED || lifetime == Lifetime.FINISHED;}}
     
     public bool hasUpgradedArsenal
     {
         get
         {
-            return KillBox.currentGame.gamemode == Gamemode.MAIN ? round >= EnemyList.instance.bossRounds[0] : true;
+            return KillBox.currentGame.gamemode == Gamemode.MAIN ? true : true;
         }
     }
     public int specialUpgrade; // Representation of what special the player has. -1 is nothing, 0 = dual wield, 1 = gold weapons, 2 = necromancy, 3 = upgrades mastery
@@ -40,7 +42,14 @@ public class Game
         STARTED,
         FINISHED
     }
-    
+
+    public enum Difficulty{
+        EASY,
+        STANDARD,
+        EXTREME
+    }
+
+
     public enum Gamemode
     {
         MAIN,
@@ -49,7 +58,7 @@ public class Game
 
     public Game(Gamemode gamemode, int difficultyIndex, bool isFreeplay){
         this.difficultyIndex = difficultyIndex;
-        difficulty = difficultyNames[difficultyIndex];
+        difficultyName = difficultyNames[difficultyIndex];
         difficultyCoefficient = difficultyCoefficients[difficultyIndex];
 
         this.gamemode = gamemode;

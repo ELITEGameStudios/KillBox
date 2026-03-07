@@ -633,26 +633,14 @@ MonoBehaviour:
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
+    m_PressedTrigger: Normal
+    m_SelectedTrigger: Normal
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 5382380176506676194}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UpgradesManager, Assembly-CSharp
-        m_MethodName: SetKey
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &8433406183137300621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -701,7 +689,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lockedSprite: {fileID: 21300000, guid: 116dce33e9f9a224584068a28248815c, type: 3}
   unlockedSprite: {fileID: 21300000, guid: cfd873354d95b864da007fbe14a1412e, type: 3}
-  runeImage: {fileID: 0}
+  runeImage: {fileID: 8467323943007776151}
+  anim: {fileID: 1015175129123751708}
+  unlocked: 0
+  targetUpgrade: 0
 --- !u!1 &5022702993087227163
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,8 +727,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 24.885094, y: 0}
-  m_SizeDelta: {x: -195.0986, y: 0}
+  m_AnchoredPosition: {x: 13.1378, y: 0}
+  m_SizeDelta: {x: -171.604, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8655949307452704682
 CanvasRenderer:

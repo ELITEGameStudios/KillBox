@@ -59,7 +59,7 @@ public class Upgrade
 public class UpgradesList
 {
     
-    public enum SpecialUpgrades
+    public enum SpecialUpgradeEnum
     {
         NONE,
         DUAL_WIELD,

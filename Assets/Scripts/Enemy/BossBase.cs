@@ -55,7 +55,11 @@ public class BossBase : MonoBehaviour, IDeathHandler
             int bonus = EconomyManager.instance.GetBossBonus((BossType)bossType);
             GameManager.main.OnPickupToken(bonus, false);
             BonusesUIManager.instance.ActivateBonus(bossType.ToString().ToLower(), bonus, 10);
+            
+            Player.main.AddDefeatedBoss((BossType)bossType);
+            PulseEffectManager.instance.AddEffect(transform.position, expandRate: 0.4f, strength:-0.06f);
         }
+
     }
 
     // Start is called before the first frame update

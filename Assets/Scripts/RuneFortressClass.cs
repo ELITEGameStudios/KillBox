@@ -21,7 +21,7 @@ public class RuneFortressClass : MonoBehaviour
     private bool found_bar = false;
 
     [SerializeField]
-    private GameObject area_prefab, area, ui_element_root;
+    private GameObject area_prefab, runeEnemy, ui_element_root;
 
     private Slider ui_counter_slider;
     private Text ui_counter_text;
@@ -35,7 +35,7 @@ public class RuneFortressClass : MonoBehaviour
     public int active_progress { get; private set; }
     public int target_progress { get; private set; } = 5;
 
-    [SerializeField] private SimpleContinuousSpawner linkedSpawner;
+    // [SerializeField] private SimpleContinuousSpawner linkedSpawner;
 
 
     // Start is called before the first frame update
@@ -69,13 +69,24 @@ public class RuneFortressClass : MonoBehaviour
 
         if (activated)
         {
-            ui_counter_slider.value = active_progress;
-            ui_counter_text.text = active_progress.ToString() + " | " + target_progress.ToString();
-
-            if (active_progress >= target_progress)
+            try
             {
+                if(runeEnemy == null)
+                {
+                    Finish();
+                }
+            }
+            catch(MissingReferenceException){
                 Finish();
             }
+
+            // ui_counter_slider.value = active_progress;
+            // ui_counter_text.text = active_progress.ToString() + " | " + target_progress.ToString();
+
+            // if (active_progress >= target_progress)
+            // {
+            //     Finish();
+            // }
         }
         if (!found_bar)
         {
@@ -103,18 +114,17 @@ public class RuneFortressClass : MonoBehaviour
     void Activate()
     {
         activated = true;
-        linkedSpawner.enabled = true;
+        // linkedSpawner.enabled = true;
         // animator.Play("Sleep");
         animator.SetTrigger("OnTrialActivate");
         GetComponent<Collider2D>().enabled = false;
 
-        area = Instantiate(area_prefab, transform.position, transform.rotation);
+        runeEnemy = Instantiate(area_prefab, transform.position, transform.rotation);
+        runeEnemy.transform.SetParent(null);
+        runeEnemy.transform.localScale = new Vector3(1, 1, 1);
 
-        area.transform.SetParent(null);
-        area.transform.localScale = new Vector3(1, 1, 1);
-
-        ui_element_root.SetActive(true);
-        ui_counter_slider.maxValue = target_progress;
+        // ui_element_root.SetActive(true);
+        // ui_counter_slider.maxValue = target_progress;
 
         PortalScript.main.gameObject.SetActive(false);
 
@@ -122,26 +132,27 @@ public class RuneFortressClass : MonoBehaviour
 
     void Finish()
     {
-        linkedSpawner.enabled = false;
+        // linkedSpawner.enabled = false;
         animator.SetTrigger("OnTrialSucceed");
+        Debug.Log("Finished!");
 
-        ParticleSystem[] children = new ParticleSystem[] {
-            area.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>(),
-            area.transform.GetChild(1).gameObject.GetComponent<ParticleSystem>(),
-            area.transform.GetChild(2).gameObject.GetComponent<ParticleSystem>()
-        };
+        // ParticleSystem[] children = new ParticleSystem[] {
+        //     runeEnemy.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>(),
+        //     runeEnemy.transform.GetChild(1).gameObject.GetComponent<ParticleSystem>(),
+        //     runeEnemy.transform.GetChild(2).gameObject.GetComponent<ParticleSystem>()
+        // };
 
-        foreach (ParticleSystem item in children)
-        { item.loop = false; }
+        // foreach (ParticleSystem item in children)
+        // { item.loop = false; }
 
-        Destroy(area.transform.GetChild(3).gameObject);
+        // Destroy(runeEnemy.transform.GetChild(3).gameObject);
 
         activated = false;
         finished = true;
 
-        ui_element_root.SetActive(false);
+        // ui_element_root.SetActive(false);
 
-        EnemyCounter.main.DestroyAllEnemies();
+        // EnemyCounter.main.DestroyAllEnemies();
 
         GameManager.main.hasAcquiredKey[(int)bossType-2] = true; 
 

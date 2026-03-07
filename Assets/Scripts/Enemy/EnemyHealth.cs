@@ -17,6 +17,7 @@ public class EnemyHealth : MonoBehaviour
     public bool in_fortress {get; private set;}
     [SerializeField] private bool preventDefaultDeath, immortal, ignoresDamage;
     [SerializeField] private EnemyProfile profile; 
+    public EnemyProfile hostProfile => profile; 
     [SerializeField] private UnityEvent onTakeDamage, onDie; 
     [SerializeField] private IDeathHandler deathHandler;
     public void SetDeathHandler(IDeathHandler deathHandler) {

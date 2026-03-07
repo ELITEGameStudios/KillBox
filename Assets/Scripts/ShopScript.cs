@@ -125,13 +125,13 @@ public class ShopScript : MonoBehaviour
         }
     }
 
-    public void PurchaseDualWield()
-    {
-        if(GameManager.main.ScoreCount >= 20){
-            GameManager.main.SetLowerScore(GameManager.main.ScoreCount - 20);
-            GunHandler.Instance.PurchaseDual();
-        }
-    }
+    // public void PurchaseDualWield()
+    // {
+    //     if(GameManager.main.ScoreCount >= 20){
+    //         GameManager.main.SetLowerScore(GameManager.main.ScoreCount - 20);
+    //         GunHandler.Instance.PurchaseDual();
+    //     }
+    // }
 
     public void EquipGun(int GunIndex)
     {

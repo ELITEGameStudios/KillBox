@@ -21,21 +21,21 @@ public class DroppedItemHandler : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("DroppedToken"))
-        {
-            manager.OnPickupToken(1);
-            collision.gameObject.SetActive(false);
+        ItemPickup item = collision.GetComponent<ItemPickup>();
+
+        if(item != null){
+            item.OnPickup();
         }
 
-        if (collision.gameObject.CompareTag("DroppedTutorialToken"))
-        {
-            TutorialManager.tutorialManager.tokenProgress++;
-            manager.OnPickupToken(1);
+        // if (collision.gameObject.CompareTag("DroppedTutorialToken"))
+        // {
+        //     TutorialManager.tutorialManager.tokenProgress++;
+        //     manager.OnPickupToken(1);
 
-            InventoryUIManager.Instance.UpdateUI();
-            UpgradesManager.Instance.ChooseUpgrade();
+        //     InventoryUIManager.Instance.UpdateUI();
+        //     UpgradesManager.Instance.ChooseUpgrade();
 
-            Destroy(collision.gameObject);
-        }
+        //     Destroy(collision.gameObject);
+        // }
     }
 }

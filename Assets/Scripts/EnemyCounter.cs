@@ -84,8 +84,14 @@ public class EnemyCounter : MonoBehaviour
         enemies = GameObject.FindGameObjectsWithTag(tag);
         enemiesInScene = enemyProfiles.Count;
 
+        bool enemiesAreAllNecro = true;
+        foreach (EnemyProfile enemyProfile in enemyProfiles)
+        {
+            if(!enemyProfile.isNecro){enemiesAreAllNecro = false; break;}
+        }
+
         // Main condition for ending the round
-        noEnemiesOrSpawns = enemies.Length == 0 && noLongerSpawning;
+        noEnemiesOrSpawns = (enemies.Length == 0 || enemiesAreAllNecro ) && bossProfiles.Count == 0 && noLongerSpawning;
         
         // Detects if there are any spawns still to be executed
         if (GetSpawn.instances == 0 && GetSpawn.ended && starter.HasStarted ||
@@ -123,6 +129,7 @@ public class EnemyCounter : MonoBehaviour
     }
     public void EndRound()
     {
+        if(enemyProfiles.Count > 0){DestroyAllEnemies();}
         Portal.SetActive(true);
         if(GameManager.main.LvlCount  % GameManager.main.portalInterval != 0 && !(BossRoundManager.main.timeUntilNextBoss <= 1)){
             PortalScript.main.NextLvl();
@@ -135,11 +142,19 @@ public class EnemyCounter : MonoBehaviour
         GameManager.main.OnPickupToken(finishedBonus, false);
         BonusesUIManager.instance.ActivateBonus("finished_round", finishedBonus);
 
-        if (KillBox.currentGame.round % 5 == 0)
+        if (KillBox.currentGame.round % 4 == 0)
         {
-            int fiveRoundBonus = EconomyManager.instance.Get5RoundBonus();
+            int fiveRoundBonus = EconomyManager.instance.Get4RoundBonus();
             GameManager.main.OnPickupToken(fiveRoundBonus, false);
             BonusesUIManager.instance.ActivateBonus("5round", fiveRoundBonus);
+
+            if(GameManager.main.currentMapIndex == 99)
+            {
+                foreach (AetherTrialDoorOpenEventScript eventScript in AetherTrialDoorOpenEventScript.instances)
+                {
+                    eventScript.CheckEvent();
+                }
+            }
         }
 
         GameManager.main.CheckDamageless();
@@ -154,10 +169,11 @@ public class EnemyCounter : MonoBehaviour
         KillboxEventSystem.TriggerRoundEndEvent();
 
         // Audio
-        if (BossRoundManager.main.isBossRound && !end_of_main_round)
+        if (BossRoundManager.main.isBossRound)
         {
             // MainAudioSystem.main.PlayMainLoop();
             VolumeControl.main.SetSilentSnapshot(true, 2);
+            BossRoundManager.main.EndBossRound();
             KillboxEventSystem.TriggerBossRoundEndEvent();
         }
         // else if (BossRoundManager.main.GetTierOfRound(GameManager.main.LvlCount + 1) != -1 && !end_of_main_round)
@@ -173,15 +189,7 @@ public class EnemyCounter : MonoBehaviour
         //     portalScript.portalAnimator.Play("PortalAnim");
         //     AnimAccept = false;
         // }
-
-        // Door behaviour
-        if (!end_of_main_round)
-        {
-            // foreach (Door door in Door.doors){ 
-            //     door.RoundEnd();
-            // }    
-
-        }
+        
         GameManager.main.roundState = GameManager.RoundState.POSTROUND;
         end_of_main_round = true;
     }

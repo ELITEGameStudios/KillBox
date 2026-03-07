@@ -14,9 +14,13 @@ public class PlayerInitializer : MonoBehaviour
     }
 
     void Update(){
-        if (Player.main == null || Player.main.tf == null)
-        {
+        if (Player.main == null || Player.main.tf == null){
             self = new Player(gameObject, gameObject.GetComponent<PlayerHealth>(), pWeapon, dWeapon, playerSprite, appear);
+        }
+
+        if(self != null)
+        {
+            
         }
     }
 }

@@ -80,7 +80,7 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
         // If the selected upgrade is maxed out
         if (current_levels[target] >= upgrade.max_level)
         {
-            button.interactable = false;
+            // button.interactable = false;
             //graphic.color = error;
             text.text = "This Is MAXED!";
             // text.color = text_color;
@@ -267,9 +267,9 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
         GunHandler.Instance.primary_cooldown.CheckUpgrades(reset);
         GunHandler.Instance.secondary_cooldown.CheckUpgrades(reset);
 
-        if(current_levels[4] > 0 && !GunHandler.Instance.owns_dual){
-            GunHandler.Instance.PurchaseDual();
-        }
+        // if(current_levels[4] > 0 && !GunHandler.Instance.owns_dual){
+        //     GunHandler.Instance.PurchaseDual();
+        // }
 
         ChooseUpgrade();
         // UpdateStats();
@@ -310,18 +310,18 @@ public class UpgradesManager : MonoBehaviour, IBackButtonListener
         }
         
         
-        foreach (SpecialUpgradeButton button in specialUpgradeButtons)
-        {
-            if (Player.main.specialUpgrade == button.targetUpgrade)
-            {
-                if (!button.unlocked) { button.SetUnlocked(); }
-                continue;
-            }
-            else
-            {
-                if (button.unlocked) { button.SetLocked(); }
-            }
-        }
+        // foreach (SpecialUpgradeButton button in specialUpgradeButtons)
+        // {
+        //     if (Player.main.specialUpgradeEnum == button.targetUpgrade)
+        //     {
+        //         if (!button.unlocked) { button.SetUnlocked(); }
+        //         continue;
+        //     }
+        //     else
+        //     {
+        //         if (button.unlocked) { button.SetLocked(); }
+        //     }
+        // }
     }
 
     public void SetKey(int key){

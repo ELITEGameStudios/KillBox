@@ -61,7 +61,7 @@ TagManager:
   - NoPlayer-Bullet
   - Non-Map-Collision
   - DodgePostProcessing
-  - 
+  - DodgeObjectDetection
   - 
   - 
   - 

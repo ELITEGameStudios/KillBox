@@ -25,6 +25,9 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
         }
     }
     private float debuffedHealth;
+    [SerializeField] public float maxShieldBuffHP {get; private set;} = 150;
+    [SerializeField] public float currentShieldHP {get; private set;}
+    [SerializeField] public bool hasShield => Player.main.specialUpgradeEnum == UpgradesList.SpecialUpgradeEnum.MASTERY;
 
 
     
@@ -193,7 +196,22 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     {
         if (!(EquipmentManager.instance.equipmentType == EquipmentManager.EquipmentType.ULTRAMODE && EquipmentManager.instance.usingEquipment))
         {
-            CurrentHealth -= (int)(Dmg * (1 - (0.05f * buffsManager.buff_strength[0])));
+
+            if(hasShield && currentShieldHP > 0)
+            {
+                currentShieldHP -= Dmg;
+                if(currentShieldHP < 0)
+                {
+                    Dmg = (int)Mathf.Abs(currentShieldHP); 
+                    CurrentHealth -= (Dmg);
+                }
+            }
+            else
+            {
+                CurrentHealth -= (Dmg);
+            }
+
+            // CurrentHealth -= (int)(Dmg * (1 - (0.05f * buffsManager.buff_strength[0])));
             immune = true;
             isDamageless = false;
 
@@ -322,6 +340,9 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     {
         CurrentHealth = MaxHealth;
         DebuffedHealth = 0;
+        if(Player.main.specialUpgradeEnum == UpgradesList.SpecialUpgradeEnum.MASTERY){
+            currentShieldHP = maxShieldBuffHP;
+        }
     }
 
     public void MaxHealthCheck(){

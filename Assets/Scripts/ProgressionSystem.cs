@@ -210,7 +210,7 @@ public class ProgressionSystem : MonoBehaviour, IMainRoundEventListener, IPurcha
         AddXp(150);
     }
     public void OnBossRoundEnd() {
-        AddXp((int)( 500 * (BossRoundManager.main.bossRoundTier+1)*GameManager.main.difficulty_coefficient ));
+        // AddXp((int)( 500 * (BossRoundManager.main.bossRoundTier+1)*GameManager.main.difficulty_coefficient ));
     }
 
     public void OnBossSpawn() {}
