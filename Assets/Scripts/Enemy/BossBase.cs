@@ -30,6 +30,7 @@ public class BossBase : MonoBehaviour, IDeathHandler
     public Phase[] phases; // Add phases in minHealth descending order.
     public BossStateData[] statesInPhase;
     public Phase currentPhase;
+    public BossStateData fallbackState; // if phase does not exist and no other state is playing
     public BossStateData currentState;
     public int nextStateIndex;
     public bool dontInstantlySetState, startedAttacks;
@@ -73,6 +74,10 @@ public class BossBase : MonoBehaviour, IDeathHandler
             if(!dontInstantlySetState) ChooseNextState();
             // SetState(currentPhase.statesInPhase[nextStateIndex], nextStateIndex+1);
         }
+        else
+        {
+            if(!dontInstantlySetState) ChooseNextState();
+        }
 
         if(bossType != null)
         {
@@ -98,6 +103,24 @@ public class BossBase : MonoBehaviour, IDeathHandler
         currentState = state;
         currentState.OnReset();
         
+        
+        if (currentState.introWaitTime > 0 && !ignoreStall)
+        {
+            stallTimer = currentState.introWaitTime;
+        }
+        else
+        {
+            currentState.Start();
+            startedAttacks = true;
+        }
+    }
+
+    protected void SetState(BossStateData state, bool ignoreStall = false) // For states which DO NOT associate with phases
+    {
+        nextStateIndex = 0;
+
+        currentState = state;
+        currentState.OnReset();
         
         if (currentState.introWaitTime > 0 && !ignoreStall)
         {
@@ -141,6 +164,8 @@ public class BossBase : MonoBehaviour, IDeathHandler
 
     protected void PhaseCheck()
     {
+        if(phases.Length == 0 || currentPhase.statesInPhase.Length == 0){return;}
+        
         if (currentPhase.minHealth >= normalizedHealth)
         { // Detects wether a new phase should be chosen
             foreach (Phase phase in phases)
@@ -178,6 +203,11 @@ public class BossBase : MonoBehaviour, IDeathHandler
 
     protected virtual void ChooseNextState()
     {
+        if(phases.Length == 0 || currentPhase.statesInPhase.Length == 0){
+            SetState(fallbackState);
+            return;
+        }
+
         SetState(currentPhase.statesInPhase[nextStateIndex], nextStateIndex+1);
     }
     
