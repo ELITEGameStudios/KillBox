@@ -2879,6 +2879,22 @@ MonoBehaviour:
     started: 0
     maxEntitiesSharingState: 0
     stateTag: 
+  angryBeamState:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
+    finished: 0
+    started: 0
+    maxEntitiesSharingState: 0
+    stateTag: 
   spiralShoot:
     name: 
     displaySprite: {fileID: 0}
@@ -2943,27 +2959,34 @@ MonoBehaviour:
     started: 0
     maxEntitiesSharingState: 0
     stateTag: 
+  angryWhipState:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
+    finished: 0
+    started: 0
+    maxEntitiesSharingState: 0
+    stateTag: 
   beamPositionLerpAnimCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - serializedVersion: 3
-      time: 0.35054508
-      value: 0.4890091
-      inSlope: 1.8515432
-      outSlope: 1.8515432
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.13649502
-      outWeight: 0.1245492
     - serializedVersion: 3
       time: 1
       value: 1

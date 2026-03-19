@@ -42,10 +42,10 @@ public class GuardianBoss : BossBase
         chaosShoot = new GuardianMainState(this, "CHAOS", 3, 2, targetTime: 4, rotationSpeed: -320, maxEntities: 1);
         chaseState = new GuardianMainState(this, "CHASE", 12, 12, targetTime: chase_time, rotationSpeed: 70, startShootingTime: 5, maxEntities: -1);
         whipState = new GuardianMainState(this, "WHIP", 8, 8, targetTime: 7, rotationSpeed: -320, startShootingTime: 7, whip: true, maxEntities: 1);
-        beamState = new GuardianBeamState(this, "BEAM", iterations: 4, targetTime: 2, rotationSpeed: 15, width:4, beamDistance: 7, maxEntities: 1);
-        angryBeamState = new GuardianBeamState(this, "ANGRYBEAM", iterations: 8, targetTime: 1.15f, rotationSpeed: 15, width:2.5f, beamDistance: 7, maxEntities: 1);
+        beamState = new GuardianBeamState(this, "BEAM", iterations: 4, targetTime: 2, rotationSpeed: 15, width:4, beamDistance: 10, maxEntities: 1);
+        angryBeamState = new GuardianBeamState(this, "ANGRYBEAM", iterations: 8, targetTime: 1.4f, rotationSpeed: 15, width:2.5f, beamDistance: 7, maxEntities: 2);
 
-        angryWhipState = new GuardianMainState(this, "WHIP", 8, 8, targetTime: 7, rotationSpeed: -320, startShootingTime: 1, whip: true, maxEntities: 1);
+        angryWhipState = new GuardianMainState(this, "WHIP", 8, 8, targetTime: 7, rotationSpeed: -320, startShootingTime: 1, whip: true, maxEntities: 2);
         firstPhaseStates = new GuardianStateData[]{ chaseState, spiralShoot, beamState, whipState };
         secondPhaseStates = new GuardianStateData[]{ chaseState, spiralShoot, chaosShoot, beamState, whipState };
         finalPhaseStates = new GuardianStateData[]{ spiralShoot, angryWhipState, angryBeamState};
@@ -88,22 +88,33 @@ public class GuardianBoss : BossBase
             else
             {
                 int bossesSharingCandadite = 0;
+                bool hasBeam = false;
+                bool hasSpiral = false;
+
                 foreach (GuardianBoss boss in bosses)
                 {
                     if(boss == this){continue;}
                     if(!boss.startedAttacks) continue;
                     GuardianStateData bossStateData = boss.currentState as GuardianStateData;
-                    if(bossStateData.stateTag == candidateState.stateTag){bossesSharingCandadite++;}
+                    if(bossStateData.stateTag == candidateState.stateTag){
+                        bossesSharingCandadite++;
+                    }
+
+                    if(bossStateData.stateTag == "BEAM"){hasBeam = true;}
+                    if(bossStateData.stateTag == "SPIRAL"){hasSpiral = true;}
                 }
                 if(bossesSharingCandadite >= candidateState.maxEntitiesSharingState)
                 {
                     switch (candidateState.stateTag)
                     {
                         case "WHIP":
-                            candidateState = spiralShoot;
+                            candidateState = chaseState;
+                            break;
+                        case "SPIRAL":
+                            candidateState = whipState;
                             break;
                         case "BEAM":
-                            candidateState = whipState;
+                            candidateState = spiralShoot;
                             break;
                         default:
                             candidateState = chaseState;
@@ -115,6 +126,11 @@ public class GuardianBoss : BossBase
                 }
                 else
                 {
+                    if(( hasBeam && candidateState == spiralShoot) || (hasSpiral && candidateState == beamState))
+                    {
+                        candidateState = whipState;
+                        continue;
+                    }
                     SetState(candidateState);
                     return;
                 }
@@ -126,6 +142,11 @@ public class GuardianBoss : BossBase
     {
         bosses.Remove(this);
         Debug.Log("Guardian Removed");
+        if(bosses.Count == 1)
+        {
+            if(bosses[0].health.CurrentHealth / bosses[0].health.maxHealth < 0.5f)
+            bosses[0].health.CurrentHealth = (int)(bosses[0].health.maxHealth / 2f);
+        }
         base.DeathEvent(to_player);
     }
     public void HitPlayerWithWhip(){

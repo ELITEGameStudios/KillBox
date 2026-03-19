@@ -3,7 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class GuardianBeamState : GuardianStateData
 {
-    float targetTime, currentTime, rotationSpeed, beamDistance, width;
+    float targetTime, currentTime, rotationSpeed, beamDistance, width, lastAngle;
     Vector2 targetPos, startLerpPos;
     int iterations, currentIterations;
     
@@ -23,6 +23,7 @@ public class GuardianBeamState : GuardianStateData
     {
         currentIterations = 0;
         currentTime = 0;
+        lastAngle = 0;
         NewBeam();
     }
     public override void Update() // Called every frame while the object is active
@@ -42,7 +43,7 @@ public class GuardianBeamState : GuardianStateData
     
     void NewBeam()
     {
-        float newPosAngle = Random.Range(-180, 180);
+        float newPosAngle = (lastAngle + Random.Range(-150, 150)) % 360;
 
         Vector2 newPos = new Vector2(Mathf.Cos(newPosAngle * Mathf.Deg2Rad), Mathf.Sin(newPosAngle * Mathf.Deg2Rad)) * beamDistance;
 
@@ -58,7 +59,8 @@ public class GuardianBeamState : GuardianStateData
             beam.gameObject.SetActive(true);
             beam.BeginSequence(width, targetTime/2);
         }
-
+        
+        lastAngle = newPosAngle;
         currentIterations++;
     }
 

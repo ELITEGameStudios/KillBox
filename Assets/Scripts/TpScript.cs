@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class TpScript : MonoBehaviour
 {
     public int id, targetId;
-    public float distance, activate_timer;
+    public float distance, activate_timer, targetDistance = 0.5f;
     public GameObject Player, self;
     public GameObject[] Portals;
     public bool IsActive, activate;
@@ -49,7 +49,7 @@ public class TpScript : MonoBehaviour
         
         
         distance = Vector3.Distance(Player.transform.position, self.transform.position);
-        if(distance < 0.5 &&  !activated_by_trigger)
+        if(distance < targetDistance &&  !activated_by_trigger)
         {
             for(int i = 0; i < Portals.Length; i++)
             {

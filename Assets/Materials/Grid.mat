@@ -47,7 +47,7 @@ Material:
     - _power: 2
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
-    - _PlayerPos: {r: -5.3252206, g: 2.4055545, b: 0, a: 0}
+    - _PlayerPos: {r: 14.24193, g: -11.357311, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &3489892241521411094
 MonoBehaviour:
