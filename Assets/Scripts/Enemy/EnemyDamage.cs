@@ -5,20 +5,18 @@ using UnityEngine.Events;
 
 public class EnemyDamage : MonoBehaviour
 {
-    public Rigidbody2D rb;
     public PlayerHealth playerHealthScript;
 
     [SerializeField]
-    private Rigidbody2D playerRigidBody;
+    private float currentHitCooldown;
     public int damage, _ignite_intensity;
     public float hitKb;
-    public float HitCooldown = 1, AtCooldown = 1, immunity_time;
-    private float currentHitCooldown;
+    public float HitCooldown = 1, immunity_time;
 
     [SerializeField]
     private float _ignite_time;
     public string tag;
-    public bool CanAttack = true, EndOfContact = false, ignore_immunity, _ignites, triggerEvent;
+    public bool CanAttack = true, ignore_immunity, _ignites, triggerEvent;
 
     [SerializeField]
     private EnemyHealth eh;
@@ -46,7 +44,7 @@ public class EnemyDamage : MonoBehaviour
 
         if(playerHealthScript == null){
             playerHealthScript = Player.main.health;
-            playerRigidBody = Player.main.rb;
+            // playerRigidBody = Player.main.rb;
         }
 
         // phrb = ph.gameObject.GetComponent<Rigidbody2D>();
