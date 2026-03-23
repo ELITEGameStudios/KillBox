@@ -25,8 +25,8 @@ public class MidasBoss : BossBase
         bossType = BossRoundManager.BossType.MIDAS;
 
         // this,  stateTime,  speed,  force, distance, fireRate, init
-        crownShoot = new MidasShootState(this, 7f, 3f, 3000f, 5f, 1f, 1.5f);
-        nerfedShoot = new MidasShootState(this, 10f, 2f, 3000f, 5f, 1.4f, 2f);
+        crownShoot = new MidasShootState(this, 7f, 3f, 3000f, 5f, 0.87f, 1.5f);
+        nerfedShoot = new MidasShootState(this, 10f, 2f, 3000f, 6f, 1.2f, 2f);
         ramAttack = new MidasRamState(this, 14f, 1700f, 0.6f);
         crownFall = new MidasFallState(this, 6f, 2f, 3000f, 6f, 0.8f, 1.5f);
         wallAttack = new MidasOtherState(this, 8.5f, 2f, 3000f, 5f, 1.3f, 1.5f, 0);

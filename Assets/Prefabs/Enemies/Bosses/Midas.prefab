@@ -50,7 +50,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 350
   spread: 1
-  bulletRb: {fileID: 3050550830639310726, guid: 06fc229d343e45d4ebcf3fa92fbbdc87, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -65,9 +64,6 @@ MonoBehaviour:
   damage_boss_field: 80
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2.8
 --- !u!1 &689367614758983396
@@ -120,7 +116,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 300
   spread: 30
-  bulletRb: {fileID: 3050550830639310726, guid: 5f3c6a6067aee50489bcf94dd29b82d0, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -135,9 +130,6 @@ MonoBehaviour:
   damage_boss_field: 75
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2.8
 --- !u!1 &794878605012563136
@@ -224,7 +216,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 300
   spread: 30
-  bulletRb: {fileID: 3050550830639310726, guid: 5f3c6a6067aee50489bcf94dd29b82d0, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -239,9 +230,6 @@ MonoBehaviour:
   damage_boss_field: 75
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2.8
 --- !u!1 &1146398922975835692
@@ -5124,7 +5112,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 300
   spread: 30
-  bulletRb: {fileID: 3050550830639310726, guid: 5f3c6a6067aee50489bcf94dd29b82d0, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -5139,9 +5126,6 @@ MonoBehaviour:
   damage_boss_field: 75
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2.8
 --- !u!1 &3624024314396005366
@@ -5187,7 +5171,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3292327049344687628}
-  - {fileID: 1398634804363177705}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &7158205714745708634
@@ -5264,19 +5247,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d86383278bc45559583fc6e686de51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 7158205714745708634}
   playerHealthScript: {fileID: 0}
-  playerRigidBody: {fileID: 0}
+  currentHitCooldown: 0
   damage: 0
   _ignite_intensity: 0
   hitKb: 0
   HitCooldown: 1
-  AtCooldown: 1
   immunity_time: 0
   _ignite_time: 0
   tag: Player
   CanAttack: 1
-  EndOfContact: 0
   ignore_immunity: 0
   _ignites: 0
   triggerEvent: 0
@@ -5332,32 +5312,17 @@ MonoBehaviour:
   CurrentHealth: 0
   a: 0
   manager: {fileID: 0}
-  player: {fileID: 0}
-  DroppedItem: {fileID: 3877291655338918550, guid: 23a993c27d5a344a4864fed9bdb08862, type: 3}
-  ExplosionOnDeath: {fileID: 7029634076664512277, guid: 910d8b988f87a4007bed6f4290a2317b, type: 3}
-  color_easter_egg_portal: {fileID: 6708033527536035730, guid: 8d90fc0071569402dbb9cc1a7bc39ee3, type: 3}
-  InsObject: {fileID: 0}
-  tokenClone: {fileID: 0}
-  main_player: {fileID: 0}
-  key_item: {fileID: 0}
-  guaranteed_drop_item: {fileID: 0}
-  lvl_4_prefabs: []
-  objectPool:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  guaranteedDrop: {fileID: 0}
   explosionColor: {r: 1, g: 1, b: 0, a: 1}
   audio: {fileID: 0}
   death: {fileID: 8300000, guid: 9515cb53acd214ea1a878193d32e5c10, type: 3}
   hit: {fileID: 8300000, guid: c5b4fdf98f1cf43dba8c528d6f22a6c2, type: 3}
-  can_drop_lvl_4: 0
   destructive_immune: 1
   no_drops: 1
-  key_drops: 0
-  guaranteed_drop_bool: 0
   triggerDeathEvent: 0
   preventDefaultDeath: 0
   immortal: 0
+  ignoresDamage: 0
   profile: {fileID: 9155245377156181887}
   onTakeDamage:
     m_PersistentCalls:
@@ -5432,8 +5397,22 @@ MonoBehaviour:
   limit: 0
   speed: 0
   acceleration: 0
+  necroHitInterval: 0.5
+  currentNecroHitTimer: 0
   boss: 1
+  animator: {fileID: 0}
+  destinationSetter: {fileID: 0}
+  enemyHealth: {fileID: 0}
+  enemyDamage: {fileID: 0}
+  playerDamage: {fileID: 0}
+  pathfinding: {fileID: 0}
+  animationObject: {fileID: 0}
+  tokenParticleObject: {fileID: 0}
+  mainCollider: {fileID: 0}
   hasDrop: 0
+  animEnable: 0
+  bypassNecro: 0
+  isNecro: 0
 --- !u!114 &7896596883058863592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5572,6 +5551,10 @@ MonoBehaviour:
   currentPhase:
     minHealth: 0
   nextStateIndex: 0
+  dontInstantlySetState: 0
+  startedAttacks: 0
+  stallTimer: 0
+  introStallTimer: 0
   preventDefaultDeath: 0
   crownShooter:
   - {fileID: 4938247104594432397}
@@ -5601,7 +5584,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
   nerfedShoot:
     name: 
     displaySprite: {fileID: 0}
@@ -5612,7 +5598,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
   ramAttack:
     name: 
     displaySprite: {fileID: 0}
@@ -5623,7 +5612,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
   crownFall:
     name: 
     displaySprite: {fileID: 0}
@@ -5634,7 +5626,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
   wallAttack:
     name: 
     displaySprite: {fileID: 0}
@@ -5645,7 +5640,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
   corridorAttack:
     name: 
     displaySprite: {fileID: 0}
@@ -5656,7 +5654,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
   bannerAttack:
     name: 
     displaySprite: {fileID: 0}
@@ -5667,7 +5668,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
   nerfedBanner:
     name: 
     displaySprite: {fileID: 0}
@@ -5678,7 +5682,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
   guillotineAttack:
     name: 
     displaySprite: {fileID: 0}
@@ -5689,7 +5696,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
   firstPhase:
     minHealth: 0
   secondPhase:
@@ -5769,7 +5779,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 500
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 7bde733c683b65a4f9ac638bbb45f37c, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -5784,9 +5793,6 @@ MonoBehaviour:
   damage_boss_field: 120
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 5
 --- !u!1 &4058654093985758602
@@ -10685,6 +10691,7 @@ Transform:
   - {fileID: 1159271072265665550}
   - {fileID: 439510293125791310}
   - {fileID: 4017333073024807545}
+  - {fileID: 1398634804363177705}
   m_Father: {fileID: 6929088688070729844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1431553507845158974
@@ -10836,7 +10843,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 500
   spread: 1
-  bulletRb: {fileID: 3050550830639310726, guid: 06fc229d343e45d4ebcf3fa92fbbdc87, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -10851,9 +10857,6 @@ MonoBehaviour:
   damage_boss_field: 80
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2.8
 --- !u!1 &5850288536856173802
@@ -10940,7 +10943,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 250
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 265b78627e821d7409e31feda05b0315, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -10955,9 +10957,6 @@ MonoBehaviour:
   damage_boss_field: 100
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 7
 --- !u!1 &7010016174368373338
@@ -11010,7 +11009,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 350
   spread: 1
-  bulletRb: {fileID: 3050550830639310726, guid: 06fc229d343e45d4ebcf3fa92fbbdc87, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -11025,9 +11023,6 @@ MonoBehaviour:
   damage_boss_field: 80
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2.8
 --- !u!1 &7310204954303319166
@@ -11056,11 +11051,11 @@ Transform:
   m_GameObject: {fileID: 7310204954303319166}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.89, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.17999999, y: 0.17999999, z: 0.17999999}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6929088688070729844}
+  m_Father: {fileID: 3292327049344687628}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4727442224236913878
 MonoBehaviour:
@@ -11080,7 +11075,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 0
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: 00169eb3b9fd12541ac03be7fd3ba81e, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -11095,9 +11089,6 @@ MonoBehaviour:
   damage_boss_field: 125
   FR: 1.2
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 7
 --- !u!1 &8138598634146876562

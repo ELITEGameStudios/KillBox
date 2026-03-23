@@ -10,6 +10,7 @@ public class BulletWall : MonoBehaviour
 
     // Update is called once per frame
     void OnEnable(){
+        transform.SetParent(null);
         timeElapsed = 0;
         transform.localScale = new Vector2(0, 0.6f);
         index = Random.Range(0, 4) * 90;

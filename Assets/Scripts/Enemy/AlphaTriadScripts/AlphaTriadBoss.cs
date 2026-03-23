@@ -21,9 +21,11 @@ public class AlphaTriadBoss : BossBase
     public int currentPhaseInt;
     public GameObject wingTriad, wingTriadTwo, shooter;
     public GameObject[] wingTriadArray, wingTriadArrayTwo;
+    public List<Object> totalArray;
     public FixedRotator rotator;
     // Start is called before the first frame update
     void Awake(){
+    bossType = BossRoundManager.BossType.ALPHATRIAD;
 
     // this,  stateTime,  speed,  force,  fireRate
     burstState = new AlphaTriadBurst(this, 8f, 1.2f, 100, 1.5f);
@@ -63,6 +65,7 @@ public class AlphaTriadBoss : BossBase
                     {
                         shooter = Instantiate(wingTriad, gb.transform);
                         shooter.GetComponent<Rigidbody2D>().AddForce(gb.transform.up * 800);
+                        totalArray.Add(shooter);
                         shooter.transform.SetParent(null);
                         gb.SetActive(false);
                     }
@@ -73,11 +76,17 @@ public class AlphaTriadBoss : BossBase
                     {
                         shooter = Instantiate(wingTriadTwo, gb.transform);
                         shooter.GetComponent<Rigidbody2D>().AddForce(gb.transform.up * 800);
+                        totalArray.Add(shooter);
                         shooter.transform.SetParent(null);
                         gb.SetActive(false);
                     }
                 rotator.speed = 500;
                 break;
+        }
+    }
+    public override void DeathEvent(bool to_player = false){
+        foreach (Object gb in totalArray){
+            Destroy(gb);
         }
     }
 }

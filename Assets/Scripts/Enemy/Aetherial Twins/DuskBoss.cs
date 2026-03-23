@@ -34,7 +34,7 @@ public class DuskBoss : BossBase
     // Start is called before the first frame update
     void Awake()
     {
-        bossType = BossRoundManager.BossType.TWINS;
+        bossType = BossRoundManager.BossType.DUSK;
 
         // this,  stateTime,  speed,  force, distance, fireRate, init
         mainAttack = new DuskMainAttackState(this, 8f, 5f, 1000f, 7.5f, 1.55f, 1.8f);

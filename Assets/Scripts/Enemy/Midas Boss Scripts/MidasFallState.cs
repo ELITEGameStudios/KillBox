@@ -19,6 +19,7 @@ public class MidasFallState : BossStateData
         this.initFire = init;
     }
     public override void Start(){
+        midasData.midasAnimate.ResetTrigger("Exit");
         midasData.midasAnimate.SetTrigger("Intro");
         currentStateTime = stateTime;
 
@@ -43,6 +44,7 @@ public class MidasFallState : BossStateData
             currentStateTime -= Time.deltaTime;
         }
         else{
+            midasData.midasAnimate.ResetTrigger("Intro");
             midasData.midasAnimate.SetTrigger("Exit");
             End();
         }

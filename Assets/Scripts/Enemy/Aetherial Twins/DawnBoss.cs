@@ -30,7 +30,7 @@ public class DawnBoss : BossBase
     // Start is called before the first frame update
     void Awake()
     {
-        bossType = BossRoundManager.BossType.TWINS;
+        bossType = BossRoundManager.BossType.DAWN;
 
         // this,  stateTime,  speed,  force, distance, fireRate, init
         mainAttack = new DawnMainAttackState(this, 8f, 5f, 1500f, 7.5f, 1.8f, 2f);

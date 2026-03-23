@@ -54,7 +54,7 @@ public class ObjectPoolManager : MonoBehaviour
         newObject.transform.SetParent(transform);
         newObject.transform.localPosition = Vector3.zero;
         newObject.transform.localEulerAngles = Vector3.zero;
-
+        newObject.SetActive(false); newObject.SetActive(true);
         return newObject;
     }
 
@@ -65,7 +65,7 @@ public class ObjectPoolManager : MonoBehaviour
         newObject.transform.SetParent(null);
         newObject.transform.position = position;
         newObject.transform.rotation = rotation;
-
+        newObject.SetActive(false); newObject.SetActive(true);
         return newObject;
     }
 
@@ -76,7 +76,7 @@ public class ObjectPoolManager : MonoBehaviour
         newObject.transform.SetParent(null);
         newObject.transform.position = position;
         newObject.transform.rotation = rotation;
-
+        newObject.SetActive(false); newObject.SetActive(true);
         return newObject;
     }
 
