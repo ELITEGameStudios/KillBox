@@ -27,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1491785506143963807}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.98251873, w: 0.18616389}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.43, y: 0.12, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8180941581350047919}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -158.542}
 --- !u!212 &4639350914684399346
 SpriteRenderer:
@@ -97,6 +97,25 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -120,6 +139,7 @@ PolygonCollider2D:
       - {x: -1.191345, y: 3.1063828}
       - {x: -0.5102484, y: 2.1937969}
       - {x: -0.12210225, y: 1.2113273}
+  m_UseDelaunayMesh: 0
 --- !u!50 &6103944343772522320
 Rigidbody2D:
   serializedVersion: 4
@@ -137,6 +157,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -158,6 +184,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 0
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 1
   AtCooldown: 1
   immunity_time: 0
@@ -201,13 +228,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1804707001040196927}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.9439681, w: 0.33003682}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.43, y: 0.12, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8180941581350047919}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 141.458}
 --- !u!212 &2174502327280458767
 SpriteRenderer:
@@ -271,6 +298,25 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -294,6 +340,7 @@ PolygonCollider2D:
       - {x: -1.191345, y: 3.1063828}
       - {x: -0.5102484, y: 2.1937969}
       - {x: -0.12210225, y: 1.2113273}
+  m_UseDelaunayMesh: 0
 --- !u!50 &1977018975573397646
 Rigidbody2D:
   serializedVersion: 4
@@ -311,6 +358,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -332,6 +385,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 0
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 1
   AtCooldown: 1
   immunity_time: 0
@@ -375,13 +429,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2554963368929826238}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7578042, w: 0.65248203}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.43, y: 0.12, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8180941581350047919}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -98.542}
 --- !u!212 &5812260865785838776
 SpriteRenderer:
@@ -445,6 +499,25 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -468,6 +541,7 @@ PolygonCollider2D:
       - {x: -1.191345, y: 3.1063828}
       - {x: -0.5102484, y: 2.1937969}
       - {x: -0.12210225, y: 1.2113273}
+  m_UseDelaunayMesh: 0
 --- !u!50 &6497243012712913817
 Rigidbody2D:
   serializedVersion: 4
@@ -485,6 +559,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -506,6 +586,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 0
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 1
   AtCooldown: 1
   immunity_time: 0
@@ -549,13 +630,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3128438864764505528}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.18616825, w: 0.9825179}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.43, y: 0.12, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8180941581350047919}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &591220096291999352
 SpriteRenderer:
@@ -619,6 +700,25 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -642,6 +742,7 @@ PolygonCollider2D:
       - {x: -1.191345, y: 3.1063828}
       - {x: -0.5102484, y: 2.1937969}
       - {x: -0.12210225, y: 1.2113273}
+  m_UseDelaunayMesh: 0
 --- !u!50 &3982972143376853457
 Rigidbody2D:
   serializedVersion: 4
@@ -659,6 +760,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -680,6 +787,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 0
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 1
   AtCooldown: 1
   immunity_time: 0
@@ -719,13 +827,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3150688693893933525}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.4335, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5070704985289445381}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3985628520681090783
 GameObject:
@@ -754,13 +862,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3985628520681090783}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.65248203, w: 0.7578042}
   m_LocalPosition: {x: -0.069, y: -0.007, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7849509145263460959}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 81.458}
 --- !u!212 &4976288515019354145
 SpriteRenderer:
@@ -824,6 +932,25 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -847,6 +974,7 @@ PolygonCollider2D:
       - {x: -1.191345, y: 3.1063828}
       - {x: -0.5102484, y: 2.1937969}
       - {x: -0.12210225, y: 1.2113273}
+  m_UseDelaunayMesh: 0
 --- !u!50 &6939094121650859462
 Rigidbody2D:
   serializedVersion: 4
@@ -864,6 +992,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -885,6 +1019,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 100
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 0.3
   AtCooldown: 0.3
   immunity_time: 0
@@ -940,13 +1075,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5096618566534770156}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.33003655, w: 0.9439682}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.43, y: 0.12, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8180941581350047919}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -38.542}
 --- !u!212 &693686769304775909
 SpriteRenderer:
@@ -1010,6 +1145,25 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1033,6 +1187,7 @@ PolygonCollider2D:
       - {x: -1.191345, y: 3.1063828}
       - {x: -0.5102484, y: 2.1937969}
       - {x: -0.12210225, y: 1.2113273}
+  m_UseDelaunayMesh: 0
 --- !u!50 &6717575589383547822
 Rigidbody2D:
   serializedVersion: 4
@@ -1050,6 +1205,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -1071,6 +1232,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 0
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 1
   AtCooldown: 1
   immunity_time: 0
@@ -1114,13 +1276,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5099182442659428208}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.9439681, w: 0.33003682}
   m_LocalPosition: {x: -0.029, y: -0.059, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7849509145263460959}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 141.458}
 --- !u!212 &8853621657722187233
 SpriteRenderer:
@@ -1184,6 +1346,25 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1207,6 +1388,7 @@ PolygonCollider2D:
       - {x: -1.191345, y: 3.1063828}
       - {x: -0.5102484, y: 2.1937969}
       - {x: -0.12210225, y: 1.2113273}
+  m_UseDelaunayMesh: 0
 --- !u!50 &1060008008156303608
 Rigidbody2D:
   serializedVersion: 4
@@ -1224,6 +1406,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -1245,6 +1433,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 100
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 0.3
   AtCooldown: 0.3
   immunity_time: 0
@@ -1297,6 +1486,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053157003238473}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.00000009362675, w: 1}
   m_LocalPosition: {x: -0.0020000339, y: 0.7590002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1304,7 +1494,6 @@ Transform:
   m_Children:
   - {fileID: 5102053158715438677}
   m_Father: {fileID: 6813785317433982714}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5102053157003238479
 MonoBehaviour:
@@ -1324,7 +1513,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 50
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 1
@@ -1333,14 +1521,12 @@ MonoBehaviour:
   boss: 1
   spray: 1
   has_audio: 0
+  dontAutoShoot: 0
   BulletsPerShot: 1
   poolIndex: 15
   damage_boss_field: 75
   FR: 0.05
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2
 --- !u!1 &5102053157081141576
@@ -1367,6 +1553,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053157081141576}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.5219759, w: 0.8529603}
   m_LocalPosition: {x: 0.591, y: 0.484, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1374,7 +1561,6 @@ Transform:
   m_Children:
   - {fileID: 5102053158840704642}
   m_Father: {fileID: 6813785317433982714}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -62.93}
 --- !u!114 &5102053157081141582
 MonoBehaviour:
@@ -1394,7 +1580,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 50
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 1
@@ -1403,14 +1588,12 @@ MonoBehaviour:
   boss: 1
   spray: 1
   has_audio: 0
+  dontAutoShoot: 0
   BulletsPerShot: 1
   poolIndex: 15
   damage_boss_field: 75
   FR: 0.05
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2
 --- !u!1 &5102053157329473215
@@ -1436,13 +1619,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053157329473215}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.4335, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5102053158424536930}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5102053157571067319
 GameObject:
@@ -1468,6 +1651,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053157571067319}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.51409864, w: 0.8577311}
   m_LocalPosition: {x: -0.4159999, y: 0.36599994, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1475,7 +1659,6 @@ Transform:
   m_Children:
   - {fileID: 5102053157743649998}
   m_Father: {fileID: 6813785317433982714}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 61.874}
 --- !u!114 &5102053157571067317
 MonoBehaviour:
@@ -1495,7 +1678,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 50
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 1
@@ -1504,14 +1686,12 @@ MonoBehaviour:
   boss: 1
   spray: 1
   has_audio: 0
+  dontAutoShoot: 0
   BulletsPerShot: 1
   poolIndex: 15
   damage_boss_field: 75
   FR: 0.05
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2
 --- !u!1 &5102053157743649993
@@ -1537,13 +1717,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053157743649993}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.4335, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5102053157571067316}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5102053158424536861
 GameObject:
@@ -1569,6 +1749,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053158424536861}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.8487228, w: 0.528838}
   m_LocalPosition: {x: 0.503, y: -0.21499999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1576,7 +1757,6 @@ Transform:
   m_Children:
   - {fileID: 5102053157329473212}
   m_Father: {fileID: 6813785317433982714}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -116.146}
 --- !u!114 &5102053158424536931
 MonoBehaviour:
@@ -1596,7 +1776,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 50
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 1
@@ -1605,14 +1784,12 @@ MonoBehaviour:
   boss: 1
   spray: 1
   has_audio: 0
+  dontAutoShoot: 0
   BulletsPerShot: 1
   poolIndex: 15
   damage_boss_field: 75
   FR: 0.05
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2
 --- !u!1 &5102053158715438676
@@ -1638,13 +1815,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053158715438676}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.4335, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5102053157003238478}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5102053158840704701
 GameObject:
@@ -1669,13 +1846,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053158840704701}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.4335, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5102053157081141577}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5102053158905566489
 GameObject:
@@ -1700,13 +1877,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102053158905566489}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.43349996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6813785317433982714}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5117486626580644212
 GameObject:
@@ -1735,13 +1912,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5117486626580644212}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7578042, w: 0.65248203}
   m_LocalPosition: {x: 0.093, y: 0.004, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7849509145263460959}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -98.542}
 --- !u!212 &4861222625604918339
 SpriteRenderer:
@@ -1805,6 +1982,25 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1828,6 +2024,7 @@ PolygonCollider2D:
       - {x: -1.191345, y: 3.1063828}
       - {x: -0.5102484, y: 2.1937969}
       - {x: -0.12210225, y: 1.2113273}
+  m_UseDelaunayMesh: 0
 --- !u!50 &5418053826263687646
 Rigidbody2D:
   serializedVersion: 4
@@ -1845,6 +2042,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -1866,6 +2069,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 100
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 0.3
   AtCooldown: 0.3
   immunity_time: 0
@@ -1917,13 +2121,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5214394436940961103}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.4335, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4551743821120674450}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6637530943613307212
 GameObject:
@@ -1949,6 +2153,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6637530943613307212}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.2588191, w: 0.9659258}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 8, y: 8, z: 1}
@@ -1961,7 +2166,6 @@ Transform:
   - {fileID: 6461754813489773185}
   - {fileID: 8878724305152770179}
   m_Father: {fileID: 6813785317433982714}
-  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30}
 --- !u!331 &2397746732811098878
 SpriteMask:
@@ -2041,13 +2245,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6660962132193253882}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.65248203, w: 0.7578042}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.43, y: 0.12, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8180941581350047919}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 81.458}
 --- !u!212 &8130195235919752276
 SpriteRenderer:
@@ -2111,6 +2315,25 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -2134,6 +2357,7 @@ PolygonCollider2D:
       - {x: -1.191345, y: 3.1063828}
       - {x: -0.5102484, y: 2.1937969}
       - {x: -0.12210225, y: 1.2113273}
+  m_UseDelaunayMesh: 0
 --- !u!50 &4779966163585498804
 Rigidbody2D:
   serializedVersion: 4
@@ -2151,6 +2375,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -2172,6 +2402,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 0
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 1
   AtCooldown: 1
   immunity_time: 0
@@ -2212,13 +2443,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6813785316913839051}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6813785317433982714}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6813785316913839049
 MonoBehaviour:
@@ -2244,6 +2475,7 @@ MonoBehaviour:
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
   m_OverlapOperation: 0
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
@@ -2252,11 +2484,6 @@ MonoBehaviour:
   m_ShadowIntensity: 1
   m_ShadowVolumeIntensityEnabled: 1
   m_ShadowVolumeIntensity: 1
-  m_Vertices:
-  - position: {x: 0, y: 0, z: 0}
-    color: {r: 0, g: 0, b: 0, a: 0}
-    uv: {x: 0, y: 0}
-  m_Triangles: 0000
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -2318,6 +2545,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6813785317433982693}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.51, y: -5.14, z: -0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 1}
@@ -2341,7 +2569,6 @@ Transform:
   - {fileID: 9158052331486105384}
   - {fileID: 2688716667817796364}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6813785317433982716
 MonoBehaviour:
@@ -2438,6 +2665,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -2459,6 +2692,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 0
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 0.5
   AtCooldown: 0.5
   immunity_time: 0
@@ -2496,12 +2730,15 @@ MonoBehaviour:
   UIcanvas: {fileID: 0}
   DistanceFromGrenade: 0
   hit_txt_size: 0
+  incomingForceMod: 1
   ExplosionDamage: 0
   ultra_immune: 1
   custom_hit_txt_size: 0
+  kbImmune: 0
   HitTxt: {fileID: 0}
   ultraManager: {fileID: 0}
   objectPool: {fileID: 0}
+  customForces: []
 --- !u!114 &6813785317433982690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2518,30 +2755,17 @@ MonoBehaviour:
   CurrentHealth: 0
   a: 0
   manager: {fileID: 0}
-  player: {fileID: 0}
-  DroppedItem: {fileID: 3877291655338918550, guid: 23a993c27d5a344a4864fed9bdb08862, type: 3}
-  ExplosionOnDeath: {fileID: 7029634076664512277, guid: 910d8b988f87a4007bed6f4290a2317b, type: 3}
-  color_easter_egg_portal: {fileID: 6708033527536035730, guid: 8d90fc0071569402dbb9cc1a7bc39ee3, type: 3}
-  InsObject: {fileID: 0}
-  DpdItemClone: {fileID: 0}
-  main_player: {fileID: 0}
-  key_item: {fileID: 7939964675840844463, guid: e0bf6bba259b2b34687150584439fd03, type: 3}
-  guaranteed_drop_item: {fileID: 8739768844396423761, guid: 447aa0e621a49ec408c744ca484a8ee0, type: 3}
-  lvl_4_prefabs: []
-  objectPool:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  guaranteedDrop: {fileID: 0}
   explosionColor: {r: 0.9945246, g: 1, b: 0.8254717, a: 1}
   audio: {fileID: 0}
   death: {fileID: 8300000, guid: 9515cb53acd214ea1a878193d32e5c10, type: 3}
   hit: {fileID: 8300000, guid: c5b4fdf98f1cf43dba8c528d6f22a6c2, type: 3}
-  can_drop_lvl_4: 0
   destructive_immune: 1
   no_drops: 0
-  key_drops: 0
-  guaranteed_drop_bool: 1
   triggerDeathEvent: 0
+  preventDefaultDeath: 0
+  immortal: 0
+  ignoresDamage: 0
   profile: {fileID: 3440400637458643961}
   onTakeDamage:
     m_PersistentCalls:
@@ -2665,6 +2889,7 @@ MonoBehaviour:
   timer: 0
   targetTime: 0
   inTransition: 0
+  parentIndependant: 0
 --- !u!82 &434004796953595433
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3059,6 +3284,25 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -3086,6 +3330,7 @@ PolygonCollider2D:
       - {x: -0.19999349, y: 0.34783173}
       - {x: -0.00052855327, y: 2.359075}
       - {x: 0.20699412, y: 0.35098326}
+  m_UseDelaunayMesh: 0
 --- !u!114 &3440400637458643961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3104,7 +3349,22 @@ MonoBehaviour:
   limit: -1
   speed: 3
   acceleration: 0
+  necroHitInterval: 0.5
+  currentNecroHitTimer: 0
   boss: 1
+  animator: {fileID: 0}
+  destinationSetter: {fileID: 0}
+  enemyHealth: {fileID: 0}
+  enemyDamage: {fileID: 0}
+  playerDamage: {fileID: 0}
+  pathfinding: {fileID: 0}
+  animationObject: {fileID: 0}
+  tokenParticleObject: {fileID: 0}
+  mainCollider: {fileID: 0}
+  hasDrop: 0
+  animEnable: 0
+  bypassNecro: 0
+  isNecro: 0
 --- !u!1 &6813785317823682139
 GameObject:
   m_ObjectHideFlags: 0
@@ -3129,13 +3389,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6813785317823682139}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6813785317433982714}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1027157863340307164
 SpriteRenderer:
@@ -3213,6 +3473,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7792379036292073602}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.8652659, w: -0.5013132}
   m_LocalPosition: {x: -0.4069999, y: -0.12900002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -3220,7 +3481,6 @@ Transform:
   m_Children:
   - {fileID: 4317517466647783067}
   m_Father: {fileID: 6813785317433982714}
-  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -240.17401}
 --- !u!114 &9221464225968666073
 MonoBehaviour:
@@ -3240,7 +3500,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 50
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 1
@@ -3249,14 +3508,12 @@ MonoBehaviour:
   boss: 1
   spray: 1
   has_audio: 0
+  dontAutoShoot: 0
   BulletsPerShot: 1
   poolIndex: 15
   damage_boss_field: 75
   FR: 0.05
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2
 --- !u!1 &7849509144675028594
@@ -3286,13 +3543,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7849509144675028594}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.18616825, w: 0.9825179}
   m_LocalPosition: {x: -0.031, y: 0.041, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7849509145263460959}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7849509144675028604
 SpriteRenderer:
@@ -3356,6 +3613,25 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -3379,6 +3655,7 @@ PolygonCollider2D:
       - {x: -1.191345, y: 3.1063828}
       - {x: -0.5102484, y: 2.1937969}
       - {x: -0.12210225, y: 1.2113273}
+  m_UseDelaunayMesh: 0
 --- !u!50 &7849509144675028607
 Rigidbody2D:
   serializedVersion: 4
@@ -3396,6 +3673,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -3417,6 +3700,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 100
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 0.3
   AtCooldown: 0.3
   immunity_time: 0
@@ -3469,6 +3753,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7849509145263460958}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.26841545, w: 0.96330327}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 8, y: 8, z: 1}
@@ -3481,7 +3766,6 @@ Transform:
   - {fileID: 9098001310713971099}
   - {fileID: 5819513504398889042}
   m_Father: {fileID: 6813785317433982714}
-  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 31.14}
 --- !u!331 &7849509145263460952
 SpriteMask:
@@ -3561,13 +3845,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8280027914488267612}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.33003655, w: 0.9439682}
   m_LocalPosition: {x: 0.041, y: 0.082, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7849509145263460959}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -38.542}
 --- !u!212 &2015549955496305281
 SpriteRenderer:
@@ -3631,6 +3915,25 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -3654,6 +3957,7 @@ PolygonCollider2D:
       - {x: -1.191345, y: 3.1063828}
       - {x: -0.5102484, y: 2.1937969}
       - {x: -0.12210225, y: 1.2113273}
+  m_UseDelaunayMesh: 0
 --- !u!50 &6659823889816649452
 Rigidbody2D:
   serializedVersion: 4
@@ -3671,6 +3975,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -3692,6 +4002,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 100
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 0.3
   AtCooldown: 0.3
   immunity_time: 0
@@ -3744,6 +4055,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8403833838776191327}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.9999985, w: 0.00173045}
   m_LocalPosition: {x: -0.009999871, y: -0.469, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -3751,7 +4063,6 @@ Transform:
   m_Children:
   - {fileID: 8394639110303195265}
   m_Father: {fileID: 6813785317433982714}
-  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -179.802}
 --- !u!114 &1557319778303774909
 MonoBehaviour:
@@ -3771,7 +4082,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 50
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 1
@@ -3780,14 +4090,12 @@ MonoBehaviour:
   boss: 1
   spray: 1
   has_audio: 0
+  dontAutoShoot: 0
   BulletsPerShot: 1
   poolIndex: 15
   damage_boss_field: 75
   FR: 0.05
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2
 --- !u!1 &9081340268588102107
@@ -3817,13 +4125,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9081340268588102107}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.98251873, w: 0.18616389}
   m_LocalPosition: {x: 0.044, y: -0.073, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7849509145263460959}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -158.542}
 --- !u!212 &4484530103049016427
 SpriteRenderer:
@@ -3887,6 +4195,25 @@ PolygonCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -3910,6 +4237,7 @@ PolygonCollider2D:
       - {x: -1.191345, y: 3.1063828}
       - {x: -0.5102484, y: 2.1937969}
       - {x: -0.12210225, y: 1.2113273}
+  m_UseDelaunayMesh: 0
 --- !u!50 &5283721898081575775
 Rigidbody2D:
   serializedVersion: 4
@@ -3927,6 +4255,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -3948,6 +4282,7 @@ MonoBehaviour:
   playerRigidBody: {fileID: 0}
   damage: 100
   _ignite_intensity: 0
+  hitKb: 0
   HitCooldown: 0.3
   AtCooldown: 0.3
   immunity_time: 0
@@ -3981,6 +4316,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6813785317433982714}
     m_Modifications:
     - target: {fileID: 7976177038441959256, guid: c0139c52d75e1b04c852381362d8b06c, type: 3}
@@ -4044,6 +4380,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0139c52d75e1b04c852381362d8b06c, type: 3}
 --- !u!114 &1870859800064039373 stripped
 MonoBehaviour:
@@ -4066,6 +4405,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6813785317433982714}
     m_Modifications:
     - target: {fileID: 7976177038441959256, guid: c0139c52d75e1b04c852381362d8b06c, type: 3}
@@ -4129,6 +4469,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0139c52d75e1b04c852381362d8b06c, type: 3}
 --- !u!4 &2688716667817796364 stripped
 Transform:
@@ -4151,6 +4494,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6813785317433982714}
     m_Modifications:
     - target: {fileID: 7976177038441959256, guid: c0139c52d75e1b04c852381362d8b06c, type: 3}
@@ -4214,6 +4558,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0139c52d75e1b04c852381362d8b06c, type: 3}
 --- !u!4 &4271692664061258435 stripped
 Transform:
@@ -4236,6 +4583,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6813785317433982714}
     m_Modifications:
     - target: {fileID: 7976177038441959256, guid: c0139c52d75e1b04c852381362d8b06c, type: 3}
@@ -4299,6 +4647,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0139c52d75e1b04c852381362d8b06c, type: 3}
 --- !u!4 &1033413086659265528 stripped
 Transform:
@@ -4321,6 +4672,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6813785317433982714}
     m_Modifications:
     - target: {fileID: 7976177038441959256, guid: c0139c52d75e1b04c852381362d8b06c, type: 3}
@@ -4384,6 +4736,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0139c52d75e1b04c852381362d8b06c, type: 3}
 --- !u!4 &924009512960385851 stripped
 Transform:
@@ -4406,6 +4761,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6813785317433982714}
     m_Modifications:
     - target: {fileID: 7976177038441959256, guid: c0139c52d75e1b04c852381362d8b06c, type: 3}
@@ -4469,6 +4825,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0139c52d75e1b04c852381362d8b06c, type: 3}
 --- !u!4 &1216879614095317633 stripped
 Transform:

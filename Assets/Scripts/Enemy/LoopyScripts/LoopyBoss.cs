@@ -7,6 +7,9 @@ public class LoopyBoss : BossBase
     [Header("General Info")]
     public float maxSpeed;
     public BossDisplayObj linkedDisplay;
+    public AnimationCurve dashIntervalCurve;
+    [SerializeField] SpriteRenderer loopySprite, glowSprite;
+    [SerializeField] Collider2D mainCol;
 
 
     [Header("State Info")]
@@ -17,6 +20,7 @@ public class LoopyBoss : BossBase
     public BeginnerLoopyAttack shardDelta;
     public BeginnerLoopyAttack polaroid1;
     public BeginnerLoopyAttack dualCutter;
+    public DashLoopyAttack singleDashAttack, doubleDashAttack, tripleDashAttack;
     // public BeginnerLoopyAttack delta3;
 
 
@@ -29,7 +33,12 @@ public class LoopyBoss : BossBase
     public GameObject goldTriad;
     public GameObject shard;
     public GameObject goldCutter;
+    public GameObject angryClone;
     public SweepingIndicator sweepingIndicator;
+    
+    [Header("VFX Objects")]
+    public GameObject dashParticles;
+
 
     public IEnumerator SpawnEnemies() { if (currentState is BeginnerLoopyAttack) { yield return (currentState as BeginnerLoopyAttack).SpawnEnemies(); } }
     public void StopSpawnEnemiesCoroutine() { StopCoroutine(nameof(SpawnEnemies)); }
@@ -59,8 +68,13 @@ public class LoopyBoss : BossBase
         polaroid1= new BeginnerLoopyAttack(this, new GameObject[] { goldPolaroid }, quantity: 3, iterations: 5, spawningInterval: 0f, startDistance: 20f);
         dualCutter= new BeginnerLoopyAttack(this, new GameObject[] { goldCutter }, quantity: 2, iterations: 1, spawningInterval: 0.2f, startDistance: 2f, maxDuration: 20, destroySpawnedEnemies: true, introWaitTime: 1.5f);
         
+        singleDashAttack = new DashLoopyAttack(this, angryClone, dashIntervalCurve);
+        doubleDashAttack = new DashLoopyAttack(this, angryClone, dashIntervalCurve, 2);
+        tripleDashAttack = new DashLoopyAttack(this, angryClone, dashIntervalCurve, 3, 4, 10, 0.03f, 0.5f);
+
         //Initialize phases here
-        phase1.statesInPhase = new BossStateData[] { delta1, shard1, polaroid1, delta2, shardDelta, polaroid1, dualCutter};
+        phase1.statesInPhase = new BossStateData[] { singleDashAttack, doubleDashAttack, tripleDashAttack};
+        // phase1.statesInPhase = new BossStateData[] { delta1, shard1, polaroid1, delta2, shardDelta, polaroid1, dualCutter};
 
         phases = new Phase[] { phase1 };
         movement_script.enabled = false;
@@ -75,6 +89,13 @@ public class LoopyBoss : BossBase
     {
 
     }
+
+    public void Toggle(bool active)
+    {
+        loopySprite.enabled = active;
+        glowSprite.enabled = active;
+        mainCol.enabled = active;
+    }
     
     public GameObject SpawnObject(GameObject prefab, Vector2 position, Quaternion rotation)
     {
@@ -84,10 +105,5 @@ public class LoopyBoss : BossBase
     public override void DeathEvent(bool to_player = false)
     {
         // health.SetImmortal(true);
-
-        // Play transform animation
-        // runesRotator.SetRotationRate(0, 1.5f);
-
-        // Invoke(nameof(TransformToEpilogue), 2f);
     }
 }

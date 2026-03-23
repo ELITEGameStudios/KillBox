@@ -49,7 +49,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
     public List<GameObject> CurrentBossTable { get => bossPrefabTables[(int)BossRoundManager.main.bossType]; }
     public bool isSpawning {get; private set;}
     public bool stopAfterSpawnBosses;
-    public bool bossHasSpawned;
+    public bool bossHasSpawned, allBossesHaveSpawned;
 
     // Called before the first frame of the game
     void Awake()
@@ -128,12 +128,12 @@ public class BossRoomSpawnSystem : MonoBehaviour
             case BossType.GUARDIANS:
                 // Guardian Boss
                 currentEnemyTable = guardianEnemyTable;
-                spawnRate = 0.85f;
+                spawnRate = 2f;
                 enemyCap = 4000;
-                bossSpawnOffset =  8;
-                bossSpawnStep =  9;
+                bossSpawnOffset =  2;
+                bossSpawnStep =  2;
                 active_spawns = guardianMapSpawns;
-                stopAfterSpawnBosses = false;
+                stopAfterSpawnBosses = true;
                 break;
 
 
@@ -189,6 +189,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
         enemyIndex = 0;
         isSpawning = false;
         bossHasSpawned = false;
+        allBossesHaveSpawned = false;
         spawnsAfterBoss = 0;
         SetBossSpawnList(0);
     }
@@ -251,6 +252,7 @@ public class BossRoomSpawnSystem : MonoBehaviour
                     }
                     else{
                         if(stopAfterSpawnBosses){ StopSpawning(); }
+                        allBossesHaveSpawned = true;
                         spawnsAfterBoss ++;
                     }
 

@@ -82,7 +82,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 50
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -97,9 +96,6 @@ MonoBehaviour:
   damage_boss_field: 75
   FR: 0.17
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2
 --- !u!1 &5102053157081141576
@@ -153,7 +149,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 50
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -168,9 +163,6 @@ MonoBehaviour:
   damage_boss_field: 75
   FR: 0.17
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2
 --- !u!1 &5102053157329473215
@@ -255,7 +247,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 50
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -270,9 +261,6 @@ MonoBehaviour:
   damage_boss_field: 75
   FR: 0.17
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2
 --- !u!1 &5102053157743649993
@@ -357,7 +345,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 50
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -372,9 +359,6 @@ MonoBehaviour:
   damage_boss_field: 75
   FR: 0.17
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2
 --- !u!1 &5102053158715438676
@@ -827,29 +811,13 @@ MonoBehaviour:
   CurrentHealth: 0
   a: 0
   manager: {fileID: 0}
-  player: {fileID: 0}
-  DroppedItem: {fileID: 3877291655338918550, guid: 23a993c27d5a344a4864fed9bdb08862, type: 3}
-  ExplosionOnDeath: {fileID: 7029634076664512277, guid: 910d8b988f87a4007bed6f4290a2317b, type: 3}
-  color_easter_egg_portal: {fileID: 6708033527536035730, guid: 8d90fc0071569402dbb9cc1a7bc39ee3, type: 3}
-  InsObject: {fileID: 0}
-  tokenClone: {fileID: 0}
-  main_player: {fileID: 0}
-  key_item: {fileID: 7939964675840844463, guid: e0bf6bba259b2b34687150584439fd03, type: 3}
-  guaranteed_drop_item: {fileID: 8739768844396423761, guid: 447aa0e621a49ec408c744ca484a8ee0, type: 3}
-  lvl_4_prefabs: []
-  objectPool:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  guaranteedDrop: {fileID: 0}
   explosionColor: {r: 0.969113, g: 1, b: 0, a: 1}
   audio: {fileID: 0}
   death: {fileID: 8300000, guid: 9515cb53acd214ea1a878193d32e5c10, type: 3}
   hit: {fileID: 8300000, guid: c5b4fdf98f1cf43dba8c528d6f22a6c2, type: 3}
-  can_drop_lvl_4: 0
   destructive_immune: 1
   no_drops: 0
-  key_drops: 0
-  guaranteed_drop_bool: 1
   triggerDeathEvent: 0
   preventDefaultDeath: 0
   immortal: 0
@@ -1595,6 +1563,7 @@ MonoBehaviour:
   timer: 0
   targetTime: 0
   inTransition: 0
+  parentIndependant: 0
 --- !u!114 &987719025233917754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1608,13 +1577,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: SHARD
-  maxHealth: 4500
+  maxHealth: 7500
   damage: 100
   limit: -1
   speed: 3
   acceleration: 0
+  necroHitInterval: 0.5
+  currentNecroHitTimer: 0
   boss: 1
   animator: {fileID: 0}
+  destinationSetter: {fileID: 0}
   enemyHealth: {fileID: 0}
   enemyDamage: {fileID: 0}
   playerDamage: {fileID: 0}
@@ -1624,6 +1596,8 @@ MonoBehaviour:
   mainCollider: {fileID: 0}
   hasDrop: 0
   animEnable: 0
+  bypassNecro: 0
+  isNecro: 0
 --- !u!1 &6813785317823682139
 GameObject:
   m_ObjectHideFlags: 0
@@ -1759,7 +1733,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 50
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -1774,9 +1747,6 @@ MonoBehaviour:
   damage_boss_field: 75
   FR: 0.17
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2
 --- !u!1 &8403833838776191327
@@ -1830,7 +1800,6 @@ MonoBehaviour:
   Enemytf: {fileID: 0}
   Velocity: 50
   spread: 0
-  bulletRb: {fileID: 3050550830639310726, guid: c2f8fa8f16a5414479cc6275760e1d85, type: 3}
   clone: {fileID: 0}
   SpawnRot: {x: 0, y: 0, z: 0}
   CanShoot: 0
@@ -1845,8 +1814,5 @@ MonoBehaviour:
   damage_boss_field: 75
   FR: 0.17
   AimProxim: 0
-  cam: {fileID: 0}
-  GetPrefabToGameObject: {fileID: 0}
-  objectPool: {fileID: 0}
   audio: {fileID: 0}
   range: 2

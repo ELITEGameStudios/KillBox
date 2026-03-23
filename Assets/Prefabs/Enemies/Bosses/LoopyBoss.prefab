@@ -5421,8 +5421,37 @@ MonoBehaviour:
   nextStateIndex: 0
   dontInstantlySetState: 0
   startedAttacks: 0
+  stallTimer: 0
+  introStallTimer: 0
   preventDefaultDeath: 0
   maxSpeed: 0
+  dashIntervalCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.05971591
+      outSlope: -0.05971591
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.079241075
+    - serializedVersion: 3
+      time: 1
+      value: 0.70189285
+      inSlope: -1.1703442
+      outSlope: -1.1703442
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0714286
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  loopySprite: {fileID: 1027157863340307164}
+  glowSprite: {fileID: 2320114928217176164}
+  mainCol: {fileID: 9075273824472276881}
   phase1:
     minHealth: 0
   delta1:
@@ -5435,7 +5464,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     loopyBoss: {fileID: 0}
     prefabs: []
     spawnedEnemies: []
@@ -5458,7 +5490,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     loopyBoss: {fileID: 0}
     prefabs: []
     spawnedEnemies: []
@@ -5481,7 +5516,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     loopyBoss: {fileID: 0}
     prefabs: []
     spawnedEnemies: []
@@ -5504,7 +5542,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     loopyBoss: {fileID: 0}
     prefabs: []
     spawnedEnemies: []
@@ -5527,7 +5568,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     loopyBoss: {fileID: 0}
     prefabs: []
     spawnedEnemies: []
@@ -5550,7 +5594,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     loopyBoss: {fileID: 0}
     prefabs: []
     spawnedEnemies: []
@@ -5563,14 +5610,99 @@ MonoBehaviour:
     duration: 0
     timer: 0
     destroySpawnedEnemies: 0
+  singleDashAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
+    finished: 0
+    started: 0
+    loopyBoss: {fileID: 0}
+    prefab: {fileID: 0}
+    spawnedEnemies: []
+    iterations: 0
+    quantity: 0
+    distance: 0
+    kP: 0
+    targetPos: []
+    intervalOverTime:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  doubleDashAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
+    finished: 0
+    started: 0
+    loopyBoss: {fileID: 0}
+    prefab: {fileID: 0}
+    spawnedEnemies: []
+    iterations: 0
+    quantity: 0
+    distance: 0
+    kP: 0
+    targetPos: []
+    intervalOverTime:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  tripleDashAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
+    finished: 0
+    started: 0
+    loopyBoss: {fileID: 0}
+    prefab: {fileID: 0}
+    spawnedEnemies: []
+    iterations: 0
+    quantity: 0
+    distance: 0
+    kP: 0
+    targetPos: []
+    intervalOverTime:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   goldDelta: {fileID: 8913873377623868711, guid: f7ee9f2e124e10041b1e158e9ce4c7f5, type: 3}
   preAngledGoldDelta: {fileID: 8913873377623868711, guid: dcee8b70f70483e45b50f7a929ebf2a6, type: 3}
   goldPolaroid: {fileID: 6813785317433982693, guid: 49b781422b24f354089104ce9fc1ff4f, type: 3}
   goldTriad: {fileID: 0}
   shard: {fileID: 6813785317433982693, guid: ca9d5eaafa7dd714d911c724b777641e, type: 3}
   goldCutter: {fileID: 5310180238275447515, guid: b5fe93bf9483f094cafe38d0c1c73212, type: 3}
+  angryClone: {fileID: 3708112041958817025, guid: d61693cebbcfbe34b8c8817b17a5fafe, type: 3}
   sweepingIndicator: {fileID: 0}
-  debugFloat: 0
+  dashParticles: {fileID: 0}
 --- !u!114 &6813785317433982688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5583,19 +5715,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d86383278bc45559583fc6e686de51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 6813785317433982689}
   playerHealthScript: {fileID: 0}
-  playerRigidBody: {fileID: 0}
+  currentHitCooldown: 0
   damage: 0
   _ignite_intensity: 0
   hitKb: 0
   HitCooldown: 0.5
-  AtCooldown: 0.5
   immunity_time: 0
   _ignite_time: 0
   tag: Player
   CanAttack: 1
-  EndOfContact: 0
   ignore_immunity: 0
   _ignites: 0
   triggerEvent: 0
@@ -5651,29 +5780,13 @@ MonoBehaviour:
   CurrentHealth: 0
   a: 0
   manager: {fileID: 0}
-  player: {fileID: 0}
-  DroppedItem: {fileID: 3877291655338918550, guid: 23a993c27d5a344a4864fed9bdb08862, type: 3}
-  ExplosionOnDeath: {fileID: 7029634076664512277, guid: 910d8b988f87a4007bed6f4290a2317b, type: 3}
-  color_easter_egg_portal: {fileID: 6708033527536035730, guid: 8d90fc0071569402dbb9cc1a7bc39ee3, type: 3}
-  InsObject: {fileID: 0}
-  tokenClone: {fileID: 0}
-  main_player: {fileID: 0}
-  key_item: {fileID: 7939964675840844463, guid: e0bf6bba259b2b34687150584439fd03, type: 3}
-  guaranteed_drop_item: {fileID: 8739768844396423761, guid: 447aa0e621a49ec408c744ca484a8ee0, type: 3}
-  lvl_4_prefabs: []
-  objectPool:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  guaranteedDrop: {fileID: 0}
   explosionColor: {r: 0.969113, g: 1, b: 0, a: 1}
   audio: {fileID: 0}
   death: {fileID: 8300000, guid: 9515cb53acd214ea1a878193d32e5c10, type: 3}
   hit: {fileID: 8300000, guid: c5b4fdf98f1cf43dba8c528d6f22a6c2, type: 3}
-  can_drop_lvl_4: 0
   destructive_immune: 1
   no_drops: 0
-  key_drops: 0
-  guaranteed_drop_bool: 1
   triggerDeathEvent: 0
   preventDefaultDeath: 0
   immortal: 0
@@ -6089,8 +6202,11 @@ MonoBehaviour:
   limit: 1
   speed: 1
   acceleration: 0
+  necroHitInterval: 0.5
+  currentNecroHitTimer: 0
   boss: 1
   animator: {fileID: 1917422917277911437}
+  destinationSetter: {fileID: 0}
   enemyHealth: {fileID: 6813785317433982690}
   enemyDamage: {fileID: 6813785317433982688}
   playerDamage: {fileID: 6813785317433982691}
@@ -6100,6 +6216,8 @@ MonoBehaviour:
   mainCollider: {fileID: 9075273824472276881}
   hasDrop: 0
   animEnable: 0
+  bypassNecro: 0
+  isNecro: 0
 --- !u!61 &9075273824472276881
 BoxCollider2D:
   m_ObjectHideFlags: 0
