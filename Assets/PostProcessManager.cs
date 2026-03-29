@@ -21,8 +21,8 @@ public class PostProcessManager : MonoBehaviour
     [SerializeField] public Volume DamageVolume {get { return damageVolume; }}
 
 
-
     public static PostProcessManager instance { get; private set; }
+
 
     void Awake()
     {
@@ -34,9 +34,9 @@ public class PostProcessManager : MonoBehaviour
     {
         if(wallMat != null)
         {
-            PlayerHealth health = Player.main.health;
-            if(health != null)
+            if(Player.main != null)
             {
+                PlayerHealth health = Player.main.health;
                 wallMat.SetFloat("_effectSlider", 1f - (health.CurrentHealth / (float)( health.netMaxHealth ))); 
             }
             else
@@ -56,13 +56,14 @@ public class PostProcessManager : MonoBehaviour
         return bossVolume;
     }
 
-    public void SetQuality(bool highQuality)
+    public void SetQuality()
     {
-        currentQualityVolume = highQuality ? highQualityVolume : lowQualityVolume;
-        lowQualityVolume.enabled = !highQuality;
-        highQualityVolume.enabled = highQuality;
-        bossVolume.enabled = QualityControl.main.bossShaderIndex == 1;
-        damageVolume.enabled = QualityControl.main.damageVolumeIndex == 1;
+        currentQualityVolume = QualityControl.main.MainPostProcessing ? highQualityVolume : lowQualityVolume;
+        lowQualityVolume.enabled = !QualityControl.main.MainPostProcessing;
+        highQualityVolume.enabled = QualityControl.main.MainPostProcessing;
+
+        bossVolume.enabled = QualityControl.main.BossPostProcessing;
+        damageVolume.enabled = QualityControl.main.DamagePostProcessing;
     }
     
 }

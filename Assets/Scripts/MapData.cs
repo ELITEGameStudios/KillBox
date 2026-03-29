@@ -30,7 +30,7 @@ public class MapData : MonoBehaviour
     }
 
     public void UpdateShadows(){
-        if(shadows != null) shadows.SetActive(QualityControl.main.ShadowIndex == 1);
+        if(shadows != null) shadows.SetActive(QualityControl.main.RenderShadows);
     }
 
 

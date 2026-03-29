@@ -14,6 +14,7 @@ public class PulseEffectManager : MonoBehaviour
     public RenderTexture baseTexture, resultTexture;
     public RenderingTestScript mainRenderer;
     [SerializeField] private int startingLength = 1;
+    [SerializeField] bool initialized;
     float time;
     public static PulseEffectManager instance {get; private set;}
 
@@ -22,7 +23,13 @@ public class PulseEffectManager : MonoBehaviour
     {
         if(instance == null){instance = this;}
         else if(instance != this){Destroy(this);}
+        if(QualityControl.main.PulseEffectShader){InitEffects();}
+        else{initialized = false;}
+    }
 
+    public void InitEffects()
+    {
+        
         effectPool = new();
         pulseMaterials = new();
 
@@ -35,10 +42,25 @@ public class PulseEffectManager : MonoBehaviour
             effectPool.Add(newInstance);
 
         }
+        initialized = true;
+    }
+
+    public void StopEffects()
+    {
+        for (int i = effectPool.Count-1; i >= 0; i--)
+        {
+            pulseMaterials.RemoveAt(i);
+            effectPool[i].End();
+            effectPool.RemoveAt(i);
+        }
+
+        initialized = false;
     }
 
     public void AddEffect(Vector2 worldCoordinates, float strength = 0.05f, float expandRate = 1f, float widthFactor = 0.1f)
     {
+        if(!initialized) {Debug.Log("hurm"); return;}
+
         PulseEffectInstance targetInstance = null;
         for (int i = 0; i < effectPool.Count; i++)
         {
@@ -65,6 +87,12 @@ public class PulseEffectManager : MonoBehaviour
         renderTexCam.orthographicSize = Camera.main.orthographicSize;
         renderTexCam.backgroundColor = Camera.main.backgroundColor;
         renderTexCam.ResetAspect();
+
+        if(QualityControl.main.PulseEffectShader != initialized)
+        {
+            if(initialized){StopEffects();}
+            else{InitEffects();}
+        }
         // Only for testing
         // time += Time.deltaTime;
         // float distancea = 5;

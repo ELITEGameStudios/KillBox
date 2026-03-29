@@ -40,7 +40,9 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     public bool IsPlayer, regen, Revived = false, immune = false, tutorialPlayer, hit_volume_on = false, isDamageless = false;
     public float RegenTime, immunityTime, camera_magnitude, camera_shake_duration;
     private float currentRegenTime, currentImmunityTime;
-    private bool regenToggle = false, camera_is_shaking = false, health_has_changed = false, triggerDamageVolume, triggerCameraShake;
+    private bool regenToggle = false, camera_is_shaking = false, health_has_changed = false;
+    private bool triggerDamageVolume => QualityControl.main.DamagePostProcessing;
+    private bool triggerCameraShake => QualityControl.main.CameraShake;
     public UnityEvent OnDie, AdRequestPopup, OnRestart;
 
     [SerializeField]
@@ -80,10 +82,6 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
     // Update is called once per frame
     void Update()
     {
-
-        triggerCameraShake = QualityControl.main.csVolumeIndex == 1;
-        triggerDamageVolume = QualityControl.main.DmgVolumeToggle.isOn;
-
         normalized_weight_inv = (float)(MaxHealth - CurrentHealth) / (float)MaxHealth;
         //MaxHealth = manager.HealthCount;
 

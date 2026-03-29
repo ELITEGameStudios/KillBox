@@ -5,23 +5,26 @@ using UnityEngine.UI;
 
 public class QualityControl : MonoBehaviour
 {
-    public int ShadowIndex {get; private set;}
-    public int hqVolumeIndex {get; private set;}
-    public int bossShaderIndex {get; private set;}
-    public int csVolumeIndex {get; private set;}
-    public int damageVolumeIndex {get; private set;}
+
+    // Main Effects
+    public bool MainPostProcessing {get {return PlayerPrefs.GetInt("quality_index", 1) == 1;}  set{PlayerPrefs.SetInt("quality_index", value ? 1 : 0); PlayerPrefs.Save(); hqVolumeToggle.isOn = value;}}
+    public bool BossPostProcessing {get {return PlayerPrefs.GetInt("boss_shader_index", 1) == 1;}  set{PlayerPrefs.SetInt("boss_shader_index", value ? 1 : 0); PlayerPrefs.Save();}}
+    public bool DamagePostProcessing {get {return PlayerPrefs.GetInt("dmg_volume", 1) == 1;}  set{PlayerPrefs.SetInt("dmg_volume", value ? 1 : 0); PlayerPrefs.Save(); dmgVolumeToggle.isOn = value;}}
+    public bool RenderShadows {get {return PlayerPrefs.GetInt("Shadows", 1) == 1;}  set{PlayerPrefs.SetInt("Shadows", value ? 1 : 0); PlayerPrefs.Save(); shadowToggle.isOn = value;}}
+    public bool CameraShake {get {return PlayerPrefs.GetInt("camera_shake", 1) == 1;}  set{PlayerPrefs.SetInt("camera_shake", value ? 1 : 0); PlayerPrefs.Save(); csVolumeToggle.isOn = value;}}
     
+    // Render Texture Effects
+    public bool PulseEffectShader {get { return PlayerPrefs.GetInt("pulse_effect", 1) == 1;} set{PlayerPrefs.SetInt("pulse_effect", value ? 1 : 0); PlayerPrefs.Save(); pulseEffectToggle.isOn = value;}} 
+    public bool HealthEffectShader {get { return PlayerPrefs.GetInt("health_effect", 1) == 1;} set{PlayerPrefs.SetInt("health_effect", value ? 1 : 0); PlayerPrefs.Save(); healthEffectToggle.isOn = value;}} 
+    public bool GridEffectShader {get { return PlayerPrefs.GetInt("grid_effect", 1) == 1;} set{PlayerPrefs.SetInt("grid_effect", value ? 1 : 0); PlayerPrefs.Save(); gridEffectToggle.isOn = value;}} 
+    public bool NeedsRenderTextues => PulseEffectShader || HealthEffectShader;
+    
+    // UI Elements
     [SerializeField] private Toggle shadowToggle, hqVolumeToggle, dmgVolumeToggle, csVolumeToggle, bossShaderVolume;
+    [SerializeField] private Toggle pulseEffectToggle, healthEffectToggle, gridEffectToggle;
     [SerializeField] private Slider particleSlider;
 
     public static QualityControl main {get; private set;}
-    public Toggle BossShaderVolume { get => bossShaderVolume; }
-    public Toggle ShadowToggle { get => shadowToggle; private set => shadowToggle = value; }
-    public Toggle HqVolumeToggle { get => hqVolumeToggle; private set => hqVolumeToggle = value; }
-    public Toggle DmgVolumeToggle { get => dmgVolumeToggle; private set => dmgVolumeToggle = value; }
-    public Toggle CsVolumeToggle { get => csVolumeToggle; private set => csVolumeToggle = value; }
-
-    // Start is called before the first frame update
 
 
     void Awake()
@@ -31,111 +34,134 @@ public class QualityControl : MonoBehaviour
     }
     void Start()
     {
-        damageVolumeIndex = PlayerPrefs.GetInt("dmg_volume", 1);
-        ShadowIndex = PlayerPrefs.GetInt("Shadows", 1);
-        hqVolumeIndex = PlayerPrefs.GetInt("quality_index", 1);
-        bossShaderIndex = PlayerPrefs.GetInt("boss_shader_index", 1);
-        csVolumeIndex = PlayerPrefs.GetInt("camera_shake", 1);
+        hqVolumeToggle.isOn = MainPostProcessing;
+        bossShaderVolume.isOn = BossPostProcessing;
+        csVolumeToggle.isOn = CameraShake;
+        shadowToggle.isOn = RenderShadows;
+        dmgVolumeToggle.isOn = DamagePostProcessing;
 
-        hqVolumeToggle.isOn = hqVolumeIndex == 1;
-        bossShaderVolume.isOn = bossShaderIndex == 1;
-        csVolumeToggle.isOn = csVolumeIndex == 1;
+        pulseEffectToggle.isOn = PulseEffectShader;
+        gridEffectToggle.isOn = GridEffectShader;
+        healthEffectToggle.isOn = HealthEffectShader;
 
         ToggleVolumes();
-        Shadows(ShadowIndex == 1);
+        ChangeShadowQuality(RenderShadows);
     }
 
+
+
+    // Screen space effects
+    public void TogglePulseEffect(bool inputBool){
+        PulseEffectShader = inputBool;
+        SetRenderTextureSettings();
+    }
+
+    public void ToggleHealthEffect(bool inputBool){
+        HealthEffectShader = inputBool;
+        SetRenderTextureSettings();
+    }
+
+    public void ToggleGridEffect(bool inputBool){
+        GridEffectShader = inputBool;
+        SetRenderTextureSettings();
+    }
+    public void SetRenderTextureSettings()
+    {
+        // if (NeedsRenderTextues)
+        // {
+            
+        // }
+        // else
+        // {
+            
+        // } 
+    }
+
+    // Main Effects
     public void ToggleCameraShake(bool inputBool){
-        csVolumeIndex = inputBool ? 1 : 0;
-        PlayerPrefs.SetInt("camera_shake", csVolumeIndex);
-        PlayerPrefs.Save();
+        CameraShake = inputBool;
     }
 
     public void ChangeVolumeQuality(bool inputBool) {
-        hqVolumeIndex = HqVolumeToggle.isOn ? 1 : 0;
-        PlayerPrefs.SetInt("quality_index", hqVolumeIndex);
+        MainPostProcessing = inputBool;
         ToggleVolumes();
     }
-
-    public void ChangeShadowQuality(){
-        Shadows(ShadowToggle.isOn);
-    }
-
-    public void ChangeBossShaderQuality()
+    public void ChangeBossShaderQuality(bool inputBool)
     {
-        bossShaderIndex = bossShaderVolume.isOn ? 1 : 0;
-        PlayerPrefs.SetInt("boss_shader_index", bossShaderIndex);
+        BossPostProcessing = inputBool;
         ToggleVolumes();
     }
-
-    // Update is called once per frame
-    public void ToggleVolumes()
+    public void ChangeShadowQuality(bool inputBool)
     {
-        PostProcessManager.instance.SetQuality(hqVolumeIndex == 1);
+        RenderShadows = inputBool;
+        if(GameManager.main != null) GameManager.main.GetCurrentMap().UpdateShadows();
     }
-
     public void ToggleDmgVolume(bool inputBool)
     {
-        damageVolumeIndex = inputBool ? 1 : 0;
-        PlayerPrefs.SetInt("dmg_volume", damageVolumeIndex);
-        PlayerPrefs.Save();
+        DamagePostProcessing = inputBool;
         ToggleVolumes();
     }
+
+
+    public void ToggleVolumes()
+    {
+        PostProcessManager.instance.SetQuality();
+    }
+
+
+
     public void Quality(int QIndex)
     {
         switch (QIndex)
         {
+            // High
             case 0:
-                HqVolumeToggle.isOn = true;
-                ChangeVolumeQuality(true);
-
-                ShadowToggle.isOn = true;
-                DmgVolumeToggle.isOn = true;
-                CsVolumeToggle.isOn = true;
-                bossShaderVolume.isOn = true;
                 particleSlider.value = 60;
-                ChangeShadowQuality();
-                ChangeBossShaderQuality();
-                break;
 
-            case 1:
-                HqVolumeToggle.isOn = true;
                 ChangeVolumeQuality(true);
+                ChangeShadowQuality(true);
+                ToggleDmgVolume(true);
+                ToggleCameraShake(true);
+                ChangeBossShaderQuality(true);
 
-                ShadowToggle.isOn = false;
-                DmgVolumeToggle.isOn = true;
-                bossShaderVolume.isOn = true;
-                CsVolumeToggle.isOn = true;
-                particleSlider.value = 30;
-                ChangeShadowQuality();
-                ChangeBossShaderQuality();
+                ToggleGridEffect(true);
+                ToggleHealthEffect(true);
+                TogglePulseEffect(true);
                 break;
 
-            case 2:
-                HqVolumeToggle.isOn = false;
-                ChangeVolumeQuality(false);
+            // Medium
+            case 1:
+                particleSlider.value = 30;
 
-                ShadowToggle.isOn = false;
-                bossShaderVolume.isOn = false;
-                DmgVolumeToggle.isOn = true;
-                CsVolumeToggle.isOn = false;
+                ChangeVolumeQuality(true);
+                ToggleDmgVolume(true);
+                ToggleCameraShake(true);
+                ChangeShadowQuality(true);
+                ChangeBossShaderQuality(true);
+
+                ToggleGridEffect(true);
+                ToggleHealthEffect(false);
+                TogglePulseEffect(false);
+                break;
+
+            // Low
+            case 2:
                 particleSlider.value = 15;
-                ChangeShadowQuality();
-                ChangeBossShaderQuality();
+
+                ToggleDmgVolume(false);
+                ToggleCameraShake(true);
+                ChangeShadowQuality(false);
+                ChangeBossShaderQuality(false);
+                ChangeVolumeQuality(true);
+                
+                ToggleGridEffect(true);
+                ToggleHealthEffect(false);
+                TogglePulseEffect(false);
                 break;
         }
 
-        PlayerPrefs.Save();
         // Index = QIndex;
         // PPRBool();
     }
 
-    public void Shadows(bool inputBool)
-    {
-        ShadowIndex = inputBool ? 1 : 0;
-        PlayerPrefs.SetInt("Shadows", ShadowIndex);
-        PlayerPrefs.Save();
-        
-        if(GameManager.main != null) GameManager.main.GetCurrentMap().UpdateShadows();
-    }
 }

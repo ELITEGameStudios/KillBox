@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -33,11 +34,16 @@ public class CustomKeybinds : MonoBehaviour
     public bool ControllerBack() { return DetectInputDevice.main.gamepad != null ? DetectInputDevice.main.gamepad.bButton.IsPressed() : false; }
 
     [SerializeField]
-    private Text shoot_txt, shoot2_txt, ultramode_txt, pause_txt, interact_txt, switch_txt;
+    private TMP_Text shoot_txt, shoot2_txt, ultramode_txt, pause_txt, interact_txt, switch_txt;
+    // public Button shootKeybindBtn, dashKeybindBtn, equipmentKeybindBtn, pauseKeybindBtn, switchKeybindBtn, interactKeybindBtn;
+    public Button[] KeybindBtns;
     public bool editing_key {get; private set;}
     public string key_to_edit {get; private set;}
     public static CustomKeybinds main {get; private set;}
     [SerializeField] private HotkeyManager hotkeyManager;
+
+
+    [SerializeField] InputAction shootAction, dashAction, interactAction, equipmentAction, switchAction, pauseAction;
 
     void Awake(){
         if(main == null){ main = this; }
@@ -95,13 +101,65 @@ public class CustomKeybinds : MonoBehaviour
 
     public void SetKey(string option){
         key_to_edit = option;
+        InputAction targetAction = GetActionByKey(key_to_edit);
+        
+        if(targetAction == null){targetAction = shootAction;}
+
+        InputActionRebindingExtensions.RebindingOperation rebindOperation = 
+        targetAction.PerformInteractiveRebinding()
+            .OnComplete(OnRebindCompleted).OnCancel(OnRebindCancelled)
+
+            // .WithTargetBinding(onKeyBinderClicked.KeyBindingProfile.GetBindingIndex())
+            .WithControlsExcluding("<Mouse>/position")
+            .WithControlsExcluding("<Mouse>/delta")
+            .WithExpectedControlType("Button")
+            .OnMatchWaitForAnother(0.1f);
+        
         editing_key = true;
+    }
+    public void OnRebindCompleted(InputActionRebindingExtensions.RebindingOperation operation)
+    {
+        InputBinding bind = operation.bindingMask.GetValueOrDefault();
+        editing_key = false;
+        foreach (Button button in KeybindBtns) { button.interactable = true; }
+        KeybindsSave.SavePlayer(this);
+    }
+    public void OnRebindCancelled(InputActionRebindingExtensions.RebindingOperation operation)
+    {
+        editing_key = false;
+        foreach (Button button in KeybindBtns) { button.interactable = true; }
+        KeybindsSave.SavePlayer(this);
+    }
+
+
+
+    InputAction GetActionByKey(string key)
+    {
+        switch(key){
+            case "_shoot":
+                // rebindOperation = shootAction.PerformInteractiveRebinding().WithControlsExcluding();
+                return shootAction;
+            case "_shoot2":
+                return dashAction;
+            case "_ultra":
+                return equipmentAction;
+            case "_interact":
+                return interactAction;
+            case "_switch":
+                return switchAction;
+            case "_pause":
+                return pauseAction;
+            default:
+                return null;
+        }
+        
     }
 
     void FinalSetKey(KeyCode new_key){
 
         switch(key_to_edit){
             case "_shoot":
+                // rebindOperation = shootAction.PerformInteractiveRebinding().WithControlsExcluding();
                 Shoot = new_key;
                 break;
             case "_shoot2":
@@ -122,8 +180,10 @@ public class CustomKeybinds : MonoBehaviour
         }
     
         editing_key = false;
+        foreach (Button button in KeybindBtns) { button.interactable = true; }
         KeybindsSave.SavePlayer(this);
     }
+
 
     
     public bool PressingInteract(bool ignoreFrameCounts = false) { 
@@ -221,12 +281,12 @@ public class CustomKeybinds : MonoBehaviour
             gamepadBackPressedLastFrame = false;
         }
 
-        // shoot_txt.text = Shoot.ToString();
-        // shoot2_txt.text = Shoot2.ToString();
-        // ultramode_txt.text = Ultramode.ToString();
-        // interact_txt.text = Interact.ToString();
-        // switch_txt.text = SwitchWeapon.ToString();
-        // pause_txt.text = Pause.ToString();
+        if(shoot_txt != null) shoot_txt.text = GetKeybindString(Shoot);
+        if(shoot2_txt != null) shoot2_txt.text = GetKeybindString(Shoot2);
+        if(ultramode_txt != null) ultramode_txt.text = GetKeybindString(Ultramode);
+        if(interact_txt != null) interact_txt.text = GetKeybindString(Interact);
+        if(switch_txt != null) switch_txt.text = GetKeybindString(SwitchWeapon);
+        if(pause_txt != null) pause_txt.text = GetKeybindString(Pause);
         
         // if(editing_key){
 
