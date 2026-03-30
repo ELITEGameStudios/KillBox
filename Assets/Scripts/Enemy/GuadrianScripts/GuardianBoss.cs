@@ -41,11 +41,11 @@ public class GuardianBoss : BossBase
         spiralShoot = new GuardianMainState(this, "SPIRAL", 1, 2, targetTime: 4, rotationSpeed: 45, maxEntities: 1);
         chaosShoot = new GuardianMainState(this, "CHAOS", 3, 2, targetTime: 4, rotationSpeed: -320, maxEntities: 1);
         chaseState = new GuardianMainState(this, "CHASE", 12, 12, targetTime: chase_time, rotationSpeed: 70, startShootingTime: 5, maxEntities: -1);
-        whipState = new GuardianMainState(this, "WHIP", 25, 8, targetTime: 7, rotationSpeed: -320, startShootingTime: 7, whip: true, maxEntities: 1);
+        whipState = new GuardianMainState(this, "WHIP", 50, 15, targetTime: 7, rotationSpeed: -320, startShootingTime: 7, whip: true, maxEntities: 1);
         beamState = new GuardianBeamState(this, "BEAM", iterations: 4, targetTime: 2, rotationSpeed: 15, width:4, beamDistance: 10, maxEntities: 1);
         angryBeamState = new GuardianBeamState(this, "ANGRYBEAM", iterations: 8, targetTime: 1.4f, rotationSpeed: 15, width:2.5f, beamDistance: 7, maxEntities: 2);
 
-        angryWhipState = new GuardianMainState(this, "WHIP", 8, 8, targetTime: 7, rotationSpeed: -320, startShootingTime: 1, whip: true, maxEntities: 2);
+        angryWhipState = new GuardianMainState(this, "WHIP", 25, 12, targetTime: 7, rotationSpeed: -320, startShootingTime: 1, whip: true, maxEntities: 2);
         firstPhaseStates = new GuardianStateData[]{ chaseState, spiralShoot, beamState, whipState };
         secondPhaseStates = new GuardianStateData[]{ chaseState, spiralShoot, chaosShoot, beamState, whipState };
         finalPhaseStates = new GuardianStateData[]{ spiralShoot, angryWhipState, angryBeamState};
