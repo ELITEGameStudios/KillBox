@@ -5,11 +5,12 @@ using UnityEngine;
 public class QualityManager : MonoBehaviour
 {
     public GameObject[] HQGameObjects;
+    public GameObject gridEffectObject;
     // Update is called once per frame
     void Update()
     {
         QualityControl qualityControl = QualityControl.main;
-        if(qualityControl.hqVolumeIndex == 1)
+        if(qualityControl.MainPostProcessing)
         {
             for (int i = 0; i < HQGameObjects.Length; i++)
                 HQGameObjects[i].SetActive(true);
@@ -18,6 +19,11 @@ public class QualityManager : MonoBehaviour
         {
             for (int i = 0; i < HQGameObjects.Length; i++)
                 HQGameObjects[i].SetActive(false);
+        }
+
+        if(qualityControl.GridEffectShader != gridEffectObject.activeInHierarchy)
+        {
+            gridEffectObject.SetActive(qualityControl.GridEffectShader);
         }
 
     }

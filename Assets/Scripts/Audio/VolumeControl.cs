@@ -60,7 +60,7 @@ public class VolumeControl : MonoBehaviour
         music_value = VolumeSlider.value;
         sfx_value = SFXSlider.value;
 
-        if(Player.main.health != null && active_snapshot != 2){
+        if(Player.main != null && active_snapshot != 2){
 
             currentHp = Player.main.health.CurrentHealth;
             maxHp = Player.main.health.GetMaxHealth();

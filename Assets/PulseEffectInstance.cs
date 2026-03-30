@@ -44,6 +44,9 @@ public class PulseEffectInstance : MonoBehaviour
                 PulseEffectManager.instance.mainRenderer.sampleMaterial.Remove(thisMaterial);
             }
         }
+
+        if(!QualityControl.main.PulseEffectShader) return;
+
         // thisMaterial = new Material(mainMaterial);
         coordinates = Camera.main.WorldToScreenPoint(worldCoordinates);
         coordinates.x /= Camera.main.pixelWidth;
@@ -76,7 +79,7 @@ public class PulseEffectInstance : MonoBehaviour
     {
         if(time >= targetTime && active){End();}
         if(thisMaterial != null)
-        {
+        {   
             if (active )
             {
                 thisMaterial.SetFloat("_strength", strength);

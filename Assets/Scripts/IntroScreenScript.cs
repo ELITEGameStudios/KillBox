@@ -7,7 +7,7 @@ public class IntroScreenScript : MonoBehaviour
 {
     [SerializeField] private float timer, fluctuateSpeed, introSeconds;
     [SerializeField] private int state;
-    [SerializeField] private Image logo;
+    [SerializeField] private Image logo, bg;
     [SerializeField] private Text text;
     [SerializeField] private Color normalColor, interColor;
     [SerializeField] private Vector3 logoScalePre, logoScalePost;
@@ -23,10 +23,14 @@ public class IntroScreenScript : MonoBehaviour
     void Update()
     {
         if(Input.anyKey){
-            MainMenuManager.instance.OpenMenuViaState(MainMenuManager.MenuState.MAIN);
+            MainMenuManager.instance.OpenMenuViaState(MainMenuManager.MenuState.MAIN, doCoroutine: false, immediate: true);
             // menus.SetActive(true);
             fps.SetActive(true);
-            // gameObject.SetActive(false);
+            bg.enabled = false;
+            logo.gameObject.SetActive(false);
+            text.gameObject.SetActive(false);
+            
+            gameObject.SetActive(false);
         }
         else{
             if(state == 0){

@@ -12,7 +12,7 @@ public class MainMenuManager : MonoBehaviour
 
 
 
-    [SerializeField] private MenuUI settingsMenu, mainMenu, splashScreen, pauseMenu, leaderboardMenu, myStuffMenu, previewMenu, volumeMenu, qualityMenu, keybindMenu, playPortalMenu;
+    [SerializeField] private MenuUI settingsMenu, mainMenu, splashScreen, pauseMenu, leaderboardMenu, myStuffMenu, previewMenu, playPortalMenu;
     [SerializeField] private List<MenuUI> menuList;
     [SerializeField] private Graphic[] splashImages;
     [SerializeField] private bool inSplash, paused, switchingMenus;
@@ -35,9 +35,6 @@ public class MainMenuManager : MonoBehaviour
         MAIN,
         PLAY_PORTAL,
         SETTINGS,
-        VOLUME,
-        QUALITY,
-        KEYBINDS,
         MYSTUFF,
         LEADERBOARDS,
         EQUIPMENT_PREVIEW,
@@ -64,7 +61,7 @@ public class MainMenuManager : MonoBehaviour
         state = MenuState.NONE;
         
         DontDestroyOnLoad(gameObject);
-        menuList = new(){mainMenu, playPortalMenu, settingsMenu, volumeMenu, qualityMenu, keybindMenu, myStuffMenu, leaderboardMenu, previewMenu, pauseMenu, splashScreen};
+        menuList = new(){mainMenu, playPortalMenu, settingsMenu, myStuffMenu, leaderboardMenu, previewMenu, pauseMenu, splashScreen};
         foreach (MenuUI menu in menuList) {menu.Initialize();}
     }
 

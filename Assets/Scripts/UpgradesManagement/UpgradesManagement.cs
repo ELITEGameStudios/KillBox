@@ -70,7 +70,7 @@ public class UpgradesList
 
     static public readonly Upgrade speed = new Upgrade(
         values_input: new float[][]{
-            new float[]{5.5f, 5.75f, 6, 6.25f, 6.5f, 7f},
+            new float[]{5.5f, 6,  6.5f, 7,     8,    9},
             new float[]{5,    4,     4, 3,     3,    2},
         },
         costs_input: new int[] { 1, 3, 8, 15, 20, 25, 30 },
@@ -86,9 +86,9 @@ public class UpgradesList
 
     static public readonly Upgrade health = new Upgrade(
         values_input : new float[][]{
-            new float[]{300, 350, 425, 500, 650, 800, 1000, 1250}
+            new float[]{300, 400, 500, 650, 800, 1000, 1250, 1500}
         },
-        costs_input : new int[]{1, 3, 5, 8, 15, 20, 25, 35},
+        costs_input : new int[]{1, 5, 10, 15, 20, 25, 35, 50},
         defaultValues : new float[][]{
             new float[]{250, 250, 150},
         },
@@ -98,7 +98,7 @@ public class UpgradesList
 
     static public readonly Upgrade capacity = new Upgrade(
         values_input : new float[][]{
-            new float[]{120, 150, 200, 250, 300, 400}
+            new float[]{125, 150, 200, 250, 300, 400}
         },
         costs_input : new int[]{1, 3, 6, 12, 18, 30},
         defaultValues : new float[][]{

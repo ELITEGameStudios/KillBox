@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.coffee.ui-particle": "https://github.com/mob-sakai/ParticleEffectForUGUI.git",
     "com.cyanilux.urp-blitrenderfeature": "https://github.com/Cyanilux/URP_BlitRenderFeature.git",
     "com.unity.2d.animation": "9.2.0",
     "com.unity.2d.pixel-perfect": "5.1.0",

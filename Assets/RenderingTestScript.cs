@@ -3,19 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class RenderingTestScript : MonoBehaviour
 {
     [SerializeField] public RenderTexture textureSource, textureDest;
 
     [SerializeField] public RenderTexture[] rescaleTextures;
+    [SerializeField] public Material wallMat;
     [SerializeField] public List<Material> sampleMaterial;
-    [SerializeField] public CommandBuffer buffer;
-    [SerializeField] public bool doubleBuffered;
+    public CommandBuffer buffer;
+    public bool doubleBuffered, active;
     // [SerializeField] public CustomRenderTexture renderTexture;
 
     public int[] temporaryIds;
     public int[] doubleBufferIds;
+
+    [Header("Camera Settings")]
+    [SerializeField] Camera targetCam;
+    [SerializeField] Camera wallTexCam;
+    [SerializeField] Camera textureCam;
+    [SerializeField] LayerMask nonTexturedLayerMask, texturedLayerMask; 
+    [SerializeField] int texturedRendererIndex, defaultRendererIndex; 
 
     void Awake()
     {
@@ -30,11 +39,39 @@ public class RenderingTestScript : MonoBehaviour
     {
         RenderPipelineManager.endFrameRendering += OnEndContextRendering;
         RenderPipelineManager.beginFrameRendering += OnBeginContextRendering;
+        active = QualityControl.main.NeedsRenderTextues;
+        SyncCamSettings();
     }
 
     void Update()
     {
         
+        bool hasWallTex = QualityControl.main.HealthEffectShader;
+        if(hasWallTex != sampleMaterial.Contains(wallMat))
+        {
+            if (hasWallTex)
+            {
+                AddMaterial(wallMat);
+            }
+            else
+            {
+                RemoveMaterial(wallMat);
+            }
+            wallTexCam.gameObject.SetActive(QualityControl.main.HealthEffectShader);
+        }
+        if(active != QualityControl.main.NeedsRenderTextues)
+        {
+            active = QualityControl.main.NeedsRenderTextues;
+            SyncCamSettings();    
+        }
+        
+    }
+    
+    void SyncCamSettings()
+    {
+            targetCam.GetUniversalAdditionalCameraData().SetRenderer(active ? texturedRendererIndex : defaultRendererIndex);
+            targetCam.cullingMask = active ? texturedLayerMask : nonTexturedLayerMask;
+            textureCam.gameObject.SetActive(QualityControl.main.NeedsRenderTextues);
     }
 
     public void AddMaterial(Material material, bool front = false)
@@ -60,6 +97,7 @@ public class RenderingTestScript : MonoBehaviour
 
     void OnEndContextRendering(ScriptableRenderContext context, Camera[] arg2)
     {   
+        if(!active){return;}
 
         // Debug.Log(textureSource.descriptor.width + " " + textureSource.descriptor.height);
         buffer = new CommandBuffer();
@@ -135,11 +173,13 @@ public class RenderingTestScript : MonoBehaviour
         // {
         //     buffer.CopyTexture(tempRenderTextures[tempRenderTextures.Length-1], new RenderTargetIdentifier(textureDest));
         // }
-        Graphics.ExecuteCommandBuffer(buffer);
 
         // Releasing Data
         for (int i = 0; i < temporaryIds.Length; i++) { buffer.ReleaseTemporaryRT(temporaryIds[i]); }
         for (int i = 0; i < doubleBufferIds.Length; i++) { buffer.ReleaseTemporaryRT(doubleBufferIds[i]); }
+        
+        Graphics.ExecuteCommandBuffer(buffer);
+
         buffer.Release();
         for (int i = 0; i < rescaleTextures.Length; i++)
         {
