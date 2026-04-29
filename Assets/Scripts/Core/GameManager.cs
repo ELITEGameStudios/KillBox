@@ -216,7 +216,8 @@ public class GameManager : MonoBehaviour, ISelfResListener
         List<int> availableIndexes = new List<int>(); 
 
         if(
-            // _level > 24 &&
+            // true
+            _level > 24 &&
             _level % 4 == 0
         ){
             availableIndexes.Add(99);

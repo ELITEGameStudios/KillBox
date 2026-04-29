@@ -10027,19 +10027,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d86383278bc45559583fc6e686de51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
   playerHealthScript: {fileID: 0}
-  playerRigidBody: {fileID: 0}
+  currentHitCooldown: 0
   damage: 100
   _ignite_intensity: 0
   hitKb: 0
   HitCooldown: 0.1
-  AtCooldown: 0.1
   immunity_time: 0
   _ignite_time: 0
   tag: Player
   CanAttack: 1
-  EndOfContact: 0
   ignore_immunity: 1
   _ignites: 0
   triggerEvent: 0
@@ -15251,6 +15248,7 @@ MonoBehaviour:
   timer: 0
   targetTime: 0
   inTransition: 0
+  parentIndependant: 0
 --- !u!1 &5310180238224691307
 GameObject:
   m_ObjectHideFlags: 0
@@ -15504,19 +15502,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d86383278bc45559583fc6e686de51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 5310180238275447519}
   playerHealthScript: {fileID: 0}
-  playerRigidBody: {fileID: 0}
+  currentHitCooldown: 0
   damage: 0
   _ignite_intensity: 0
   hitKb: 7
   HitCooldown: 0.2
-  AtCooldown: 0.2
   immunity_time: 0
   _ignite_time: 0
   tag: Player
   CanAttack: 1
-  EndOfContact: 0
   ignore_immunity: 1
   _ignites: 0
   triggerEvent: 0
@@ -15547,9 +15542,9 @@ MonoBehaviour:
   UIcanvas: {fileID: 0}
   DistanceFromGrenade: 0
   hit_txt_size: 0
-  incomingForceMod: 1
+  incomingForceMod: 0
   ExplosionDamage: 0
-  ultra_immune: 1
+  ultra_immune: 0
   custom_hit_txt_size: 0
   kbImmune: 0
   HitTxt: {fileID: 0}
@@ -15572,29 +15567,13 @@ MonoBehaviour:
   CurrentHealth: 0
   a: 0
   manager: {fileID: 0}
-  player: {fileID: 0}
-  DroppedItem: {fileID: 3877291655338918550, guid: 23a993c27d5a344a4864fed9bdb08862, type: 3}
-  ExplosionOnDeath: {fileID: 7029634076664512277, guid: 910d8b988f87a4007bed6f4290a2317b, type: 3}
-  color_easter_egg_portal: {fileID: 6708033527536035730, guid: 8d90fc0071569402dbb9cc1a7bc39ee3, type: 3}
-  InsObject: {fileID: 0}
-  tokenClone: {fileID: 0}
-  main_player: {fileID: 0}
-  key_item: {fileID: 7939964675840844463, guid: e0bf6bba259b2b34687150584439fd03, type: 3}
-  guaranteed_drop_item: {fileID: 8739768844396423761, guid: df732376baa820e48a2d424d26e2f6f2, type: 3}
-  lvl_4_prefabs: []
-  objectPool:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  guaranteedDrop: {fileID: 0}
   explosionColor: {r: 0, g: 1, b: 0.021962404, a: 1}
   audio: {fileID: 0}
   death: {fileID: 8300000, guid: 9515cb53acd214ea1a878193d32e5c10, type: 3}
   hit: {fileID: 8300000, guid: c5b4fdf98f1cf43dba8c528d6f22a6c2, type: 3}
-  can_drop_lvl_4: 0
   destructive_immune: 0
   no_drops: 0
-  key_drops: 0
-  guaranteed_drop_bool: 1
   triggerDeathEvent: 0
   preventDefaultDeath: 0
   immortal: 0
@@ -15642,6 +15621,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HQGameObjects:
   - {fileID: 5310180238224691307}
+  gridEffectObject: {fileID: 0}
 --- !u!114 &5582996166098489720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15668,7 +15648,11 @@ MonoBehaviour:
     minHealth: 0
   nextStateIndex: 0
   dontInstantlySetState: 0
+  startedAttacks: 0
+  stallTimer: 0
+  introStallTimer: 0
   preventDefaultDeath: 0
+  forMultiple: 0
   renderer: {fileID: 5310180237631168411}
   defaultColor: {r: 0.02745098, g: 1, b: 0, a: 1}
   laser: {fileID: 2844031333757694950}
@@ -15682,6 +15666,8 @@ MonoBehaviour:
     minHealth: 0
   phase3:
     minHealth: 0
+  multiplayerPhase:
+    minHealth: 0
   chase:
     name: 
     displaySprite: {fileID: 0}
@@ -15692,7 +15678,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     bombIterations: 0
     bombsPerBurst: 0
@@ -15713,7 +15702,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     bombIterations: 0
     bombsPerBurst: 0
@@ -15734,7 +15726,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     iterations: 0
     interval: 0
@@ -15749,7 +15744,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     iterations: 0
     interval: 0
@@ -15764,7 +15762,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     iterations: 0
     interval: 0
@@ -15779,7 +15780,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     laser: {fileID: 0}
     beam_indicator_prefab: {fileID: 0}
@@ -15798,7 +15802,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     laser: {fileID: 0}
     beam_indicator_prefab: {fileID: 0}
@@ -15817,7 +15824,10 @@ MonoBehaviour:
     health: {fileID: 0}
     animator: {fileID: 0}
     transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
     finished: 0
+    started: 0
     cutterBoss: {fileID: 0}
     laser: {fileID: 0}
     beam_indicator_prefab: {fileID: 0}
@@ -15825,6 +15835,52 @@ MonoBehaviour:
     time: 0
     timer: 0
     quantity: 0
+  multiplayerLaserAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
+    finished: 0
+    started: 0
+    cutterBoss: {fileID: 0}
+    laser: {fileID: 0}
+    beam_indicator_prefab: {fileID: 0}
+    locked_rotation: {x: 0, y: 0, z: 0}
+    lazer_size: 0
+    laserWindupTime: 0
+    laserDiminishTime: 0
+    iterations: 0
+  multiplayerChaseAttack:
+    name: 
+    displaySprite: {fileID: 0}
+    displayColor: {r: 0, g: 0, b: 0, a: 0}
+    movement_script: {fileID: 0}
+    rb_self: {fileID: 0}
+    self_collider: {fileID: 0}
+    health: {fileID: 0}
+    animator: {fileID: 0}
+    transform: {fileID: 0}
+    outroWaitTime: 0
+    introWaitTime: 0
+    finished: 0
+    started: 0
+    cutterBoss: {fileID: 0}
+    bombIterations: 0
+    bombsPerBurst: 0
+    interval: 0
+    time: 0
+    timer: 0
+    bombSpawnRadius: 0
+    predictor_coefficient: 0
+    moveSpeed: 0
+    bombsPrefab: {fileID: 0}
   clip: {fileID: 8300000, guid: 3ba85409ff303cf4eadb57645d83d725, type: 3}
   audio: {fileID: 6428480845840962987}
   dashAudio: {fileID: 5756234432826495841}
@@ -16291,8 +16347,11 @@ MonoBehaviour:
   limit: -1
   speed: 3
   acceleration: 0
+  necroHitInterval: 0.5
+  currentNecroHitTimer: 0
   boss: 1
   animator: {fileID: 0}
+  destinationSetter: {fileID: 0}
   enemyHealth: {fileID: 0}
   enemyDamage: {fileID: 0}
   playerDamage: {fileID: 0}
@@ -16302,6 +16361,8 @@ MonoBehaviour:
   mainCollider: {fileID: 0}
   hasDrop: 0
   animEnable: 0
+  bypassNecro: 0
+  isNecro: 0
 --- !u!1 &5793766690180569013
 GameObject:
   m_ObjectHideFlags: 0
