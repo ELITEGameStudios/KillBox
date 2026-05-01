@@ -312,6 +312,7 @@ public class GameManager : MonoBehaviour, ISelfResListener
             // AstarPath.active.UpdateGraphs(GetMapByID(0).Obstacles.bounds); 
             BossRoundManager.main.InitializeEntries();
         }
+        Time.timeScale = 1;
         StartCoroutine(StartNumerator());
     }
 

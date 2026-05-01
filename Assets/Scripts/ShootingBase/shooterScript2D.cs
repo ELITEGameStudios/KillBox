@@ -234,17 +234,18 @@ public class shooterScript2D : MonoBehaviour
                 // trails.colorOverTrail = particle_color;
             }
 
-            //AddingForces
+            // AddingForces
+            // The testbool happened due to a solved bug to do with fixedTimeStep
 
-            if (testBool)
-            {
+            // if (testBool)
+            // {
+            //     clone.velocity = Spawn.up * Velocity * clone.mass * 2;//shootVelConstant;, clone.mass * 2 should equal 0.2
+            // }
+            // else
+            // {
                 clone.AddForce(Spawn.up * Velocity);
-            }
-            else
-            {
-                clone.velocity = Spawn.up * Velocity * clone.mass * 2;//shootVelConstant;, clone.mass * 2 should equal 0.2
-            }
-            Debug.Log("Added force, " + Spawn.up * Velocity);
+            // }
+            Debug.Log("Time logs: \ntimescale: " + Time.timeScale + "\n fixed delta time: " + Time.fixedDeltaTime + "\n standard delta time: " + Time.deltaTime);
 
 
             if (recoilForce > 0 && Player.main.movement.canMove) { Player.main.rb.AddForce(Player.main.tf.up * -recoilForce, ForceMode2D.Impulse); }
