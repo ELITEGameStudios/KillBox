@@ -339,54 +339,59 @@ public class GameManager : MonoBehaviour, ISelfResListener
     }
 
     public void RestartGame(){
-        // FadeObj.SetActive(true);
-        // FadeAnimator.Play("FadeAnim");
-        _level = 1;    
-        ScoreCount = 0;
-        ultra_kills = 0;
-
+        Debug.Log("RESTARTING GAME");
+        KillBox.StartNewGame(KillBox.currentGame);
         KillboxEventSystem.TriggerGameRestartEvent();
-
-        playerHealth.InvokeRestart();
-        GetSpawn.CancelAllSpawns();
-        GetSpawn.init();
-        use_equipment_button.SetActive(false);
-        use_equipment_button.transform.GetChild(1).GetComponent<Button>().interactable = true;
-        
-        started_game = false;
-        HotkeyManager.instance.enabled = false;
-        
-        EnemyCounter.main.DestroyAllEnemies();
-        EnemyCounter.main.Reset();
-        LvlStarter.main.ManualStopLvl();
-        ObjectPoolManager.ResetAllPools();
-        ToggleChannelManager.main.ResetChannels(true);
-        SetMaxTokenCount();
-        DifficultyManager.main.SetDifficulty(KillBox.currentGame.difficultyIndex);
-        UpdateDifficulty();
-        UpgradesManager.Instance.ResetUpgrades();
-        GunHandler.Instance.ResetWeapons();
-
-        if(freeplay){
-            req_equipment_kills = 0;
-        }
-
-        for (int i = 0; i < Maps.Count; i++)
-        { Maps[i].Root.SetActive(false); }
-        GetMapByID(0).Root.SetActive(true);
-
-        Player.main.tf.position = GetMapByID(0).Player.position;
-        PortalScript.main.transform.position = GetMapByID(0).Portal.position;
-        ManageSpawns(0);
-        
-        gameplayHUD.SetActive(false);
-
-        if(escapeRoom){ AstarPath.active.UpdateGraphs(GetMapByID(20).Obstacles.bounds); }
-        else{ 
-            AstarPath.active.UpdateGraphs(GetMapByID(0).Obstacles.bounds); 
-        }
-        StartCoroutine(StartNumerator());
     }
+    // public void RestartGame(){
+    //     // FadeObj.SetActive(true);
+    //     // FadeAnimator.Play("FadeAnim");
+    //     _level = 1;    
+    //     ScoreCount = 0;
+    //     ultra_kills = 0;
+
+    //     KillboxEventSystem.TriggerGameRestartEvent();
+
+    //     playerHealth.InvokeRestart();
+    //     GetSpawn.CancelAllSpawns();
+    //     GetSpawn.init();
+    //     use_equipment_button.SetActive(false);
+    //     use_equipment_button.transform.GetChild(1).GetComponent<Button>().interactable = true;
+        
+    //     started_game = false;
+    //     HotkeyManager.instance.enabled = false;
+        
+    //     EnemyCounter.main.DestroyAllEnemies();
+    //     EnemyCounter.main.Reset();
+    //     LvlStarter.main.ManualStopLvl();
+    //     ObjectPoolManager.ResetAllPools();
+    //     ToggleChannelManager.main.ResetChannels(true);
+    //     SetMaxTokenCount();
+    //     DifficultyManager.main.SetDifficulty(KillBox.currentGame.difficultyIndex);
+    //     UpdateDifficulty();
+    //     UpgradesManager.Instance.ResetUpgrades();
+    //     GunHandler.Instance.ResetWeapons();
+
+    //     if(freeplay){
+    //         req_equipment_kills = 0;
+    //     }
+
+    //     for (int i = 0; i < Maps.Count; i++)
+    //     { Maps[i].Root.SetActive(false); }
+    //     GetMapByID(0).Root.SetActive(true);
+
+    //     Player.main.tf.position = GetMapByID(0).Player.position;
+    //     PortalScript.main.transform.position = GetMapByID(0).Portal.position;
+    //     ManageSpawns(0);
+        
+    //     gameplayHUD.SetActive(false);
+
+    //     if(escapeRoom){ AstarPath.active.UpdateGraphs(GetMapByID(20).Obstacles.bounds); }
+    //     else{ 
+    //         AstarPath.active.UpdateGraphs(GetMapByID(0).Obstacles.bounds); 
+    //     }
+    //     StartCoroutine(StartNumerator());
+    // }
 
     public virtual void SetRound()
     {

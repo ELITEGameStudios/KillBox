@@ -64,6 +64,7 @@ public class BulletClass : MonoBehaviour
         wall_penetration = wall_penetration_int;
         this.knockbackForce = knockbackForce;
         this.knockbackTime = knockbackTime;
+        this.startingVel = startingVel;
     }
 
     void Awake()

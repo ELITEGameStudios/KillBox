@@ -20,11 +20,15 @@ public class QualityManager : MonoBehaviour
             for (int i = 0; i < HQGameObjects.Length; i++)
                 HQGameObjects[i].SetActive(false);
         }
-
-        if(qualityControl.GridEffectShader != gridEffectObject.activeInHierarchy)
+        if(gridEffectObject != null)
         {
-            gridEffectObject.SetActive(qualityControl.GridEffectShader);
+            if(qualityControl.GridEffectShader != gridEffectObject.activeInHierarchy)
+            {
+                gridEffectObject.SetActive(qualityControl.GridEffectShader);
+            }
+            
         }
+
 
     }
 }

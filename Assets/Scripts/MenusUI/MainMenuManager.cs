@@ -60,7 +60,7 @@ public class MainMenuManager : MonoBehaviour
 
         state = MenuState.NONE;
         
-        DontDestroyOnLoad(gameObject);
+        // DontDestroyOnLoad(gameObject);
         menuList = new(){mainMenu, playPortalMenu, settingsMenu, myStuffMenu, leaderboardMenu, previewMenu, pauseMenu, splashScreen};
         foreach (MenuUI menu in menuList) {menu.Initialize();}
     }
@@ -114,7 +114,7 @@ public class MainMenuManager : MonoBehaviour
         OpenMenuViaState(MenuState.NONE, false);
         InstantSwitch();
         menusComponents.SetActive(false);
-        foreach (GameObject cam in menuCameras) { cam.SetActive(false); }
+        foreach (GameObject cam in menuCameras) { try {cam.SetActive(false);} catch {continue;} }
     }
 
     public void End(){

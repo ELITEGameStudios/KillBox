@@ -124,11 +124,22 @@ public class KillBox : MonoBehaviour
         SceneSystem.Instance.LoadGameScenes();
     }
 
+    public static void StartNewGame(Game game){
+        EndCurrentGame();
+        currentGame = new Game(game.gamemode, game.difficultyIndex, game.freeplay);
+        SceneSystem.Instance.LoadGameScenes();
+    }
+
     public static void EndCurrentGame(){
+        if(currentGame != null)
+        {
+            
+            // Store game statistics and and save here before setting it to null
         
-        // Store game statistics and and save here before setting it to null
+            currentGame = null;
+        }
         
-        currentGame = null;
+        Time.timeScale = 1;
     }
 
     public void OnPlayedTutorial(){

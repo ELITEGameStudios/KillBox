@@ -31,19 +31,13 @@ public class shooterScript2D : MonoBehaviour
 
     [SerializeField]
     private TwoDPlayerController player_controller;
-
     private IEnumerator delayClone;
-
-    public BuffsManager buffsManager;
 
     [SerializeField]
     private int burst_rounds;
+    private float shoot_warmup_time, shoot_warmup_timer;
  
     
-    private float shoot_warmup_time, shoot_warmup_timer;
-
-    [SerializeField]
-    private GameManager manager;
 
     private float shootCooldownTimer;
     public bool CanShoot {get {return shootCooldownTimer <= 0; }}
@@ -65,19 +59,15 @@ public class shooterScript2D : MonoBehaviour
     [SerializeField] private Vector3 initGunPos;
     [SerializeField] private float graphicRecoilTime, initGraphicRecoilTime, recoilTime, knockbackForce, knockbackTime;
 
+    public bool testBool;
+    public float shootVelConstant;
     void Awake(){
         initGunPos = gunGraphicTf.localPosition;
     }
     // Start is called before the first frame update
     void Start()
     {
-        // CanShoot = true;
         SpawnRot = Spawn.localEulerAngles;
-        // objectPool[0] = ObjectPoolManager.GetPool("BulletPool");
-        // objectPool[1] = ObjectPoolManager.GetPool("Flash");
-        buffsManager = GameObject.FindWithTag("Player").GetComponent<BuffsManager>();
-        manager = GameObject.Find("Manager").GetComponent<GameManager>();
-
         weaponItem = WeaponItemList.Instance.GetItem("Pistol");
         weapon = weaponItem.weapon;
 
@@ -91,8 +81,6 @@ public class shooterScript2D : MonoBehaviour
         }
 
         Themify();
-
-        //poolManager = GameObject.Find("Manager").GetComponent<PoolManager>();
     }
 
     // Update is called once per frame
@@ -102,7 +90,7 @@ public class shooterScript2D : MonoBehaviour
             shootCooldownTimer -= Time.deltaTime;
         }
 
-        if(manager == null || !manager.started_game){
+        if(GameManager.main == null || !GameManager.main.started_game){
             return;
         }
 
@@ -247,7 +235,16 @@ public class shooterScript2D : MonoBehaviour
             }
 
             //AddingForces
-            clone.AddForce(Spawn.up * Velocity);
+
+            if (testBool)
+            {
+                clone.AddForce(Spawn.up * Velocity);
+            }
+            else
+            {
+                clone.velocity = Spawn.up * Velocity * clone.mass * 2;//shootVelConstant;, clone.mass * 2 should equal 0.2
+            }
+            Debug.Log("Added force, " + Spawn.up * Velocity);
 
 
             if (recoilForce > 0 && Player.main.movement.canMove) { Player.main.rb.AddForce(Player.main.tf.up * -recoilForce, ForceMode2D.Impulse); }
@@ -341,7 +338,7 @@ public class shooterScript2D : MonoBehaviour
     }
 
     void Themify(){
-        if(themed && manager.Theme != 0){
+        if(themed && GameManager.main.Theme != 0){
             //bullet_color = manager.ColorThemes[manager.Theme];
             //particle_color = manager.ColorThemes[manager.Theme];
         }
