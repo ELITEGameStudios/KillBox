@@ -7,7 +7,7 @@ public class FlipbookUISystem : MonoBehaviour
 {
     public FlipbookData[] flipbookList;
     public Animator animator;
-    public UnityEvent finishEvent, resetEvent;
+    public UnityEvent startEvent, finishEvent, resetEvent;
     public int currentIndex;
     public bool finishOnLast, finished;
 
@@ -27,6 +27,7 @@ public class FlipbookUISystem : MonoBehaviour
     {
         Reset();
         
+        startEvent.Invoke();
         foreach (GameObject obj in flipbookList[currentIndex].gameObjects){obj.SetActive(true);}
         if(animator != null){animator.SetTrigger(flipbookList[currentIndex].animTrigger);}
     }
@@ -36,7 +37,7 @@ public class FlipbookUISystem : MonoBehaviour
         if(finished){return;}
         foreach (GameObject obj in flipbookList[currentIndex].gameObjects){obj.SetActive(false);}
         currentIndex++;
-        if(animator != null){animator.SetTrigger(flipbookList[currentIndex].animTrigger);}
+
 
         if(currentIndex == flipbookList.Length){
             OnFinish();
@@ -47,6 +48,7 @@ public class FlipbookUISystem : MonoBehaviour
             OnFinish();
         }
         
+        if(animator != null){animator.SetTrigger(flipbookList[currentIndex].animTrigger);}
         foreach (GameObject obj in flipbookList[currentIndex].gameObjects){obj.SetActive(true);}
 
     }

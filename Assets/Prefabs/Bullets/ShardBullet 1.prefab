@@ -224,7 +224,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.9818833, g: 1, b: 0, a: 1}
+      maxColor: {r: 1, g: 0.5031939, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4978,7 +4978,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c5bb090d55b0546b983372eb1779c33b, type: 3}
-  m_Color: {r: 1, g: 0.99247044, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.73599935, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5178,7 +5178,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.95441294, b: 0, a: 1}
+      maxColor: {r: 1, g: 0.7214559, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -8786,7 +8786,7 @@ ParticleSystem:
       properties: 0
       emitProbability: 1
   LightsModule:
-    enabled: 1
+    enabled: 0
     ratio: 1
     light: {fileID: 8206001014471154973, guid: a1fabcb1131f3482799bf6ec86b6d072, type: 3}
     randomDistribution: 1
@@ -8907,7 +8907,7 @@ ParticleSystem:
     lifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.02
+      scalar: 0.0225
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -8966,15 +8966,15 @@ ParticleSystem:
     dieWithParticles: 1
     sizeAffectsWidth: 0
     sizeAffectsLifetime: 0
-    inheritParticleColor: 1
-    generateLightingData: 1
+    inheritParticleColor: 0
+    generateLightingData: 0
     splitSubEmitterRibbons: 0
     attachRibbonsToTransform: 1
     colorOverLifetime:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.87464434, g: 1, b: 0.043137252, a: 1}
+      maxColor: {r: 1, g: 0.7178503, b: 0.043137252, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -9037,29 +9037,29 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     widthOverTrail:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 1
       scalar: 0.3
       minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
-          time: 0
+          time: 0.17204285
           value: 1
-          inSlope: 0
-          outSlope: 0
+          inSlope: -0.017463872
+          outSlope: -0.017463872
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.33333334
+          outWeight: 0.38636377
         - serializedVersion: 3
           time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
+          value: 0.48044866
+          inSlope: -1.0952654
+          outSlope: -1.0952654
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.33333334
+          inWeight: 0.24025968
           outWeight: 0.33333334
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -9092,7 +9092,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.90465856, g: 1, b: 0, a: 1}
+      maxColor: {r: 1, g: 0.5986123, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -9745,7 +9745,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b3257ee42c3c1d946849644329adfe6a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10022,7 +10022,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.9818833, g: 1, b: 0, a: 1}
+      maxColor: {r: 1, g: 0.59399694, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -14814,12 +14814,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f214a9315b1c46a7a7fad574a982fd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bullet: {fileID: 7075375582979792073}
   particle: {fileID: 6985470164098696722}
   hit_particle: {fileID: 4464726419710277323}
-  poolManager: {fileID: 0}
   gameManager: {fileID: 0}
-  PoolIndex: 1
   rangeForFloat: 0
   range: 1
   objectPool: {fileID: 0}
@@ -14839,19 +14836,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d86383278bc45559583fc6e686de51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 3050550830639310726}
   playerHealthScript: {fileID: 0}
-  playerRigidBody: {fileID: 0}
+  currentHitCooldown: 0
   damage: 50
   _ignite_intensity: 0
   hitKb: 0
   HitCooldown: 1
-  AtCooldown: 1
   immunity_time: 0
   _ignite_time: 0
   tag: Player
   CanAttack: 1
-  EndOfContact: 0
   ignore_immunity: 1
   _ignites: 0
   triggerEvent: 0
@@ -14875,6 +14869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HQGameObjects:
   - {fileID: 8309511479063824527}
+  gridEffectObject: {fileID: 0}
 --- !u!1 &8309511479063824527
 GameObject:
   m_ObjectHideFlags: 0

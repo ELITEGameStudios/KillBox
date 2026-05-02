@@ -10897,10 +10897,25 @@ MonoBehaviour:
     - {fileID: 1364414049}
     - {fileID: 689218385}
     animTrigger: intro
-  animator: {fileID: 0}
+  animator: {fileID: 66483523}
+  startEvent:
+    m_PersistentCalls:
+      m_Calls: []
   finishEvent:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 66483523}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: outro
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 445488682}
         m_TargetAssemblyTypeName: BlessingDisplayManager, Assembly-CSharp
         m_MethodName: EndBlessingSequence
@@ -48885,10 +48900,25 @@ MonoBehaviour:
     - {fileID: 995650921}
     - {fileID: 1984264987}
     animTrigger: intro
-  animator: {fileID: 0}
+  animator: {fileID: 369881261}
+  startEvent:
+    m_PersistentCalls:
+      m_Calls: []
   finishEvent:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 369881261}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: outro
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 445488682}
         m_TargetAssemblyTypeName: BlessingDisplayManager, Assembly-CSharp
         m_MethodName: EndBlessingSequence
@@ -60002,7 +60032,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d32a04290b502e7449c5316b09e1b0e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  animatorList:
+  - {fileID: 369881261}
+  - {fileID: 1838859362}
+  - {fileID: 66483523}
+  - {fileID: 679592992}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   currentType: 0
   bgObject: {fileID: 1241378901}
   flipbooks:
@@ -60010,10 +60047,10 @@ MonoBehaviour:
   - {fileID: 1838859363}
   - {fileID: 66483524}
   - {fileID: 679592993}
-  introAnimTrigger: 
-  outroAnimTrigger: 
-  introTime: 0
-  outroTime: 0
+  introAnimTrigger: intro
+  outroAnimTrigger: outro
+  introTime: 1
+  outroTime: 1
 --- !u!1 &446526491
 GameObject:
   m_ObjectHideFlags: 0
@@ -93042,10 +93079,25 @@ MonoBehaviour:
     - {fileID: 536446392}
     - {fileID: 1706897154}
     animTrigger: intro
-  animator: {fileID: 0}
+  animator: {fileID: 679592992}
+  startEvent:
+    m_PersistentCalls:
+      m_Calls: []
   finishEvent:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 679592992}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: outro
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 445488682}
         m_TargetAssemblyTypeName: BlessingDisplayManager, Assembly-CSharp
         m_MethodName: EndBlessingSequence
@@ -250017,10 +250069,25 @@ MonoBehaviour:
     - {fileID: 2132340902}
     - {fileID: 241857850}
     animTrigger: intro
-  animator: {fileID: 0}
+  animator: {fileID: 1838859362}
+  startEvent:
+    m_PersistentCalls:
+      m_Calls: []
   finishEvent:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1838859362}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: outro
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 445488682}
         m_TargetAssemblyTypeName: BlessingDisplayManager, Assembly-CSharp
         m_MethodName: EndBlessingSequence
