@@ -4,17 +4,31 @@ using UnityEngine;
 
 namespace KillboxWeaponClasses
 {
+
+    // Add all types of shootable bullets here, and define the bullets in WeaponItemList script Awake() function before using in weapons
+    public enum BulletType
+    {
+        BULLET,
+        GRENADE,
+        SERENITY,
+        CHAOS,
+        KUNAIA,
+        KUNAIB
+    }
+
     public class Weapon
     {
         public readonly float fire_rate, cooldown_units, velocity, spread, range, burst_interval, cooldown_time, recoilForce, recoilTime, knockbackForce, knockbackTime;
         public readonly int damage, bullets_per_shot, burst_quantity, pool, penetration, support_type;
+        public readonly BulletType bullet;
+        public readonly bool burst, is_support, launcher, uniform;
+        
 
-        public readonly bool burst, is_support, launcher, uniform, misc;
 
         public Weapon(
             float fr, float cooldown, float vel, float spr, float rnge, int dmg, int bps = 1,
             bool burst_input = false, int burst_quantity_input = 3, float burst_interval_input = 0.33f,
-            int pool_input = 0, int penetration_input = 0, bool _is_support = false, int _support_type = 0, float _cooldown_time = 2.5f, bool _launcher = false, bool _uniform = false, bool _misc = false, float recoilForce = 1f, float recoilTime = 0.33f, float knockbackForce = 3, float knockbackTime = 0.33f)
+            BulletType bullet = BulletType.BULLET, int penetration_input = 0, bool _is_support = false, int _support_type = 0, float _cooldown_time = 2.5f, bool _launcher = false, bool _uniform = false, float recoilForce = 1f, float recoilTime = 0.33f, float knockbackForce = 3, float knockbackTime = 0.33f)
         {
             fire_rate = fr;
             cooldown_units = cooldown;
@@ -27,7 +41,6 @@ namespace KillboxWeaponClasses
             burst_quantity = burst_quantity_input;
             burst_interval = burst_interval_input;
 
-            pool = pool_input; //Use only for special Weapons
             penetration = penetration_input; //Use only for piercing weapons
 
             is_support = _is_support;
@@ -35,8 +48,8 @@ namespace KillboxWeaponClasses
             cooldown_time = _cooldown_time;
             launcher = _launcher;
             uniform = _uniform;
-            misc = _misc;
 
+            this.bullet = bullet; //Use only for special Weapons
             this.recoilForce = recoilForce;
             this.recoilTime= recoilTime;
 
@@ -92,45 +105,45 @@ namespace KillboxWeaponClasses
         public static readonly Weapon combatRifle = new Weapon(0.25f, 6f, 230, 0, 2, 200, penetration_input: 1);
         public static readonly Weapon goldenRifle = new Weapon(0.5f, 5.5f, 300, 0, 2, 600, penetration_input: 4, knockbackForce: 5, knockbackTime: 1);
 
-        public static readonly Weapon lightGrenadeLauncher = new Weapon(0.8f, 20f, 80, 10, 1f, 200, pool_input: 10, recoilForce: 5);
-        public static readonly Weapon doubleLauncher = new Weapon(0.75f, 20f, 140, 10, 5f, 300, bps: 2, pool_input:10, recoilForce: 3);
-        public static readonly Weapon tripwireLauncher = new Weapon(0.2f, 2f, 3, 50, 15f, 75, bps: 6, pool_input: 10, recoilForce: 3);
-        public static readonly Weapon burstLauncher = new Weapon(0.1f, 10f, 150, 20, 10f, 350, burst_input: true, burst_quantity_input: 3, burst_interval_input: 0.5f, pool_input: 10, recoilForce: 3);
-        public static readonly Weapon heavyLauncher = new Weapon(0.5f, 20f, 150, 20, 10f, 1000, pool_input: 10, recoilForce: 3);
-        public static readonly Weapon goldenLauncher = new Weapon(0.1f, 1f, 150, 20, 10f, 1000, burst_input: true, burst_quantity_input: 5, burst_interval_input: 0.5f, pool_input: 10, recoilForce: 3); // Shouldnt hurt you on explosion
+        public static readonly Weapon lightGrenadeLauncher = new Weapon(0.8f, 20f, 80, 10, 1f, 200, bullet: BulletType.GRENADE, recoilForce: 5);
+        public static readonly Weapon doubleLauncher = new Weapon(0.75f, 20f, 140, 10, 5f, 300, bps: 2, bullet:BulletType.GRENADE, recoilForce: 3);
+        public static readonly Weapon tripwireLauncher = new Weapon(0.2f, 2f, 3, 50, 15f, 75, bps: 6, bullet: BulletType.GRENADE, recoilForce: 3);
+        public static readonly Weapon burstLauncher = new Weapon(0.1f, 10f, 150, 20, 10f, 350, burst_input: true, burst_quantity_input: 3, burst_interval_input: 0.5f, bullet: BulletType.GRENADE, recoilForce: 3);
+        public static readonly Weapon heavyLauncher = new Weapon(0.5f, 20f, 150, 20, 10f, 1000, bullet: BulletType.GRENADE, recoilForce: 3);
+        public static readonly Weapon goldenLauncher = new Weapon(0.1f, 1f, 150, 20, 10f, 1000, burst_input: true, burst_quantity_input: 5, burst_interval_input: 0.5f, bullet: BulletType.GRENADE, recoilForce: 3); // Shouldnt hurt you on explosion
 
         public static readonly Weapon xoblix = new Weapon(0.05f, 2f, 250, 20, 1, 200, penetration_input: 1);
 
         // Green Chest Exclusives: Notes are on the Doc.
-        public static readonly Weapon junkPistol = new Weapon(0.3f, 3, 100, 25, 1, 20, knockbackForce: 2.5f);
-        public static readonly Weapon lightCarbine = new Weapon(0.15f, 10, 150, 5, 1, 35, recoilForce: 0.1f);
-        public static readonly Weapon twinNozzle = new Weapon(0.6f, 7, 200, 20, 0.5f, 40, bps:2, recoilForce: 5f);
-        public static readonly Weapon boomerangLauncher = new Weapon(0.4f, 6, 150, 5, 1, 50, penetration_input: 1, pool_input: 49, knockbackForce: 0);
-        public static readonly Weapon needleCannon = new Weapon(0.3f, 6, 5, 15, 4, 35, pool_input: 50, penetration_input: 1);
+        // public static readonly Weapon junkPistol = new Weapon(0.3f, 3, 100, 25, 1, 20, knockbackForce: 2.5f);
+        // public static readonly Weapon lightCarbine = new Weapon(0.15f, 10, 150, 5, 1, 35, recoilForce: 0.1f);
+        // public static readonly Weapon twinNozzle = new Weapon(0.6f, 7, 200, 20, 0.5f, 40, bps:2, recoilForce: 5f);
+        // public static readonly Weapon boomerangLauncher = new Weapon(0.4f, 6, 150, 5, 1, 50, penetration_input: 1, bullet: 49, knockbackForce: 0);
+        // public static readonly Weapon needleCannon = new Weapon(0.3f, 6, 5, 15, 4, 35, bullet: 50, penetration_input: 1);
 
-        // Blue Chest Exclusives: Notes are on the Doc.
-        public static readonly Weapon sprayGun = new Weapon(0.03f, 0.75f, 150, 0, 0.13f, 8, recoilForce: 0f, knockbackForce: 0f,pool_input: 54);
-        public static readonly Weapon tacticalCarbine = new Weapon(0.12f, 2.5f, 150, 5, 1.5f, 60, recoilForce: 0.1f);
-        public static readonly Weapon rgb = new Weapon(0.15f, 2.5f, 150, 15, 1, 60, pool_input: 51, penetration_input: 10);
-        public static readonly Weapon headwind = new Weapon(0.5f, 10, 80, 0, 1f, 15, knockbackForce: 5, knockbackTime: 1.2f, penetration_input: 5, pool_input: 52);
-        public static readonly Weapon lighter = new Weapon(0.06f, 2f, 50, 30, 0.4f, 10, recoilForce: 1.5f, penetration_input: 1, pool_input: 53);
+        // // Blue Chest Exclusives: Notes are on the Doc.
+        // public static readonly Weapon sprayGun = new Weapon(0.03f, 0.75f, 150, 0, 0.13f, 8, recoilForce: 0f, knockbackForce: 0f,bullet: 54);
+        // public static readonly Weapon tacticalCarbine = new Weapon(0.12f, 2.5f, 150, 5, 1.5f, 60, recoilForce: 0.1f);
+        // public static readonly Weapon rgb = new Weapon(0.15f, 2.5f, 150, 15, 1, 60, bullet: 51, penetration_input: 10);
+        // public static readonly Weapon headwind = new Weapon(0.5f, 10, 80, 0, 1f, 15, knockbackForce: 5, knockbackTime: 1.2f, penetration_input: 5, bullet: 52);
+        // public static readonly Weapon lighter = new Weapon(0.06f, 2f, 50, 30, 0.4f, 10, recoilForce: 1.5f, penetration_input: 1, bullet: 53);
 
-        // Pink Chest Exclusives: Notes are on the Doc.
-        public static readonly Weapon highCapacity = new Weapon(0.2f, 1, 150, 10, 1.2f, 45);
-        public static readonly Weapon heavyCarbine = new Weapon(0.16f, 3.2f, 180, 5, 1.5f, 100, recoilForce: 0.25f);
-        public static readonly Weapon wildShot = new Weapon(0.6f, 15, 150, 360, 1f, 200, recoilForce: 5);
-        public static readonly Weapon needleSwarm = new Weapon(0.2f, 1, 5, 15, 4, 35, bps: 10, pool_input: 50, penetration_input: 1);
-        public static readonly Weapon timeBomb = new Weapon(1, 50, 2, 40, 5, 300, knockbackForce: 10);
-        public static readonly Weapon blaster = new Weapon(1.2f, 35, 100, 10, 1, 100, recoilForce: 10, recoilTime: 0.5f, pool_input: 10);
+        // // Pink Chest Exclusives: Notes are on the Doc.
+        // public static readonly Weapon highCapacity = new Weapon(0.2f, 1, 150, 10, 1.2f, 45);
+        // public static readonly Weapon heavyCarbine = new Weapon(0.16f, 3.2f, 180, 5, 1.5f, 100, recoilForce: 0.25f);
+        // public static readonly Weapon wildShot = new Weapon(0.6f, 15, 150, 360, 1f, 200, recoilForce: 5);
+        // public static readonly Weapon needleSwarm = new Weapon(0.2f, 1, 5, 15, 4, 35, bps: 10, bullet: 50, penetration_input: 1);
+        // public static readonly Weapon timeBomb = new Weapon(1, 50, 2, 40, 5, 300, knockbackForce: 10);
+        // public static readonly Weapon blaster = new Weapon(1.2f, 35, 100, 10, 1, 100, recoilForce: 10, recoilTime: 0.5f, bullet: 10);
 
-        // Red Chest Exclusives: Notes are on the Doc.
-        public static readonly Weapon lightningRevolver = new Weapon(0.08f, 13, 200, 22, 1.1f, 250, penetration_input: 2);
-        public static readonly Weapon combatCarbine = new Weapon(0.12f, 1.8f, 200, 5, 1.5f, 125, recoilForce: 0.1f);
-        public static readonly Weapon doubleBarrelShotgun = new Weapon(0.55f, 8, 200, 20, 0.6f, 100, bps:2, recoilForce: 5f, knockbackForce: 5, penetration_input: 4);
-        public static readonly Weapon cymk = new Weapon(0.13f, 1f, 225, 15, 1, 150, pool_input: 55, penetration_input: 10);
-        public static readonly Weapon demolisher = new Weapon(0.4f, 2f, 80, 40, 1, 200, bps: 5, knockbackForce: 7, pool_input: 10);
-        public static readonly Weapon hurricane = new Weapon(0.17f, 3, 100, 0, 1f, 30, knockbackForce: 6, knockbackTime: 1.5f, penetration_input: 6, pool_input: 52);
-        public static readonly Weapon flamethrower = new Weapon(0.01f, 0.5f, 40, 15, 0.9f, 20, recoilForce: 0.7f, penetration_input: 1, pool_input: 53);
+        // // Red Chest Exclusives: Notes are on the Doc.
+        // public static readonly Weapon lightningRevolver = new Weapon(0.08f, 13, 200, 22, 1.1f, 250, penetration_input: 2);
+        // public static readonly Weapon combatCarbine = new Weapon(0.12f, 1.8f, 200, 5, 1.5f, 125, recoilForce: 0.1f);
+        // public static readonly Weapon doubleBarrelShotgun = new Weapon(0.55f, 8, 200, 20, 0.6f, 100, bps:2, recoilForce: 5f, knockbackForce: 5, penetration_input: 4);
+        // public static readonly Weapon cymk = new Weapon(0.13f, 1f, 225, 15, 1, 150, bullet: 55, penetration_input: 10);
+        // public static readonly Weapon demolisher = new Weapon(0.4f, 2f, 80, 40, 1, 200, bps: 5, knockbackForce: 7, bullet: 10);
+        // public static readonly Weapon hurricane = new Weapon(0.17f, 3, 100, 0, 1f, 30, knockbackForce: 6, knockbackTime: 1.5f, penetration_input: 6, bullet: 52);
+        // public static readonly Weapon flamethrower = new Weapon(0.01f, 0.5f, 40, 15, 0.9f, 20, recoilForce: 0.7f, penetration_input: 1, bullet: 53);
 
     }
 
@@ -163,12 +176,12 @@ namespace KillboxWeaponClasses
         // Gold Chest Exclusives
 
         // Stats displayed are irrelavent
-        // public static readonly Weapon chaos = new Weapon(10f, 5f, 25, 30, 10f, 0, pool_input: 9); //CHAOS, cool black hole
-        public static readonly Weapon kunais = new Weapon(0.75f, 5f, 75, 75, 0.75f, 0, bps:5,  pool_input: 13, _uniform: true, _misc: true, penetration_input: 5); //KUNAIS, 3 functions. trapper function, throwable, boomerang piercer
-        public static readonly Weapon kunais_2 = new Weapon(0.33f, 0f, 25, 0, 2f, 0,  pool_input: 14, _misc: true, penetration_input: 5); //KUNAIS, 3 functions. trapper function, throwable, boomerang piercer
-        public static readonly Weapon runic_gun = new Weapon(10f, 5f, 25, 30, 10f, 0, pool_input: 9); //RUNIC GUN, random runes do different things
-        public static readonly Weapon prismatic_hyperwave= new Weapon(10f, 5f, 25, 30, 10f, 0, pool_input: 9); //prismatic_hyperwave, laser deflecting off walls
-        public static readonly Weapon dracoscope = new Weapon(10f, 5f, 25, 30, 10f, 0, pool_input: 9); //dracoscope, hehe
-        public static readonly Weapon grass = new Weapon(10f, 5f, 25, 30, 10f, 0, pool_input: 9); //grass, you dont want to touch this one.
+        // public static readonly Weapon chaos = new Weapon(10f, 5f, 25, 30, 10f, 0, bullet: 9); //CHAOS, cool black hole
+        public static readonly Weapon kunais = new Weapon(0.75f, 5f, 75, 75, 0.75f, 0, bps:5,  bullet: BulletType.KUNAIA, _uniform: true, penetration_input: 5); //KUNAIS, 3 functions. trapper function, throwable, boomerang piercer
+        public static readonly Weapon kunais_2 = new Weapon(0.33f, 0f, 25, 0, 2f, 0,  bullet: BulletType.KUNAIA, penetration_input: 5); //KUNAIS, 3 functions. trapper function, throwable, boomerang piercer
+        public static readonly Weapon runic_gun = new Weapon(10f, 5f, 25, 30, 10f, 0, bullet: BulletType.KUNAIA); //RUNIC GUN, random runes do different things
+        public static readonly Weapon prismatic_hyperwave= new Weapon(10f, 5f, 25, 30, 10f, 0, bullet: BulletType.KUNAIA); //prismatic_hyperwave, laser deflecting off walls
+        public static readonly Weapon dracoscope = new Weapon(10f, 5f, 25, 30, 10f, 0, bullet: BulletType.KUNAIA); //dracoscope, hehe
+        public static readonly Weapon grass = new Weapon(10f, 5f, 25, 30, 10f, 0, bullet: BulletType.KUNAIA); //grass, you dont want to touch this one.
     }
 }

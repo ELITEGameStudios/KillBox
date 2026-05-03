@@ -14815,7 +14815,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particle: {fileID: 2479305175198026788}
   hit_particle: {fileID: 2550554138201415331}
-  gameManager: {fileID: 0}
   rangeForFloat: 0
   range: 1
   objectPool: {fileID: 0}
@@ -14836,12 +14835,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   col: {fileID: 1073948089518573696}
+  excludePenetration: 0
   misc_bullet: 0
   lock_trigger: 0
   inWall: 0
   knockbackForce: 0
   knockbackTime: 0
   startingVel: 0
+  bulletDestroy: {fileID: 7600507978443103298}
 --- !u!1 &8309511479063824527
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class BlessingDisplayManager : MonoBehaviour
     public FlipbookUISystem[] flipbooks;
     public string introAnimTrigger, outroAnimTrigger;
     public float introTime = 1, outroTime = 1;
-    public delegate void OnFinished();
+    // public delegate void OnFinished();
     public Action Finished;
     
     public static BlessingDisplayManager instance {get; private set;}

@@ -10,6 +10,7 @@ public class BulletClass : MonoBehaviour
     [SerializeField]
     private Collider2D col;
 
+    [SerializeField] private bool excludePenetration;
     private int integrity;
     public bool wall_penetration { get; protected set; }
     public bool isTrigger { get {return col.isTrigger;} }
@@ -20,6 +21,8 @@ public class BulletClass : MonoBehaviour
     public float knockbackForce, knockbackTime, startingVel;
     public float range { get; private set; }
     public int slowdownVel { get; protected set; } // only set for penetration bullets
+    public BulletDestroy bulletDestroy;
+
 
     //public BulletClass(string name_input, int dmg, int penetration_input = -1, bool wall_penetration_int = false)
     //{
@@ -47,7 +50,7 @@ public class BulletClass : MonoBehaviour
         col = gameObject.GetComponent<Collider2D>();
         range = _range;
 
-        if (penetration_input == 0)
+        if (penetration_input == 0 || excludePenetration)
         {
             if (!lock_trigger)
             {
@@ -65,14 +68,34 @@ public class BulletClass : MonoBehaviour
         this.knockbackForce = knockbackForce;
         this.knockbackTime = knockbackTime;
         this.startingVel = startingVel;
+
+        if(bulletDestroy!= null) bulletDestroy.NewTimer(range);
     }
 
     void Awake()
     {
         col = gameObject.GetComponent<Collider2D>();
     }
+    void FixedUpdate()
+    {
+        Rigidbody2D rb = GetComponent<Rigidbody2D>(); 
+        if (inWall){
+            rb.AddForce(-rb.velocity * Time.fixedDeltaTime * 75 / integrity);// / (100 * integrity));
+        }
+    }
 
-    void OnTriggerEnter2D(Collider2D hit)
+    public void SetName(string nameInput)
+    {
+        name = nameInput;
+        gameObject.name = nameInput;
+    }
+
+    public void SetDmg(int dmg)
+    {
+        damage = dmg;
+    }
+
+    void PenetrationEnter(Collider2D hit)
     {
         if (hit.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
         {
@@ -95,46 +118,26 @@ public class BulletClass : MonoBehaviour
             }
         }
     }
-
-    void OnTriggerExit2D(Collider2D hit)
+    void PenetrationExit(Collider2D hit)
     {
         if (hit.gameObject.layer == LayerMask.NameToLayer("Obstacles"))
         {
             inWall = false;
         }
+        
     }
 
-    void FixedUpdate()
+    protected virtual void TriggerEnter(Collider2D hit){ }
+    protected virtual void TriggerExit(Collider2D hit){ }
+    void OnTriggerEnter2D(Collider2D hit)
     {
-        Rigidbody2D rb = GetComponent<Rigidbody2D>(); 
-        if (inWall){
-            rb.AddForce(-rb.velocity * Time.fixedDeltaTime * 75 / integrity);// / (100 * integrity));
-        }
+        if (!excludePenetration) { PenetrationEnter(hit); }
+        TriggerEnter(hit);
     }
-
-    public void SetName(string nameInput)
+    void OnTriggerExit2D(Collider2D hit)
     {
-        name = nameInput;
-        gameObject.name = nameInput;
+        if (!excludePenetration) { PenetrationExit(hit); }
+        TriggerExit(hit);
     }
 
-    //public void SetPenetration(int input)//BuffsManager manager)
-    //{
-    //
-    //    penetration = input;
-    //    //int chance = Random.Range(0, 101);
-    //    //if(chance <= manager.buff_strength[4] * 4)
-    //    //{
-    //    //    col.isTrigger = true;
-    //    //}
-    //    //else
-    //    //{
-    //    //    col.isTrigger = false;
-    //    //}
-    //}
-
-    public void SetDmg(int dmg)
-    {
-        damage = dmg;
-    }
 }
