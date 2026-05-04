@@ -22,7 +22,7 @@ public class IntroScreenScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.anyKey){
+        if(Input.anyKey && timer >= 0.25f){
             MainMenuManager.instance.OpenMenuViaState(MainMenuManager.MenuState.MAIN, doCoroutine: false, immediate: true);
             // menus.SetActive(true);
             fps.SetActive(true);

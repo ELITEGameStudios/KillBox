@@ -8,6 +8,13 @@ public class WeaponItemList : MonoBehaviour
 
     public List<Sprite> textures, inGameWeaponTextures;
 
+
+    public BulletClass[] bullets;
+    [SerializeField] private BulletClass kunaiB;
+    [SerializeField] private BulletClass grenadeBullet;
+    [SerializeField] private BulletClass serenityBullet;
+    [SerializeField] private BulletClass chaosBullet;
+    [SerializeField] private BulletClass kunaiA;
     public readonly List<WeaponItem> weapon_items = new List<WeaponItem>
     {
         new WeaponItem("Pistol", WeaponLibrary.pistol, price_input: -1, tier_input: 0, owned_input: true, loopyDesc: "The gun where all KillBox runs begin with"),
@@ -64,17 +71,14 @@ public class WeaponItemList : MonoBehaviour
         new WeaponItem("Golden Pistol", WeaponLibrary.goldenPistol, tier_input: 4, attain_desc: "Found in Chests", loopyDesc:"\"What? A Golden Pistol?! This is a JOKE!!\"... a joke that can shoot infinitely! Forget cooldown altogether, you dont need to worry about that anymore"),
     };
 
-
+    
     public static WeaponItemList Instance { get; private set; }
 
     private void Awake()
     {
         // If there is an instance, and it's not me, delete myself.
 
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
+        if (Instance != null && Instance != this){ Destroy(this); }
         else
         {
             Instance = this;
@@ -86,11 +90,25 @@ public class WeaponItemList : MonoBehaviour
             Instance.weapon_items[i].SetGraphic(textures[i]);
         }
 
-
+        // Add bullet object references here to match with BulletType found in KillboxWeaponClasses
+        bullets = new[]
+        {
+            null,
+            grenadeBullet,
+            serenityBullet,
+            chaosBullet,
+            kunaiA,
+            kunaiB
+        };
     }
 
     void Start(){
         InventoryUIManager.Instance.Initialize();
+    }
+    
+    public BulletClass GetBullet(BulletType type)
+    {
+        return bullets[(int)type];
     }
 
     public WeaponItem GetItem(string key)

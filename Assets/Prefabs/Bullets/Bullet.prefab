@@ -14712,7 +14712,6 @@ GameObject:
   - component: {fileID: 3050550830639310726}
   - component: {fileID: 1073948089518573696}
   - component: {fileID: 7600507978443103298}
-  - component: {fileID: 5381056046864760599}
   - component: {fileID: 5323234042606854624}
   m_Layer: 7
   m_Name: Bullet
@@ -14814,12 +14813,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f214a9315b1c46a7a7fad574a982fd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bullet: {fileID: 7075375582979792073}
   particle: {fileID: 2479305175198026788}
   hit_particle: {fileID: 2550554138201415331}
-  poolManager: {fileID: 0}
-  gameManager: {fileID: 0}
-  PoolIndex: 0
   rangeForFloat: 0
   range: 1
   objectPool: {fileID: 0}
@@ -14827,20 +14822,6 @@ MonoBehaviour:
   has_particles: 1
   destroy_on_shard_trigger: 0
   ignore_timer: 0
---- !u!114 &5381056046864760599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7075375582979792073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53501f2f4926147209e453cc06715235, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HQGameObjects:
-  - {fileID: 8309511479063824527}
 --- !u!114 &5323234042606854624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14853,13 +14834,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7e93a850d56e47c290b1e03cee6669a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  col: {fileID: 0}
+  col: {fileID: 1073948089518573696}
+  excludePenetration: 0
   misc_bullet: 0
   lock_trigger: 0
   inWall: 0
   knockbackForce: 0
   knockbackTime: 0
   startingVel: 0
+  bulletDestroy: {fileID: 7600507978443103298}
 --- !u!1 &8309511479063824527
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,31 +31,17 @@ public class shooterScript2D : MonoBehaviour
 
     [SerializeField]
     private TwoDPlayerController player_controller;
-
     private IEnumerator delayClone;
-
-    public BuffsManager buffsManager;
 
     [SerializeField]
     private int burst_rounds;
- 
-    
-    private float shoot_warmup_time, shoot_warmup_timer;
-
-    [SerializeField]
-    private GameManager manager;
-
     private float shootCooldownTimer;
     public bool CanShoot {get {return shootCooldownTimer <= 0; }}
     Vector2 mousePos;
 
-    [SerializeField]
-    private Weapon weapon;
-    [SerializeField]
-    private WeaponItem weaponItem;
-
-    [SerializeField]
-    private List<float> uniform_directions;
+    [SerializeField] private Weapon weapon;
+    [SerializeField] private WeaponItem weaponItem;
+    [SerializeField] private List<float> uniform_directions;
 
     GameObject clone_sprite;
     ParticleSystem clone_particle;
@@ -65,23 +51,17 @@ public class shooterScript2D : MonoBehaviour
     [SerializeField] private Vector3 initGunPos;
     [SerializeField] private float graphicRecoilTime, initGraphicRecoilTime, recoilTime, knockbackForce, knockbackTime;
 
+    public bool testBool;
+    public float shootVelConstant;
     void Awake(){
         initGunPos = gunGraphicTf.localPosition;
     }
     // Start is called before the first frame update
     void Start()
     {
-        // CanShoot = true;
         SpawnRot = Spawn.localEulerAngles;
-        // objectPool[0] = ObjectPoolManager.GetPool("BulletPool");
-        // objectPool[1] = ObjectPoolManager.GetPool("Flash");
-        buffsManager = GameObject.FindWithTag("Player").GetComponent<BuffsManager>();
-        manager = GameObject.Find("Manager").GetComponent<GameManager>();
-
         weaponItem = WeaponItemList.Instance.GetItem("Pistol");
         weapon = weaponItem.weapon;
-
-        
 
         delayClone = Delay();
         delay_bool = true;
@@ -90,59 +70,39 @@ public class shooterScript2D : MonoBehaviour
             SetWeapon( WeaponItemList.Instance.GetItem(set_on_awake_key) );
         }
 
-        Themify();
-
-        //poolManager = GameObject.Find("Manager").GetComponent<PoolManager>();
+        // Themify();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!CanShoot){
-            shootCooldownTimer -= Time.deltaTime;
-        }
-
-        if(manager == null || !manager.started_game){
-            return;
-        }
-
+        if(!CanShoot){ shootCooldownTimer -= Time.deltaTime; }
+        if(GameManager.main == null || !GameManager.main.started_game){ return; }
         is_in_ui = GunHandler.Instance.in_ui || PauseHandler.main.paused;
 
+        // Controller or mobile twin stick controls
         if(player_controller.mobile || DetectInputDevice.main.isController){
+            
             if (player_controller.Rotating && CanShoot && !GunHandler.Instance.cooldown.cooling_down && shootInputIsPressed && !is_in_ui)
             {
                 Shoot();
             }
 
-
             if (player_controller.Rotating)
             {
                 if (delay_bool && !in_coroutine)
-                {
-                    StartCoroutine(delayClone);
+                { StartCoroutine(delayClone);}
 
-                }
                 if (!delay_bool)
-                {
-                    shootInputIsPressed = true;
-                }
+                { shootInputIsPressed = true;}
             }
 
-            if (!player_controller.Rotating && !delay_bool)
-            {
-                delay_bool = true;
-            }
-
-            if (!player_controller.Rotating && shootInputIsPressed)
-            {
-                shootInputIsPressed = false;
-            }
+            if (!player_controller.Rotating && !delay_bool) { delay_bool = true; }
+            if (!player_controller.Rotating && shootInputIsPressed) { shootInputIsPressed = false; }
         }
+
+        // Keyboard + Mouse controls
         else{
-        //if (shootJoystick.Vertical != 0 && CanShoot && FullAuto){
-        //    Debug.Log("Catch3");
-        //    FAS = true;
-        //}
             if (Input.GetKey(CustomKeybinds.main.Shoot))
                 shootInputIsPressed = true;
             else
@@ -154,14 +114,6 @@ public class shooterScript2D : MonoBehaviour
             }
         }
 
-
-
-        // if(shoot_warmup_timer > 0 && !CanShoot){
-        //     shoot_warmup_timer -= Time.deltaTime;
-        //     if(shoot_warmup_timer <= 0){
-        //         // CanShoot = true;
-        //     }
-        // }
 
         if(graphicRecoilTime > 0 && gunGraphicTf != null){
             
@@ -203,52 +155,30 @@ public class shooterScript2D : MonoBehaviour
             else { Spawn.localEulerAngles += new Vector3(0, 0, uniform_directions[i]); }
 
 
-            if (!misc_gun)
-            {
-                clone = ObjectPoolManager.instance.InstantiateFromPool(bullet == null ? ObjectPoolManager.instance.playerBullet : bullet.gameObject, Spawn.position, Spawn.rotation).GetComponent<Rigidbody2D>();
-                clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
-                clone.gameObject.GetComponent<BulletClass>().SetBullet(bulletName, bulletDamage, penetration_input: penetration, _range: range, knockbackForce: knockbackForce, knockbackTime: knockbackTime, startingVel: weapon.velocity);
-            }
-            else
-            {
-                clone = ObjectPoolManager.instance.InstantiateFromPool(bullet == null ? ObjectPoolManager.instance.playerBullet : bullet.gameObject, Spawn.position, Spawn.rotation).GetComponent<Rigidbody2D>();
-                clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
-                clone.gameObject.GetComponent<BulletClass>().SetBullet(bulletName, bulletDamage, penetration_input: penetration, _range: range, knockbackForce: knockbackForce, knockbackTime: knockbackTime, startingVel: weapon.velocity);
-
-                if (clone.gameObject.GetComponent<BulletDestroy>() != null){
-                    clone.gameObject.GetComponent<BulletDestroy>().NewTimer(range);
-                }
-            }
+            clone = ObjectPoolManager.instance.InstantiateFromPool(bullet == null ? ObjectPoolManager.instance.playerBullet : bullet.gameObject, Spawn.position, Spawn.rotation).GetComponent<Rigidbody2D>();
+            clone.gameObject.GetComponent<BulletClass>().SetBullet(bulletName, bulletDamage, penetration_input: penetration, _range: range, knockbackForce: knockbackForce, knockbackTime: knockbackTime, startingVel: weapon.velocity);
 
             //setting color
-            if (!misc_gun)
-            {
-                clone_sprite = clone.gameObject.transform.GetChild(0).gameObject;
-                clone_particle = clone_sprite.GetComponent<ParticleSystem>();
-                trails = clone_particle.trails;
-                // clone_sprite.GetComponent<SpriteRenderer>().color = bullet_color;
-            }
+            clone_sprite = clone.gameObject.transform.GetChild(0).gameObject;
+            clone_particle = clone_sprite.GetComponent<ParticleSystem>();
+            trails = clone_particle.trails;
 
             if (weapon.is_support)
             {
                 bullet_color = Color.cyan;
                 particle_color = Color.cyan;
             }
-            else if (!misc_gun)
-            {
-                Themify();
-            }
+            // else
+            // {
+            //     // Themify();
+            // }
 
-            if (!misc_gun)
-            {
-                // clone_particle.startColor = particle_color;
-                // trails.colorOverLifetime = particle_color;
-                // trails.colorOverTrail = particle_color;
-            }
+            // clone_particle.startColor = particle_color;
+            // trails.colorOverLifetime = particle_color;
+            // trails.colorOverTrail = particle_color;
 
-            //AddingForces
+            // AddingForces
             clone.AddForce(Spawn.up * Velocity);
-
 
             if (recoilForce > 0 && Player.main.movement.canMove) { Player.main.rb.AddForce(Player.main.tf.up * -recoilForce, ForceMode2D.Impulse); }
             Spawn.localEulerAngles = SpawnRot;
@@ -259,8 +189,9 @@ public class shooterScript2D : MonoBehaviour
 
         }
 
-        // Once per shot operations
 
+
+        // Once per shot operations
         // recoil force
 
         // recoilTime = Mathf.Clamp(0, 0.33f, Mathf.Infinity);
@@ -277,28 +208,19 @@ public class shooterScript2D : MonoBehaviour
         flash_particle.startColor = particle_color;
         flash_particle.Play();
         
-        // CanShoot = false;
         burst_rounds++;
         graphicRecoilTime = initGraphicRecoilTime;
         // GunHandler.Instance.OnShoot();
         // KillboxEventSystem.TriggerFireWeaponEvent(new WeaponEventData(weaponItem, GunHandler.Instance.current_is_primary, GunHandler.Instance.has_dual));
 
         
-        if (burst_rounds >= burst_quantity && burst)
-        {
-            ShootCooldown(burst_check: true);
-            // ShootCooldown(burst_check: true);
-        }
-        else
-        {
-            ShootCooldown();
-            // ShootCooldown();
-        }
+        if (burst_rounds >= burst_quantity && burst) { ShootCooldown(burst_check: true); }
+        else { ShootCooldown(); }
     }
 
     public void SetWeapon(WeaponItem input)
     {
-        weaponItem= input;
+        weaponItem = input;
         Weapon weapon = input.weapon;
 
         FR = weapon.fire_rate;
@@ -321,27 +243,14 @@ public class shooterScript2D : MonoBehaviour
         knockbackForce = weapon.knockbackForce;
         knockbackTime = weapon.knockbackTime;
 
-        // if (weapon.pool != 0)
-        // {
-        //     objectPool[0] = GameObject.Find("BulletPool" + weapon.pool.ToString()).GetComponent<ObjectPool>();
-        // }
-        // else if (weapon.is_support)
-        // {
-        //     objectPool[0] = GameObject.Find("BulletPool" + 12.ToString()).GetComponent<ObjectPool>();
-        // }
-        // else
-        // {
-        //     objectPool[0] = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
-        // }
-
-        misc_gun = weapon.misc;
+        bullet = WeaponItemList.Instance.GetBullet(weapon.bullet);
 
         burst_rounds = 0;
 
     }
 
     void Themify(){
-        if(themed && manager.Theme != 0){
+        if(themed && GameManager.main.Theme != 0){
             //bullet_color = manager.ColorThemes[manager.Theme];
             //particle_color = manager.ColorThemes[manager.Theme];
         }
@@ -357,20 +266,6 @@ public class shooterScript2D : MonoBehaviour
         delayClone = Delay();
     }
 
-    IEnumerator ShootCooldownNumerator(bool burst_check = false)
-    {
-        if (burst_check && burst)
-        {
-            yield return new WaitForSeconds(burst_interval);
-            burst_rounds = 0;
-        }
-        else
-        {
-            yield return new WaitForSeconds(FR);
-        }
-
-        // CanShoot = true;
-    }
 
     void ShootCooldown(bool burst_check = false)
     {

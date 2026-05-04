@@ -743,19 +743,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d86383278bc45559583fc6e686de51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 6813785317433982689}
   playerHealthScript: {fileID: 0}
-  playerRigidBody: {fileID: 0}
+  currentHitCooldown: 0
   damage: 0
   _ignite_intensity: 0
   hitKb: 0
   HitCooldown: 0.5
-  AtCooldown: 0.5
   immunity_time: 0
   _ignite_time: 0
   tag: Player
   CanAttack: 1
-  EndOfContact: 0
   ignore_immunity: 0
   _ignites: 0
   triggerEvent: 0
@@ -812,7 +809,7 @@ MonoBehaviour:
   a: 0
   manager: {fileID: 0}
   guaranteedDrop: {fileID: 0}
-  explosionColor: {r: 0.969113, g: 1, b: 0, a: 1}
+  explosionColor: {r: 1, g: 0.53566694, b: 0, a: 1}
   audio: {fileID: 0}
   death: {fileID: 8300000, guid: 9515cb53acd214ea1a878193d32e5c10, type: 3}
   hit: {fileID: 8300000, guid: c5b4fdf98f1cf43dba8c528d6f22a6c2, type: 3}
@@ -865,6 +862,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HQGameObjects:
   - {fileID: 6813785316913839051}
+  gridEffectObject: {fileID: 0}
 --- !u!82 &434004796953595433
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1672,7 +1670,7 @@ SpriteRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 420caf93035bea840a4ef82b5d112554, type: 3}
-  m_Color: {r: 0.8784709, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.53390247, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

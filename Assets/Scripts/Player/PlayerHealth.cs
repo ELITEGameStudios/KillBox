@@ -73,6 +73,9 @@ public class PlayerHealth : MonoBehaviour, ISelfResListener
         MaxHealth = 150;
         //MaxHealth = PlayerPrefs.GetInt("Health", 150);
         CurrentHealth = MaxHealth;
+        hit_volume = PostProcessManager.instance.DamageVolume;
+        hit_volume.weight = 0;
+
     }
 
 

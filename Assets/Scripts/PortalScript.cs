@@ -46,6 +46,8 @@ public class PortalScript : MonoBehaviour
     public PortalType portalType;
     public BossType portalOptionalBossType;
 
+    [SerializeField] bool inBlessingSequence;
+
     public enum PortalType // Assign a boss in BossType? boss if this is a bosstrial. otherwise set a custom map (still in the works)
     {
         MAIN,
@@ -78,7 +80,10 @@ public class PortalScript : MonoBehaviour
 
     void Awake(){
         if(main == null){
-            if(portalType == PortalType.MAIN) {main = this;}
+            if(portalType == PortalType.MAIN) {
+                main = this;
+                BlessingDisplayManager.instance.Finished += EscapeBlessingSequence;    
+            }
         }
         else if(main != this){
             SetMode(1);
@@ -88,6 +93,7 @@ public class PortalScript : MonoBehaviour
             }
             // Destroy(this);
         }
+
     }
 
     async void LoadPathfinding(){
@@ -207,10 +213,53 @@ public class PortalScript : MonoBehaviour
         map.floorTiles.color = floorCol;
         // yield return new WaitForSeconds(Delay);
 
+        // Temporary blessing UI code
+        if (BossRoundManager.main.timeUntilNextBoss == 0)
+        {
+            Debug.Log("Was a boss round, must do blessing ui");
+            switch (boss)
+            {
+                case BossType.SHARD:
+                    BlessingDisplayManager.instance.BeginBlessingSequence(BlessingDisplayManager.BlessingType.SHARD);
+                    inBlessingSequence = true;
+                    
+                    break;
+                
+                case BossType.CUTTER:
+                    BlessingDisplayManager.instance.BeginBlessingSequence(BlessingDisplayManager.BlessingType.CUTTER);
+                    inBlessingSequence = true;
+                    
+                    break;
+
+                case BossType.GUARDIANS:
+                    BlessingDisplayManager.instance.BeginBlessingSequence(BlessingDisplayManager.BlessingType.GUARDIANS);
+                    inBlessingSequence = true;
+                    
+                    break;
+
+            }
+        }
+
+        while (inBlessingSequence)
+        {
+            yield return null;
+        }
+
         InitNewRound();
         loadingScene = false;
         Player.main.Appear();
         Player.main.movement.SetCanMove(true);
         
+    }
+    void EscapeBlessingSequence()
+    {
+        inBlessingSequence = false;
+    }
+
+    void OnDestroy()
+    {
+        if(main == this){
+            BlessingDisplayManager.instance.Finished -= EscapeBlessingSequence;    
+        }
     }
 }

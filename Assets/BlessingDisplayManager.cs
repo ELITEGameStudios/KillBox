@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,15 @@ using UnityEngine;
 public class BlessingDisplayManager : MonoBehaviour
 {
     // public FadeManager shardGraphics, cutterGraphics, aetherGraphics, guardianGraphics;
-    public Animator animator;
+    public Animator animator => animatorList[(int)currentType];
+    public Animator[] animatorList;
     public BlessingType currentType;
     public GameObject bgObject;
     public FlipbookUISystem[] flipbooks;
     public string introAnimTrigger, outroAnimTrigger;
     public float introTime = 1, outroTime = 1;
+    // public delegate void OnFinished();
+    public Action Finished;
     
     public static BlessingDisplayManager instance {get; private set;}
 
@@ -57,6 +61,7 @@ public class BlessingDisplayManager : MonoBehaviour
         flipbooks[(int)currentType].gameObject.SetActive(false);
         currentType = BlessingType.NONE;
 
+        Finished.Invoke();
         bgObject.SetActive(false);
     }
 

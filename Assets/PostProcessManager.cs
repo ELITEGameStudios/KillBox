@@ -37,7 +37,7 @@ public class PostProcessManager : MonoBehaviour
             if(Player.main != null)
             {
                 PlayerHealth health = Player.main.health;
-                wallMat.SetFloat("_effectSlider", 1f - (health.CurrentHealth / (float)( health.netMaxHealth ))); 
+                wallMat.SetFloat("_effectSlider", wallEffectCurve.Evaluate(1f - (health.CurrentHealth / (float)( health.netMaxHealth )))); 
             }
             else
             {

@@ -1,30 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletDestroy : MonoBehaviour
 {
     [SerializeField] private GameObject particle, hit_particle;
-    public GameManager gameManager;
     private float current_range;
     public float rangeForFloat, range;
     private IEnumerator RangeCall;
     public ObjectPool objectPool;
     public bool destroy_on_any_collision, has_particles, destroy_on_shard_trigger, ignore_timer;
 
+    // public delegate void OnPreDestroy();
+    public Action PreDestroy;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-
-
-        gameManager = GameObject.Find("Manager").GetComponent<GameManager>();
-        // poolManager = GameObject.Find("Manager").GetComponent<PoolManager>();
-        // if(PoolIndex == 0)
-        //     objectPool = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
-        // else
-        //     objectPool = GameObject.Find("BulletPool"+PoolIndex.ToString()).GetComponent<ObjectPool>();
         RangeCall = Range();
         //StartCoroutine(RangeCall);
     }
@@ -45,29 +40,8 @@ public class BulletDestroy : MonoBehaviour
 
                 gameObject.SetActive(false);
             }
-            //int OffCounter = 0;
-            //for(int i = 0; i < objectPool.amountToPool; i++){
-            //    if(objectPool.pooledObjects[i].activeInHierarchy){
-            //        OffCounter++;
-            //        if(OffCounter == objectPool.amountToPool-1 && i == objectPool.amountToPool-1){
-            //            gameObject.SetActive(false);
-            //        }
-            //    }
-            //}
         }
     }
-
-    //void OnTriggerEnter(Collider collider)
-    //{
-    //    if(collider.gameObject.tag == "Wall")
-    //    {
-    //        Destroy(gameObject);
-    //    }
-    //    if (collider.gameObject.tag == "Floor")
-    //    {
-    //        Destroy(gameObject);
-    //    }
-    //}
 
     void OnCollisionEnter2D(Collision2D collider)
     {
@@ -101,6 +75,8 @@ public class BulletDestroy : MonoBehaviour
 
     public void DisableBullet(bool hitObject = true)
     {
+        if(PreDestroy != null) PreDestroy.Invoke();
+
         StopCoroutine(RangeCall);
         RangeCall = Range();
 

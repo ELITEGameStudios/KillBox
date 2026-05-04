@@ -54,7 +54,9 @@ public class SceneSystem : MonoBehaviour
     }
 
     public void LoadMainMenu(){
-        SceneManager.LoadScene(2);
+        KillBox.EndCurrentGame();
+        UnloadScene(gameUIName);
+        SceneManager.LoadScene(menusSceneName);
         UpdateSceneData();
     }
 
@@ -65,6 +67,7 @@ public class SceneSystem : MonoBehaviour
             if(scenes[i].name == sceneName){
                 StartCoroutine(UnloadSceneCoroutine(scenes[i]));
                 scenes.RemoveAt(i);
+                return;
             }
         }
     }
@@ -108,10 +111,13 @@ public class SceneSystem : MonoBehaviour
         // yield return StartCoroutine(LoadAdditiveCoroutine(flexibleLoadingSceneName));
         // loadingScene = SceneManager.GetSceneByName(flexibleLoadingSceneName);
         DetectMenusScene();
+        bool fromMenu = menusScene.isLoaded;
         FadeManager.instance.SetTarget(true, flexibleTransitionTime);
         yield return new WaitForSecondsRealtime(flexibleTransitionTime);
         
-        yield return StartCoroutine(LoadAdditiveCoroutine(gameUIName)); 
+        if (fromMenu){
+            yield return StartCoroutine(LoadAdditiveCoroutine(gameUIName)); 
+        }
         yield return StartCoroutine(LoadAdditiveCoroutine(gameSceneName[(int)KillBox.currentGame.gamemode])); 
         
         yield return null;
@@ -135,36 +141,65 @@ public class SceneSystem : MonoBehaviour
 
         GameplayUI.instance.Initialize();
         // yield return StartCoroutine(LoadAdditiveCoroutine(mapSceneNames[0]));
+        
+        gameScene = SceneManager.GetSceneByName(gameSceneName[(int)KillBox.currentGame.gamemode]);
+        gameUI = SceneManager.GetSceneByName(gameUIName);
+        SceneManager.SetActiveScene(gameScene);
+        
+        if(MainMenuManager.instance.gameObject.scene != gameUI)
+        {
+            SceneManager.MoveGameObjectToScene(MainMenuManager.instance.gameObject, gameUI);
+        }
+
+        if (menusScene.isLoaded){
+            StartCoroutine(UnloadSceneCoroutine(menusScene));
+        }
 
         MainMenuManager.instance.OnGameSceneLoad(); 
         FadeManager.instance.SetTarget(false, flexibleTransitionTime);
         KillBox.currentGame.StartGame();
 
         // currentMapScene = SceneManager.GetSceneByName(mapSceneNames[0]);
-        gameScene = SceneManager.GetSceneByName(gameSceneName[(int)KillBox.currentGame.gamemode]);
-        gameUI = SceneManager.GetSceneByName(gameUIName);
     }
     
     void InitializeScenes(){
+        DetectMenusScene();
+        bool fromMenu = menusScene.isLoaded;
 
-        sceneLoadOperation = SceneManager.LoadSceneAsync(gameUIName, LoadSceneMode.Additive);
-        sceneLoadOperation.completed += (operation) => {
-            sceneLoadOperation = SceneManager.LoadSceneAsync(gameSceneName[(int)KillBox.currentGame.gamemode], LoadSceneMode.Additive); 
+        if (fromMenu)
+        {
+            sceneLoadOperation = SceneManager.LoadSceneAsync(gameUIName, LoadSceneMode.Additive);
             sceneLoadOperation.completed += (operation) => {
-                Invoke(nameof(StartGame), 0.2f);
-                // yield return null;
-
+                LoadGameSceneAsync();
             };
-            // new Action<AsyncOperation>() 
+        }
+        else
+        {
+            Debug.Log("not from menu");
+            SceneManager.SetActiveScene(gameUI);
+            sceneLoadOperation = SceneManager.UnloadSceneAsync(gameScene);
+            sceneLoadOperation.completed += (operation) => {
+                LoadGameSceneAsync();
+            };
+        }
+    }
+
+    void LoadGameSceneAsync()
+    {
+        sceneLoadOperation = SceneManager.LoadSceneAsync(gameSceneName[(int)KillBox.currentGame.gamemode], LoadSceneMode.Additive); 
+        sceneLoadOperation.completed += (operation) => {
+            Invoke(nameof(StartGame), 0.2f);
+            // yield return null;
+
         };
-        
+        // new Action<AsyncOperation>() 
         
     }
 
 
     
     void GameInitializationFunction(){
-
+        Debug.Log("Initializing game");
         FadeOut();
         Invoke(nameof(InitializeScenes),  flexibleTransitionTime);
         
